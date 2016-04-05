@@ -10,32 +10,40 @@ class Engine
 {
     HashTable           mHashTable;         // Transposition table
     Position            mRoot;              // The root of the search tree (the "current position")
-    SearchConfig        mConfig;            // Search pareame
-    SearchMetrics       mMetrics;
-    Evaluator           mEvaluator;
-    MoveList            mBestLine;
-    MoveList*           mStorePv;
-    EvalTerm            mValuePv;
-    int                 mTableSize;
-    int                 mTargetTime;
-    int                 mDepthLimit;
-    Timer               mSearchElapsed;
-    volatile bool       mExitSearch;
-    int                 mThreadsRunning;
-    Semaphore           mThreadsDone;
-    Timer               mThinkingTimer;
-    bool                mPrintBestMove;
-    bool                mPrintedMove;
-    bool                mDebugMode;
+    SearchConfig        mConfig;            // Search parameters
+    SearchMetrics       mMetrics;           // Runtime metrics
+    Evaluator           mEvaluator;         // Evaluation weights
+    MoveList            mBestLine;          // Best line found in the search
+    MoveList*           mStorePv;           // Target for PV in active search
+    EvalTerm            mValuePv;           // The evaluation of *mStorePv
+    int                 mTableSize;         // Transposition table size (in megs)
+    int                 mTargetTime;        // Time to stop current search
+    int                 mDepthLimit;        // Depth limit for current search (not counting quiesence)
+    Timer               mSearchElapsed;     // Time elapsed since the "go" command
+    volatile bool       mExitSearch;        // Flag to terminate search threads immediately
+    int                 mThreadsRunning;    // Number of worker threads currently running
+    Semaphore           mThreadsDone;       // Semaphore to help gather up completed threads                                                
+    bool                mPrintBestMove;     // Output best move while searching
+    bool                mPrintedMove;       // Make sure only one "bestmove" is output per "go" 
+    bool                mDebugMode;         // This currently does nothing
 
 public:
     Engine()
     {
         mConfig.Clear();
         mMetrics.Clear();
+        mRoot.Reset();
 
-        mDebugMode = false;
-        mTableSize = TT_MEGS_DEFAULT;
+        mStorePv        = nullptr;
+        mValuePv        = EVAL_MIN;
+        mTableSize      = TT_MEGS_DEFAULT;
+        mTargetTime     = NO_TIME_LIMIT;
+        mDepthLimit     = 0;
+        mExitSearch     = false;
+        mThreadsRunning = 0;
+        mPrintBestMove  = false;
+        mPrintedMove    = false;
+        mDebugMode      = false;
     }
 
     ~Engine()
@@ -210,7 +218,7 @@ private:
             {
                 if( currLevelElapsed > 500 )
                 {
-                    if( mThinkingTimer.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
+                    if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
                     {
                         printf( "info string Bailing on level %d\n", depth );
                         break;
