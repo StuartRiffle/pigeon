@@ -85,7 +85,7 @@ struct PositionT
 
     void Step( const MoveSpecT< SIMD >& move )
     {
-        SIMD    moveSrc             = SelectWithMask( mBoardFlipped, FlipSquareIndex( move.mSrc ),  move.mSrc  );
+        SIMD    moveSrc             = SelectWithMask( mBoardFlipped,  FlipSquareIndex( move.mSrc ), move.mSrc );
         SIMD    srcBit              = SquareBit( moveSrc );
         SIMD    isPawnMove          = SelectIfNotZero( srcBit & mWhitePawns, MaskAllSet< SIMD >() );
         SIMD    isCapture           = CmpEqual( move.mType, (SIMD) CAPTURE_LOSING );

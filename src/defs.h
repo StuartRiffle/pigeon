@@ -142,7 +142,7 @@ template< typename T > INLINE   T       SelectIfNotZero( const T& val, const T& 
 template< typename T > INLINE   T       SelectIfNotZero( const T& val, const T& a, const T& b )             { return( val? a : b ); }
 template< typename T > INLINE   T       SelectIfZero(    const T& val, const T& a )                         { return( val? 0 : a ); }
 template< typename T > INLINE   T       SelectIfZero(    const T& val, const T& a, const T& b )             { return( val? b : a ); }
-template< typename T > INLINE   T       SelectWithMask(  const T& mask, const T& a, const T& b )            { return( a ^ (mask & (b ^ a)) ); }
+template< typename T > INLINE   T       SelectWithMask(  const T& mask, const T& a, const T& b )            { return( b ^ (mask & (a ^ b)) ); } 
 template< typename T > INLINE   T       CmpEqual( const T& a, const T& b )                                  { return( (a == b)? MaskAllSet< T >() : MaskAllClear< T >() ); }
 template< typename T > INLINE   T       ByteSwap( const T& val )                                            { return PlatByteSwap64( val ); }
 template< typename T > INLINE   T       CountBits( const T& val )                                           { return PlatCountBits64( val ); }

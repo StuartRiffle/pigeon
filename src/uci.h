@@ -41,6 +41,7 @@ struct UCI
         else if( tokens.Consume( "isready" ) )
         {
             engine->Init();
+            engine->Reset();
             printf( "readyok\n" );
         }
         else if( tokens.Consume( "ucinewgame" ) )

@@ -123,7 +123,9 @@
   <ItemGroup>
     <None Include="..\.gitignore" />
     <None Include="..\README.md" />
-    <None Include="..\script\testing.coo" />
+    <None Include="..\script\testing.coo">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+    </None>
     <None Include="..\script\tuning.coo" />
   </ItemGroup>
   <ItemGroup>
