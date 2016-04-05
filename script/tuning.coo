@@ -1,0 +1,38 @@
+#
+#      /O_		tuning.coo - evaluation weights
+#      ||       
+#     / \\		PIGEON CHESS ENGINE      
+#   =/__//		Copyright (c) 2012-2016 Stuart Riffle
+#      ^^ 
+#                                       OPENING MIDGAME ENDGAME
+
+tune    EVAL_KINGS                      0       0       0      
+tune    EVAL_QUEENS                     900     900     900    
+tune    EVAL_ROOKS                      500     500     500    
+tune    EVAL_BISHOPS                    300     300     300    
+tune    EVAL_KNIGHTS                    400     300     300    
+tune    EVAL_PAWNS                      100     100     100    
+tune    EVAL_MOBILITY                   10      7       7      
+tune    EVAL_ATTACKING                  50      10      5      
+tune    EVAL_DEFENDING                  10      5       10     
+tune    EVAL_ENEMY_TERRITORY            20      10      0      
+tune    EVAL_CENTER_PAWNS               20      10      0      
+tune    EVAL_CENTER_PIECES              50      10      0      
+tune    EVAL_CENTER_CONTROL             10      5       0      
+tune    EVAL_KNIGHTS_DEVELOPED          50      0       0      
+tune    EVAL_BISHOPS_DEVELOPED          50      0       0      
+tune    EVAL_ROOKS_DEVELOPED            100     0       0      
+tune    EVAL_QUEEN_DEVELOPED            20      20      0      
+tune    EVAL_PROMOTING_SOON             0       200     400    
+tune    EVAL_PROMOTING_IMMED            0       300     500    
+tune    EVAL_CHAINED_PAWNS              10      5       0      
+tune    EVAL_PASSED_PAWNS               50      10      20     
+tune    EVAL_KNIGHTS_FIRST              50      0       0      
+tune    EVAL_KNIGHTS_NOT_ON_RIM         50      50      30     
+tune    EVAL_BOTH_BISHOPS               0       50      100    
+tune    EVAL_ROOK_ON_RANK_7             0       100     0      
+tune    EVAL_ROOKS_CONNECTED            50      50      20     
+tune    EVAL_ROOKS_ON_OPEN_FILE         0       100     0      
+tune    EVAL_KING_CASTLED               50      50      0      
+tune    EVAL_PAWNS_GUARDING_KING        20      10      0      
+

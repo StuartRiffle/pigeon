@@ -1,0 +1,25 @@
+# Build output files
+build/
+
+# Windows filesystem spam
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Visual Studio spam
+proj/ipch/
+proj/.vs/
+proj/*.aps
+proj/*.ncb
+proj/*.opensdf
+proj/*.sdf
+proj/*.cachefile
+proj/*.psess
+proj/*.vsp
+proj/*.vspx
+proj/*.sap
+proj/*.suo
+proj/*.user
+proj/*.userosscache
+proj/*.sln.docstates
