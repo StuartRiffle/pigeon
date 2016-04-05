@@ -164,13 +164,16 @@ struct MoveList
 private:
     INLINE void ClassifyAndStoreMove( const Position& pos, int srcIdx, int destIdx, int promote = 0 ) 
     {
-        u64 src         = SquareBit( srcIdx );
-        u64 dest        = SquareBit( destIdx );
+        u64 src         = SquareBit( (u64) srcIdx );
+        u64 dest        = SquareBit( (u64) destIdx );
         int src_val     = (src  & pos.mWhitePawns)? 1 : ((src  & (pos.mWhiteKnights | pos.mWhiteBishops))? 3 : ((src  & pos.mWhiteRooks)? 5 : ((src  & pos.mWhiteQueens)? 9 : 20)));
         int dest_val    = (dest & pos.mBlackPawns)? 1 : ((dest & (pos.mBlackKnights | pos.mBlackBishops))? 3 : ((dest & pos.mBlackRooks)? 5 : ((dest & pos.mBlackQueens)? 9 :  0)));
         int relative    = SignOrZero( dest_val - src_val );
         int capture     = dest_val? (relative + 2) : 0;
         int type        = promote? (promote + (capture? 4 : 0)) : capture;
+
+        if( capture )
+            relative = relative;
 
         mMove[mCount++].Set( srcIdx, destIdx, type );
     }

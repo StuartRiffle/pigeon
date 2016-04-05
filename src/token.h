@@ -37,6 +37,9 @@ public:
         if( strnicmp( mCursor, target, targetLen ) != 0 )
             return( false );
 
+        if( !isspace( mCursor[targetLen] ) )
+            return( false );
+
         mCursor += targetLen;
         this->SkipWhite();
 

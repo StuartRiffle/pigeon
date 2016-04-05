@@ -148,6 +148,7 @@ public:
 
         mBestLine.Clear();
 
+        mConfig         = *conf;
         mStorePv        = &mBestLine;
         mValuePv        = 0;
         mDepthLimit     = mConfig.mDepthLimit;
@@ -433,7 +434,7 @@ private:
             int idx = moves.ChooseBestUntried();
             MoveSpec& move = moves.mMove[idx];
 
-            Position child;
+            Position child = pos;
             child.Step( move );
 
             MoveList pv_child;
