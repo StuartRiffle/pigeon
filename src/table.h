@@ -22,7 +22,7 @@ struct TableEntry
     {
         return(
             ((u64) mHashVerify  << 40) |
-            ((u64) mScore       << 24) |
+            ((u64) (u16) mScore << 24) |
             ((u64) mDepth       << 16) |
             ((u64) mBestSrc     << 10) |
             ((u64) mBestDest    <<  4) |

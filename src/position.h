@@ -88,13 +88,13 @@ struct PositionT
         SIMD    moveSrc             = SelectWithMask( mBoardFlipped,  FlipSquareIndex( move.mSrc ), move.mSrc );
         SIMD    srcBit              = SquareBit( moveSrc );
         SIMD    isPawnMove          = SelectIfNotZero( srcBit & mWhitePawns, MaskAllSet< SIMD >() );
-        SIMD    isCapture           = CmpEqual( move.mType, (SIMD) CAPTURE_LOSING );
-                isCapture          |= CmpEqual( move.mType, (SIMD) CAPTURE_EQUAL );
-                isCapture          |= CmpEqual( move.mType, (SIMD) CAPTURE_WINNING );
-                isCapture          |= CmpEqual( move.mType, (SIMD) CAPTURE_PROMOTE_KNIGHT );
-                isCapture          |= CmpEqual( move.mType, (SIMD) CAPTURE_PROMOTE_BISHOP );
-                isCapture          |= CmpEqual( move.mType, (SIMD) CAPTURE_PROMOTE_ROOK );
-                isCapture          |= CmpEqual( move.mType, (SIMD) CAPTURE_PROMOTE_QUEEN );
+        SIMD    isCapture           = CmpEqual( move.mType, (SIMD) CAPTURE_LOSING )
+                                    | CmpEqual( move.mType, (SIMD) CAPTURE_EQUAL )
+                                    | CmpEqual( move.mType, (SIMD) CAPTURE_WINNING )
+                                    | CmpEqual( move.mType, (SIMD) CAPTURE_PROMOTE_KNIGHT )
+                                    | CmpEqual( move.mType, (SIMD) CAPTURE_PROMOTE_BISHOP )
+                                    | CmpEqual( move.mType, (SIMD) CAPTURE_PROMOTE_ROOK )
+                                    | CmpEqual( move.mType, (SIMD) CAPTURE_PROMOTE_QUEEN );
 
         this->ApplyMove( move.mSrc, move.mDest, move.mType );
         this->FlipInPlace();
@@ -181,11 +181,12 @@ struct PositionT
         SIMD    blackQueens         = SelectWithMask( mBoardFlipped, ByteSwap( mWhiteQueens   ), mBlackQueens   );
         SIMD    blackKing           = SelectWithMask( mBoardFlipped, ByteSwap( mWhiteKing     ), mBlackKing     );
         SIMD    castlingAndEP       = SelectWithMask( mBoardFlipped, ByteSwap( mCastlingAndEP ), mCastlingAndEP );
-        SIMD    hash0               = XorShiftC( XorShiftB( XorShiftA( HASH_SEED0 - (whitePawns | blackPawns) ) - blackKnights ) - whiteRooks  );              
-        SIMD    hash1               = XorShiftC( XorShiftB( XorShiftA( HASH_SEED1 - castlingAndEP )             - whiteBishops ) - blackQueens );             
-        SIMD    hash2               = XorShiftC( XorShiftB( XorShiftA( HASH_SEED2 - whiteKing )                 - blackBishops ) - whiteQueens );             
-        SIMD    hash3               = XorShiftC( XorShiftB( XorShiftA( HASH_SEED3 - blackKing )                 - whiteKnights ) - blackRooks  );        
-        SIMD    hash                = XorShiftA( XorShiftD( hash0 - hash2 ) - XorShiftD( hash1 - hash3 ) );
+        SIMD    allPawns            = whitePawns | blackPawns;
+        SIMD    hash0               = XorShiftA( XorShiftB( XorShiftC( HASH_SEED0 ^ allPawns )      ^ blackKnights ) ^ whiteRooks  );              
+        SIMD    hash1               = XorShiftA( XorShiftB( XorShiftC( HASH_SEED1 ^ castlingAndEP ) ^ whiteBishops ) ^ blackQueens );             
+        SIMD    hash2               = XorShiftD( XorShiftB( XorShiftC( HASH_SEED2 ^ whiteKing )     ^ blackBishops ) ^ whiteQueens );             
+        SIMD    hash3               = XorShiftD( XorShiftB( XorShiftC( HASH_SEED3 ^ blackKing )     ^ whiteKnights ) ^ blackRooks  );        
+        SIMD    hash                = XorShiftC( hash0 - hash2 ) ^ XorShiftC( hash1 - hash3 );
 
         return( hash );
     }
