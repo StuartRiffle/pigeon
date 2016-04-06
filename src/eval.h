@@ -93,19 +93,20 @@ public:
         mWeightsEndgame[idx] = endgameVal;
     }
 
+    template< int POPCNT >
     float CalcGamePhase( const Position& pos ) const
     {
         // "openingness" starts at 1, then reduces to 0 over at most EVAL_OPENING_PLIES
         // "endingness" starts at 0, then increases as minor/major pieces are taken
 
         int     ply                 = pos.GetPlyZeroBased();
-        int     whitePawnCount      = (int) CountBits( pos.mWhitePawns );
-        int     whiteMinorCount     = (int) CountBits( pos.mWhiteKnights | pos.mWhiteBishops );
-        int     whiteMajorCount     = (int) CountBits( pos.mWhiteRooks   | pos.mWhiteQueens );
+        int     whitePawnCount      = (int) CountBits< POPCNT >( pos.mWhitePawns );
+        int     whiteMinorCount     = (int) CountBits< POPCNT >( pos.mWhiteKnights | pos.mWhiteBishops );
+        int     whiteMajorCount     = (int) CountBits< POPCNT >( pos.mWhiteRooks   | pos.mWhiteQueens );
         int     whitePieceCount     = whitePawnCount + whiteMinorCount + whiteMajorCount;
-        int     blackPawnCount      = (int) CountBits( pos.mBlackPawns ); 
-        int     blackMinorCount     = (int) CountBits( pos.mBlackKnights | pos.mBlackBishops );
-        int     blackMajorCount     = (int) CountBits( pos.mBlackRooks   | pos.mBlackQueens );
+        int     blackPawnCount      = (int) CountBits< POPCNT >( pos.mBlackPawns ); 
+        int     blackMinorCount     = (int) CountBits< POPCNT >( pos.mBlackKnights | pos.mBlackBishops );
+        int     blackMajorCount     = (int) CountBits< POPCNT >( pos.mBlackRooks   | pos.mBlackQueens );
         int     blackPieceCount     = blackPawnCount + blackMinorCount + blackMajorCount;
         int     lowestPieceCount    = Min( whitePieceCount, blackPieceCount );
         float   fightingSpirit      = lowestPieceCount / 15.0f; // (king not counted)
@@ -128,20 +129,20 @@ public:
     }
 
 
-    template< typename SIMD >
+    template< int POPCNT, typename SIMD >
     SIMD Evaluate( const PositionT< SIMD >& pos, const EvalTerm* weights ) const
     {
         PositionT< SIMD > flipped;
         flipped.FlipFrom( pos );
 
-        SIMD evalAsWhite = this->EvalSide( pos,     weights );
-        SIMD evalAsBlack = this->EvalSide( flipped, weights );
+        SIMD evalAsWhite = this->EvalSide< POPCNT >( pos,     weights );
+        SIMD evalAsBlack = this->EvalSide< POPCNT >( flipped, weights );
 
         return( evalAsWhite - evalAsBlack );
     }
 
 
-    template< typename SIMD >
+    template< int POPCNT, typename SIMD >
     SIMD EvalSide( const PositionT< SIMD >& pos, const EvalTerm* weights ) const
     {
         SIMD    whitePawns          = pos.mWhitePawns;    
@@ -174,41 +175,41 @@ public:
         SIMD    whiteAttacking      = whiteControl & blackPieces;
         SIMD    whiteDefending      = whiteControl & whitePieces;
         SIMD    inEnemyTerritory    = whitePieces & (RANK_5 | RANK_6 | RANK_7 | RANK_8);
-        SIMD    evalKnightsDevel    = CountBits( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );
-        SIMD    evalBishopsDevel    = CountBits( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) );
+        SIMD    evalKnightsDevel    = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );
+        SIMD    evalBishopsDevel    = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) );
         SIMD    evalKnightsFirst    = Max( (SIMD) 0, evalKnightsDevel - evalBishopsDevel );
         SIMD    evalBothBishops     = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 );
-        SIMD    evalRooksConnected  = CountBits( PropExOrtho( whiteRooks, empty ) & whiteRooks );
-        SIMD    evalPawnsGuardKing  = CountBits( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );
-        SIMD    score               = MulLow32( CountBits( whitePawns ),                                weights[EVAL_PAWNS]            ) +
-                                      MulLow32( CountBits( whiteKnights ),                              weights[EVAL_KNIGHTS]          ) +
-                                      MulLow32( CountBits( whiteBishops ),                              weights[EVAL_BISHOPS]          ) +
-                                      MulLow32( CountBits( whiteRooks ),                                weights[EVAL_ROOKS]            ) +
-                                      MulLow32( CountBits( whiteQueens ),                               weights[EVAL_QUEENS]           ) +
-                                      MulLow32( CountBits( whiteKing ),                                 weights[EVAL_KINGS]            ) +
-                                      MulLow32( CountBits( whiteMobility ),                             weights[EVAL_MOBILITY]         ) +
-                                      MulLow32( CountBits( whiteAttacking ),                            weights[EVAL_ATTACKING]        ) +
-                                      MulLow32( CountBits( whiteDefending ),                            weights[EVAL_DEFENDING]        ) +
-                                      MulLow32( CountBits( inEnemyTerritory ),                          weights[EVAL_ENEMY_TERRITORY]  ) +
-                                      MulLow32( CountBits( whitePawns   & CENTER_SQUARES ),             weights[EVAL_CENTER_PAWNS]     ) +
-                                      MulLow32( CountBits( whitePieces  & CENTER_SQUARES ),             weights[EVAL_CENTER_PIECES]    ) +
-                                      MulLow32( CountBits( whiteControl & CENTER_SQUARES ),             weights[EVAL_CENTER_CONTROL]   ) +
-                                      MulLow32( evalKnightsDevel,                                       weights[EVAL_KNIGHTS_DEVEL]    ) +
-                                      MulLow32( evalBishopsDevel,                                       weights[EVAL_BISHOPS_DEVEL]    ) +
-                                      MulLow32( CountBits( whiteRooks   & ~(SQUARE_A1 | SQUARE_H1) ),   weights[EVAL_ROOKS_DEVEL]      ) +
-                                      MulLow32( CountBits( whiteRooks   & ~(SQUARE_D1) ),               weights[EVAL_QUEEN_DEVEL]      ) +
-                                      MulLow32( CountBits( whitePawns   & RANK_6 ),                     weights[EVAL_PROMOTING_SOON]   ) +
-                                      MulLow32( CountBits( whitePawns   & RANK_7 ),                     weights[EVAL_PROMOTING_IMMED]  ) +
-                                      MulLow32( CountBits( pawnsChained ),                              weights[EVAL_CHAINED_PAWNS]    ) +
-                                      MulLow32( CountBits( PropN( whitePawns, ~blackPawns ) & RANK_8 ), weights[EVAL_PASSED_PAWNS]     ) +
-                                      MulLow32( evalKnightsFirst,                                       weights[EVAL_KNIGHTS_FIRST]    ) +
-                                      MulLow32( CountBits( whiteKnights & ~EDGE_SQUARES ),              weights[EVAL_KNIGHTS_NOT_RIM]  ) +
-                                      MulLow32( evalBothBishops,                                        weights[EVAL_BOTH_BISHOPS]     ) +
-                                      MulLow32( CountBits( whiteRooks & RANK_7 ),                       weights[EVAL_ROOK_ON_RANK_7]   ) +
-                                      MulLow32( evalRooksConnected,                                     weights[EVAL_ROOKS_CONNECTED]  ) +
-                                      MulLow32( CountBits( PropN( whiteRooks, empty ) & RANK_8 ),       weights[EVAL_ROOKS_OPEN_FILE]  ) +
-                                      MulLow32( CountBits( whiteKing & RANK_1 & ~SQUARE_E1 ),           weights[EVAL_KING_CASTLED]     ) +
-                                      MulLow32( evalPawnsGuardKing,                                     weights[EVAL_PAWNS_GUARD_KING] );
+        SIMD    evalRooksConnected  = CountBits< POPCNT >( PropExOrtho( whiteRooks, empty ) & whiteRooks );
+        SIMD    evalPawnsGuardKing  = CountBits< POPCNT >( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );
+        SIMD    score               = MulLow32( CountBits< POPCNT >( whitePawns ),                                weights[EVAL_PAWNS]            ) +
+                                      MulLow32( CountBits< POPCNT >( whiteKnights ),                              weights[EVAL_KNIGHTS]          ) +
+                                      MulLow32( CountBits< POPCNT >( whiteBishops ),                              weights[EVAL_BISHOPS]          ) +
+                                      MulLow32( CountBits< POPCNT >( whiteRooks ),                                weights[EVAL_ROOKS]            ) +
+                                      MulLow32( CountBits< POPCNT >( whiteQueens ),                               weights[EVAL_QUEENS]           ) +
+                                      MulLow32( CountBits< POPCNT >( whiteKing ),                                 weights[EVAL_KINGS]            ) +
+                                      MulLow32( CountBits< POPCNT >( whiteMobility ),                             weights[EVAL_MOBILITY]         ) +
+                                      MulLow32( CountBits< POPCNT >( whiteAttacking ),                            weights[EVAL_ATTACKING]        ) +
+                                      MulLow32( CountBits< POPCNT >( whiteDefending ),                            weights[EVAL_DEFENDING]        ) +
+                                      MulLow32( CountBits< POPCNT >( inEnemyTerritory ),                          weights[EVAL_ENEMY_TERRITORY]  ) +
+                                      MulLow32( CountBits< POPCNT >( whitePawns   & CENTER_SQUARES ),             weights[EVAL_CENTER_PAWNS]     ) +
+                                      MulLow32( CountBits< POPCNT >( whitePieces  & CENTER_SQUARES ),             weights[EVAL_CENTER_PIECES]    ) +
+                                      MulLow32( CountBits< POPCNT >( whiteControl & CENTER_SQUARES ),             weights[EVAL_CENTER_CONTROL]   ) +
+                                      MulLow32( evalKnightsDevel,                                                 weights[EVAL_KNIGHTS_DEVEL]    ) +
+                                      MulLow32( evalBishopsDevel,                                                 weights[EVAL_BISHOPS_DEVEL]    ) +
+                                      MulLow32( CountBits< POPCNT >( whiteRooks   & ~(SQUARE_A1 | SQUARE_H1) ),   weights[EVAL_ROOKS_DEVEL]      ) +
+                                      MulLow32( CountBits< POPCNT >( whiteRooks   & ~(SQUARE_D1) ),               weights[EVAL_QUEEN_DEVEL]      ) +
+                                      MulLow32( CountBits< POPCNT >( whitePawns   & RANK_6 ),                     weights[EVAL_PROMOTING_SOON]   ) +
+                                      MulLow32( CountBits< POPCNT >( whitePawns   & RANK_7 ),                     weights[EVAL_PROMOTING_IMMED]  ) +
+                                      MulLow32( CountBits< POPCNT >( pawnsChained ),                              weights[EVAL_CHAINED_PAWNS]    ) +
+                                      MulLow32( CountBits< POPCNT >( PropN( whitePawns, ~blackPawns ) & RANK_8 ), weights[EVAL_PASSED_PAWNS]     ) +
+                                      MulLow32( evalKnightsFirst,                                                 weights[EVAL_KNIGHTS_FIRST]    ) +
+                                      MulLow32( CountBits< POPCNT >( whiteKnights & ~EDGE_SQUARES ),              weights[EVAL_KNIGHTS_NOT_RIM]  ) +
+                                      MulLow32( evalBothBishops,                                                  weights[EVAL_BOTH_BISHOPS]     ) +
+                                      MulLow32( CountBits< POPCNT >( whiteRooks & RANK_7 ),                       weights[EVAL_ROOK_ON_RANK_7]   ) +
+                                      MulLow32( evalRooksConnected,                                               weights[EVAL_ROOKS_CONNECTED]  ) +
+                                      MulLow32( CountBits< POPCNT >( PropN( whiteRooks, empty ) & RANK_8 ),       weights[EVAL_ROOKS_OPEN_FILE]  ) +
+                                      MulLow32( CountBits< POPCNT >( whiteKing & RANK_1 & ~SQUARE_E1 ),           weights[EVAL_KING_CASTLED]     ) +
+                                      MulLow32( evalPawnsGuardKing,                                               weights[EVAL_PAWNS_GUARD_KING] );
 
         return( score );
     }

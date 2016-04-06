@@ -5,27 +5,29 @@ namespace Pigeon {
 #define PIGEON_ENGINE_H__
 
 
-
 class Engine
 {
-    HashTable           mHashTable;         // Transposition table
-    Position            mRoot;              // The root of the search tree (the "current position")
-    SearchConfig        mConfig;            // Search parameters
-    SearchMetrics       mMetrics;           // Runtime metrics
-    Evaluator           mEvaluator;         // Evaluation weights
-    MoveList            mBestLine;          // Best line found in the search
-    MoveList*           mStorePv;           // Target for PV in active search
-    EvalTerm            mValuePv;           // The evaluation of *mStorePv
-    int                 mTableSize;         // Transposition table size (in megs)
-    int                 mTargetTime;        // Time to stop current search
-    int                 mDepthLimit;        // Depth limit for current search (not counting quiesence)
-    Timer               mSearchElapsed;     // Time elapsed since the "go" command
-    volatile bool       mExitSearch;        // Flag to terminate search threads immediately
-    int                 mThreadsRunning;    // Number of worker threads currently running
-    Semaphore           mThreadsDone;       // Semaphore to help gather up completed threads                                                
-    bool                mPrintBestMove;     // Output best move while searching
-    bool                mPrintedMove;       // Make sure only one "bestmove" is output per "go" 
-    bool                mDebugMode;         // This currently does nothing
+    HashTable           mHashTable;                 // Transposition table
+    Position            mRoot;                      // The root of the search tree (the "current position")
+    SearchConfig        mConfig;                    // Search parameters
+    SearchMetrics       mMetrics;                   // Runtime metrics
+    Evaluator           mEvaluator;                 // Evaluation weights
+    MoveList            mBestLine;                  // Best line found in the search
+    MoveList*           mStorePv;                   // Target for PV in active search
+    EvalTerm            mValuePv;                   // The evaluation of *mStorePv
+    int                 mTableSize;                 // Transposition table size (in megs)
+    int                 mTargetTime;                // Time to stop current search
+    int                 mDepthLimit;                // Depth limit for current search (not counting quiesence)
+    Timer               mSearchElapsed;             // Time elapsed since the "go" command
+    volatile bool       mExitSearch;                // Flag to terminate search threads immediately
+    int                 mThreadsRunning;            // Number of worker threads currently running
+    Semaphore           mThreadsDone;               // Semaphore to help gather up completed threads                                                
+    bool                mPrintBestMove;             // Output best move while searching
+    bool                mPrintedMove;               // Make sure only one "bestmove" is output per "go" 
+    bool                mDebugMode;                 // This currently does nothing
+    bool                mUsePopcnt;                 // Enable use of the hardware POPCNT instruction
+    EvalTerm            mRootWeights[EVAL_TERMS];   // Terms calculated at the root position (used when !mRollingPhase)
+    int                 mRecalcWeightFreq;          // Frequency at which to recalculate weights based on game phase (power of two) 
 
 public:
     Engine()
@@ -34,16 +36,18 @@ public:
         mMetrics.Clear();
         mRoot.Reset();
 
-        mStorePv        = NULL;
-        mValuePv        = EVAL_MIN;
-        mTableSize      = TT_MEGS_DEFAULT;
-        mTargetTime     = NO_TIME_LIMIT;
-        mDepthLimit     = 0;
-        mExitSearch     = false;
-        mThreadsRunning = 0;
-        mPrintBestMove  = false;
-        mPrintedMove    = false;
-        mDebugMode      = false;
+        mStorePv            = NULL;
+        mValuePv            = EVAL_MAX;
+        mTableSize          = TT_MEGS_DEFAULT;
+        mTargetTime         = NO_TIME_LIMIT;
+        mDepthLimit         = 0;
+        mExitSearch         = false;
+        mThreadsRunning     = 0;
+        mPrintBestMove      = false;
+        mPrintedMove        = false;
+        mDebugMode          = false;
+        mUsePopcnt          = PlatDetectPopcnt();
+        mRecalcWeightFreq   = 1;
     }
 
     ~Engine()
@@ -158,7 +162,8 @@ public:
         mPrintBestMove  = true;
         mPrintedMove    = false;
 
-        //this->RunToDepth( 3 );
+        float gamePhase = mEvaluator.CalcGamePhase< DISABLE_POPCNT >( mRoot );
+        mEvaluator.GenerateWeights( mRootWeights, gamePhase );
 
         PlatSpawnThread( &Engine::SearchThreadProc, this );
         mThreadsRunning++;
@@ -206,7 +211,7 @@ private:
 
     void SearchThread()
     {
-        int depth = 3;
+        int depth = 1;
         i64 prevLevelElapsed = 0;
 
         while( !mExitSearch )
@@ -215,7 +220,12 @@ private:
                 break;
 
             Timer levelTimer;
-            this->RunToDepth( depth );
+
+            if( mUsePopcnt )
+                this->RunToDepth< ENABLE_POPCNT >(  depth );
+            else
+                this->RunToDepth< DISABLE_POPCNT >( depth );
+
             i64 currLevelElapsed = levelTimer.GetElapsedMs();
             if( !mExitSearch && (mTargetTime != NO_TIME_LIMIT) )
             {
@@ -361,7 +371,8 @@ private:
         return( targetTime );
     }
 
-    EvalTerm NegaMax( Position& pos, int ply, int depth, EvalTerm alpha, EvalTerm beta, int sign, MoveList* pv_new, bool onPvPrev )
+    template< int POPCNT >
+    EvalTerm NegaMax( Position& pos, int ply, int depth, EvalTerm alpha, EvalTerm beta, MoveList* pv_new, bool onPvPrev )
     {
         mMetrics.mNodesTotal++;
         mMetrics.mNodesAtPly[ply]++;
@@ -369,15 +380,17 @@ private:
         if( mExitSearch )
             return( EVAL_SEARCH_ABORTED );
 
-        EvalTerm weights[EVAL_TERMS];
-        float gamePhase = mEvaluator.CalcGamePhase( pos );
-        mEvaluator.GenerateWeights( weights, gamePhase );
+        EvalTerm  currWeights[EVAL_TERMS];
+        EvalTerm* useWeights = mRootWeights;
 
-        EvalTerm score = (EvalTerm) mEvaluator.Evaluate( pos, weights );
+        if( (ply & (mRecalcWeightFreq - 1)) == 0 )
+        {
+            float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( pos );
+            mEvaluator.GenerateWeights( currWeights, gamePhase );
+            useWeights = currWeights;
+        }
 
-        if( QUIET_SEARCH_LIMIT > 0 )
-            if( depth <= -QUIET_SEARCH_LIMIT )
-                return( score );
+        EvalTerm score = (EvalTerm) mEvaluator.Evaluate< POPCNT >( pos, useWeights );
 
         MoveList moves;
         moves.FindMoves( pos );
@@ -428,8 +441,8 @@ private:
             moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, PRINCIPAL_VARIATION );
         }
 
-        EvalTerm    best        = alpha;
-        int         bestIdx     = -1;
+        EvalTerm    best    = alpha;
+        int         bestIdx = -1;
 
         while( (moves.mTried < moves.mCount) && (best < beta) )
         {
@@ -440,10 +453,7 @@ private:
             child.Step( move );
 
             MoveList pv_child;
-            EvalTerm score = best + 1;
-
-            if( score > best )
-                score = -this->NegaMax( child, ply + 1, depth - 1, -beta, -best, -sign, &pv_child, (move.mType == PRINCIPAL_VARIATION) );
+            EvalTerm score = -this->NegaMax< POPCNT >( child, ply + 1, depth - 1, -beta, -best, &pv_child, (move.mType == PRINCIPAL_VARIATION) );
 
             if( score > best )
             {
@@ -487,62 +497,23 @@ private:
     }
 
 
+    template< int POPCNT >
     void RunToDepth( int depth )
     {
         mMetrics.Clear();
 
-        bool        aspEnabled      = false;//(depth > 2);
-        int         aspAttempts     = 1;
-        int         aspWindow       = 15;
-        bool        doFullSearch    = true;
         Timer       searchTimer;
         MoveList    pv;
         EvalTerm    score;
 
-        if( aspEnabled )
-        {
-            // FIXME: this is disabled above because it's not working right
-
-            EvalTerm aspAlpha = mValuePv - aspWindow;
-            EvalTerm aspBeta  = mValuePv + aspWindow;
-
-            for( int aspIter = 0; aspIter < aspAttempts; aspIter++ )
-            {
-                score = this->NegaMax( mRoot, 0, depth, aspAlpha, aspBeta, 1, &pv, true );
-                if( mExitSearch )
-                    return;
-
-                aspWindow *= 4;
-
-                if( score <= aspAlpha )
-                {
-                    aspAlpha -= aspWindow;
-                }
-                else if( score >= aspBeta )
-                {
-                    aspBeta += aspWindow;
-                }
-                else
-                {
-                    doFullSearch = false;
-                    break;
-                }
-            }
-        }
-
-        if( doFullSearch )
-        {
-            score = this->NegaMax( mRoot, 0, depth, -EVAL_MAX, EVAL_MAX, 1, &pv, true );
-            if( mExitSearch )
-                return;
-        }
+        score = this->NegaMax< POPCNT >( mRoot, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
+        if( mExitSearch )
+            return;
 
         *mStorePv   = pv;
         mValuePv    = score;
 
-        i64 elapsed = searchTimer.GetElapsedMs();
-        if( elapsed == 0 )
-            elapsed = 1;
+        i64 elapsed = Max( searchTimer.GetElapsedMs(), (i64) 1 );
         i64 nps = mMetrics.mNodesTotal * 1000 / elapsed;
 
         printf( "info depth %d score cp %d nodes %"PRId64" nps %"PRId64, depth, score, mMetrics.mNodesTotal, nps );

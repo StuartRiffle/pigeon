@@ -79,6 +79,12 @@
     <None Include="..\README.md">
       <Filter>misc</Filter>
     </None>
+    <None Include="build_gcc.sh">
+      <Filter>misc</Filter>
+    </None>
+    <None Include="build_msvc.bat">
+      <Filter>misc</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\CMakeLists.txt">

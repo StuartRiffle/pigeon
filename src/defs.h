@@ -58,12 +58,19 @@ enum
     PRINCIPAL_VARIATION
 };
 
+enum
+{
+    DISABLE_POPCNT,
+    ENABLE_POPCNT
+};
 
 
 typedef i16 EvalTerm;
 
-const int       TT_MEGS_DEFAULT     = 64;
-const int       QUIET_SEARCH_LIMIT  = 32;
+const int       PIGEON_VER_MAJ      = 1;
+const int       PIGEON_VER_MIN      = 32;
+
+const int       TT_MEGS_DEFAULT     = 256;
 const int       MAX_METRICS_DEPTH   = 64;
 const int       MAX_MOVE_LIST       = 218;
 const int       MAX_FEN_LENGTH      = 96;
@@ -73,15 +80,12 @@ const int       MAX_TIME_SLICE      = 200;
 const int       LAG_SAFETY_BUFFER   = 500;
 const int       NO_TIME_LIMIT       = -1;
 const int       PERFT_PARALLEL_MAX  = 5;
-const int       PIGEON_VER_MAJ      = 1;
-const int       PIGEON_VER_MIN      = 31;
 
 const EvalTerm  EVAL_SEARCH_ABORTED = 0x7FFF;
 const EvalTerm  EVAL_MAX            = 0x7F00;
 const EvalTerm  EVAL_MIN            = -EVAL_MAX;
 const EvalTerm  EVAL_NO_MOVES       = EVAL_MIN + 1;
-const int       EVAL_OPENING_PLIES  = 12;
-const int       EVAL_MIDGAME_BLEND  = 8;
+const int       EVAL_OPENING_PLIES  = 16;
 
 const u64       HASH_SEED0          = 0xF59C66FB26DCF319ULL;
 const u64       HASH_SEED1          = 0xABCC5167CCAD925FULL;
@@ -133,6 +137,12 @@ const u64       EDGE_SQUARES        = FILE_A | FILE_H | RANK_1 | RANK_8;
 const u64       CENTER_SQUARES      = (FILE_C | FILE_D | FILE_E | FILE_F) & (RANK_3 | RANK_4 | RANK_5 | RANK_6);
 
 
+template< int POPCNT, typename T >
+INLINE T CountBits( const T& val )
+{ 
+    return PlatCountBits64< POPCNT >( val ); 
+}
+
 template< typename T > INLINE   int     SimdWidth()                                                         { return( 1 ); }
 template< typename T > INLINE   bool    SimdSupported()                                                     { return( false ); }
 template< typename T > INLINE   T       MaskAllClear()                                                      { return(  T( 0 ) ); }
@@ -145,7 +155,6 @@ template< typename T > INLINE   T       SelectIfZero(    const T& val, const T& 
 template< typename T > INLINE   T       SelectWithMask(  const T& mask, const T& a, const T& b )            { return( b ^ (mask & (a ^ b)) ); } 
 template< typename T > INLINE   T       CmpEqual( const T& a, const T& b )                                  { return( (a == b)? MaskAllSet< T >() : MaskAllClear< T >() ); }
 template< typename T > INLINE   T       ByteSwap( const T& val )                                            { return PlatByteSwap64( val ); }
-template< typename T > INLINE   T       CountBits( const T& val )                                           { return PlatCountBits64( val ); }
 template< typename T > INLINE   T       MulLow32( const T& val, u32 scale )                                 { return( val * scale ); }
 
 template< typename T > INLINE   T       Min( const T& a, const T& b )                                       { return( (a < b)? a : b ); }

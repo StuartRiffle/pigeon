@@ -27,6 +27,8 @@
     #define INLINE              __forceinline
     #define PRId64              "I64d"
     #define _HAS_EXCEPTIONS     (0)
+    #define PIGEON_ALLOW_POPCNT (1)
+
     
     extern "C" void * __cdecl memset(void *, int, size_t);
     #pragma intrinsic( memset )        
@@ -93,15 +95,28 @@ namespace Pigeon
     #endif
     }
 
+    INLINE bool PlatDetectPopcnt()
+    {
+    #if PIGEON_MSVC
+        int info[4] = { 0 };
+        __cpuid( info, 1 );
+        return( (info[2] & (1 << 23)) != 0 );
+    #elif PIGEON_GCC
+        return( __builtin_cpu_supports( "popcnt" ) );
+    #endif
+    }
+
+    template< int POPCNT >
     INLINE u64 PlatCountBits64( const u64& val )
     {
     #if PIGEON_ALLOW_POPCNT
         #if PIGEON_MSVC
-            return( __popcnt64( val ) );
+            if( POPCNT ) return( __popcnt64( val ) );
         #elif PIGEON_GCC
-            return( __builtin_popcountll( val ) );
+            if( POPCNT ) return( __builtin_popcountll( val ) );
         #endif
-    #else
+    #endif
+
         const u64 mask01 = 0x0101010101010101ULL;
         const u64 mask0F = 0x0F0F0F0F0F0F0F0FULL;
         const u64 mask33 = 0x3333333333333333ULL;
@@ -115,7 +130,6 @@ namespace Pigeon
         n = (n * mask01) >> 56;
 
         return( n );
-    #endif
     }
 
     INLINE void PlatClearMemory( void* mem, size_t bytes )

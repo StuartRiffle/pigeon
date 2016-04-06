@@ -131,6 +131,8 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
     </None>
     <None Include="..\script\tuning.coo" />
+    <None Include="build_gcc.sh" />
+    <None Include="build_msvc.bat" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\CMakeLists.txt" />

@@ -73,11 +73,14 @@ struct simd2_sse2
     INLINE              operator __m128i()                  const { return( vec ); }
 };             
 
+template<> INLINE simd2_sse2    CountBits< 0, simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_popcnt_epi64_sse2( val.vec ) ); }
+template<> INLINE simd2_sse2    CountBits< 1, simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_popcnt_epi64_sse2( val.vec ) ); }
+
+
 template<> INLINE int           SimdWidth<       simd2_sse2 >()                                                                     { return( 2 ); }
 template<> INLINE bool          SimdSupported<   simd2_sse2 >()                                                                     { return( true ); }//(CpuIdEx( 1, 3 ) & (1 << 26)) != 0 ); }
 template<> INLINE simd2_sse2    MaskAllClear<    simd2_sse2 >()                                                                     { return( _mm_setzero_si128() ); } 
 template<> INLINE simd2_sse2    MaskAllSet<      simd2_sse2 >()                                                                     { return( _mm_set1_epi8( ~0 ) ); } 
-template<> INLINE simd2_sse2    CountBits<       simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_popcnt_epi64_sse2( val.vec ) ); }
 template<> INLINE simd2_sse2    ByteSwap<        simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_bswap_epi64_sse2( val.vec ) ); }
 template<> INLINE simd2_sse2    MulLow32<        simd2_sse2 >( const simd2_sse2& val,  u32 scale )                                  { return( _mm_mul_epu32( val.vec, _mm_set1_epi64x( scale ) ) ); }
 template<> INLINE simd2_sse2    MaskOut<         simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& bitsToClear )              { return( _mm_andnot_si128( bitsToClear.vec, val.vec ) ); }
@@ -121,7 +124,8 @@ struct simd2_sse4 : public simd2_sse2
 
 template<> INLINE int           SimdWidth<       simd2_sse4 >()                                                                     { return( 2 ); }
 template<> INLINE bool          SimdSupported<   simd2_sse4 >()                                                                     { return( true ); }//(CpuIdEx( 1, 3 ) & (1 << 26)) != 0 ); }
-template<> INLINE simd2_sse4    CountBits<       simd2_sse4 >( const simd2_sse4& val )                                              { return( _mm_popcnt_epi64_sse4( val.vec ) ); }
+template<> INLINE simd2_sse4    CountBits< DISABLE_POPCNT, simd2_sse4 >( const simd2_sse4& val )                                    { return( _mm_popcnt_epi64_sse4( val.vec ) ); }
+template<> INLINE simd2_sse4    CountBits< ENABLE_POPCNT,  simd2_sse4 >( const simd2_sse4& val )                                    { return( _mm_popcnt_epi64_sse4( val.vec ) ); }
 template<> INLINE simd2_sse4    ByteSwap<        simd2_sse4 >( const simd2_sse4& val )                                              { return( _mm_bswap_epi64_sse4( val.vec ) ); }
 template<> INLINE simd2_sse4    CmpEqual<        simd2_sse4 >( const simd2_sse4& a,    const simd2_sse4& b )                        { return( _mm_cmpeq_epi64( a.vec, b.vec ) ); }
 template<> INLINE simd2_sse4    SelectIfZero<    simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a )                        { return( _mm_and_si128( a.vec, _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ) ) ); }
@@ -181,7 +185,8 @@ template<> INLINE int            SimdWidth<       simd4_avx2 >()                
 template<> INLINE bool           SimdSupported<   simd4_avx2 >()                                                                    { return( true ); }//(CpuIdEx( 7, 1 ) & (1 << 5)) != 0 ); }
 template<> INLINE simd4_avx2     MaskAllClear<    simd4_avx2 >()                                                                    { return( _mm256_setzero_si256() ); } 
 template<> INLINE simd4_avx2     MaskAllSet<      simd4_avx2 >()                                                                    { return( _mm256_set1_epi8( ~0 ) ); } 
-template<> INLINE simd4_avx2     CountBits<       simd4_avx2 >( const simd4_avx2& val )                                             { return( _mm256_popcnt_epi64_avx2( val.vec ) ); }
+template<> INLINE simd4_avx2     CountBits< DISABLE_POPCNT, simd4_avx2 >( const simd4_avx2& val )                                   { return( _mm256_popcnt_epi64_avx2( val.vec ) ); }
+template<> INLINE simd4_avx2     CountBits< ENABLE_POPCNT,  simd4_avx2 >( const simd4_avx2& val )                                   { return( _mm256_popcnt_epi64_avx2( val.vec ) ); }
 template<> INLINE simd4_avx2     ByteSwap<        simd4_avx2 >( const simd4_avx2& val )                                             { return( _mm256_bswap_epi64_avx2( val.vec ) ); }
 template<> INLINE simd4_avx2     MulLow32<        simd4_avx2 >( const simd4_avx2& val,  u32 scale )                                 { return( _mm256_mul_epu32( val.vec, _mm256_set1_epi64x( scale ) ) ); }
 template<> INLINE simd4_avx2     MaskOut<         simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& bitsToClear )             { return( _mm256_andnot_si256( bitsToClear.vec, val.vec ) ); }

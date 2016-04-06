@@ -1,3 +1,4 @@
+@echo off
 setlocal
 pushd ..
 mkdir build >NUL 2>NUL

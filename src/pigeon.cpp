@@ -28,12 +28,16 @@ int main( int argc, char** argv )
     Pigeon::Engine pigeon;
 
     printf( "\n" );                      
-    printf( "     /O_"  "  \n" );
-    printf( "     || "  "  PIGEON CHESS ENGINE\n" );
-    printf( "    / \\\\""  v%d.%02d (UCI)\n", Pigeon::PIGEON_VER_MAJ, Pigeon::PIGEON_VER_MIN );
-    printf( "  =/__//"  "  \n" );
-    printf( "     ^^ "  "  \n" );
+    printf( "     /O_"  "   PIGEON CHESS ENGINE\n" );
+    printf( "     || "  "   v%d.%02d UCI\n", Pigeon::PIGEON_VER_MAJ, Pigeon::PIGEON_VER_MIN  );
+    printf( "    / \\\\""   \n" );
+    printf( "  =/__//"  "   (x64%s)\n", Pigeon::PlatDetectPopcnt()? "/POPCNT" : "" );
+    printf( "     ^^ "  "   \n" );
     printf( "\n" );
+
+    Pigeon::UCI::ProcessCommand( &pigeon, "uci\n" );
+    Pigeon::UCI::ProcessCommand( &pigeon, "isready\n" );
+    Pigeon::UCI::ProcessCommand( &pigeon, "go depth 9\n" );
 
     while( !feof( stdin ) )
     {
