@@ -1,13 +1,14 @@
 cmake_minimum_required( VERSION 3.3 )
 
 project( pigeon )
-set( PIGEON_VERSION 1.30 )
+set( PIGEON_VERSION 1.31 )
 
-if( "${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" )
+if( "${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC" )
+    add_compile_options( /GS- /GL /W3 /Gy- /Zc:wchar_t /Zi /Gm- /Ox /Ob2 /fp:fast /fp:except- /WX- /GR- /Gd /Oy /Oi /MT )
+	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LTCG" )
+elseif( "${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" )
     add_compile_options( "-std=c++11" )
-elseif( "${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC" )
-    add_compile_options( "" )
 endif()
 
-add_executable( pigeon-${PIGEON_VERSION}-uci src/pigeon.cpp )
+add_executable( pigeon-${PIGEON_VERSION}-x64 src/pigeon.cpp )
 

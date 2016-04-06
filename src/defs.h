@@ -74,7 +74,7 @@ const int       LAG_SAFETY_BUFFER   = 500;
 const int       NO_TIME_LIMIT       = -1;
 const int       PERFT_PARALLEL_MAX  = 5;
 const int       PIGEON_VER_MAJ      = 1;
-const int       PIGEON_VER_MIN      = 30;
+const int       PIGEON_VER_MIN      = 31;
 
 const EvalTerm  EVAL_SEARCH_ABORTED = 0x7FFF;
 const EvalTerm  EVAL_MAX            = 0x7F00;
