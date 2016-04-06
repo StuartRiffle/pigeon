@@ -43,7 +43,6 @@
 
 
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
-    #pragma GCC diagnostic ignored "-Wshift-count-negative"
 
     #define PIGEON_GCC          (1)
     #define PIGEON_ENABLE_SSE2  (1)
