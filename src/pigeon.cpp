@@ -35,10 +35,6 @@ int main( int argc, char** argv )
     printf( "     ^^ "  "   \n" );
     printf( "\n" );
 
-    Pigeon::UCI::ProcessCommand( &pigeon, "uci\n" );
-    Pigeon::UCI::ProcessCommand( &pigeon, "isready\n" );
-    Pigeon::UCI::ProcessCommand( &pigeon, "go depth 9\n" );
-
     while( !feof( stdin ) )
     {
         char buf[2048];
