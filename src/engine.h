@@ -34,7 +34,7 @@ public:
         mMetrics.Clear();
         mRoot.Reset();
 
-        mStorePv        = nullptr;
+        mStorePv        = NULL;
         mValuePv        = EVAL_MIN;
         mTableSize      = TT_MEGS_DEFAULT;
         mTargetTime     = NO_TIME_LIMIT;
@@ -188,18 +188,20 @@ public:
 
 private:
 
-    static void SearchThreadProc( void* param )
+    static void* SearchThreadProc( void* param )
     {
         Engine* engine = reinterpret_cast< Engine* >( param );
         engine->SearchThread();
         engine->mThreadsDone.Post();
+        return( NULL );
     }
 
-    static void TimerThreadProc( void* param )
+    static void* TimerThreadProc( void* param )
     {
         Engine* engine = reinterpret_cast< Engine* >( param );
         engine->TimerThread();
         engine->mThreadsDone.Post();
+        return( NULL );
     }
 
     void SearchThread()

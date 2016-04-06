@@ -70,7 +70,7 @@ public:
         if( (idx >= 0) && (idx < EVAL_TERMS) )
             return( weightTermNames[idx] );
 
-        return( nullptr );
+        return( NULL );
     }
 
     int GetWeightIdx( const char* name ) const 
@@ -79,7 +79,7 @@ public:
         {
             const char* weightName = this->GetWeightName( idx );
 
-            if( weightName && (stricmp( name, weightName ) == 0) )
+            if( weightName && (strcmp( name, weightName ) == 0) )
                 return( idx );
         }
 

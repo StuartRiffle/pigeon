@@ -22,7 +22,7 @@
 	#define RESTRICT        __restrict
 	#define DEBUGBREAK      __debugbreak
 	#define INLINE          __forceinline
-    #define PRId64          "%I64d"
+    #define PRId64          "I64d"
     #define _HAS_EXCEPTIONS (0)
 
 	extern "C" void * __cdecl memset(void *, int, size_t);
@@ -30,16 +30,24 @@
 
 #elif defined( __GNUC__ )
 
+	#define __STDC_FORMAT_MACROS
+
     #include <inttypes.h>
     #include <pthread.h>
+    #include <semaphore.h>
     #include <emmintrin.h>
+    #include <string.h>
 
+
+    #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     #pragma GCC diagnostic ignored "-Wshift-count-negative"
 
     #define PIGEON_GCC      (1)
     #define RESTRICT        __restrict
     #define DEBUGBREAK      void
     #define INLINE          inline __attribute__(( always_inline ))
+    #define stricmp			strcasecmp
+    #define strnicmp		strncasecmp
 
 #else
     #error
@@ -116,14 +124,14 @@ namespace Pigeon
     #endif
     }
 
-    INLINE ThreadId PlatSpawnThread( void (*func)( void* ), void* arg )
+    INLINE ThreadId PlatSpawnThread( void* (*func)( void* ), void* arg )
     {
     #if PIGEON_MSVC
         ThreadId id = _beginthread( func, 0, arg );
         return( id );
     #elif PIGEON_GCC
         ThreadId id;
-        pthread_create( &id, nullptr, func, arg );
+        pthread_create( &id, NULL, func, arg );
         return( id );
     #endif
     }

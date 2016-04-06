@@ -11,6 +11,7 @@
 #include "search.h"
 
 #include <stdio.h>
+#include <ctype.h>
 #include <time.h>
 #include <vector>
 
@@ -39,7 +40,7 @@ int main( int argc, char** argv )
         char buf[2048];
 
         const char* cmd = fgets( buf, sizeof( buf ), stdin );
-        if( cmd == nullptr )
+        if( cmd == NULL )
             continue;
 
         bool done = Pigeon::UCI::ProcessCommand( &pigeon, cmd );

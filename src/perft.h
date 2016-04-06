@@ -31,7 +31,7 @@ struct Perft
 
         u64 total = 0;
 
-        printf( "info string perft parallel positions: %d\n", positions.size() );
+        printf( "info string perft parallel positions: %d\n", (int) positions.size() );
 
         #pragma omp parallel for reduction(+: total) schedule(dynamic)
         for( int i = 0; i < (int) positions.size(); i++ )
@@ -106,10 +106,10 @@ struct Perft
 
             printf( "info string divide %d ", depth );
             FEN::PrintMoveSpec( valid.mMove[i] );
-            printf( "  "PRId64"\n", count );
+            printf( "  %"PRId64"\n", count );
         }
 
-        printf( "info string divide %d total "PRId64"\n", depth, total );
+        printf( "info string divide %d total %"PRId64"\n", depth, total );
     }
 };
 

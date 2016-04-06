@@ -53,7 +53,7 @@ class HashTable
 
 public:
     HashTable() :
-        mTable( nullptr ),
+        mTable( NULL ),
         mMask( 0 ),
         mEntries( 0 ) {}
 
