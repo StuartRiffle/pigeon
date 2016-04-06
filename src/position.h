@@ -185,7 +185,7 @@ struct PositionT
         SIMD    hash1               = XorShiftC( XorShiftB( XorShiftA( HASH_SEED1 - castlingAndEP )             - whiteBishops ) - blackQueens );             
         SIMD    hash2               = XorShiftC( XorShiftB( XorShiftA( HASH_SEED2 - whiteKing )                 - blackBishops ) - whiteQueens );             
         SIMD    hash3               = XorShiftC( XorShiftB( XorShiftA( HASH_SEED3 - blackKing )                 - whiteKnights ) - blackRooks  );        
-        SIMD	hash                = XorShiftA( XorShiftD( hash0 - hash2 ) - XorShiftD( hash1 - hash3 ) );
+        SIMD    hash                = XorShiftA( XorShiftD( hash0 - hash2 ) - XorShiftD( hash1 - hash3 ) );
 
         return( hash );
     }

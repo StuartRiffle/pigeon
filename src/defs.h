@@ -133,8 +133,8 @@ const u64       EDGE_SQUARES        = FILE_A | FILE_H | RANK_1 | RANK_8;
 const u64       CENTER_SQUARES      = (FILE_C | FILE_D | FILE_E | FILE_F) & (RANK_3 | RANK_4 | RANK_5 | RANK_6);
 
 
-template< typename T > INLINE   int     SimdWidth()															{ return( 1 ); }
-template< typename T > INLINE   bool    SimdSupported()														{ return( false ); }
+template< typename T > INLINE   int     SimdWidth()                                                         { return( 1 ); }
+template< typename T > INLINE   bool    SimdSupported()                                                     { return( false ); }
 template< typename T > INLINE   T       MaskAllClear()                                                      { return(  T( 0 ) ); }
 template< typename T > INLINE   T       MaskAllSet()                                                        { return( ~T( 0 ) ); }
 template< typename T > INLINE   T       MaskOut( const T& val, const T& bitsToClear )                       { return( val & ~bitsToClear ); }

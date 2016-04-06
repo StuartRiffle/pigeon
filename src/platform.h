@@ -10,27 +10,30 @@
     #define WIN32_LEAN_AND_MEAN    
     #include <windows.h>
     #include <process.h>
-	#include <intrin.h>
+    #include <intrin.h>
     #include <limits.h>
 
-	#pragma warning( disable: 4996 ) // CRT security warnings
-	#pragma warning( disable: 4293 ) // Shift count negative or too big (due to unused branch in templated function)
-	#pragma inline_recursion( on )
-	#pragma inline_depth( 255 )
-
-    #define PIGEON_MSVC     (1)
-	#define RESTRICT        __restrict
-	#define DEBUGBREAK      __debugbreak
-	#define INLINE          __forceinline
-    #define PRId64          "I64d"
-    #define _HAS_EXCEPTIONS (0)
-
-	extern "C" void * __cdecl memset(void *, int, size_t);
-	#pragma intrinsic( memset )        
+    #pragma warning( disable: 4996 ) // CRT security warnings
+    #pragma warning( disable: 4293 ) // Shift count negative or too big (due to unused branch in templated function)
+    #pragma inline_recursion( on )
+    #pragma inline_depth( 255 )
+    
+    #define PIGEON_MSVC         (1)
+    #define PIGEON_ENABLE_SSE2  (1)
+    #define PIGEON_ENABLE_SSE4  (1)
+    #define PIGEON_ENABLE_AVX2  (1)
+    #define RESTRICT            __restrict
+    #define DEBUGBREAK          __debugbreak
+    #define INLINE              __forceinline
+    #define PRId64              "I64d"
+    #define _HAS_EXCEPTIONS     (0)
+    
+    extern "C" void * __cdecl memset(void *, int, size_t);
+    #pragma intrinsic( memset )        
 
 #elif defined( __GNUC__ )
 
-	#define __STDC_FORMAT_MACROS
+    #define __STDC_FORMAT_MACROS
 
     #include <inttypes.h>
     #include <pthread.h>
@@ -42,12 +45,13 @@
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     #pragma GCC diagnostic ignored "-Wshift-count-negative"
 
-    #define PIGEON_GCC      (1)
-    #define RESTRICT        __restrict
-    #define DEBUGBREAK      void
-    #define INLINE          inline __attribute__(( always_inline ))
-    #define stricmp			strcasecmp
-    #define strnicmp		strncasecmp
+    #define PIGEON_GCC          (1)
+    #define PIGEON_ENABLE_SSE2  (1)
+    #define RESTRICT            __restrict
+    #define DEBUGBREAK          void
+    #define INLINE              inline __attribute__(( always_inline ))
+    #define stricmp             strcasecmp
+    #define strnicmp            strncasecmp
 
 #else
     #error
@@ -70,7 +74,7 @@ namespace Pigeon
     typedef pthread_t   ThreadId;
 #endif
 
-	INLINE u64 PlatByteSwap64( const u64& val )             
+    INLINE u64 PlatByteSwap64( const u64& val )             
     { 
     #if PIGEON_MSVC
         return( _byteswap_uint64( val ) ); 
@@ -127,7 +131,7 @@ namespace Pigeon
     INLINE ThreadId PlatSpawnThread( void* (*func)( void* ), void* arg )
     {
     #if PIGEON_MSVC
-        ThreadId id = _beginthread( func, 0, arg );
+        ThreadId id = _beginthread( reinterpret_cast< void (*)( void* ) >( func ), 0, arg ); 
         return( id );
     #elif PIGEON_GCC
         ThreadId id;

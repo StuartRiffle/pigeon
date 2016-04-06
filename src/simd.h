@@ -5,10 +5,9 @@ namespace Pigeon {
 #define PIGEON_SIMD_H__
 
 
-
-
-
 // SSE2
+
+#if PIGEON_ENABLE_SSE2
 
 INLINE __m128i _mm_select( const __m128i& a, const __m128i& b, const __m128i& mask )
 {          
@@ -89,10 +88,13 @@ template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2&
 template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( a.vec, b.vec, _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ) ) ); }
 template<> INLINE simd2_sse2    SelectWithMask<  simd2_sse2 >( const simd2_sse2& mask, const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( b.vec, a.vec, mask.vec ) ); }
 
+#endif // PIGEON_ENABLE_SSE2
+
 
 // SSE4
 
 #if PIGEON_ENABLE_SSE4
+
 INLINE __m128i _mm_popcnt_epi64_sse4( const __m128i& v )
 {
     static const __m128i nibbleBits = _mm_setr_epi8( 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4 );
@@ -126,11 +128,14 @@ template<> INLINE simd2_sse4    SelectIfZero<    simd2_sse4 >( const simd2_sse4&
 template<> INLINE simd2_sse4    SelectIfZero<    simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a, const simd2_sse4& b )   { return( _mm_select( b.vec, a.vec, _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ) ) ); }
 template<> INLINE simd2_sse4    SelectIfNotZero< simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a )                        { return( _mm_andnot_si128( _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ), a.vec ) ); }
 template<> INLINE simd2_sse4    SelectIfNotZero< simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a, const simd2_sse4& b )   { return( _mm_select( a.vec, b.vec, _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ) ) ); }
+
 #endif // PIGEON_ENABLE_SSE4
+
 
 // AVX2
 
 #if PIGEON_ENABLE_AVX2
+
 INLINE __m256i _mm256_popcnt_epi64_avx2( const __m256i& v )
 {
     return( _mm256_setzero_si256() ); // FIXME
@@ -145,7 +150,6 @@ INLINE __m256i _mm256_select( const __m256i& a, const __m256i& b, const __m256i&
 {          
     return _mm256_blendv_epi8( a, b, mask ); // mask? b : a
 }
-
 
 struct simd4_avx2
 {
@@ -183,16 +187,18 @@ template<> INLINE simd4_avx2     MulLow32<        simd4_avx2 >( const simd4_avx2
 template<> INLINE simd4_avx2     MaskOut<         simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& bitsToClear )             { return( _mm256_andnot_si256( bitsToClear.vec, val.vec ) ); }
 template<> INLINE simd4_avx2     CmpEqual<        simd4_avx2 >( const simd4_avx2& a,    const simd4_avx2& b )                       { return( _mm256_cmpeq_epi64( a.vec, b.vec ) ); }
 template<> INLINE simd4_avx2     SelectIfZero<    simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a )                       { return( _mm256_and_si256( a.vec, _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ) ) ); }
-template<> INLINE simd4_avx2     SelectIfZero<    simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a, const simd4_avx2& b )	{ return( _mm256_select( b.vec, a.vec, _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ) ) ); }
+template<> INLINE simd4_avx2     SelectIfZero<    simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( b.vec, a.vec, _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ) ) ); }
 template<> INLINE simd4_avx2     SelectIfNotZero< simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a )                       { return( _mm256_andnot_si256( _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ), a.vec ) ); }
 template<> INLINE simd4_avx2     SelectIfNotZero< simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( a.vec, b.vec, _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ) ) ); }
 template<> INLINE simd4_avx2     SelectWithMask<  simd4_avx2 >( const simd4_avx2& mask, const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( b.vec, a.vec, mask.vec ) ); }
+
 #endif // PIGEON_ENABLE_AVX2
 
 
 // AVX3 
 
 #if PIGEON_ENABLE_AVX3
+
 struct simd8_avx3
 {
     __m512i vec;
@@ -228,10 +234,11 @@ template<> INLINE simd8_avx3     MulLow32<        simd8_avx3 >( const simd8_avx3
 template<> INLINE simd8_avx3     MaskOut<         simd8_avx3 >( const simd8_avx3& val,  const simd8_avx3& bitsToClear )             { return( _mm512_andnot_si512( bitsToClear.vec, val.vec ) ); }
 template<> INLINE simd8_avx3     CmpEqual<        simd8_avx3 >( const simd8_avx3& a,    const simd8_avx3& b )                       { return( _mm512_cmpeq_epi64( a.vec, b.vec ) ); }
 template<> INLINE simd8_avx3     SelectIfZero<    simd8_avx3 >( const simd8_avx3& val,  const simd8_avx3& a )                       { return( _mm512_and_si512( a.vec, _mm512_cmpeq_epi64( val.vec, _mm512_setzero_si512() ) ) ); }
-template<> INLINE simd8_avx3     SelectIfZero<    simd8_avx3 >( const simd8_avx3& val,  const simd8_avx3& a, const simd8_avx3& b )	{ return( _mm512_select( b.vec, a.vec, _mm512_cmpeq_epi64( val.vec, _mm512_setzero_si512() ) ) ); }
+template<> INLINE simd8_avx3     SelectIfZero<    simd8_avx3 >( const simd8_avx3& val,  const simd8_avx3& a, const simd8_avx3& b )  { return( _mm512_select( b.vec, a.vec, _mm512_cmpeq_epi64( val.vec, _mm512_setzero_si512() ) ) ); }
 template<> INLINE simd8_avx3     SelectIfNotZero< simd8_avx3 >( const simd8_avx3& val,  const simd8_avx3& a )                       { return( _mm512_andnot_si512( _mm512_cmpeq_epi64( val.vec, _mm512_setzero_si512() ), a.vec ) ); }
 template<> INLINE simd8_avx3     SelectIfNotZero< simd8_avx3 >( const simd8_avx3& val,  const simd8_avx3& a, const simd8_avx3& b )  { return( _mm512_select( a.vec, b.vec, _mm512_cmpeq_epi64( val.vec, _mm512_setzero_si512() ) ) ); }
 template<> INLINE simd8_avx3     SelectWithMask<  simd8_avx3 >( const simd8_avx3& mask, const simd8_avx3& a, const simd8_avx3& b )  { return( _mm512_select( b, a, mask ) ); }
+
 #endif // PIGEON_ENABLE_AVX3
 
 #endif // PIGEON_SIMD_H__

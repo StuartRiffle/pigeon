@@ -179,7 +179,7 @@ struct UCI
                     int depth  = tokens.ConsumeInt();
                     u64 result = Perft::CalcPerft( engine->GetPosition(), depth );
 
-                    printf( "info string depth %d nodes "PRId64"\n", depth, result );
+                    printf( "info string depth %d nodes %"PRId64"\n", depth, result );
                 }
             }
             else if( tokens.Consume( "run" ) )
@@ -214,7 +214,7 @@ struct UCI
                 i64     secs    = elapsed / 1000;
                 i64     msecs   = elapsed - (secs * 1000);
 
-                printf( "info string "PRId64".%03I64d sec for command \"%s\"\n", secs, msecs, str );
+                printf( "info string %"PRId64".%03I64d sec for command \"%s\"\n", secs, msecs, str );
                 return( result );
             }
             else if( tokens.Consume( "tune" ) )

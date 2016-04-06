@@ -292,7 +292,7 @@ private:
             FEN::PrintMoveSpec( mStorePv->mMove[0] );
             printf( "\n" );
 
-            printf( "info string searchtime "PRId64".%03d sec\n", elapsed / 1000, (int) (elapsed % 1000) );
+            printf( "info string searchtime %"PRId64".%03d sec\n", elapsed / 1000, (int) (elapsed % 1000) );
 
             mPrintedMove = true;
         }
@@ -545,7 +545,7 @@ private:
             elapsed = 1;
         i64 nps = mMetrics.mNodesTotal * 1000 / elapsed;
 
-        printf( "info depth %d score cp %d nodes "PRId64" nps "PRId64, depth, score, mMetrics.mNodesTotal, nps );
+        printf( "info depth %d score cp %d nodes %"PRId64" nps %"PRId64, depth, score, mMetrics.mNodesTotal, nps );
         if( mStorePv->mCount > 0 )
         {
             printf( " pv " );
