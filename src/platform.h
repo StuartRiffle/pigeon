@@ -166,7 +166,7 @@ namespace Pigeon
         Semaphore() { sem_init( &mHandle, 0, 0 ); }
        ~Semaphore() { sem_destroy( &mHandle ); }
         void Post() { sem_post( &mHandle ); }
-        void Wait() { while( !sem_wait( &mHandle ) ) {} }
+        void Wait() { while( sem_wait( &mHandle ) ) {} }
     #endif
     };
 
