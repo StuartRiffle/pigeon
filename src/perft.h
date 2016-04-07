@@ -31,7 +31,7 @@ struct Perft
 
         u64 total = 0;
 
-        printf( "info string perft parallel positions: %d\n", (int) positions.size() );
+        printf( "info string perft parallel positions %d\n", (int) positions.size() );
 
         #pragma omp parallel for reduction(+: total) schedule(dynamic)
         for( int i = 0; i < (int) positions.size(); i++ )

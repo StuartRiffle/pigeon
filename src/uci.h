@@ -152,7 +152,7 @@ struct UCI
 
                         if( failed )
                         {
-                            printf( "info string error depth %d nodes %-12I64d expected %-12I64d %s\n", depth, result, expected, failed? "[ERROR]" : "" );
+                            printf( "info string ERROR: perft depth %d nodes %-12I64d expected %-12I64d %s\n", depth, result, expected, failed? "[ERROR]" : "" );
                             //break;
                         }
 
@@ -162,7 +162,7 @@ struct UCI
                         {
                             Perft::DividePerft( engine->GetPosition(), depth );
 
-                            printf( "info string error perft validation FAILED\n" );
+                            printf( "info string ERROR: perft validation FAILED\n" );
                             return( false );
                         }
                     }

@@ -130,13 +130,13 @@ public:
 
     void PonderHit()
     {
-        printf( "info string ERROR: ponderhit not implemented\n" );
+        printf( "info string WARNING: ponderhit not implemented\n" );
     }
 
 
     void Go( SearchConfig* conf )
     {
-        Timer goTime;
+        mSearchElapsed.Reset();
 
         MoveList valid;
         valid.FindMoves( mRoot );
@@ -159,7 +159,6 @@ public:
         mDepthLimit     = mConfig.mDepthLimit;
         mTargetTime     = this->CalcTargetTime();
         mExitSearch     = false;
-        mSearchElapsed  = goTime;
         mPrintBestMove  = true;
         mPrintedMove    = false;
 
@@ -223,7 +222,7 @@ private:
             Timer levelTimer;
 
             if( mUsePopcnt )
-                this->RunToDepth< ENABLE_POPCNT >(  depth );
+                this->RunToDepth< ENABLE_POPCNT >( depth );
             else
                 this->RunToDepth< DISABLE_POPCNT >( depth );
 
@@ -234,7 +233,7 @@ private:
                 {
                     if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
                     {
-                        printf( "info string Bailing on level %d\n", depth );
+                        printf( "info string bailing at level %d\n", depth );
                         break;
                     }
                 }
@@ -302,8 +301,6 @@ private:
             printf( "bestmove " );
             FEN::PrintMoveSpec( mStorePv->mMove[0] );
             printf( "\n" );
-
-            printf( "info string searchtime %"PRId64".%03d sec\n", elapsed / 1000, (int) (elapsed % 1000) );
             fflush( stdout );
 
             mPrintedMove = true;
@@ -507,28 +504,35 @@ private:
     {
         mMetrics.Clear();
 
-        Timer       searchTimer;
-        MoveList    pv;
-        EvalTerm    score;
-
-        score = this->NegaMax< POPCNT >( mRoot, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
+        MoveList pv;
+        EvalTerm score = this->NegaMax< POPCNT >( mRoot, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
         if( mExitSearch )
             return;
 
+        i64 elapsed     = Max( mSearchElapsed.GetElapsedMs(), (i64) 1 );
+        i64 nps         = mMetrics.mNodesTotal * 1000L / elapsed;
+        int hashfull    = (int) (mHashTable.CalcUtilization() * 1000);
+        int seldepth    = 0;
+
+        for( seldepth = MAX_METRICS_DEPTH - 1; seldepth > depth; seldepth-- )
+             if( mMetrics.mNodesAtPly[seldepth] )
+                 break;
+
+        printf( "info " );
+        printf( "depth %d ",        depth );
+        printf( "seldepth %d ",     seldepth );
+        printf( "score cp %d ",     score );
+        printf( "hashfull %d ",     hashfull );
+        printf( "nodes %"PRId64" ", mMetrics.mNodesTotal);
+        printf( "time %d ",         elapsed );
+        printf( "nps %"PRId64" ",   nps );
+        printf( "pv " );            FEN::PrintMoveList( pv );
+        printf( "\n" );
+
+        fflush( stdout );
+
         *mStorePv   = pv;
         mValuePv    = score;
-
-        i64 elapsed = Max( searchTimer.GetElapsedMs(), (i64) 1 );
-        i64 nps = mMetrics.mNodesTotal * 1000 / elapsed;
-
-        printf( "info depth %d score cp %d nodes %"PRId64" nps %"PRId64, depth, score, mMetrics.mNodesTotal, nps );
-        if( mStorePv->mCount > 0 )
-        {
-            printf( " pv " );
-            FEN::PrintMoveList( *mStorePv );
-        }
-        printf( "\n" );
-        fflush( stdout );
     }
 };
 

@@ -91,7 +91,7 @@ public:
         PlatClearMemory( mTable, mEntries * sizeof( u64 ) );
     }
 
-    int CalcPctFull() const
+    float CalcUtilization() const
     {
         i64 totalUsed = 0;
 
@@ -99,8 +99,8 @@ public:
             if( mTable[i] )
                 totalUsed++;
 
-        int pctFull = (int) (totalUsed * 100 / mEntries);
-        return( pctFull );
+        float utilization = totalUsed * 1.0f / mEntries;
+        return( utilization );
     }
 
     INLINE void Prefetch( const u64& hash ) const
