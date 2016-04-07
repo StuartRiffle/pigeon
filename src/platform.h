@@ -141,6 +141,15 @@ namespace Pigeon
     #endif
     }
 
+    INLINE void PlatPrefetch( void* mem )
+    {
+    #if PIGEON_MSVC
+        _mm_prefetch( (char*) mem, _MM_HINT_NTA );
+    #elif PIGEON_GCC
+        __builtin_prefetch( mem );  
+    #endif
+    }
+
     INLINE ThreadId PlatSpawnThread( void* (*func)( void* ), void* arg )
     {
     #if PIGEON_MSVC

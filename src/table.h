@@ -103,6 +103,11 @@ public:
         return( pctFull );
     }
 
+    INLINE void Prefetch( const u64& hash ) const
+    {
+        PlatPrefetch( mTable + (hash & mMask) );
+    }
+
     INLINE void Load( const u64& hash, TableEntry& tt ) const
     {
         tt.Unpack( mTable[hash & mMask] );

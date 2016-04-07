@@ -380,6 +380,9 @@ private:
         if( mExitSearch )
             return( EVAL_SEARCH_ABORTED );
 
+        if( POPCNT )
+            mHashTable.Prefetch( pos.mHash );
+
         EvalTerm  currWeights[EVAL_TERMS];
         EvalTerm* useWeights = mRootWeights;
 
