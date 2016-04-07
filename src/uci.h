@@ -210,7 +210,7 @@ struct UCI
                 i64     secs    = elapsed / 1000;
                 i64     msecs   = elapsed - (secs * 1000);
 
-                printf( "info string %"PRId64".%03I64d sec for command \"%s\"\n", secs, msecs, str );
+                printf( "info string %"PRId64".%03I64d sec for command \"%s\"\n", secs, msecs, str );        
                 return( result );
             }
             else if( tokens.Consume( "tune" ) )

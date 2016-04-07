@@ -505,11 +505,13 @@ private:
         mMetrics.Clear();
 
         MoveList pv;
+        Timer    searchTime;
+
         EvalTerm score = this->NegaMax< POPCNT >( mRoot, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
         if( mExitSearch )
             return;
 
-        i64 elapsed     = Max( mSearchElapsed.GetElapsedMs(), (i64) 1 );
+        i64 elapsed     = Max( searchTime.GetElapsedMs(), (i64) 1 );
         i64 nps         = mMetrics.mNodesTotal * 1000L / elapsed;
         int hashfull    = (int) (mHashTable.CalcUtilization() * 1000);
         int seldepth    = 0;
