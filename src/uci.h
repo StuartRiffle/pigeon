@@ -15,10 +15,9 @@ struct UCI
             // Treat line as a comment
         }
         else if( tokens.Consume( "uci" ) )
-        {
+        {                                                                                        
             printf( "id name Pigeon %d.%02d\n", PIGEON_VER_MAJ, PIGEON_VER_MIN );
             printf( "id author Stuart Riffle \n" );
-
             printf( "option name Hash type spin default %d\n", TT_MEGS_DEFAULT );
             printf( "uciok\n" );
         }
@@ -41,7 +40,6 @@ struct UCI
         else if( tokens.Consume( "isready" ) )
         {
             engine->Init();
-            engine->Reset();
             printf( "readyok\n" );
         }
         else if( tokens.Consume( "ucinewgame" ) )
@@ -70,7 +68,6 @@ struct UCI
                     engine->Move( movetext );
             }
 
-           printf( "info string movehistory %s\n", movehistory );
            engine->PrintPosition();
         }
         else if( tokens.Consume( "go" ) )
@@ -120,7 +117,6 @@ struct UCI
         else if( tokens.Consume( "quit" ) )
         {
             engine->Stop();
-            //exit( 0 );
 
             return( true );
         }

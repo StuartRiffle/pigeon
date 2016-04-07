@@ -69,7 +69,7 @@ int main( int argc, char** argv )
 
     while( !feof( stdin ) )
     {
-        char buf[2048];
+        char buf[8192];
 
         const char* cmd = fgets( buf, sizeof( buf ), stdin );
         if( cmd == NULL )
@@ -78,6 +78,8 @@ int main( int argc, char** argv )
         bool done = Pigeon::UCI::ProcessCommand( &pigeon, cmd );
         if( done )
             break;
+
+        fflush( stdout );
     }
 
     return( 0 );
