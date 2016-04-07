@@ -75,6 +75,15 @@ namespace Pigeon
     typedef pthread_t   ThreadId;
 #endif
 
+    enum
+    {
+        CPU_X64,
+        CPU_SSE2,
+        CPU_SSE4,
+        CPU_AVX2,
+        CPU_AVX3,
+    };
+
     INLINE u64 PlatByteSwap64( const u64& val )             
     { 
     #if PIGEON_MSVC
@@ -95,15 +104,36 @@ namespace Pigeon
     #endif
     }
 
+    INLINE bool PlatCheckCpuFlag( int leaf, int idxWord, int idxBit )
+    {
+        int info[4] = { 0 };
+
+    #if PIGEON_MSVC
+        __cpuid( info, leaf );
+    #elif PIGEON_GCC
+        if( !__get_cpuid( leaf, info + 0, info + 1, info + 2, info + 3 ) )
+            return( false );
+    #endif
+
+        return( (info[idxWord] & (1 << idxBit)) != 0 );
+    }
+
     INLINE bool PlatDetectPopcnt()
     {
     #if PIGEON_MSVC
-        int info[4] = { 0 };
-        __cpuid( info, 1 );
-        return( (info[2] & (1 << 23)) != 0 );
+        return( PlatCheckCpuFlag( 1, 2, 23 ) );
     #elif PIGEON_GCC
         return( __builtin_cpu_supports( "popcnt" ) );
     #endif
+    }
+
+    INLINE int PlatDetectCpuLevel()
+    {
+        if( PlatCheckCpuFlag( 7, 1, 5 ) )   return( CPU_AVX2 );
+        if( PlatCheckCpuFlag( 1, 2, 20 ) )  return( CPU_SSE4 );
+        if( PlatCheckCpuFlag( 1, 3, 26 ) )  return( CPU_SSE2 );
+
+        return( CPU_X64 );
     }
 
     template< int POPCNT >

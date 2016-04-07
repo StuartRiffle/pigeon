@@ -68,7 +68,7 @@ enum
 typedef i16 EvalTerm;
 
 const int       PIGEON_VER_MAJ      = 1;
-const int       PIGEON_VER_MIN      = 33;
+const int       PIGEON_VER_MIN      = 34;
 
 const int       TT_MEGS_DEFAULT     = 256;
 const int       TT_SAMPLE_SIZE      = 1024;

@@ -26,15 +26,17 @@
         
 int main( int argc, char** argv )
 {
-    Pigeon::Engine pigeon;
-
+    const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
+     
     printf( "\n" );                      
-    printf( "     /O_"  "   PIGEON CHESS ENGINE\n" );
-    printf( "     || "  "   v%d.%02d UCI\n", Pigeon::PIGEON_VER_MAJ, Pigeon::PIGEON_VER_MIN  );
-    printf( "    / \\\\""   \n" );
-    printf( "  =/__//"  "   (x64%s)\n", Pigeon::PlatDetectPopcnt()? "/POPCNT" : "" );
-    printf( "     ^^ "  "   \n" );
+    printf( "     /O_"  "    \n" );
+    printf( "     || "  "    P I G E O N   C H E S S   E N G I N E\n" );
+    printf( "    / \\\\""    \n" );
+    printf( "  =/__//"  "    v%d.%02d  (UCI/%s%s)\n", Pigeon::PIGEON_VER_MAJ, Pigeon::PIGEON_VER_MIN, cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : ""  );
+    printf( "     ^^ "  "    \n" );
     printf( "\n" );
+
+    Pigeon::Engine pigeon;
 
     // UCI commands can be passed as arguments, separated by semicolons (handy for debugging)
 
