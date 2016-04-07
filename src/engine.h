@@ -48,6 +48,8 @@ public:
         mDebugMode          = false;
         mUsePopcnt          = PlatDetectPopcnt();
         mRecalcWeightFreq   = 1;
+
+        mHashTable.SetSize( mTableSize );
     }
 
     ~Engine()
@@ -58,7 +60,6 @@ public:
     void Reset()
     {
         this->Stop();
-
         mRoot.Reset();
     }
 
@@ -303,6 +304,7 @@ private:
             printf( "\n" );
 
             printf( "info string searchtime %"PRId64".%03d sec\n", elapsed / 1000, (int) (elapsed % 1000) );
+            fflush( stdout );
 
             mPrintedMove = true;
         }
@@ -526,6 +528,7 @@ private:
             FEN::PrintMoveList( *mStorePv );
         }
         printf( "\n" );
+        fflush( stdout );
     }
 };
 
