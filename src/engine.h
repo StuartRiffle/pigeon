@@ -513,7 +513,7 @@ private:
 
         i64 elapsed     = Max( searchTime.GetElapsedMs(), (i64) 1 );
         i64 nps         = mMetrics.mNodesTotal * 1000L / elapsed;
-        int hashfull    = (int) (mHashTable.CalcUtilization() * 1000);
+        int hashfull    = (int) (mHashTable.EstimateUtilization() * 1000);
         int seldepth    = 0;
 
         for( seldepth = MAX_METRICS_DEPTH - 1; seldepth > depth; seldepth-- )
@@ -526,7 +526,7 @@ private:
         printf( "score cp %d ",     score );
         printf( "hashfull %d ",     hashfull );
         printf( "nodes %"PRId64" ", mMetrics.mNodesTotal);
-        printf( "time %d ",         elapsed );
+        printf( "time %d ",         mSearchElapsed.GetElapsedMs() );
         printf( "nps %"PRId64" ",   nps );
         printf( "pv " );            FEN::PrintMoveList( pv );
         printf( "\n" );

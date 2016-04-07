@@ -91,15 +91,15 @@ public:
         PlatClearMemory( mTable, mEntries * sizeof( u64 ) );
     }
 
-    float CalcUtilization() const
+    float EstimateUtilization() const
     {
-        i64 totalUsed = 0;
+        i64  totalUsed = 0;
 
-        for( int i = 0; i < mEntries; i++ )
+        for( int i = 0; i < TT_SAMPLE_SIZE; i++ )
             if( mTable[i] )
                 totalUsed++;
 
-        float utilization = totalUsed * 1.0f / mEntries;
+        float utilization = totalUsed * 1.0f / TT_SAMPLE_SIZE;
         return( utilization );
     }
 

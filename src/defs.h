@@ -71,6 +71,7 @@ const int       PIGEON_VER_MAJ      = 1;
 const int       PIGEON_VER_MIN      = 33;
 
 const int       TT_MEGS_DEFAULT     = 256;
+const int       TT_SAMPLE_SIZE      = 1024;
 const int       MAX_METRICS_DEPTH   = 64;
 const int       MAX_MOVE_LIST       = 218;
 const int       MAX_FEN_LENGTH      = 96;
