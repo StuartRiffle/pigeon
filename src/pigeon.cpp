@@ -14,6 +14,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <vector>
+#include <string>
 
 #include "timer.h"
 #include "token.h"
@@ -34,6 +35,37 @@ int main( int argc, char** argv )
     printf( "  =/__//"  "   (x64%s)\n", Pigeon::PlatDetectPopcnt()? "/POPCNT" : "" );
     printf( "     ^^ "  "   \n" );
     printf( "\n" );
+
+    // UCI commands can be passed as arguments, separated by semicolons (handy for debugging)
+
+    std::string commands;
+    for( int i = 1; i < argc; i++ )
+        commands += std::string( argv[i] ) + " ";
+
+    commands += ";";
+
+    for( ;; )
+    {
+        size_t delimPos = commands.find( ';' );
+        if( delimPos == std::string::npos )
+            break;
+
+        std::string cmd = commands.substr( 0, delimPos ) + "\n";
+
+        const char* cmdStart = cmd.c_str();
+        while( *cmdStart && isspace( *cmdStart ) )
+            cmdStart++;
+
+        if( *cmdStart ) 
+        {
+            printf( "%s", cmdStart );
+            Pigeon::UCI::ProcessCommand( &pigeon, cmdStart );
+        }
+
+        commands = commands.substr( delimPos + 1 );
+    }
+
+    // Process standard input
 
     while( !feof( stdin ) )
     {
