@@ -19,7 +19,7 @@ struct UCI
             printf( "id name Pigeon %d.%02d\n", PIGEON_VER_MAJ, PIGEON_VER_MIN );
             printf( "id author Stuart Riffle \n" );
 
-            printf( "option name Hash type spin default 64\n" );
+            printf( "option name Hash type spin default %d\n", TT_MEGS_DEFAULT );
             printf( "uciok\n" );
         }
         else if( tokens.Consume( "debug" ) )
