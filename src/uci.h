@@ -53,9 +53,12 @@ struct UCI
 
             if( tokens.Consume( "fen" ) )
             {
-                str = engine->SetPosition( str );
-                if( str == NULL )
-                    return( true );
+                Position pos;
+
+                if( tokens.ConsumePosition( pos ) )
+                    engine->SetPosition( pos );
+                else
+                    printf( "info string ERROR: unable to parse FEN\n" );
             }
 
             const char* movehistory = "";

@@ -17,7 +17,13 @@ public:
 
     Tokenizer( const char* str ) 
     {
+        this->Set( str );
+    }
+
+    void Set( const char* str )
+    {
         size_t len = strlen( str );
+        mStr.clear();
         mStr.reserve( len + 1 );
         mStr.insert( mStr.end(), str, str + len + 1 );
 
@@ -60,6 +66,18 @@ public:
         }
 
         return( NULL );
+    }
+
+    bool ConsumePosition( Position& pos )
+    {
+        const char* after = FEN::StringToPosition( mCursor, pos );
+        if( after == NULL )
+            return( false );
+
+        mCursor = (char*) after;
+        this->SkipWhite();
+
+        return( true );
     }
 
     const char* ConsumeAll()

@@ -63,12 +63,10 @@ public:
         mRoot.Reset();
     }
 
-    const char* SetPosition( const char* str )
+    void SetPosition( const Position& pos )
     {
         this->Reset();
-
-        str = FEN::StringToPosition( str, mRoot );
-        return( str );
+        mRoot = pos;
     }
 
     Position GetPosition() const

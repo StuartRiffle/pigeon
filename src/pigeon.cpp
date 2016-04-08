@@ -17,8 +17,8 @@
 #include <string>
 
 #include "timer.h"
-#include "token.h"
 #include "fen.h"
+#include "token.h"
 #include "perft.h"
 #include "engine.h"
 #include "uci.h"
