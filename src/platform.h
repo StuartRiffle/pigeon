@@ -41,6 +41,7 @@
     #include <pthread.h>
     #include <semaphore.h>
     #include <emmintrin.h>
+    #include <cpuid.h>
     #include <string.h>
 
 
@@ -106,7 +107,7 @@ namespace Pigeon
 
     INLINE bool PlatCheckCpuFlag( int leaf, int idxWord, int idxBit )
     {
-        int info[4] = { 0 };
+        unsigned int info[4] = { 0 };
 
     #if PIGEON_MSVC
         __cpuid( info, leaf );
