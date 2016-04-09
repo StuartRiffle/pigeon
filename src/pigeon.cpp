@@ -35,6 +35,9 @@ int main( int argc, char** argv )
     printf( "  =/__//"  "    v%d.%02d  (UCI/%s%s)\n", Pigeon::PIGEON_VER_MAJ, Pigeon::PIGEON_VER_MIN, cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : ""  );
     printf( "     ^^ "  "    \n" );
     printf( "\n" );
+#if PIGEON_GCC
+    printf( "!! Sorry, the Linux build is apparently broken (type \"perft 3\") !!\n" );
+#endif
 
     Pigeon::Engine pigeon;
 
