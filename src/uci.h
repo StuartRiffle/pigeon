@@ -130,6 +130,55 @@ struct UCI
             if( tokens.Consume( "book" ) )
             {
             }
+            else if( tokens.Consume( "cpu" ) )
+            {
+                const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
+
+                int detected = PlatDetectCpuLevel();
+
+                if( tokens.Consume( "auto" ) )
+                {
+                    engine->OverrideCpuLevel( detected );
+                    printf( "info string instruction set detected as %s\n", cpuDesc[detected] );
+                }
+                else
+                {
+                    for( int level = 0; level < CPU_LEVELS; level++ )
+                    {
+                        if( tokens.Consume( cpuDesc[level] ) )
+                        {
+                            engine->OverrideCpuLevel( level );
+                            printf( "info string instruction set override to %s\n", cpuDesc[level] );
+                        
+                            if( level > detected )
+                                printf( "info string WARNING: this is unlikely to end well\n" );
+                        }
+                    }
+                }
+            }
+            else if( tokens.Consume( "popcnt" ) )
+            {
+                bool detected = PlatDetectPopcnt();
+
+                if( tokens.Consume( "auto" ) )
+                {
+                    engine->OverridePopcnt( detected );
+                    printf( "info string popcnt instruction %s\n", detected? "enabled" : "disabled" ); 
+                }
+                else if( tokens.Consume( "on" ) )
+                {
+                    engine->OverridePopcnt( true );
+                    printf( "info string popcnt instruction enabled\n" );
+
+                    if( !detected )
+                        printf( "info string WARNING: this is unlikely to end well\n" );
+                }
+                else if( tokens.Consume( "off" ) )
+                {
+                    engine->OverridePopcnt( false );
+                    printf( "info string popcnt instruction disabled\n" );
+                }
+            }
             else if( tokens.Consume( "divide" ) )
             {
                 int depth = tokens.ConsumeInt();

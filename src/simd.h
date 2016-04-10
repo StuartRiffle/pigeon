@@ -4,6 +4,13 @@ namespace Pigeon {
 #ifndef PIGEON_SIMD_H__
 #define PIGEON_SIMD_H__
 
+template< typename T >
+struct SimdWidth
+{
+    enum { LANES = 1 };
+};
+
+
 
 // SSE2
 
@@ -12,6 +19,15 @@ namespace Pigeon {
 INLINE __m128i _mm_select( const __m128i& a, const __m128i& b, const __m128i& mask )
 {          
     return _mm_xor_si128( a, _mm_and_si128( mask, _mm_xor_si128( b, a ) ) ); // mask? b : a
+}
+
+inline __m128i _mm_sllv_epi64x( const __m128i& v, const __m128i& n )
+{
+    __m128i lowCount  = _mm_move_epi64( n );
+    __m128i highCount = _mm_unpackhi_epi64( n, _mm_setzero_si128() ); 
+    __m128i result    = _mm_unpacklo_epi64( _mm_sll_epi64( v, lowCount ), _mm_sll_epi64( v, highCount ) );
+
+    return( result );
 }
 
 INLINE __m128i _mm_cmpeq_epi64_sse2( const __m128i& a, const __m128i& b )
@@ -57,28 +73,30 @@ struct simd2_sse2
     INLINE simd2_sse2( const __m128i& v )                   : vec( v ) {}
     INLINE simd2_sse2( const simd2_sse2& v )                : vec( v.vec ) {}
 
-    INLINE simd2_sse2   operator~  ()                       const { return( _mm_xor_si128(  vec, _mm_set1_epi8(  ~0 ) ) ); }
-    INLINE simd2_sse2   operator-  ( u64 s )                const { return( _mm_sub_epi64(  vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator+  ( u64 s )                const { return( _mm_add_epi64(  vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator&  ( u64 s )                const { return( _mm_and_si128(  vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator|  ( u64 s )                const { return( _mm_or_si128(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator^  ( u64 s )                const { return( _mm_xor_si128(  vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator<< ( int c )                const { return( _mm_slli_epi64( vec, c ) ); }
-    INLINE simd2_sse2   operator>> ( int c )                const { return( _mm_srli_epi64( vec, c ) ); }
-    INLINE simd2_sse2   operator-  ( const simd2_sse2& v )  const { return( _mm_sub_epi64(  vec, v.vec ) ); }
-    INLINE simd2_sse2   operator+  ( const simd2_sse2& v )  const { return( _mm_add_epi64(  vec, v.vec ) ); }
-    INLINE simd2_sse2   operator&  ( const simd2_sse2& v )  const { return( _mm_and_si128(  vec, v.vec ) ); }
-    INLINE simd2_sse2   operator|  ( const simd2_sse2& v )  const { return( _mm_or_si128(   vec, v.vec ) ); }
-    INLINE simd2_sse2   operator^  ( const simd2_sse2& v )  const { return( _mm_xor_si128(  vec, v.vec ) ); }
     INLINE              operator __m128i()                  const { return( vec ); }
+    INLINE simd2_sse2   operator~  ()                       const { return( _mm_xor_si128(   vec, _mm_set1_epi8(  ~0 ) ) ); }
+    INLINE simd2_sse2   operator-  ( u64 s )                const { return( _mm_sub_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator+  ( u64 s )                const { return( _mm_add_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator&  ( u64 s )                const { return( _mm_and_si128(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator|  ( u64 s )                const { return( _mm_or_si128(    vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator^  ( u64 s )                const { return( _mm_xor_si128(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator<< ( int c )                const { return( _mm_slli_epi64(  vec, c ) ); }
+    INLINE simd2_sse2   operator>> ( int c )                const { return( _mm_srli_epi64(  vec, c ) ); }
+    INLINE simd2_sse2   operator<< ( const simd2_sse2& v )  const { return( _mm_sllv_epi64x( vec, v.vec ) ); }
+    INLINE simd2_sse2   operator-  ( const simd2_sse2& v )  const { return( _mm_sub_epi64(   vec, v.vec ) ); }
+    INLINE simd2_sse2   operator+  ( const simd2_sse2& v )  const { return( _mm_add_epi64(   vec, v.vec ) ); }
+    INLINE simd2_sse2   operator&  ( const simd2_sse2& v )  const { return( _mm_and_si128(   vec, v.vec ) ); }
+    INLINE simd2_sse2   operator|  ( const simd2_sse2& v )  const { return( _mm_or_si128(    vec, v.vec ) ); }
+    INLINE simd2_sse2   operator^  ( const simd2_sse2& v )  const { return( _mm_xor_si128(   vec, v.vec ) ); }
+    INLINE simd2_sse2&  operator+= ( const simd2_sse2& v )        { return( vec = _mm_add_epi64( vec, v.vec ), *this ); }
+    INLINE simd2_sse2&  operator&= ( const simd2_sse2& v )        { return( vec = _mm_and_si128( vec, v.vec ), *this ); }
+    INLINE simd2_sse2&  operator|= ( const simd2_sse2& v )        { return( vec = _mm_or_si128(  vec, v.vec ), *this ); }
+    INLINE simd2_sse2&  operator^= ( const simd2_sse2& v )        { return( vec = _mm_xor_si128( vec, v.vec ), *this ); }
 };             
 
-template<> INLINE simd2_sse2    CountBits< 0, simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_popcnt_epi64_sse2( val.vec ) ); }
-template<> INLINE simd2_sse2    CountBits< 1, simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_popcnt_epi64_sse2( val.vec ) ); }
+template<> INLINE simd2_sse2    CountBits< 0, simd2_sse2 >( const simd2_sse2& val )                                                 { return( _mm_popcnt_epi64_sse2( val.vec ) ); }
+template<> INLINE simd2_sse2    CountBits< 1, simd2_sse2 >( const simd2_sse2& val )                                                 { return( _mm_popcnt_epi64_sse2( val.vec ) ); }
 
-
-template<> INLINE int           SimdWidth<       simd2_sse2 >()                                                                     { return( 2 ); }
-template<> INLINE bool          SimdSupported<   simd2_sse2 >()                                                                     { return( true ); }//(CpuIdEx( 1, 3 ) & (1 << 26)) != 0 ); }
 template<> INLINE simd2_sse2    MaskAllClear<    simd2_sse2 >()                                                                     { return( _mm_setzero_si128() ); } 
 template<> INLINE simd2_sse2    MaskAllSet<      simd2_sse2 >()                                                                     { return( _mm_set1_epi8( ~0 ) ); } 
 template<> INLINE simd2_sse2    ByteSwap<        simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_bswap_epi64_sse2( val.vec ) ); }
@@ -90,6 +108,34 @@ template<> INLINE simd2_sse2    SelectIfZero<    simd2_sse2 >( const simd2_sse2&
 template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a )                        { return( _mm_andnot_si128( _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ), a.vec ) ); }
 template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( a.vec, b.vec, _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ) ) ); }
 template<> INLINE simd2_sse2    SelectWithMask<  simd2_sse2 >( const simd2_sse2& mask, const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( b.vec, a.vec, mask.vec ) ); }
+template<> INLINE simd2_sse2    SubtractSat16<   simd2_sse2 >( const simd2_sse2& a,    const simd2_sse2& b )                        { return( _mm_subs_epi16( a.vec, b.vec ) ); }
+
+
+template<>
+struct SimdWidth< simd2_sse2 >
+{
+    enum { LANES = 2 };
+};
+
+template<>
+void SimdInsert< simd2_sse2 >( simd2_sse2& dest, u64 val, int lane )
+{
+    u64 PIGEON_ALIGN_SIMD qword[2];
+
+    *((simd2_sse2*) qword) = dest;
+    qword[lane] = val;
+    dest = *((simd2_sse2*) qword);
+}
+
+template<> 
+INLINE void Transpose< simd2_sse2 >( const simd2_sse2* src, int srcStep, simd2_sse2* dest, int destStep )
+{
+    const simd2_sse2* RESTRICT  src_r  = src;
+    simd2_sse2* RESTRICT        dest_r = dest;
+
+    dest_r[0]         = _mm_unpacklo_epi64( src_r[0], src_r[srcStep] );
+    dest_r[destStep]  = _mm_unpackhi_epi64( src_r[0], src_r[srcStep] );
+}
 
 #endif // PIGEON_ENABLE_SSE2
 
@@ -117,21 +163,74 @@ INLINE __m128i _mm_bswap_epi64_sse4( const __m128i& v )
     return( _mm_shuffle_epi8( v, perm ) );
 }
 
-struct simd2_sse4 : public simd2_sse2 
+struct simd2_sse4
 {
-    INLINE simd2_sse4( const __m128i& v ) : simd2_sse2( v ) {}
-};
+    __m128i vec;
 
-template<> INLINE int           SimdWidth<       simd2_sse4 >()                                                                     { return( 2 ); }
-template<> INLINE bool          SimdSupported<   simd2_sse4 >()                                                                     { return( true ); }//(CpuIdEx( 1, 3 ) & (1 << 26)) != 0 ); }
+    INLINE simd2_sse4()                         {}
+    INLINE simd2_sse4( u64 s )                  { vec = _mm_set1_epi64x( s ); }
+    INLINE simd2_sse4( const __m128i& v )       { vec = v; }
+    INLINE simd2_sse4( const simd2_sse4& v )    { vec = v.vec; }
+
+    INLINE              operator __m128i()                  const { return( vec ); }
+    INLINE simd2_sse4   operator~  ()                       const { return( _mm_xor_si128(   vec, _mm_set1_epi8(  ~0 ) ) ); }
+    INLINE simd2_sse4   operator-  ( u64 s )                const { return( _mm_sub_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator+  ( u64 s )                const { return( _mm_add_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator&  ( u64 s )                const { return( _mm_and_si128(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator|  ( u64 s )                const { return( _mm_or_si128(    vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator^  ( u64 s )                const { return( _mm_xor_si128(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator<< ( int c )                const { return( _mm_slli_epi64(  vec, c ) ); }
+    INLINE simd2_sse4   operator>> ( int c )                const { return( _mm_srli_epi64(  vec, c ) ); }
+    INLINE simd2_sse4   operator<< ( const simd2_sse4& v )  const { return( _mm_sllv_epi64x( vec, v.vec ) ); }
+    INLINE simd2_sse4   operator-  ( const simd2_sse4& v )  const { return( _mm_sub_epi64(   vec, v.vec ) ); }
+    INLINE simd2_sse4   operator+  ( const simd2_sse4& v )  const { return( _mm_add_epi64(   vec, v.vec ) ); }
+    INLINE simd2_sse4   operator&  ( const simd2_sse4& v )  const { return( _mm_and_si128(   vec, v.vec ) ); }
+    INLINE simd2_sse4   operator|  ( const simd2_sse4& v )  const { return( _mm_or_si128(    vec, v.vec ) ); }
+    INLINE simd2_sse4   operator^  ( const simd2_sse4& v )  const { return( _mm_xor_si128(   vec, v.vec ) ); }
+    INLINE simd2_sse4&  operator+= ( const simd2_sse4& v )        { return( vec = _mm_add_epi64( vec, v.vec ), *this ); }
+    INLINE simd2_sse4&  operator&= ( const simd2_sse4& v )        { return( vec = _mm_and_si128( vec, v.vec ), *this ); }
+    INLINE simd2_sse4&  operator|= ( const simd2_sse4& v )        { return( vec = _mm_or_si128(  vec, v.vec ), *this ); }
+    INLINE simd2_sse4&  operator^= ( const simd2_sse4& v )        { return( vec = _mm_xor_si128( vec, v.vec ), *this ); }
+};             
+
 template<> INLINE simd2_sse4    CountBits< DISABLE_POPCNT, simd2_sse4 >( const simd2_sse4& val )                                    { return( _mm_popcnt_epi64_sse4( val.vec ) ); }
 template<> INLINE simd2_sse4    CountBits< ENABLE_POPCNT,  simd2_sse4 >( const simd2_sse4& val )                                    { return( _mm_popcnt_epi64_sse4( val.vec ) ); }
+
+template<> INLINE simd2_sse4    MaskAllClear<    simd2_sse4 >()                                                                     { return( _mm_setzero_si128() ); } 
+template<> INLINE simd2_sse4    MaskAllSet<      simd2_sse4 >()                                                                     { return( _mm_set1_epi8( ~0 ) ); } 
 template<> INLINE simd2_sse4    ByteSwap<        simd2_sse4 >( const simd2_sse4& val )                                              { return( _mm_bswap_epi64_sse4( val.vec ) ); }
+template<> INLINE simd2_sse4    MulLow32<        simd2_sse4 >( const simd2_sse4& val,  u32 scale )                                  { return( _mm_mul_epu32( val.vec, _mm_set1_epi64x( scale ) ) ); }
+template<> INLINE simd2_sse4    MaskOut<         simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& bitsToClear )              { return( _mm_andnot_si128( bitsToClear.vec, val.vec ) ); }
 template<> INLINE simd2_sse4    CmpEqual<        simd2_sse4 >( const simd2_sse4& a,    const simd2_sse4& b )                        { return( _mm_cmpeq_epi64( a.vec, b.vec ) ); }
 template<> INLINE simd2_sse4    SelectIfZero<    simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a )                        { return( _mm_and_si128( a.vec, _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ) ) ); }
 template<> INLINE simd2_sse4    SelectIfZero<    simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a, const simd2_sse4& b )   { return( _mm_select( b.vec, a.vec, _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ) ) ); }
 template<> INLINE simd2_sse4    SelectIfNotZero< simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a )                        { return( _mm_andnot_si128( _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ), a.vec ) ); }
 template<> INLINE simd2_sse4    SelectIfNotZero< simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a, const simd2_sse4& b )   { return( _mm_select( a.vec, b.vec, _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ) ) ); }
+template<> INLINE simd2_sse4    SelectWithMask<  simd2_sse4 >( const simd2_sse4& mask, const simd2_sse4& a, const simd2_sse4& b )   { return( _mm_select( b.vec, a.vec, mask.vec ) ); }
+template<> INLINE simd2_sse4    SubtractSat16<   simd2_sse4 >( const simd2_sse4& a,    const simd2_sse4& b )                        { return( _mm_subs_epi16( a.vec, b.vec ) ); }
+
+template<>
+struct SimdWidth< simd2_sse4 >
+{
+    enum { LANES = 2 };
+};
+
+template<>
+void SimdInsert< simd2_sse4 >( simd2_sse4& dest, u64 val, int lane )
+{
+    dest.vec = (lane == 0)? _mm_insert_epi64( dest.vec, val, 0 ) : _mm_insert_epi64( dest.vec, val, 1 );
+}
+
+template<> 
+INLINE void Transpose< simd2_sse4 >( const simd2_sse4* src, int srcStep, simd2_sse4* dest, int destStep )
+{
+    const simd2_sse4* RESTRICT  src_r  = src;
+    simd2_sse4* RESTRICT        dest_r = dest;
+
+    dest_r[0]         = _mm_unpacklo_epi64( src_r[0], src_r[srcStep] );
+    dest_r[destStep]  = _mm_unpackhi_epi64( src_r[0], src_r[srcStep] );
+}
+
 
 #endif // PIGEON_ENABLE_SSE4
 
@@ -164,6 +263,7 @@ struct simd4_avx2
     INLINE simd4_avx2( const __m256i& v )                    : vec( v ) {}
     INLINE simd4_avx2( const simd4_avx2& v )                 : vec( v.vec ) {}
 
+    INLINE               operator   __m256i()                const { return( vec ); }
     INLINE simd4_avx2    operator~  ()                       const { return( _mm256_xor_si256(  vec, _mm256_set1_epi8(  ~0 ) ) ); }
     INLINE simd4_avx2    operator-  ( u64 s )                const { return( _mm256_sub_epi64(  vec, _mm256_set1_epi64x( s ) ) ); }
     INLINE simd4_avx2    operator+  ( u64 s )                const { return( _mm256_add_epi64(  vec, _mm256_set1_epi64x( s ) ) ); }
@@ -172,17 +272,20 @@ struct simd4_avx2
     INLINE simd4_avx2    operator^  ( u64 s )                const { return( _mm256_xor_si256(  vec, _mm256_set1_epi64x( s ) ) ); }
     INLINE simd4_avx2    operator<< ( int c )                const { return( _mm256_slli_epi64( vec, c ) ); }
     INLINE simd4_avx2    operator>> ( int c )                const { return( _mm256_srli_epi64( vec, c ) ); }
+    INLINE simd4_avx2    operator<< ( const simd4_avx2& v )  const { return( _mm256_sllv_epi64( vec, v.vec ) ); }
+    INLINE simd4_avx2    operator>> ( const simd4_avx2& v )  const { return( _mm256_srlv_epi64( vec, v.vec ) ); }
     INLINE simd4_avx2    operator-  ( const simd4_avx2& v )  const { return( _mm256_sub_epi64(  vec, v.vec ) ); }
     INLINE simd4_avx2    operator+  ( const simd4_avx2& v )  const { return( _mm256_add_epi64(  vec, v.vec ) ); }
     INLINE simd4_avx2    operator&  ( const simd4_avx2& v )  const { return( _mm256_and_si256(  vec, v.vec ) ); }
     INLINE simd4_avx2    operator|  ( const simd4_avx2& v )  const { return( _mm256_or_si256(   vec, v.vec ) ); }
     INLINE simd4_avx2    operator^  ( const simd4_avx2& v )  const { return( _mm256_xor_si256(  vec, v.vec ) ); }
-    INLINE               operator   __m256i()                const { return( vec ); }
+    INLINE simd4_avx2&   operator+= ( const simd4_avx2& v )        { return( vec = _mm256_add_epi64( vec, v.vec ), *this ); }
+    INLINE simd4_avx2&   operator&= ( const simd4_avx2& v )        { return( vec = _mm256_and_si256( vec, v.vec ), *this ); }
+    INLINE simd4_avx2&   operator|= ( const simd4_avx2& v )        { return( vec = _mm256_or_si256(  vec, v.vec ), *this ); }
+    INLINE simd4_avx2&   operator^= ( const simd4_avx2& v )        { return( vec = _mm256_xor_si256( vec, v.vec ), *this ); }
 };               
             
 
-template<> INLINE int            SimdWidth<       simd4_avx2 >()                                                                    { return( 4 ); }
-template<> INLINE bool           SimdSupported<   simd4_avx2 >()                                                                    { return( true ); }//(CpuIdEx( 7, 1 ) & (1 << 5)) != 0 ); }
 template<> INLINE simd4_avx2     MaskAllClear<    simd4_avx2 >()                                                                    { return( _mm256_setzero_si256() ); } 
 template<> INLINE simd4_avx2     MaskAllSet<      simd4_avx2 >()                                                                    { return( _mm256_set1_epi8( ~0 ) ); } 
 template<> INLINE simd4_avx2     CountBits< DISABLE_POPCNT, simd4_avx2 >( const simd4_avx2& val )                                   { return( _mm256_popcnt_epi64_avx2( val.vec ) ); }
@@ -196,6 +299,55 @@ template<> INLINE simd4_avx2     SelectIfZero<    simd4_avx2 >( const simd4_avx2
 template<> INLINE simd4_avx2     SelectIfNotZero< simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a )                       { return( _mm256_andnot_si256( _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ), a.vec ) ); }
 template<> INLINE simd4_avx2     SelectIfNotZero< simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( a.vec, b.vec, _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ) ) ); }
 template<> INLINE simd4_avx2     SelectWithMask<  simd4_avx2 >( const simd4_avx2& mask, const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( b.vec, a.vec, mask.vec ) ); }
+template<> INLINE simd4_avx2     SubtractSat16<   simd4_avx2 >( const simd4_avx2& a,    const simd4_avx2& b )                       { return( _mm256_subs_epi16( a.vec, b.vec ) ); }
+
+template<>
+struct SimdWidth< simd4_avx2 >
+{
+    enum { LANES = 4 };
+};
+
+template<>
+void SimdInsert< simd4_avx2 >( simd4_avx2& dest, u64 val, int lane )
+{
+    u64 PIGEON_ALIGN_SIMD qword[4];
+
+    *((simd4_avx2*) qword) = dest;
+    qword[lane] = val;
+    dest = *((simd4_avx2*) qword);
+}
+
+template<> 
+INLINE void Transpose< simd4_avx2 >( const simd4_avx2* src, int srcStep, simd4_avx2* dest, int destStep )
+{
+    // UNTESTED!
+
+    const simd4_avx2* RESTRICT  src_r  = src;
+    simd4_avx2* RESTRICT        dest_r = dest;
+
+    // abcd efgh ijkl nopq -> aein bfjo cgkp dhlq
+
+    simd4_avx2  abcd = src_r[0];
+    simd4_avx2  efgh = src_r[srcStep];
+    simd4_avx2  ijkl = src_r[srcStep * 2];
+    simd4_avx2  nopq = src_r[srcStep * 3];
+
+    simd4_avx2  aebf = _mm256_unpacklo_epi64( abcd, efgh );
+    simd4_avx2  cgdh = _mm256_unpackhi_epi64( abcd, efgh );
+    simd4_avx2  injo = _mm256_unpacklo_epi64( ijkl, nopq );
+    simd4_avx2  kplq = _mm256_unpackhi_epi64( ijkl, nopq );
+
+    simd4_avx2  aein = _mm256_permute2f128_si256( aebf, injo, 0x20 );
+    simd4_avx2  bfjo = _mm256_permute2f128_si256( aebf, injo, 0x02 );
+    simd4_avx2  cgkp = _mm256_permute2f128_si256( cgdh, nopq, 0x20 );
+    simd4_avx2  dhlq = _mm256_permute2f128_si256( ijkl, nopq, 0x02 );
+
+    dest_r[0]               = aein;
+    dest_r[destStep]        = bfjo;
+    dest_r[destStep * 2]    = cgkp;
+    dest_r[destStep * 3]    = dhlq;
+}
+
 
 #endif // PIGEON_ENABLE_AVX2
 
@@ -229,8 +381,6 @@ struct simd8_avx3
     INLINE explicit      operator __m512i()                  const { return( vec ); }
 };                                                                                                  
 
-template<> INLINE int            SimdWidth<       simd8_avx3 >()                                                                    { return( 8 ); }
-template<> INLINE bool           SimdSupported<   simd8_avx3 >()                                                                    { return( true ); }//(CpuIdEx( 7, 1 ) & (1 << 16)) != 0 ); }
 template<> INLINE simd8_avx3     MaskAllClear<    simd8_avx3 >()                                                                    { return( _mm512_setzero_si512() ); } 
 template<> INLINE simd8_avx3     MaskAllSet<      simd8_avx3 >()                                                                    { return( _mm512_set1_epi8( ~0 ) ); } 
 template<> INLINE simd8_avx3     CountBits<       simd8_avx3 >( const simd8_avx3& val )                                             { return( _mm512_popcnt_epi64_avx3( val.vec ) ); }
@@ -245,6 +395,31 @@ template<> INLINE simd8_avx3     SelectIfNotZero< simd8_avx3 >( const simd8_avx3
 template<> INLINE simd8_avx3     SelectWithMask<  simd8_avx3 >( const simd8_avx3& mask, const simd8_avx3& a, const simd8_avx3& b )  { return( _mm512_select( b, a, mask ) ); }
 
 #endif // PIGEON_ENABLE_AVX3
+
+
+
+template< typename SIMD, typename PACKED, typename UNPACKED >
+INLINE void Unswizzle( const PACKED* srcStruct, UNPACKED* destStruct )
+{
+    const int LANES = SimdWidth< SIMD >::LANES;
+
+    int blockSize    = (int) LANES * sizeof( SIMD );
+    int blockCount   = (int) sizeof( PACKED ) / blockSize;
+
+    const SIMD* RESTRICT    src     = (SIMD*) srcStruct;
+    SIMD* RESTRICT          dest    = (SIMD*) destStruct;
+
+    while( blockCount-- )
+    {
+        Transpose< SIMD >( src, 1, dest, sizeof( UNPACKED ) / sizeof( SIMD ) );
+
+        src += LANES;
+        dest += 1;
+    }
+}
+
+
+
 
 #endif // PIGEON_SIMD_H__
 };

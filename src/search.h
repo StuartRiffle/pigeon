@@ -30,11 +30,10 @@ struct SearchConfig
 struct SearchMetrics
 {
     u64                 mNodesTotal;
+    u64                 mNodesTotalSimd;
     u64                 mNodesAtPly[MAX_METRICS_DEPTH];
     u64                 mHashLookupsAtPly[MAX_METRICS_DEPTH];
     u64                 mHashHitsAtPly[MAX_METRICS_DEPTH];
-    int                 mCutsByOrder[MAX_MOVE_LIST];
-    int                 mPvByOrder[MAX_MOVE_LIST][16];
 
     SearchMetrics()     { this->Clear(); }
     void Clear()        { PlatClearMemory( this, sizeof( *this ) ); }

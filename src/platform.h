@@ -15,19 +15,23 @@
 
     #pragma warning( disable: 4996 ) // CRT security warnings
     #pragma warning( disable: 4293 ) // Shift count negative or too big (due to unused branch in templated function)
+    #pragma warning( disable: 4752 ) // Found Intel(R) Advanced Vector Extensions; consider using /arch:AVX
     #pragma inline_recursion( on )
     #pragma inline_depth( 255 )
     
     #define PIGEON_MSVC         (1)
     #define PIGEON_ENABLE_SSE2  (1)
     #define PIGEON_ENABLE_SSE4  (1)
-    #define PIGEON_ENABLE_AVX2  (1)
+    //#define PIGEON_ENABLE_AVX2  (1)
     #define RESTRICT            __restrict
     #define DEBUGBREAK          __debugbreak
     #define INLINE              __forceinline
+    #define PIGEON_ALIGN( _N )  __declspec( align( _N ) )
+    #define PIGEON_ALIGN_SIMD   __declspec( align( 32 ) )
     #define PRId64              "I64d"
     #define _HAS_EXCEPTIONS     (0)
     #define PIGEON_ALLOW_POPCNT (1)
+
 
     
     extern "C" void * __cdecl memset(void *, int, size_t);
@@ -52,6 +56,8 @@
     #define RESTRICT            __restrict
     #define DEBUGBREAK          void
     #define INLINE              inline __attribute__(( always_inline ))
+    #define PIGEON_ALIGN( _N )  __attribute__(( aligned( _N ) ))
+    #define PIGEON_ALIGN_SIMD   __attribute__(( aligned( 32 ) ))
     #define stricmp             strcasecmp
     #define strnicmp            strncasecmp
 
@@ -83,6 +89,8 @@ namespace Pigeon
         CPU_SSE4,
         CPU_AVX2,
         CPU_AVX3,
+
+        CPU_LEVELS
     };
 
     INLINE u64 PlatByteSwap64( const u64& val )             

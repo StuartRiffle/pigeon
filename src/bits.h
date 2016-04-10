@@ -9,9 +9,9 @@ template< int SHIFT, typename T >
 INLINE T Shift( const T& bits )
 {
     if( SHIFT > 0 )
-        return( bits << ((T) SHIFT) );
+        return( bits << (SHIFT) );
     else 
-        return( bits >> ((T) (-SHIFT)) );
+        return( bits >> (-SHIFT) );
 }
 
 template< int SHIFT, typename T >

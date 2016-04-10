@@ -177,7 +177,7 @@ public:
         SIMD    inEnemyTerritory    = whitePieces & (RANK_5 | RANK_6 | RANK_7 | RANK_8);
         SIMD    evalKnightsDevel    = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );
         SIMD    evalBishopsDevel    = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) );
-        SIMD    evalKnightsFirst    = Max( (SIMD) 0, evalKnightsDevel - evalBishopsDevel );
+        SIMD    evalKnightsFirst    = SubtractSat16( evalKnightsDevel, evalBishopsDevel );
         SIMD    evalBothBishops     = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 );
         SIMD    evalRooksConnected  = CountBits< POPCNT >( PropExOrtho( whiteRooks, empty ) & whiteRooks );
         SIMD    evalPawnsGuardKing  = CountBits< POPCNT >( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );

@@ -8,7 +8,7 @@ namespace Pigeon {
 /// A map of valid move target squares
 ///
 template< typename SIMD >
-struct MoveMapT
+struct PIGEON_ALIGN_SIMD MoveMapT
 {
     SIMD        mSlidingMovesNW;
     SIMD        mSlidingMovesNE;
@@ -40,7 +40,7 @@ struct MoveMapT
 // A snapshot of the game state
 //
 template< typename SIMD >
-struct PositionT
+struct PIGEON_ALIGN_SIMD PositionT
 {
     SIMD        mWhitePawns;        // Bitmask of the white pawns 
     SIMD        mWhiteKnights;      // Bitmask of the white knights    
@@ -81,6 +81,29 @@ struct PositionT
         mWhiteToMove                = 1;
         mHalfmoveClock              = 0;
         mFullmoveNum                = 1;
+    }
+
+    template< typename SCALAR >
+    void Broadcast( const PositionT< SCALAR >& src )
+    {
+        mWhitePawns                 = src.mWhitePawns;   
+        mWhiteKnights               = src.mWhiteKnights; 
+        mWhiteBishops               = src.mWhiteBishops; 
+        mWhiteRooks                 = src.mWhiteRooks;   
+        mWhiteQueens                = src.mWhiteQueens;  
+        mWhiteKing                  = src.mWhiteKing;    
+        mBlackPawns                 = src.mBlackPawns;   
+        mBlackKnights               = src.mBlackKnights; 
+        mBlackBishops               = src.mBlackBishops; 
+        mBlackRooks                 = src.mBlackRooks;   
+        mBlackQueens                = src.mBlackQueens;  
+        mBlackKing                  = src.mBlackKing;    
+        mCastlingAndEP              = src.mCastlingAndEP;
+        mHash                       = src.mHash;         
+        mBoardFlipped               = src.mBoardFlipped; 
+        mWhiteToMove                = src.mWhiteToMove;  
+        mHalfmoveClock              = src.mHalfmoveClock;
+        mFullmoveNum                = src.mFullmoveNum;  
     }
 
     void Step( const MoveSpecT< SIMD >& move )
@@ -141,8 +164,8 @@ struct PositionT
         SIMD    destQueen           = SelectIfNotZero( srcQueen  | promotedQueen,      destBit );
         SIMD    destKing            = SelectIfNotZero( srcKing,                        destBit );
         SIMD    epTarget            = Shift< SHIFT_S >( Shift< SHIFT_N * 2 >( srcPawn ) & destPawn );
-        SIMD    castleRookKing      = CmpEqual( (srcKing | destBit), (SQUARE_E1 | SQUARE_G1) ) & SQUARE_H1;
-        SIMD    castleRookQueen     = CmpEqual( (srcKing | destBit), (SQUARE_E1 | SQUARE_C1) ) & SQUARE_A1;
+        SIMD    castleRookKing      = CmpEqual( (srcKing | destBit), (SIMD) (SQUARE_E1 | SQUARE_G1) ) & SQUARE_H1;
+        SIMD    castleRookQueen     = CmpEqual( (srcKing | destBit), (SIMD) (SQUARE_E1 | SQUARE_C1) ) & SQUARE_A1;
         SIMD    disableCastle       = 0;                             
 
         srcRook                    |= castleRookKing | castleRookQueen;
@@ -182,10 +205,10 @@ struct PositionT
         SIMD    blackKing           = SelectWithMask( mBoardFlipped, ByteSwap( mWhiteKing     ), mBlackKing     );
         SIMD    castlingAndEP       = SelectWithMask( mBoardFlipped, ByteSwap( mCastlingAndEP ), mCastlingAndEP );
         SIMD    allPawns            = whitePawns | blackPawns;
-        SIMD    hash0               = XorShiftA( XorShiftB( XorShiftC( HASH_SEED0 ^ allPawns )      ^ blackKnights ) ^ whiteRooks  );              
-        SIMD    hash1               = XorShiftA( XorShiftB( XorShiftC( HASH_SEED1 ^ castlingAndEP ) ^ whiteBishops ) ^ blackQueens );             
-        SIMD    hash2               = XorShiftD( XorShiftB( XorShiftC( HASH_SEED2 ^ whiteKing )     ^ blackBishops ) ^ whiteQueens );             
-        SIMD    hash3               = XorShiftD( XorShiftB( XorShiftC( HASH_SEED3 ^ blackKing )     ^ whiteKnights ) ^ blackRooks  );        
+        SIMD    hash0               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED0 ^ allPawns )      ^ blackKnights ) ^ whiteRooks  );              
+        SIMD    hash1               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED1 ^ castlingAndEP ) ^ whiteBishops ) ^ blackQueens );             
+        SIMD    hash2               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED2 ^ whiteKing )     ^ blackBishops ) ^ whiteQueens );             
+        SIMD    hash3               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED3 ^ blackKing )     ^ whiteKnights ) ^ blackRooks  );        
         SIMD    hash                = XorShiftC( hash0 - hash2 ) ^ XorShiftC( hash1 - hash3 );
 
         return( hash );
@@ -338,7 +361,7 @@ struct PositionT
         dest->mBlackControl         = blackControl;
     }
 
-    void FlipFrom( const Position& prev )
+    void FlipFrom( const PositionT< SIMD >& prev )
     {
         SIMD    newWhitePawns       = ByteSwap( prev.mBlackPawns   );
         SIMD    newWhiteKnights     = ByteSwap( prev.mBlackKnights );

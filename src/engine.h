@@ -25,9 +25,9 @@ class Engine
     bool                mPrintBestMove;             // Output best move while searching
     bool                mPrintedMove;               // Make sure only one "bestmove" is output per "go" 
     bool                mDebugMode;                 // This currently does nothing
-    bool                mUsePopcnt;                 // Enable use of the hardware POPCNT instruction
-    EvalTerm            mRootWeights[EVAL_TERMS];   // Terms calculated at the root position (used when !mRollingPhase)
     int                 mRecalcWeightFreq;          // Frequency at which to recalculate weights based on game phase (power of two) 
+    bool                mUsePopcnt;                 // Enable use of the hardware POPCNT instruction
+    int                 mCpuLevel;                  // A CPU_* enum value to select the code path
 
 public:
     Engine()
@@ -46,8 +46,9 @@ public:
         mPrintBestMove      = false;
         mPrintedMove        = false;
         mDebugMode          = false;
-        mUsePopcnt          = PlatDetectPopcnt();
         mRecalcWeightFreq   = 1;
+        mUsePopcnt          = PlatDetectPopcnt();
+        mCpuLevel           = PlatDetectCpuLevel();
 
         mHashTable.SetSize( mTableSize );
     }
@@ -67,6 +68,8 @@ public:
     {
         this->Reset();
         mRoot = pos;
+
+        mRoot.mHash = mRoot.CalcHash();
     }
 
     Position GetPosition() const
@@ -89,6 +92,16 @@ public:
     {
         mDebugMode = debug;
     }
+
+    void OverrideCpuLevel( int level )
+    {
+        mCpuLevel = level;
+    }
+
+    void OverridePopcnt( bool enabled )
+    {
+        mUsePopcnt = enabled;
+    }    
 
     void LoadWeightParam( const char* name, int openingVal, int midgameVal, int endgameVal ) 
     {
@@ -160,9 +173,6 @@ public:
         mPrintBestMove  = true;
         mPrintedMove    = false;
 
-        float gamePhase = mEvaluator.CalcGamePhase< DISABLE_POPCNT >( mRoot );
-        mEvaluator.GenerateWeights( mRootWeights, gamePhase );
-
         PlatSpawnThread( &Engine::SearchThreadProc, this );
         mThreadsRunning++;
 
@@ -218,11 +228,7 @@ private:
                 break;
 
             Timer levelTimer;
-
-            if( mUsePopcnt )
-                this->RunToDepth< ENABLE_POPCNT >( depth );
-            else
-                this->RunToDepth< DISABLE_POPCNT >( depth );
+            this->RunToDepthForCpu( depth );
 
             i64 currLevelElapsed = levelTimer.GetElapsedMs();
             if( !mExitSearch && (mTargetTime != NO_TIME_LIMIT) )
@@ -368,9 +374,11 @@ private:
         return( targetTime );
     }
 
-    template< int POPCNT >
-    EvalTerm NegaMax( Position& pos, int ply, int depth, EvalTerm alpha, EvalTerm beta, MoveList* pv_new, bool onPvPrev )
+    template< int POPCNT, typename SIMD >
+    EvalTerm NegaMax( const Position& pos, const MoveMap& moveMap, EvalTerm score, int ply, int depth, EvalTerm alpha, EvalTerm beta, MoveList* pv_new, bool onPvPrev )
     {
+        const int LANES = SimdWidth< SIMD >::LANES;
+
         mMetrics.mNodesTotal++;
         mMetrics.mNodesAtPly[ply]++;
 
@@ -380,20 +388,8 @@ private:
         if( POPCNT )
             mHashTable.Prefetch( pos.mHash );
 
-        EvalTerm  currWeights[EVAL_TERMS];
-        EvalTerm* useWeights = mRootWeights;
-
-        if( (ply & (mRecalcWeightFreq - 1)) == 0 )
-        {
-            float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( pos );
-            mEvaluator.GenerateWeights( currWeights, gamePhase );
-            useWeights = currWeights;
-        }
-
-        EvalTerm score = (EvalTerm) mEvaluator.Evaluate< POPCNT >( pos, useWeights );
-
         MoveList moves;
-        moves.FindMoves( pos );
+        moves.UnpackMoveMap( pos, moveMap );
 
         if( moves.mCount == 0 )
             return( EVAL_NO_MOVES );
@@ -426,11 +422,10 @@ private:
                 int     lowerBoundBefore    = samePlayer? tt.mScore    : -tt.mScore;
                 int     depthBefore         = tt.mDepth;
 
-                if( samePlayer )
-                    if( failedHighBefore && (lowerBoundBefore >= beta) && (depthBefore >= depth) )
-                        return( beta );
+                if( failedHighBefore && (lowerBoundBefore >= beta) && (depthBefore >= depth) )
+                    return( beta );
 
-                if( samePlayer & !(tt.mFailHigh || tt.mFailLow) )
+                if( !(tt.mFailHigh || tt.mFailLow) )
                     moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, TT_BEST_MOVE );
             }
         }
@@ -441,41 +436,83 @@ private:
             moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, PRINCIPAL_VARIATION );
         }
 
-        EvalTerm    best    = alpha;
-        int         bestIdx = -1;
+        EvalTerm    weights[EVAL_TERMS];
+        int         movesTried  = 0;
+        int         simdIdx     = LANES - 1;
+        EvalTerm    bestScore   = alpha;
+        MoveSpec    bestMove;
 
-        while( (moves.mTried < moves.mCount) && (best < beta) )
+        float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( pos );
+        mEvaluator.GenerateWeights( weights, gamePhase );
+
+        MoveSpec PIGEON_ALIGN_SIMD childSpec[LANES];
+        Position PIGEON_ALIGN_SIMD childPos[LANES];
+        MoveMap  PIGEON_ALIGN_SIMD childMoveMap[LANES];
+        u64      PIGEON_ALIGN_SIMD childScore[LANES];
+
+        while( (movesTried < moves.mCount) && (bestScore < beta) )
         {
-            int idx = moves.ChooseBestUntried();
-            MoveSpec& move = moves.mMove[idx];
+            simdIdx++;
+            if( simdIdx >= LANES )
+            {
+                MoveSpecT< SIMD >   simdSpec;
+                PositionT< SIMD >   simdPos;
+                MoveMapT< SIMD >    simdMoveMap;
+                SIMD                simdScore;
 
-            Position child = pos;
-            child.Step( move );
+                for( int idxLane = 0; idxLane < LANES; idxLane++ )
+                {
+                    if( moves.mTried >= moves.mCount )
+                        break;
+
+                    int idxMove = moves.ChooseBestUntried();
+                    childSpec[idxLane] = moves.mMove[idxMove];
+
+                    SimdInsert( simdSpec.mSrc,  childSpec[idxLane].mSrc,  idxLane );
+                    SimdInsert( simdSpec.mDest, childSpec[idxLane].mDest, idxLane );
+                    SimdInsert( simdSpec.mType, childSpec[idxLane].mType, idxLane );
+
+                    mMetrics.mNodesTotalSimd++;
+                }
+
+                simdPos.Broadcast( pos );
+                simdPos.Step( simdSpec );
+                simdPos.CalcMoveMap( &simdMoveMap );
+                simdScore = mEvaluator.Evaluate< POPCNT, SIMD >( simdPos, weights );
+
+                *((SIMD*) childScore) = simdScore;
+
+                Unswizzle< SIMD >( &simdPos,     childPos );
+                Unswizzle< SIMD >( &simdMoveMap, childMoveMap );
+
+                simdIdx = 0;
+            }
 
             MoveList pv_child;
-            EvalTerm score = -this->NegaMax< POPCNT >( child, ply + 1, depth - 1, -beta, -best, &pv_child, (move.mType == PRINCIPAL_VARIATION) );
+            EvalTerm score = -this->NegaMax< POPCNT, SIMD >( 
+                childPos[simdIdx], childMoveMap[simdIdx], (EvalTerm) childScore[simdIdx], 
+                ply + 1, depth - 1, -beta, -bestScore, &pv_child, 
+                (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
 
-            if( score > best )
+            if( score > bestScore )
             {
+                bestScore   = score;
+                bestMove    = childSpec[simdIdx];
+
                 pv_new->mCount = 1;
-                pv_new->mMove[0] = move;
+                pv_new->mMove[0] = bestMove;
                 pv_new->Append( pv_child );
-
-                best    = score;
-                bestIdx = idx;
-
-                mMetrics.mPvByOrder[moves.mTried - 1][move.mType]++;
             }
+
+            movesTried++;
         }
 
         if( mExitSearch )
             return( EVAL_SEARCH_ABORTED );
 
-        bool        failedHigh  = (best > beta);
-        bool        failedLow   = (bestIdx < 0);
-        EvalTerm    result      = failedHigh? beta : (failedLow? alpha : best);
-
-        mMetrics.mCutsByOrder[moves.mTried - 1] += failedHigh? 1 : 0;
+        bool        failedHigh  = (bestScore > beta);
+        bool        failedLow   = (bestScore == alpha);
+        EvalTerm    result      = failedHigh? beta : (failedLow? alpha : bestScore);
 
         if( depth > 0 )
         {
@@ -484,8 +521,8 @@ private:
             tt.mHashVerify  = pos.mHash >> 40;
             tt.mDepth       = depth;
             tt.mScore       = result;
-            tt.mBestSrc     = (failedLow || failedHigh)? 0 : moves.mMove[bestIdx].mSrc;
-            tt.mBestDest    = (failedLow || failedHigh)? 0 : moves.mMove[bestIdx].mDest;
+            tt.mBestSrc     = (failedLow || failedHigh)? 0 : bestMove.mSrc;
+            tt.mBestDest    = (failedLow || failedHigh)? 0 : bestMove.mDest;
             tt.mFailLow     = failedLow;
             tt.mFailHigh    = failedHigh;
             tt.mWhiteMove   = pos.mWhiteToMove? true : false;
@@ -496,8 +533,33 @@ private:
         return( result );
     }
 
+    void RunToDepthForCpu( int depth )
+    {
+        switch( mCpuLevel )
+        {
+#if PIGEON_ENABLE_SSE2
+        case  CPU_SSE2: this->RunToDepth< simd2_sse2 >( depth ); break;
+#endif
+#if PIGEON_ENABLE_SSE4
+        case  CPU_SSE4: this->RunToDepth< simd2_sse4 >( depth ); break;
+#endif
+#if PIGEON_ENABLE_AVX2
+        case  CPU_AVX2: this->RunToDepth< simd4_avx2 >( depth ); break;
+#endif
+        default:        this->RunToDepth< u64 >(        depth ); break;
+        }
+    }
 
-    template< int POPCNT >
+    template< typename SIMD >
+    void RunToDepth( int depth )
+    {
+        if( mUsePopcnt )
+            this->RunToDepth< ENABLE_POPCNT, SIMD >( depth );
+        else
+            this->RunToDepth< DISABLE_POPCNT, SIMD >( depth );
+    }
+
+    template< int POPCNT, typename SIMD >
     void RunToDepth( int depth )
     {
         mMetrics.Clear();
@@ -505,7 +567,17 @@ private:
         MoveList pv;
         Timer    searchTime;
 
-        EvalTerm score = this->NegaMax< POPCNT >( mRoot, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
+        MoveMap     moveMap;
+        EvalTerm    rootWeights[EVAL_TERMS];
+        EvalTerm    rootScore;
+
+        mRoot.CalcMoveMap( &moveMap );
+
+        float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( mRoot );
+        mEvaluator.GenerateWeights( rootWeights, gamePhase );
+        rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, rootWeights );
+
+        EvalTerm score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
         if( mExitSearch )
             return;
 
@@ -530,6 +602,9 @@ private:
         printf( "\n" );
 
         fflush( stdout );
+
+        if( mDebugMode )
+            printf( "info string simdnodes %"PRId64"\n", mMetrics.mNodesTotalSimd );
 
         *mStorePv   = pv;
         mValuePv    = score;

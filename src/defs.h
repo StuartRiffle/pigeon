@@ -144,8 +144,6 @@ INLINE T CountBits( const T& val )
     return PlatCountBits64< POPCNT >( val ); 
 }
 
-template< typename T > INLINE   int     SimdWidth()                                                         { return( 1 ); }
-template< typename T > INLINE   bool    SimdSupported()                                                     { return( false ); }
 template< typename T > INLINE   T       MaskAllClear()                                                      { return(  T( 0 ) ); }
 template< typename T > INLINE   T       MaskAllSet()                                                        { return( ~T( 0 ) ); }
 template< typename T > INLINE   T       MaskOut( const T& val, const T& bitsToClear )                       { return( val & ~bitsToClear ); }
@@ -157,6 +155,7 @@ template< typename T > INLINE   T       SelectWithMask(  const T& mask, const T&
 template< typename T > INLINE   T       CmpEqual( const T& a, const T& b )                                  { return( (a == b)? MaskAllSet< T >() : MaskAllClear< T >() ); }
 template< typename T > INLINE   T       ByteSwap( const T& val )                                            { return PlatByteSwap64( val ); }
 template< typename T > INLINE   T       MulLow32( const T& val, u32 scale )                                 { return( val * scale ); }
+template< typename T > INLINE   T       SubtractSat16( const T& a, const T& b )                             { return( (a > b)? (u16) (a - b) : 0 ); }
 
 template< typename T > INLINE   T       Min( const T& a, const T& b )                                       { return( (a < b)? a : b ); }
 template< typename T > INLINE   T       Max( const T& a, const T& b )                                       { return( (b > a)? b : a ); }
@@ -165,26 +164,25 @@ template< typename T > INLINE   T       SquareBit( const T& idx )               
 template< typename T > INLINE   T       LowestBit( const T& val )                                           { return( val & -val ); }
 template< typename T > INLINE   T       ClearLowestBit( const T& val )                                      { return( val & (val - 1) ); }
 template< typename T > INLINE   T       FlipSquareIndex( const T& idx )                                     { return( ((T( 63 ) - idx) & 0x38) | (idx & 0x7) ); }
-template< typename T > INLINE   T       XorShiftA( T n )                                                    { return( n ^= (n << 18), n ^= (n >> 31), n ^= (n << 11), n ); }    
-template< typename T > INLINE   T       XorShiftB( T n )                                                    { return( n ^= (n << 19), n ^= (n >> 29), n ^= (n <<  8), n ); }    
-template< typename T > INLINE   T       XorShiftC( T n )                                                    { return( n ^= (n <<  8), n ^= (n >> 29), n ^= (n << 19), n ); }    
-template< typename T > INLINE   T       XorShiftD( T n )                                                    { return( n ^= (n << 11), n ^= (n >> 31), n ^= (n << 18), n ); }    
+template< typename T > INLINE   T       XorShiftA( const T& val )                                           { T n = val; return( n ^= (n << 18), n ^= (n >> 31), n ^= (n << 11), n ); }    
+template< typename T > INLINE   T       XorShiftB( const T& val )                                           { T n = val; return( n ^= (n << 19), n ^= (n >> 29), n ^= (n <<  8), n ); }    
+template< typename T > INLINE   T       XorShiftC( const T& val )                                           { T n = val; return( n ^= (n <<  8), n ^= (n >> 29), n ^= (n << 19), n ); }    
+template< typename T > INLINE   T       XorShiftD( const T& val )                                           { T n = val; return( n ^= (n << 11), n ^= (n >> 31), n ^= (n << 18), n ); }    
 template< typename T > INLINE   T       ClearBitIndex( const T& val, const T& idx )                         { return( val & ~SquareBit( idx ) ); }
 template< typename T > INLINE   T       LowestBitIndex( const T& val )                                      { return PlatLowestBitIndex64( val ); }
 template< typename T > INLINE   T       ConsumeLowestBitIndex( T& val )                                     { T idx = LowestBitIndex( val ); val = ClearLowestBit( val ); return( idx ); }
 template< typename T > INLINE   void    Exchange( T& a, T& b )                                              { T temp = a; a = b; b = temp; }
+template< typename T > INLINE   void    Transpose( const T* src, int srcStep, T* dest, int destStep )       { *dest = *src; }
+template< typename T > INLINE   void    SimdInsert( T& dest, u64 val, int lane )                            { dest = val; }
+                                        
 
+template< typename T > struct   MoveSpecT;
+template< typename T > struct   MoveMapT;
+template< typename T > struct   PositionT;
 
-
-
-
-template< typename T > struct MoveSpecT;
-template< typename T > struct MoveMapT;
-template< typename T > struct PositionT;
-
-typedef MoveSpecT< u8 >     MoveSpec;
-typedef MoveMapT<  u64 >    MoveMap;
-typedef PositionT< u64 >    Position;
+typedef MoveSpecT< u8 >         MoveSpec;
+typedef MoveMapT<  u64 >        MoveMap;
+typedef PositionT< u64 >        Position;
 
 #endif // PIGEON_DEFS_H__
 };
