@@ -115,11 +115,11 @@ namespace Pigeon
 
     INLINE bool PlatCheckCpuFlag( int leaf, int idxWord, int idxBit )
     {
-        unsigned int info[4] = { 0 };
-
     #if PIGEON_MSVC
+        int info[4] = { 0 };
         __cpuid( info, leaf );
     #elif PIGEON_GCC
+        unsigned int info[4] = { 0 };
         if( !__get_cpuid( leaf, info + 0, info + 1, info + 2, info + 3 ) )
             return( false );
     #endif
