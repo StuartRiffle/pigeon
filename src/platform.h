@@ -3,6 +3,10 @@
 #ifndef PIGEON_PLATFORM_H__
 #define PIGEON_PLATFORM_H__
 
+#ifndef _HAS_EXCEPTIONS    
+#define _HAS_EXCEPTIONS   0
+#endif
+
 #include <stdint.h>
 
 #if defined( _MSC_VER )
@@ -29,11 +33,8 @@
     #define PIGEON_ALIGN( _N )  __declspec( align( _N ) )
     #define PIGEON_ALIGN_SIMD   __declspec( align( 32 ) )
     #define PRId64              "I64d"
-    #define _HAS_EXCEPTIONS     (0)
     #define PIGEON_ALLOW_POPCNT (1)
 
-
-    
     extern "C" void * __cdecl memset(void *, int, size_t);
     #pragma intrinsic( memset )        
 

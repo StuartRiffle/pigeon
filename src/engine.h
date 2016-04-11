@@ -591,20 +591,20 @@ private:
                  break;
 
         printf( "info " );
-        printf( "depth %d ",        depth );
-        printf( "seldepth %d ",     seldepth );
-        printf( "score cp %d ",     score );
-        printf( "hashfull %d ",     hashfull );
-        printf( "nodes %"PRId64" ", mMetrics.mNodesTotal);
-        printf( "time %d ",         mSearchElapsed.GetElapsedMs() );
-        printf( "nps %"PRId64" ",   nps );
-        printf( "pv " );            FEN::PrintMoveList( pv );
+        printf( "depth %d ",            depth );
+        printf( "seldepth %d ",         seldepth );
+        printf( "score cp %d ",         score );
+        printf( "hashfull %d ",         hashfull );
+        printf( "nodes %" PRId64 " ",   mMetrics.mNodesTotal);
+        printf( "time %d ",             (int) mSearchElapsed.GetElapsedMs() );
+        printf( "nps %" PRId64 " ",     nps );
+        printf( "pv " );                FEN::PrintMoveList( pv );
         printf( "\n" );
 
         fflush( stdout );
 
         if( mDebugMode )
-            printf( "info string simdnodes %"PRId64"\n", mMetrics.mNodesTotalSimd );
+            printf( "info string simdnodes %" PRId64 "\n", mMetrics.mNodesTotalSimd );
 
         *mStorePv   = pv;
         mValuePv    = score;

@@ -106,10 +106,10 @@ struct Perft
 
             printf( "info string divide %d ", depth );
             FEN::PrintMoveSpec( valid.mMove[i] );
-            printf( "  %"PRId64"\n", count );
+            printf( "  %" PRId64 "\n", count );
         }
 
-        printf( "info string divide %d total %"PRId64"\n", depth, total );
+        printf( "info string divide %d total %" PRId64 "\n", depth, total );
     }
 };
 

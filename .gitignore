@@ -23,3 +23,6 @@ proj/*.suo
 proj/*.user
 proj/*.userosscache
 proj/*.sln.docstates
+proj/*.VC.opendb
+proj/*.VC.db
+
