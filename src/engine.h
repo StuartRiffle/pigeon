@@ -25,9 +25,9 @@ class Engine
     bool                mPrintBestMove;             // Output best move while searching
     bool                mPrintedMove;               // Make sure only one "bestmove" is output per "go" 
     bool                mDebugMode;                 // This currently does nothing
-    int                 mRecalcWeightFreq;          // Frequency at which to recalculate weights based on game phase (power of two) 
     bool                mUsePopcnt;                 // Enable use of the hardware POPCNT instruction
     int                 mCpuLevel;                  // A CPU_* enum value to select the code path
+	int					mNumHelperThreads;			// Number of lazy SMP threads to spawn
 
 public:
     Engine()
@@ -46,9 +46,9 @@ public:
         mPrintBestMove      = false;
         mPrintedMove        = false;
         mDebugMode          = false;
-        mRecalcWeightFreq   = 1;
         mUsePopcnt          = PlatDetectPopcnt();
         mCpuLevel           = PlatDetectCpuLevel();
+        mNumHelperThreads   = 0;
 
         mHashTable.SetSize( mTableSize );
     }
@@ -92,6 +92,11 @@ public:
     {
         mDebugMode = debug;
     }
+
+	void SetThreadCount( int count )
+	{
+        mNumHelperThreads = (count > 1)? (count - 1) : 0;
+	}
 
     void OverrideCpuLevel( int level )
     {
@@ -173,6 +178,12 @@ public:
         mPrintBestMove  = true;
         mPrintedMove    = false;
 
+        for( int i = 0; i < mNumHelperThreads; i++ )
+        {
+            PlatSpawnThread( &Engine::HelperThreadProc, this );
+            mThreadsRunning++;
+        }
+
         PlatSpawnThread( &Engine::SearchThreadProc, this );
         mThreadsRunning++;
 
@@ -194,7 +205,7 @@ public:
 
     void PrintPosition()
     {
-        printf( "info string position " );
+		printf( "info string position " );
         FEN::PrintPosition( mRoot );
         printf( "\n" );
     }
@@ -209,7 +220,15 @@ private:
         return( NULL );
     }
 
-    static void* TimerThreadProc( void* param )
+	static void* HelperThreadProc( void* param )
+	{
+		Engine* engine = reinterpret_cast< Engine* >( param );
+		engine->LazyHelperThread();
+		engine->mThreadsDone.Post();
+		return( NULL );
+	}
+
+	static void* TimerThreadProc( void* param )
     {
         Engine* engine = reinterpret_cast< Engine* >( param );
         engine->TimerThread();
@@ -222,13 +241,15 @@ private:
         int depth = 1;
         i64 prevLevelElapsed = 0;
 
+        mMetrics.Clear();
+
         while( !mExitSearch )
         {
             if( (mDepthLimit > 0) && (depth > mDepthLimit) )
                 break;
 
             Timer levelTimer;
-            this->RunToDepthForCpu( depth );
+            this->RunToDepthForCpu( depth, true );
 
             i64 currLevelElapsed = levelTimer.GetElapsedMs();
             if( !mExitSearch && (mTargetTime != NO_TIME_LIMIT) )
@@ -238,6 +259,8 @@ private:
                     if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
                     {
                         printf( "info string bailing at level %d\n", depth );
+
+						mExitSearch = true;
                         break;
                     }
                 }
@@ -254,6 +277,17 @@ private:
             mPrintBestMove = false;
         }
     }
+
+	void LazyHelperThread()
+	{
+		int depth = 5;
+
+		while( !mExitSearch )
+        {
+			this->RunToDepthForCpu( depth );
+            depth++;
+        }
+	}
 
     void TimerThread()
     {
@@ -487,16 +521,7 @@ private:
 				*((SIMD*) unpackScore) = simdScore;
 
 				for( int idxLane = 0; idxLane < LANES; idxLane++ )
-				{
-					u64 checkScore = mEvaluator.Evaluate< POPCNT, u64 >( childPos[idxLane], weights );
 					childScore[idxLane] = (EvalTerm) unpackScore[idxLane];
-					if( childScore[idxLane] != checkScore )
-					{
-						checkScore = mEvaluator.Evaluate< POPCNT, u64 >( childPos[idxLane], weights );
-						simdScore = mEvaluator.Evaluate< POPCNT, SIMD >( simdPos, weights );
-						printf( "" );
-					}
-				}
 
 				simdIdx = 0;
             }
@@ -546,40 +571,37 @@ private:
         return( result );
     }
 
-    void RunToDepthForCpu( int depth )
+    void RunToDepthForCpu( int depth, bool printPv = false )
     {
         switch( mCpuLevel )
         {
 #if PIGEON_ENABLE_SSE2
-        case  CPU_SSE2: this->RunToDepth< simd2_sse2 >( depth ); break;
+        case  CPU_SSE2: this->RunToDepth< simd2_sse2 >( depth, printPv ); break;
 #endif
 #if PIGEON_ENABLE_SSE4
-        case  CPU_SSE4: this->RunToDepth< simd2_sse4 >( depth ); break;
+        case  CPU_SSE4: this->RunToDepth< simd2_sse4 >( depth, printPv ); break;
 #endif
 #if PIGEON_ENABLE_AVX2
-        case  CPU_AVX2: this->RunToDepth< simd4_avx2 >( depth ); break;
+        case  CPU_AVX2: this->RunToDepth< simd4_avx2 >( depth, printPv ); break;
 #endif
-        default:        this->RunToDepth< u64 >(        depth ); break;
+        default:        this->RunToDepth< u64 >(        depth, printPv ); break;
         }
     }
 
     template< typename SIMD >
-    void RunToDepth( int depth )
+    void RunToDepth( int depth, bool printPv )
     {
         if( mUsePopcnt )
-            this->RunToDepth< ENABLE_POPCNT, SIMD >( depth );
+            this->RunToDepth< ENABLE_POPCNT, SIMD >(  depth, printPv );
         else
-            this->RunToDepth< DISABLE_POPCNT, SIMD >( depth );
+            this->RunToDepth< DISABLE_POPCNT, SIMD >( depth, printPv );
     }
 
     template< int POPCNT, typename SIMD >
-    void RunToDepth( int depth )
+    void RunToDepth( int depth, bool printPv )
     {
-        mMetrics.Clear();
-
-        MoveList pv;
-        Timer    searchTime;
-
+        MoveList	pv;
+        Timer		searchTime;
         MoveMap     moveMap;
         EvalWeight  rootWeights[EVAL_TERMS];
         EvalTerm    rootScore;
@@ -590,37 +612,42 @@ private:
         mEvaluator.GenerateWeights( rootWeights, gamePhase );
         rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, rootWeights );
 
+		searchTime.Reset();
         EvalTerm score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
+
         if( mExitSearch )
             return;
 
-        i64 elapsed     = Max( searchTime.GetElapsedMs(), (i64) 1 );
-        i64 nps         = mMetrics.mNodesTotal * 1000L / elapsed;
-        int hashfull    = (int) (mHashTable.EstimateUtilization() * 1000);
-        int seldepth    = 0;
+        if( printPv )
+        {
+            i64 elapsed     = Max( searchTime.GetElapsedMs(), (i64) 1 );
+            i64 nps         = mMetrics.mNodesTotal * 1000L / elapsed;
+            int hashfull    = (int) (mHashTable.EstimateUtilization() * 1000);
+            int seldepth    = 0;
 
-        for( seldepth = MAX_METRICS_DEPTH - 1; seldepth > depth; seldepth-- )
-             if( mMetrics.mNodesAtPly[seldepth] )
-                 break;
+            for( seldepth = MAX_METRICS_DEPTH - 1; seldepth > depth; seldepth-- )
+                 if( mMetrics.mNodesAtPly[seldepth] )
+                     break;
 
-        printf( "info " );
-        printf( "depth %d ",            depth );
-        printf( "seldepth %d ",         seldepth );
-        printf( "score cp %d ",         score );
-        printf( "hashfull %d ",         hashfull );
-        printf( "nodes %" PRId64 " ",   mMetrics.mNodesTotal);
-        printf( "time %d ",             (int) mSearchElapsed.GetElapsedMs() );
-        printf( "nps %" PRId64 " ",     nps );
-        printf( "pv " );                FEN::PrintMoveList( pv );
-        printf( "\n" );
+            printf( "info " );
+            printf( "depth %d ",            depth );
+            printf( "seldepth %d ",         seldepth );
+            printf( "score cp %d ",         score );
+            printf( "hashfull %d ",         hashfull );
+            printf( "nodes %" PRId64 " ",   mMetrics.mNodesTotal);
+            printf( "time %d ",             (int) mSearchElapsed.GetElapsedMs() );
+            printf( "nps %" PRId64 " ",     nps );
+            printf( "pv " );                FEN::PrintMoveList( pv );
+            printf( "\n" );
 
-        fflush( stdout );
+            fflush( stdout );
 
-        if( mDebugMode )
-            printf( "info string simdnodes %" PRId64 "\n", mMetrics.mNodesTotalSimd );
+            if( mDebugMode )
+                printf( "info string simdnodes %" PRId64 "\n", mMetrics.mNodesTotalSimd );
 
-        *mStorePv   = pv;
-        mValuePv    = score;
+            *mStorePv   = pv;
+            mValuePv    = score;
+        }
     }
 };
 

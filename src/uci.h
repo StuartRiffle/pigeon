@@ -253,6 +253,12 @@ struct UCI
                     }
                 }
             }
+            else if( tokens.Consume( "threads" ) )
+            {
+                int count = tokens.ConsumeInt();
+                if( count > 0 )
+                    engine->SetThreadCount( count );
+            }
             else if( tokens.Consume( "time" ) )
             {
                 Timer   commandTimer;
