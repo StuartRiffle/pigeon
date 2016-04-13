@@ -103,7 +103,7 @@ public:
         mUsePopcnt = enabled;
     }    
 
-    void LoadWeightParam( const char* name, int openingVal, int midgameVal, int endgameVal ) 
+    void LoadWeightParam( const char* name, float openingVal, float midgameVal, float endgameVal ) 
     {
         int idx = mEvaluator.GetWeightIdx( name );
 
@@ -436,7 +436,7 @@ private:
             moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, PRINCIPAL_VARIATION );
         }
 
-        EvalTerm    weights[EVAL_TERMS];
+        EvalWeight  weights[EVAL_TERMS];
         int         movesTried  = 0;
         int         simdIdx     = LANES - 1;
         EvalTerm    bestScore   = alpha;
@@ -448,7 +448,7 @@ private:
         MoveSpec PIGEON_ALIGN_SIMD childSpec[LANES];
         Position PIGEON_ALIGN_SIMD childPos[LANES];
         MoveMap  PIGEON_ALIGN_SIMD childMoveMap[LANES];
-        u64      PIGEON_ALIGN_SIMD childScore[LANES];
+        EvalTerm PIGEON_ALIGN_SIMD childScore[LANES];
 
         while( (movesTried < moves.mCount) && (bestScore < beta) )
         {
@@ -480,12 +480,25 @@ private:
                 simdPos.CalcMoveMap( &simdMoveMap );
                 simdScore = mEvaluator.Evaluate< POPCNT, SIMD >( simdPos, weights );
 
-                *((SIMD*) childScore) = simdScore;
-
                 Unswizzle< SIMD >( &simdPos,     childPos );
                 Unswizzle< SIMD >( &simdMoveMap, childMoveMap );
 
-                simdIdx = 0;
+				u64 PIGEON_ALIGN_SIMD unpackScore[LANES];
+				*((SIMD*) unpackScore) = simdScore;
+
+				for( int idxLane = 0; idxLane < LANES; idxLane++ )
+				{
+					u64 checkScore = mEvaluator.Evaluate< POPCNT, u64 >( childPos[idxLane], weights );
+					childScore[idxLane] = (EvalTerm) unpackScore[idxLane];
+					if( childScore[idxLane] != checkScore )
+					{
+						checkScore = mEvaluator.Evaluate< POPCNT, u64 >( childPos[idxLane], weights );
+						simdScore = mEvaluator.Evaluate< POPCNT, SIMD >( simdPos, weights );
+						printf( "" );
+					}
+				}
+
+				simdIdx = 0;
             }
 
             MoveList pv_child;
@@ -568,7 +581,7 @@ private:
         Timer    searchTime;
 
         MoveMap     moveMap;
-        EvalTerm    rootWeights[EVAL_TERMS];
+        EvalWeight  rootWeights[EVAL_TERMS];
         EvalTerm    rootScore;
 
         mRoot.CalcMoveMap( &moveMap );

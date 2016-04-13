@@ -110,6 +110,16 @@ public:
     {
         return( (int) this->ConsumeInt64() );
     }
+
+	float ConsumeFloat()
+	{
+		const char* numstr  = this->ConsumeNext();
+
+		if( numstr )
+			return( (float) atof( numstr ) );
+
+		return( 0.0f );
+	}
 };
 
 #endif // PIGEON_TOKEN_H__

@@ -271,9 +271,9 @@ struct UCI
 
                 if( name )
                 {
-                    int openingVal = tokens.ConsumeInt();
-                    int midgameVal = tokens.ConsumeInt();
-                    int endgameVal = tokens.ConsumeInt();
+                    float openingVal = tokens.ConsumeFloat();
+                    float midgameVal = tokens.ConsumeFloat();
+                    float endgameVal = tokens.ConsumeFloat();
 
                     engine->LoadWeightParam( name, openingVal, midgameVal, endgameVal );
                 }

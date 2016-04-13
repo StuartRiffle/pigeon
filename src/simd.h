@@ -108,7 +108,7 @@ template<> INLINE simd2_sse2    SelectIfZero<    simd2_sse2 >( const simd2_sse2&
 template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a )                        { return( _mm_andnot_si128( _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ), a.vec ) ); }
 template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( a.vec, b.vec, _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ) ) ); }
 template<> INLINE simd2_sse2    SelectWithMask<  simd2_sse2 >( const simd2_sse2& mask, const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( b.vec, a.vec, mask.vec ) ); }
-template<> INLINE simd2_sse2    SubtractSat16<   simd2_sse2 >( const simd2_sse2& a,    const simd2_sse2& b )                        { return( _mm_subs_epi16( a.vec, b.vec ) ); }
+template<> INLINE simd2_sse2    SubClampZero<    simd2_sse2 >( const simd2_sse2& a,    const simd2_sse2& b )                        { return( _mm_select( _mm_setzero_si128(), _mm_sub_epi64( a.vec, b.vec ), _mm_cmplt_epi32( b.vec, a.vec ) ) ); }
 
 
 template<>
@@ -207,7 +207,7 @@ template<> INLINE simd2_sse4    SelectIfZero<    simd2_sse4 >( const simd2_sse4&
 template<> INLINE simd2_sse4    SelectIfNotZero< simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a )                        { return( _mm_andnot_si128( _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ), a.vec ) ); }
 template<> INLINE simd2_sse4    SelectIfNotZero< simd2_sse4 >( const simd2_sse4& val,  const simd2_sse4& a, const simd2_sse4& b )   { return( _mm_select( a.vec, b.vec, _mm_cmpeq_epi64( val.vec, _mm_setzero_si128() ) ) ); }
 template<> INLINE simd2_sse4    SelectWithMask<  simd2_sse4 >( const simd2_sse4& mask, const simd2_sse4& a, const simd2_sse4& b )   { return( _mm_select( b.vec, a.vec, mask.vec ) ); }
-template<> INLINE simd2_sse4    SubtractSat16<   simd2_sse4 >( const simd2_sse4& a,    const simd2_sse4& b )                        { return( _mm_subs_epi16( a.vec, b.vec ) ); }
+template<> INLINE simd2_sse4    SubClampZero<    simd2_sse4 >( const simd2_sse4& a,    const simd2_sse4& b )                        { return( _mm_select( _mm_setzero_si128(), _mm_sub_epi64( a.vec, b.vec ), _mm_cmplt_epi32( b.vec, a.vec ) ) ); }
 
 template<>
 struct SimdWidth< simd2_sse4 >

@@ -65,7 +65,8 @@ enum
 };
 
 
-typedef i16 EvalTerm;
+typedef i16     EvalTerm;
+typedef i32     EvalWeight;
 
 const int       PIGEON_VER_MAJ      = 1;
 const int       PIGEON_VER_MIN      = 34;
@@ -81,6 +82,8 @@ const int       MAX_TIME_SLICE      = 200;
 const int       LAG_SAFETY_BUFFER   = 500;
 const int       NO_TIME_LIMIT       = -1;
 const int       PERFT_PARALLEL_MAX  = 5;
+const int       WEIGHT_SHIFT        = 16;
+const float     WEIGHT_SCALE        = (1 << WEIGHT_SHIFT);
 
 const EvalTerm  EVAL_SEARCH_ABORTED = 0x7FFF;
 const EvalTerm  EVAL_MAX            = 0x7F00;
@@ -155,7 +158,7 @@ template< typename T > INLINE   T       SelectWithMask(  const T& mask, const T&
 template< typename T > INLINE   T       CmpEqual( const T& a, const T& b )                                  { return( (a == b)? MaskAllSet< T >() : MaskAllClear< T >() ); }
 template< typename T > INLINE   T       ByteSwap( const T& val )                                            { return PlatByteSwap64( val ); }
 template< typename T > INLINE   T       MulLow32( const T& val, u32 scale )                                 { return( val * scale ); }
-template< typename T > INLINE   T       SubtractSat16( const T& a, const T& b )                             { return( (a > b)? (u16) (a - b) : 0 ); }
+template< typename T > INLINE   T       SubClampZero( const T& a, const T& b )                              { return( (a > b)? (a - b) : 0 ); }
 
 template< typename T > INLINE   T       Min( const T& a, const T& b )                                       { return( (a < b)? a : b ); }
 template< typename T > INLINE   T       Max( const T& a, const T& b )                                       { return( (b > a)? b : a ); }
