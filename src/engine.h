@@ -26,6 +26,7 @@ class Engine
     bool                mPrintedMove;               // Make sure only one "bestmove" is output per "go" 
     bool                mDebugMode;                 // This currently does nothing
     bool                mUsePopcnt;                 // Enable use of the hardware POPCNT instruction
+    bool                mAllowEarlyMove;            // Bail on iterative deepening if the next level will take too long
     int                 mCpuLevel;                  // A CPU_* enum value to select the code path
 	int					mNumHelperThreads;			// Number of lazy SMP threads to spawn
 
@@ -48,6 +49,7 @@ public:
         mDebugMode          = false;
         mUsePopcnt          = PlatDetectPopcnt();
         mCpuLevel           = PlatDetectCpuLevel();
+        mAllowEarlyMove     = false;
         mNumHelperThreads   = 0;
 
         mHashTable.SetSize( mTableSize );
@@ -152,6 +154,15 @@ public:
 
     void Go( SearchConfig* conf )
     {
+        if( mRoot.GetPlyZeroBased() == 0 )
+        {
+            // This is the entire opening book so far :)
+
+            printf( "bestmove e2e4\n" );
+            fflush( stdout );
+            return;
+        }
+
         mSearchElapsed.Reset();
 
         MoveList valid;
@@ -168,6 +179,7 @@ public:
         this->Stop();
 
         mBestLine.Clear();
+        mMetrics.Clear();
 
         mConfig         = *conf;
         mStorePv        = &mBestLine;
@@ -177,6 +189,8 @@ public:
         mExitSearch     = false;
         mPrintBestMove  = true;
         mPrintedMove    = false;
+
+        this->RunToDepthForCpu( 1, true );
 
         for( int i = 0; i < mNumHelperThreads; i++ )
         {
@@ -238,10 +252,8 @@ private:
 
     void SearchThread()
     {
-        int depth = 1;
+        int depth = 2;
         i64 prevLevelElapsed = 0;
-
-        mMetrics.Clear();
 
         while( !mExitSearch )
         {
@@ -251,24 +263,28 @@ private:
             Timer levelTimer;
             this->RunToDepthForCpu( depth, true );
 
-            i64 currLevelElapsed = levelTimer.GetElapsedMs();
-            if( !mExitSearch && (mTargetTime != NO_TIME_LIMIT) )
+            if( mAllowEarlyMove )
             {
-                if( currLevelElapsed > 500 )
+                i64 currLevelElapsed = levelTimer.GetElapsedMs();
+                if( !mExitSearch && (mTargetTime != NO_TIME_LIMIT) )
                 {
-                    if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
+                    if( currLevelElapsed > 500 )
                     {
-                        printf( "info string bailing at level %d\n", depth );
+                        if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
+                        {
+                            printf( "info string bailing at level %d\n", depth );
 
-						mExitSearch = true;
-                        break;
+						    mExitSearch = true;
+                            break;
+                        }
                     }
                 }
+
+                prevLevelElapsed = currLevelElapsed;
             }
 
             depth++;
 
-            prevLevelElapsed = currLevelElapsed;
         }
 
         if( mPrintBestMove )
@@ -378,15 +394,15 @@ private:
             
                 TimePolicy policyTable[] =
                 {
-                    {   60000,  5000,   0   },  // > 60s left? think 5s
-                    {   30000,  3000,   0   },  // > 30s left? think 3s
-                    {   15000,  2000,   0   },  // > 15s left? think 2s
-                    {   10000,  1000,   0   },  // > 10s left? think 1s
-                    {    5000,   500,   0   },  // >  5s left? think 0.5s
-                    {    3000,   500,   9   },  // >  3s left? think 0.5s and limit depth to 9
-                    {    2000,   500,   7   },  // >  2s left? think 0.5s and limit depth to 7
-                    {    1000,   500,   5   },  // >  1s left? think 0.5s and limit depth to 5
-                    {       0,     0,   3   },  //  PANIC NOW: limit depth to 3
+                    {   60000,  5000,   0   },  
+                    {   30000,  4000,   0   },  
+                    {   15000,  3000,   0   },  
+                    {   10000,  2000,   0   },  
+                    {    5000,  1000,   0   },  
+                    {    3000,   500,   0   },  
+                    {    2000,   500,   7   },  
+                    {    1000,   500,   5   },  
+                    {       0,   200,   3   },  
                 };
 
                 TimePolicy* policy = policyTable;
@@ -434,7 +450,9 @@ private:
             if( alpha >= beta )
                 return( beta );
 
-            moves.DiscardQuietMoves();
+            if( !moveMap.IsInCheck() )
+                moves.DiscardQuietMoves();
+
             if( moves.mCount == 0 )
                 return( score );
         }
@@ -486,6 +504,9 @@ private:
 
         while( (movesTried < moves.mCount) && (bestScore < beta) )
         {
+            //if( movesTried == 8 )
+              //  printf( "" );
+
             simdIdx++;
             if( simdIdx >= LANES )
             {
@@ -512,7 +533,7 @@ private:
                 simdPos.Broadcast( pos );
                 simdPos.Step( simdSpec );
                 simdPos.CalcMoveMap( &simdMoveMap );
-                simdScore = mEvaluator.Evaluate< POPCNT, SIMD >( simdPos, weights );
+                simdScore = mEvaluator.Evaluate< POPCNT, SIMD >( simdPos, simdMoveMap, weights );
 
                 Unswizzle< SIMD >( &simdPos,     childPos );
                 Unswizzle< SIMD >( &simdMoveMap, childMoveMap );
@@ -527,14 +548,15 @@ private:
             }
 
             MoveList pv_child;
-            EvalTerm score = -this->NegaMax< POPCNT, SIMD >( 
-                childPos[simdIdx], childMoveMap[simdIdx], (EvalTerm) childScore[simdIdx], 
+
+            EvalTerm subScore = -this->NegaMax< POPCNT, SIMD >( 
+                childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], 
                 ply + 1, depth - 1, -beta, -bestScore, &pv_child, 
                 (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
 
-            if( score > bestScore )
+            if( subScore > bestScore )
             {
-                bestScore   = score;
+                bestScore   = subScore;
                 bestMove    = childSpec[simdIdx];
 
                 pv_new->mCount = 1;
@@ -610,7 +632,7 @@ private:
 
         float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( mRoot );
         mEvaluator.GenerateWeights( rootWeights, gamePhase );
-        rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, rootWeights );
+        rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, rootWeights );
 
 		searchTime.Reset();
         EvalTerm score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );

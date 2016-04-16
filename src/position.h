@@ -34,6 +34,21 @@ struct PIGEON_ALIGN_SIMD MoveMapT
     SIMD        mKingMoves;
     SIMD        mBlackControl;
     SIMD        mCheckMask;
+
+    INLINE SIMD CalcMoveTargets() const
+    {
+        SIMD slidingMoves   = mSlidingMovesNW | mSlidingMovesNE | mSlidingMovesSW | mSlidingMovesSE | mSlidingMovesN  | mSlidingMovesW  | mSlidingMovesE  | mSlidingMovesS;
+        SIMD knightMoves    = mKnightMovesNNW | mKnightMovesNNE | mKnightMovesWNW | mKnightMovesENE | mKnightMovesWSW | mKnightMovesESE | mKnightMovesSSW | mKnightMovesSSE;
+        SIMD otherMoves     = mPawnMovesN | mPawnDoublesN | mPawnAttacksNE | mPawnAttacksNW | mCastlingMoves | mKingMoves;
+        SIMD targets        = (slidingMoves & mCheckMask) | knightMoves | otherMoves;
+
+        return( targets );
+    }
+
+    INLINE SIMD IsInCheck() const
+    {
+        return( ~CmpEqual( mCheckMask, MaskAllSet< SIMD >() ) );
+    }
 };
 
 

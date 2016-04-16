@@ -478,3 +478,14 @@ perft verify 8 84998978956
 # All done
 
 position startpos
+
+
+
+# Mate in 1 (f1f8)
+# k7/pp6/8/8/8/8/8/5RK1 w - - 0 1
+
+# Mate in 2?
+# k7/ppp5/8/R7/8/8/8/6K1 w - - 0 1
+
+# Mate in 2 (f3f7 e8f7 g4h5)
+# 2bqkbn1/2pppp2/np2N3/r3P1p1/p2N2B1/5Q2/PPPPKPP1/RNB2r2 w KQkq - 0 1
