@@ -19,6 +19,7 @@ struct UCI
             printf( "id name Pigeon %d.%02d\n", PIGEON_VER_MAJ, PIGEON_VER_MIN );
             printf( "id author Stuart Riffle \n" );
             printf( "option name Hash type spin default %d\n", TT_MEGS_DEFAULT );
+            printf( "option name OwnBook type check default true\n" );
             printf( "uciok\n" );
         }
         else if( tokens.Consume( "debug" ) )
@@ -35,6 +36,8 @@ struct UCI
                 if( tokens.Consume( "hash" ) && tokens.Consume( "value" ) )
                     engine->SetHashTableSize( tokens.ConsumeInt() );
 
+                if( tokens.Consume( "ownbook" ) && tokens.Consume( "value" ) )
+                    engine->EnableOpeningBook( tokens.Consume( "true" ) != NULL );
             }
         }
         else if( tokens.Consume( "isready" ) )

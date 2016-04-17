@@ -15,10 +15,12 @@
 #include <time.h>
 #include <vector>
 #include <string>
+#include <map>
 
 #include "timer.h"
 #include "fen.h"
 #include "token.h"
+#include "book.h"
 #include "perft.h"
 #include "engine.h"
 #include "uci.h"
@@ -36,7 +38,7 @@ int main( int argc, char** argv )
     printf( "     ^^ "  "    \n" );
     printf( "\n" );
 #if PIGEON_GCC
-    printf( "!! Sorry, the Linux build is apparently broken (type \"perft 3\") !!\n" );
+    printf( "!! Sorry, the Linux build is apparently broken (type \"perft 3\") !!\n" ); 
 #endif
 
     Pigeon::Engine pigeon;
@@ -87,6 +89,6 @@ int main( int argc, char** argv )
         fflush( stdout );
     }
 
-    return( 0 );
+    return( 0 );  
 }
 

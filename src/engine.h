@@ -12,6 +12,7 @@ class Engine
     SearchConfig        mConfig;                    // Search parameters
     SearchMetrics       mMetrics;                   // Runtime metrics
     Evaluator           mEvaluator;                 // Evaluation weights
+    OpeningBook         mOpeningBook;               // Placeholder opening book implementation
     MoveList            mBestLine;                  // Best line found in the search
     MoveList*           mStorePv;                   // Target for PV in active search
     EvalTerm            mValuePv;                   // The evaluation of *mStorePv
@@ -29,6 +30,9 @@ class Engine
     bool                mAllowEarlyMove;            // Bail on iterative deepening if the next level will take too long
     int                 mCpuLevel;                  // A CPU_* enum value to select the code path
 	int					mNumHelperThreads;			// Number of lazy SMP threads to spawn
+    EvalWeight          mRootWeights[EVAL_TERMS];   // Evaluation weights calculated at root position
+    bool                mUseRootWeights;            // When false, recalculate weights at every level
+    bool                mUseOpeningBook;            // Enable use of the opening book
 
 public:
     Engine()
@@ -49,10 +53,13 @@ public:
         mDebugMode          = false;
         mUsePopcnt          = PlatDetectPopcnt();
         mCpuLevel           = PlatDetectCpuLevel();
-        mAllowEarlyMove     = false;
+        mAllowEarlyMove     = true;
         mNumHelperThreads   = 0;
+        mUseRootWeights     = true;
+        mUseOpeningBook     = true;
 
         mHashTable.SetSize( mTableSize );
+        mOpeningBook.Init();
     }
 
     ~Engine()
@@ -82,6 +89,11 @@ public:
     void SetHashTableSize( int megs )
     {
         mTableSize = megs;
+    }
+
+    void EnableOpeningBook( bool enabled )
+    {
+        mUseOpeningBook = enabled;
     }
 
     void Init()
@@ -154,19 +166,34 @@ public:
 
     void Go( SearchConfig* conf )
     {
-        if( mRoot.GetPlyZeroBased() == 0 )
-        {
-            // This is the entire opening book so far :)
-
-            printf( "bestmove e2e4\n" );
-            fflush( stdout );
-            return;
-        }
+        this->Stop();
+        mConfig = *conf;
 
         mSearchElapsed.Reset();
 
         MoveList valid;
         valid.FindMoves( mRoot );
+
+        if( mUseOpeningBook )
+        {
+            const char* movetext = mOpeningBook.GetBookMove( mRoot );
+            if( movetext != NULL )
+            {
+                if( mDebugMode )
+                    printf( "info string opening book says %s\n", movetext );
+
+                MoveSpec spec;
+                FEN::StringToMoveSpec( movetext, spec );
+
+                int idx = valid.LookupMove( spec );
+                if( idx >= 0 )
+                {
+                    printf( "bestmove %s\n", movetext );
+                    fflush( stdout );
+                    return;
+                }
+            }
+        }
 
         if( valid.mCount == 0 )
         {
@@ -176,12 +203,9 @@ public:
             return;
         }
 
-        this->Stop();
-
         mBestLine.Clear();
         mMetrics.Clear();
 
-        mConfig         = *conf;
         mStorePv        = &mBestLine;
         mValuePv        = 0;
         mDepthLimit     = mConfig.mDepthLimit;
@@ -272,7 +296,8 @@ private:
                     {
                         if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
                         {
-                            printf( "info string bailing at level %d\n", depth );
+                            if( mDebugMode )
+                                printf( "info string bailing at level %d\n", depth );
 
 						    mExitSearch = true;
                             break;
@@ -395,10 +420,10 @@ private:
                 TimePolicy policyTable[] =
                 {
                     {   60000,  5000,   0   },  
-                    {   30000,  4000,   0   },  
-                    {   15000,  3000,   0   },  
-                    {   10000,  2000,   0   },  
-                    {    5000,  1000,   0   },  
+                    {   30000,  3000,   0   },  
+                    {   20000,  2000,   0   },  
+                    {   10000,  1000,   0   },  
+                    {    5000,   800,   0   },  
                     {    3000,   500,   0   },  
                     {    2000,   500,   7   },  
                     {    1000,   500,   5   },  
@@ -432,25 +457,31 @@ private:
         mMetrics.mNodesTotal++;
         mMetrics.mNodesAtPly[ply]++;
 
+        if( depth < 1 )
+        {
+            alpha = Max( alpha, score );
+
+            if( alpha >= beta )
+                return( beta );
+        }
+
         if( mExitSearch )
             return( EVAL_SEARCH_ABORTED );
 
         if( POPCNT )
             mHashTable.Prefetch( pos.mHash );
 
+        bool inCheck = (moveMap.IsInCheck() != 0);
+
         MoveList moves;
         moves.UnpackMoveMap( pos, moveMap );
 
         if( moves.mCount == 0 )
-            return( EVAL_NO_MOVES );
+            return( inCheck? EVAL_CHECKMATE : EVAL_STALEMATE );
 
-        if( depth <= 0 )
+        if( depth < 1 )
         {
-            alpha = Max( alpha, score );
-            if( alpha >= beta )
-                return( beta );
-
-            if( !moveMap.IsInCheck() )
+            if( !inCheck )
                 moves.DiscardQuietMoves();
 
             if( moves.mCount == 0 )
@@ -469,16 +500,15 @@ private:
             {
                 mMetrics.mHashHitsAtPly[ply]++;
 
-                bool    samePlayer          = (pos.mWhiteToMove != 0) == tt.mWhiteMove;
-                bool    failedHighBefore    = samePlayer? tt.mFailHigh : tt.mFailLow;
-                int     lowerBoundBefore    = samePlayer? tt.mScore    : -tt.mScore;
-                int     depthBefore         = tt.mDepth;
+                bool        samePlayer          = (pos.mWhiteToMove != 0) == tt.mWhiteMove;
+                bool        failedHighBefore    = samePlayer? tt.mFailHigh : tt.mFailLow;
+                EvalTerm    lowerBoundBefore    = samePlayer? tt.mScore    : -tt.mScore;
+                int         depthBefore         = tt.mDepth;
 
                 if( failedHighBefore && (lowerBoundBefore >= beta) && (depthBefore >= depth) )
                     return( beta );
 
-                if( !(tt.mFailHigh || tt.mFailLow) )
-                    moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, TT_BEST_MOVE );
+                moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, TT_BEST_MOVE );
             }
         }
 
@@ -488,14 +518,20 @@ private:
             moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, PRINCIPAL_VARIATION );
         }
 
-        EvalWeight  weights[EVAL_TERMS];
+        EvalWeight  currWeights[EVAL_TERMS];
+        EvalWeight* weights     = mRootWeights;
         int         movesTried  = 0;
         int         simdIdx     = LANES - 1;
         EvalTerm    bestScore   = alpha;
         MoveSpec    bestMove;
 
-        float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( pos );
-        mEvaluator.GenerateWeights( weights, gamePhase );
+        if( !mUseRootWeights )
+        {
+            float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( pos );
+
+            mEvaluator.GenerateWeights( currWeights, gamePhase );
+            weights = currWeights;
+        }
 
         MoveSpec PIGEON_ALIGN_SIMD childSpec[LANES];
         Position PIGEON_ALIGN_SIMD childPos[LANES];
@@ -504,9 +540,6 @@ private:
 
         while( (movesTried < moves.mCount) && (bestScore < beta) )
         {
-            //if( movesTried == 8 )
-              //  printf( "" );
-
             simdIdx++;
             if( simdIdx >= LANES )
             {
@@ -548,11 +581,10 @@ private:
             }
 
             MoveList pv_child;
-
             EvalTerm subScore = -this->NegaMax< POPCNT, SIMD >( 
-                childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], 
-                ply + 1, depth - 1, -beta, -bestScore, &pv_child, 
-                (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
+                    childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], 
+                    ply + 1, depth - 1, -beta, -bestScore, &pv_child, 
+                    (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
 
             if( subScore > bestScore )
             {
@@ -570,7 +602,7 @@ private:
         if( mExitSearch )
             return( EVAL_SEARCH_ABORTED );
 
-        bool        failedHigh  = (bestScore > beta);
+        bool        failedHigh  = (bestScore >= beta);
         bool        failedLow   = (bestScore == alpha);
         EvalTerm    result      = failedHigh? beta : (failedLow? alpha : bestScore);
 
@@ -581,8 +613,8 @@ private:
             tt.mHashVerify  = pos.mHash >> 40;
             tt.mDepth       = depth;
             tt.mScore       = result;
-            tt.mBestSrc     = (failedLow || failedHigh)? 0 : bestMove.mSrc;
-            tt.mBestDest    = (failedLow || failedHigh)? 0 : bestMove.mDest;
+            tt.mBestSrc     = bestMove.mSrc;
+            tt.mBestDest    = bestMove.mDest;
             tt.mFailLow     = failedLow;
             tt.mFailHigh    = failedHigh;
             tt.mWhiteMove   = pos.mWhiteToMove? true : false;
@@ -625,14 +657,13 @@ private:
         MoveList	pv;
         Timer		searchTime;
         MoveMap     moveMap;
-        EvalWeight  rootWeights[EVAL_TERMS];
         EvalTerm    rootScore;
 
         mRoot.CalcMoveMap( &moveMap );
 
         float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( mRoot );
-        mEvaluator.GenerateWeights( rootWeights, gamePhase );
-        rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, rootWeights );
+        mEvaluator.GenerateWeights( mRootWeights, gamePhase );
+        rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, mRootWeights );
 
 		searchTime.Reset();
         EvalTerm score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );

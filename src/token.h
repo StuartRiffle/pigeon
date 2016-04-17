@@ -61,7 +61,9 @@ public:
 
         if( mCursor > start )
         {
-            mCursor[-1] = '\0';
+            if( *mCursor )
+                mCursor[-1] = '\0';
+
             return( start );
         }
 

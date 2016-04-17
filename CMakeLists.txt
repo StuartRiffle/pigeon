@@ -1,7 +1,7 @@
 cmake_minimum_required( VERSION 3.0 )
 
 project( pigeon )
-set( PIGEON_VERSION 1.35 )
+set( PIGEON_VERSION 1.36 )
 
 if( "${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC" )
 	add_compile_options( /GS- /GL /W3 /Gy- /Zc:wchar_t /Zi /Gm- /Ox /Ob2 /fp:fast /fp:except- /WX- /GR- /Gd /Oy /Oi /MT )

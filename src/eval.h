@@ -139,7 +139,9 @@ public:
         SIMD    evalAsBlack         = this->EvalSide< POPCNT >( flipped, mmap, weights );
         SIMD    evalBalance         = evalAsWhite - evalAsBlack;
         SIMD    moveTargets         = mmap.CalcMoveTargets();
-        SIMD    evalConsideringMate = SelectIfNotZero( moveTargets, evalBalance, (SIMD) EVAL_NO_MOVES );    
+        SIMD    inCheck             = mmap.IsInCheck();
+        SIMD    mateFlavor          = SelectIfNotZero( inCheck, (SIMD) EVAL_CHECKMATE, (SIMD) EVAL_STALEMATE );
+        SIMD    evalConsideringMate = SelectIfNotZero( moveTargets, evalBalance, mateFlavor );    
 
         return( evalConsideringMate );
     }
