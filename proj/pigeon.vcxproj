@@ -145,6 +145,7 @@
   <ItemGroup>
     <Text Include="..\CMakeLists.txt" />
     <Text Include="..\LICENSE.txt" />
+    <Text Include="build-readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

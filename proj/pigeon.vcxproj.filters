@@ -96,5 +96,8 @@
     <Text Include="..\LICENSE.txt">
       <Filter>misc</Filter>
     </Text>
+    <Text Include="build-readme.txt">
+      <Filter>misc</Filter>
+    </Text>
   </ItemGroup>
 </Project>
