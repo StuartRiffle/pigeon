@@ -53,12 +53,13 @@
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 
     #define PIGEON_GCC          (1)
-    #define PIGEON_ENABLE_SSE2  (1)
+    //#define PIGEON_ENABLE_SSE2  (1)
     #define RESTRICT            __restrict
     #define DEBUGBREAK          void
     #define INLINE              inline __attribute__(( always_inline ))
     #define PIGEON_ALIGN( _N )  __attribute__(( aligned( _N ) ))
     #define PIGEON_ALIGN_SIMD   __attribute__(( aligned( 32 ) ))
+    #define PIGEON_ALLOW_POPCNT (1)
     #define stricmp             strcasecmp
     #define strnicmp            strncasecmp
 
