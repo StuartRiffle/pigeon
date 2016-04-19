@@ -140,9 +140,15 @@ namespace Pigeon
 
     INLINE int PlatDetectCpuLevel()
     {
+    #if PIGEON_ENABLE_AVX2
         if( PlatCheckCpuFlag( 7, 1, 5 ) )   return( CPU_AVX2 );
+    #endif
+    #if PIGEON_ENABLE_SSE4
         if( PlatCheckCpuFlag( 1, 2, 20 ) )  return( CPU_SSE4 );
+    #endif
+    #if PIGEON_ENABLE_SSE2
         if( PlatCheckCpuFlag( 1, 3, 26 ) )  return( CPU_SSE2 );
+    #endif
 
         return( CPU_X64 );
     }
