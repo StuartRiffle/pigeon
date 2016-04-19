@@ -110,7 +110,7 @@ namespace Pigeon
         _BitScanForward64( &result, val );
         return( result );
     #elif PIGEON_GCC
-        return( __builtin_ffsll( val ) ); 
+        return( __builtin_ffsll( val ) - 1 ); 
     #endif
     }
 
