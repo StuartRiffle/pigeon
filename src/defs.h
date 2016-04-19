@@ -69,7 +69,7 @@ typedef i16     EvalTerm;
 typedef i32     EvalWeight;
 
 const int       PIGEON_VER_MAJ      = 1;
-const int       PIGEON_VER_MIN      = 36;
+const int       PIGEON_VER_MIN      = 37;
 
 const int       TT_MEGS_DEFAULT     = 512;
 const int       TT_SAMPLE_SIZE      = 1024;
@@ -90,7 +90,7 @@ const EvalTerm  EVAL_MAX            = 0x7F00;
 const EvalTerm  EVAL_MIN            = -EVAL_MAX;
 const EvalTerm  EVAL_CHECKMATE      = EVAL_MIN + 1;
 const EvalTerm  EVAL_STALEMATE      = 0;
-const int       EVAL_OPENING_PLIES  = 10;
+const int       EVAL_OPENING_PLIES  = 12;
 
 const u64       HASH_SEED0          = 0xF59C66FB26DCF319ULL;
 const u64       HASH_SEED1          = 0xABCC5167CCAD925FULL;

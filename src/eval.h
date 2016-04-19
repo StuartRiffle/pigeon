@@ -45,8 +45,8 @@ public:
         this->SetWeight( EVAL_BISHOPS_DEVEL,          50,      0,      0 );
         this->SetWeight( EVAL_ROOKS_DEVEL,           100,      0,      0 );
         this->SetWeight( EVAL_QUEEN_DEVEL,            20,     20,      0 );
-        this->SetWeight( EVAL_PROMOTING_SOON,          0,    200,    400 );
-        this->SetWeight( EVAL_PROMOTING_IMMED,         0,    300,    500 );
+        this->SetWeight( EVAL_PROMOTING_SOON,          0,     50,    100 );
+        this->SetWeight( EVAL_PROMOTING_IMMED,         0,    100,    300 );
         this->SetWeight( EVAL_CHAINED_PAWNS,          10,      5,      0 );
         this->SetWeight( EVAL_PASSED_PAWNS,           50,     10,     20 );
         this->SetWeight( EVAL_KNIGHTS_FIRST,          50,      0,      0 );
