@@ -18,8 +18,8 @@ struct UCI
         {                                                                                        
             printf( "id name Pigeon %d.%02d\n", PIGEON_VER_MAJ, PIGEON_VER_MIN );
             printf( "id author Stuart Riffle \n" );
-            printf( "option name Hash type spin default %d\n", TT_MEGS_DEFAULT );
-            printf( "option name OwnBook type check default true\n" );
+            printf( "option name Hash type spin min 64 max 16384 default %d\n", TT_MEGS_DEFAULT );
+            printf( "option name OwnBook type check default %s\n", OWNBOOK_DEFAULT? "true" : "false" );
             printf( "uciok\n" );
         }
         else if( tokens.Consume( "debug" ) )
@@ -74,7 +74,8 @@ struct UCI
                     engine->Move( movetext );
             }
 
-            //engine->PrintPosition();
+            engine->PrintPosition();
+            //engine->PrintValidMoves();
         }
         else if( tokens.Consume( "go" ) )
         {

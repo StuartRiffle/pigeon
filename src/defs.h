@@ -69,28 +69,32 @@ typedef i16     EvalTerm;
 typedef i32     EvalWeight;
 
 const int       PIGEON_VER_MAJ      = 1;
-const int       PIGEON_VER_MIN      = 37;
+const int       PIGEON_VER_MIN      = 40;
 
 const int       TT_MEGS_DEFAULT     = 512;
-const int       TT_SAMPLE_SIZE      = 1024;
-const int       MAX_METRICS_DEPTH   = 64;
+const int       TT_SAMPLE_SIZE      = 128;
+const int       METRICS_DEPTH       = 64;
+const int       METRICS_MOVES       = 20;
 const int       MAX_MOVE_LIST       = 218;
 const int       MAX_FEN_LENGTH      = 96;
 const int       MAX_MOVETEXT        = 6;
-const int       MIN_TIME_SLICE      = 20;
+const int       MIN_TIME_SLICE      = 10;
 const int       MAX_TIME_SLICE      = 200;
-const int       LAG_SAFETY_BUFFER   = 500;
+const int       LAG_SAFETY_BUFFER   = 200;
 const int       NO_TIME_LIMIT       = -1;
 const int       PERFT_PARALLEL_MAX  = 5;
+const int       LAST_QUIET_LEVEL    = -4;
 const int       WEIGHT_SHIFT        = 16;
 const float     WEIGHT_SCALE        = (1 << WEIGHT_SHIFT);
+const bool      OWNBOOK_DEFAULT     = true;
 
 const EvalTerm  EVAL_SEARCH_ABORTED = 0x7FFF;
 const EvalTerm  EVAL_MAX            = 0x7F00;
 const EvalTerm  EVAL_MIN            = -EVAL_MAX;
 const EvalTerm  EVAL_CHECKMATE      = EVAL_MIN + 1;
 const EvalTerm  EVAL_STALEMATE      = 0;
-const int       EVAL_OPENING_PLIES  = 12;
+const int       EVAL_OPENING_PLIES  = 10;
+const EvalTerm  ALLOW_REP_SCORE     = 190;
 
 const u64       HASH_SEED0          = 0xF59C66FB26DCF319ULL;
 const u64       HASH_SEED1          = 0xABCC5167CCAD925FULL;

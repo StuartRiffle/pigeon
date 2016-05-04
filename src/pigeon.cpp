@@ -40,7 +40,8 @@ int main( int argc, char** argv )
 
     Pigeon::Engine pigeon;
 
-    // UCI commands can be passed as arguments, separated by semicolons (handy for debugging)
+    // UCI commands can be passed as arguments, separated by semicolons (handy for debugging):
+    //      uci; setoption name OwnBook value false; isready;
 
     std::string commands;
     for( int i = 1; i < argc; i++ )

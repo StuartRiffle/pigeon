@@ -9,7 +9,17 @@
 
 #include <stdint.h>
 
-#if defined( _MSC_VER )
+#if defined( __CUDA_ARCH__ )
+
+    #define PIGEON_CUDA         (1)
+    #define RESTRICT            __restrict
+    #define DEBUGBREAK          __debugbreak
+    #define INLINE              __inline
+    #define PIGEON_ALIGN( _N )  
+    #define PIGEON_ALIGN_SIMD   
+    //#define PRId64              "I64d"
+
+#elif defined( _MSC_VER )
 
     #define WIN32_LEAN_AND_MEAN    
     #include <windows.h>
@@ -97,7 +107,11 @@ namespace Pigeon
 
     INLINE u64 PlatByteSwap64( const u64& val )             
     { 
-    #if PIGEON_MSVC
+    #if PIGEON_CUDA
+        u32 hi = __byte_perm( (u32) val, 0, 0x0123 );
+        u32 lo = __byte_perm( (u32) (val >> 32), 0, 0x0123 );
+        return( ((u64) hi << 32ULL) | lo );
+    #elif PIGEON_MSVC
         return( _byteswap_uint64( val ) ); 
     #elif PIGEON_GCC
         return( __builtin_bswap64( val ) );     
@@ -106,7 +120,9 @@ namespace Pigeon
 
     INLINE u64 PlatLowestBitIndex64( const u64& val )
     {
-    #if PIGEON_MSVC
+    #if PIGEON_CUDA
+         return( __ffsll( val ) );
+    #elif PIGEON_MSVC
         unsigned long result;
         _BitScanForward64( &result, val );
         return( result );
@@ -114,6 +130,56 @@ namespace Pigeon
         return( __builtin_ffsll( val ) - 1 ); 
     #endif
     }
+
+    template< int POPCNT >
+    INLINE u64 PlatCountBits64( const u64& val )
+    {
+    #if PIGEON_ALLOW_POPCNT
+        #if PIGEON_CUDA
+            return( __popcll( val ) );
+        #elif PIGEON_MSVC
+            if( POPCNT ) return( __popcnt64( val ) );
+        #elif PIGEON_GCC
+            if( POPCNT ) return( __builtin_popcountll( val ) );
+        #endif
+    #endif
+
+        const u64 mask01 = 0x0101010101010101ULL;
+        const u64 mask0F = 0x0F0F0F0F0F0F0F0FULL;
+        const u64 mask33 = 0x3333333333333333ULL;
+        const u64 mask55 = 0x5555555555555555ULL;
+
+        register u64 n = val;
+
+        n =  n - ((n >> 1) & mask55);
+        n = (n & mask33) + ((n >> 2) & mask33);
+        n = (n + (n >> 4)) & mask0F;
+        n = (n * mask01) >> 56;
+
+        return( n );
+    }
+
+    INLINE void PlatClearMemory( void* mem, size_t bytes )
+    {
+    #if PIGEON_CUDA
+        cudaMemset( mem, 0, bytes );
+    #elif PIGEON_MSVC
+        ::memset( mem, 0, bytes );
+    #elif PIGEON_GCC
+        __builtin_memset( mem, 0, bytes );    
+    #endif
+    }
+
+    INLINE void PlatPrefetch( void* mem )
+    {
+    #if PIGEON_MSVC
+        _mm_prefetch( (char*) mem, _MM_HINT_NTA );
+    #elif PIGEON_GCC
+        __builtin_prefetch( mem );  
+    #endif
+    }
+
+#if !PIGEON_CUDA
 
     INLINE bool PlatCheckCpuFlag( int leaf, int idxWord, int idxBit )
     {
@@ -151,50 +217,6 @@ namespace Pigeon
     #endif
 
         return( CPU_X64 );
-    }
-
-    template< int POPCNT >
-    INLINE u64 PlatCountBits64( const u64& val )
-    {
-    #if PIGEON_ALLOW_POPCNT
-        #if PIGEON_MSVC
-            if( POPCNT ) return( __popcnt64( val ) );
-        #elif PIGEON_GCC
-            if( POPCNT ) return( __builtin_popcountll( val ) );
-        #endif
-    #endif
-
-        const u64 mask01 = 0x0101010101010101ULL;
-        const u64 mask0F = 0x0F0F0F0F0F0F0F0FULL;
-        const u64 mask33 = 0x3333333333333333ULL;
-        const u64 mask55 = 0x5555555555555555ULL;
-
-        register u64 n = val;
-
-        n =  n - ((n >> 1) & mask55);
-        n = (n & mask33) + ((n >> 2) & mask33);
-        n = (n + (n >> 4)) & mask0F;
-        n = (n * mask01) >> 56;
-
-        return( n );
-    }
-
-    INLINE void PlatClearMemory( void* mem, size_t bytes )
-    {
-    #if PIGEON_MSVC
-        ::memset( mem, 0, bytes );
-    #elif PIGEON_GCC
-        __builtin_memset( mem, 0, bytes );    
-    #endif
-    }
-
-    INLINE void PlatPrefetch( void* mem )
-    {
-    #if PIGEON_MSVC
-        _mm_prefetch( (char*) mem, _MM_HINT_NTA );
-    #elif PIGEON_GCC
-        __builtin_prefetch( mem );  
-    #endif
     }
 
     INLINE ThreadId PlatSpawnThread( void* (*func)( void* ), void* arg )
@@ -238,6 +260,11 @@ namespace Pigeon
         void Wait() { while( sem_wait( &mHandle ) ) {} }
     #endif
     };
+
+
+#endif
+
+
 
 
 };

@@ -25,6 +25,9 @@ struct MoveSpecT
     INLINE int  IsSpecial() const       { return( (mType == TT_BEST_MOVE) | (mType == PRINCIPAL_VARIATION) ); }
     INLINE void Flip()                  { mSrc = FlipSquareIndex( mSrc ); mDest = FlipSquareIndex( mDest ); }
     INLINE char GetPromoteChar() const  { return( "\0\0\0\0nbrqnbrq\0\0"[mType] ); }
+
+    INLINE bool operator==( const MoveSpecT& rhs ) const { return( (mSrc == rhs.mSrc) && (mDest == rhs.mDest) && (mType == rhs.mType) ); }
+    INLINE bool operator!=( const MoveSpecT& rhs ) const { return( (mSrc != rhs.mSrc) || (mDest != rhs.mDest) || (mType != rhs.mType) ); }
 };
 
 
@@ -80,19 +83,24 @@ struct MoveList
         return( mTried++ );
     }
 
-    void DiscardQuietMoves()
+    void DiscardMovesBelow( int type )
     {
         int prevCount = mCount;
 
         for( mCount = 0; mCount < prevCount; mCount++ )
-            if( mMove[mCount].mType < CAPTURE_EQUAL )
+            if( mMove[mCount].mType < type )
                 break;
 
         for( int idx = mCount + 1; idx < prevCount; idx++ )
-            if( mMove[idx].mType >= CAPTURE_EQUAL )
+            if( mMove[idx].mType >= type )
                 mMove[mCount++] = mMove[idx];
 
         mTried = 0;
+    }
+
+    void DiscardQuietMoves()
+    {
+        this->DiscardMovesBelow( CAPTURE_EQUAL );
     }
 
     int MarkSpecialMoves( int src, int dest, int newType )
@@ -122,6 +130,13 @@ struct MoveList
     {
         u64 whitePieces = pos.mWhitePawns | pos.mWhiteKnights | pos.mWhiteBishops | pos.mWhiteRooks | pos.mWhiteQueens | pos.mWhiteKing;
 
+        if( mmap.mPawnMovesN )      this->StorePawnMoves( pos, mmap.mPawnMovesN,     SHIFT_N            );
+        if( mmap.mPawnDoublesN )    this->StorePawnMoves( pos, mmap.mPawnDoublesN,   SHIFT_N * 2        );
+        if( mmap.mPawnAttacksNE )   this->StorePawnMoves( pos, mmap.mPawnAttacksNE,  SHIFT_NE           );
+        if( mmap.mPawnAttacksNW )   this->StorePawnMoves( pos, mmap.mPawnAttacksNW,  SHIFT_NW           );
+        if( mmap.mCastlingMoves )   this->StoreKingMoves( pos, mmap.mCastlingMoves,  pos.mWhiteKing     );
+        if( mmap.mKingMoves )       this->StoreKingMoves( pos, mmap.mKingMoves,      pos.mWhiteKing     );
+
         if( mmap.mSlidingMovesNW )  this->StoreSlidingMoves< SHIFT_NW >( pos, mmap.mSlidingMovesNW, whitePieces, mmap.mCheckMask );
         if( mmap.mSlidingMovesNE )  this->StoreSlidingMoves< SHIFT_NE >( pos, mmap.mSlidingMovesNE, whitePieces, mmap.mCheckMask );
         if( mmap.mSlidingMovesSW )  this->StoreSlidingMoves< SHIFT_SW >( pos, mmap.mSlidingMovesSW, whitePieces, mmap.mCheckMask );
@@ -130,6 +145,7 @@ struct MoveList
         if( mmap.mSlidingMovesW  )  this->StoreSlidingMoves< SHIFT_W  >( pos, mmap.mSlidingMovesW,  whitePieces, mmap.mCheckMask );
         if( mmap.mSlidingMovesE  )  this->StoreSlidingMoves< SHIFT_E  >( pos, mmap.mSlidingMovesE,  whitePieces, mmap.mCheckMask );
         if( mmap.mSlidingMovesS  )  this->StoreSlidingMoves< SHIFT_S  >( pos, mmap.mSlidingMovesS,  whitePieces, mmap.mCheckMask );
+
         if( mmap.mKnightMovesNNW )  this->StoreStepMoves( pos, mmap.mKnightMovesNNW, SHIFT_N + SHIFT_NW );
         if( mmap.mKnightMovesNNE )  this->StoreStepMoves( pos, mmap.mKnightMovesNNE, SHIFT_N + SHIFT_NE );
         if( mmap.mKnightMovesWNW )  this->StoreStepMoves( pos, mmap.mKnightMovesWNW, SHIFT_W + SHIFT_NW );
@@ -138,12 +154,6 @@ struct MoveList
         if( mmap.mKnightMovesESE )  this->StoreStepMoves( pos, mmap.mKnightMovesESE, SHIFT_E + SHIFT_SE );
         if( mmap.mKnightMovesSSW )  this->StoreStepMoves( pos, mmap.mKnightMovesSSW, SHIFT_S + SHIFT_SW );
         if( mmap.mKnightMovesSSE )  this->StoreStepMoves( pos, mmap.mKnightMovesSSE, SHIFT_S + SHIFT_SE );
-        if( mmap.mPawnMovesN )      this->StorePawnMoves( pos, mmap.mPawnMovesN,     SHIFT_N            );
-        if( mmap.mPawnDoublesN )    this->StorePawnMoves( pos, mmap.mPawnDoublesN,   SHIFT_N * 2        );
-        if( mmap.mPawnAttacksNE )   this->StorePawnMoves( pos, mmap.mPawnAttacksNE,  SHIFT_NE           );
-        if( mmap.mPawnAttacksNW )   this->StorePawnMoves( pos, mmap.mPawnAttacksNW,  SHIFT_NW           );
-        if( mmap.mCastlingMoves )   this->StoreKingMoves( pos, mmap.mCastlingMoves,  pos.mWhiteKing     );
-        if( mmap.mKingMoves )       this->StoreKingMoves( pos, mmap.mKingMoves,      pos.mWhiteKing     );
 
         this->PrioritizeDest( ~mmap.mBlackControl );
 
@@ -172,9 +182,6 @@ private:
         int capture     = dest_val? (relative + 2) : 0;
         int type        = promote? (promote + (capture? 4 : 0)) : capture;
 
-        if( capture )
-            relative = relative;
-
         mMove[mCount++].Set( srcIdx, destIdx, type );
     }
 
@@ -185,8 +192,8 @@ private:
             int idx = (int) ConsumeLowestBitIndex( dest );
 
             this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_KNIGHT );
-            this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_BISHOP );
-            this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_ROOK   );
+            //this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_BISHOP );
+            //this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_ROOK   );
             this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_QUEEN  );
         }
     }

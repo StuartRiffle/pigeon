@@ -17,9 +17,12 @@ enum
 
 class Evaluator
 {
-    EvalWeight  mWeightsOpening[EVAL_TERMS];
-    EvalWeight  mWeightsMidgame[EVAL_TERMS];
-    EvalWeight  mWeightsEndgame[EVAL_TERMS];
+    float       mWeightsOpening[EVAL_TERMS];
+    float       mWeightsMidgame[EVAL_TERMS];
+    float       mWeightsEndgame[EVAL_TERMS];
+    float       mWeightsTuning[EVAL_TERMS];
+    bool        mEnableOpening;
+    bool        mEnableTuning;
 
 public:
     Evaluator()
@@ -28,35 +31,43 @@ public:
         PlatClearMemory( mWeightsMidgame, sizeof( mWeightsMidgame ) );
         PlatClearMemory( mWeightsEndgame, sizeof( mWeightsEndgame ) );
 
-        this->SetWeight( EVAL_KINGS,                3000,   3000,   3000 );
-        this->SetWeight( EVAL_QUEENS,                900,    900,    900 );
-        this->SetWeight( EVAL_ROOKS,                 500,    500,    500 );
-        this->SetWeight( EVAL_BISHOPS,               300,    300,    300 );
-        this->SetWeight( EVAL_KNIGHTS,               400,    300,    300 );
-        this->SetWeight( EVAL_PAWNS,                 100,    100,    100 );
-        this->SetWeight( EVAL_MOBILITY,               10,      7,      7 );
-        this->SetWeight( EVAL_ATTACKING,              50,     10,      5 );
-        this->SetWeight( EVAL_DEFENDING,              10,      5,     10 );
-        this->SetWeight( EVAL_ENEMY_TERRITORY,        20,     10,      0 );
-        this->SetWeight( EVAL_CENTER_PAWNS,           20,     10,      0 );
-        this->SetWeight( EVAL_CENTER_PIECES,          50,     10,      0 );
-        this->SetWeight( EVAL_CENTER_CONTROL,         10,      5,      0 );
-        this->SetWeight( EVAL_KNIGHTS_DEVEL,          50,      0,      0 );
-        this->SetWeight( EVAL_BISHOPS_DEVEL,          50,      0,      0 );
-        this->SetWeight( EVAL_ROOKS_DEVEL,           100,      0,      0 );
-        this->SetWeight( EVAL_QUEEN_DEVEL,            20,     20,      0 );
-        this->SetWeight( EVAL_PROMOTING_SOON,          0,     50,    100 );
-        this->SetWeight( EVAL_PROMOTING_IMMED,         0,    100,    300 );
-        this->SetWeight( EVAL_CHAINED_PAWNS,          10,      5,      0 );
-        this->SetWeight( EVAL_PASSED_PAWNS,           50,     10,     20 );
-        this->SetWeight( EVAL_KNIGHTS_FIRST,          50,      0,      0 );
-        this->SetWeight( EVAL_KNIGHTS_NOT_RIM,        50,     50,     30 );
-        this->SetWeight( EVAL_BOTH_BISHOPS,            0,     50,    100 );
-        this->SetWeight( EVAL_ROOK_ON_RANK_7,          0,    100,      0 );
-        this->SetWeight( EVAL_ROOKS_CONNECTED,        50,     50,     20 );
-        this->SetWeight( EVAL_ROOKS_OPEN_FILE,         0,    100,      0 );
-        this->SetWeight( EVAL_KING_CASTLED,           50,     50,      0 );
-        this->SetWeight( EVAL_PAWNS_GUARD_KING,       20,     10,      0 );
+        mEnableOpening  = true;
+        mEnableTuning   = false;
+
+        this->SetWeight( EVAL_KINGS,               20000,  20000,  20000 );   //  10000,
+        this->SetWeight( EVAL_QUEENS,               1000,   1000,    900 );   //    900,
+        this->SetWeight( EVAL_ROOKS,                 450,    450,    500 );   //    500,
+        this->SetWeight( EVAL_BISHOPS,               325,    325,    350 );   //    320,
+        this->SetWeight( EVAL_KNIGHTS,               325,    325,    300 );   //    300,
+        this->SetWeight( EVAL_PAWNS,                 100,    100,    100 );   //    100,
+        this->SetWeight( EVAL_MOBILITY,               10,      5,      0 );   //      5,
+        this->SetWeight( EVAL_ATTACKING,              20,      3,     10 );   //     10,
+        this->SetWeight( EVAL_DEFENDING,              10,      5,     10 );   //     10,
+        this->SetWeight( EVAL_ENEMY_TERRITORY,        10,      5,      0 );   //     10,
+        this->SetWeight( EVAL_CENTER_PAWNS,           10,     10,      0 );   //     10,
+        this->SetWeight( EVAL_CENTER_PIECES,          20,     20,      0 );   //     20,
+        this->SetWeight( EVAL_CENTER_CONTROL,         20,      5,     10 );   //     30,
+        this->SetWeight( EVAL_KNIGHTS_DEVEL,          20,      5,      0 );   //     10,
+        this->SetWeight( EVAL_BISHOPS_DEVEL,          20,      5,      0 );   //     20,
+        this->SetWeight( EVAL_ROOKS_DEVEL,            20,      5,      0 );   //     20,
+        this->SetWeight( EVAL_QUEEN_DEVEL,            20,      5,      0 );   //     10,
+        this->SetWeight( EVAL_PROMOTING_SOON,          0,     10,     20 );   //     10,
+        this->SetWeight( EVAL_PROMOTING_IMMED,         0,     20,     30 );   //     20,
+        this->SetWeight( EVAL_CHAINED_PAWNS,          10,     10,     10 );   //     30,
+        this->SetWeight( EVAL_PASSED_PAWNS,           10,     20,     50 );   //     20,
+        this->SetWeight( EVAL_KNIGHTS_FIRST,          20,      0,      0 );   //      0,
+        this->SetWeight( EVAL_KNIGHTS_NOT_RIM,        20,     10,     20 );   //     20,
+        this->SetWeight( EVAL_BOTH_BISHOPS,            0,     30,     10 );   //     20,
+        this->SetWeight( EVAL_ROOK_ON_RANK_7,          0,     50,      0 );   //     30,
+        this->SetWeight( EVAL_ROOKS_CONNECTED,         0,     50,      0 );   //     30,
+        this->SetWeight( EVAL_ROOKS_OPEN_FILE,         0,     40,      0 );   //     40,
+        this->SetWeight( EVAL_KING_CASTLED,           40,     20,      0 );   //     30,
+        this->SetWeight( EVAL_PAWNS_GUARD_KING,       10,     10,      0 );   //     10,
+    }
+
+    void EnableOpening( bool enable )
+    {
+        mEnableOpening = enable;
     }
 
     const char* GetWeightName( int idx ) const
@@ -88,9 +99,9 @@ public:
 
     void SetWeight( int idx, float openingVal, float midgameVal, float endgameVal )
     {
-        mWeightsOpening[idx] = (EvalWeight) (openingVal * WEIGHT_SCALE);
-        mWeightsMidgame[idx] = (EvalWeight) (midgameVal * WEIGHT_SCALE);
-        mWeightsEndgame[idx] = (EvalWeight) (endgameVal * WEIGHT_SCALE);
+        mWeightsOpening[idx] = openingVal;
+        mWeightsMidgame[idx] = midgameVal;
+        mWeightsEndgame[idx] = endgameVal;
     }
 
     template< int POPCNT >
@@ -114,18 +125,29 @@ public:
         int     bigCaptures         = 14 - (blackMinorCount + blackMajorCount + whiteMinorCount + whiteMajorCount);
         float   endingness          = Max( 0.0f, bigCaptures / 14.0f );
 
+        if( !mEnableOpening )
+            openingness = 0;
+
         return( (openingness > 0)? (1 - openingness) : (1 + endingness) );
     }
 
 
     void GenerateWeights( EvalWeight* weights, float gamePhase ) const
     {
-        float   openingPct  = 1 - Max( 0.0f, Min( 1.0f, gamePhase ) );
-        float   endgamePct  = Max( 0.0f, Min( 1.0f, gamePhase - 1 ) );
-        float   midgamePct  = 1 - (openingPct + endgamePct);
+        if( mEnableTuning )
+        {
+            for( int i = 0; i < EVAL_TERMS; i++ )
+                weights[i] = (EvalWeight) (mWeightsTuning[i] * WEIGHT_SCALE);
+        }
+        else
+        {
+            float   openingPct  = 1 - Max( 0.0f, Min( 1.0f, gamePhase ) );
+            float   endgamePct  = Max( 0.0f, Min( 1.0f, gamePhase - 1 ) );
+            float   midgamePct  = 1 - (openingPct + endgamePct);
 
-        for( int i = 0; i < EVAL_TERMS; i++ )
-            weights[i] = (EvalWeight) ((mWeightsOpening[i] * openingPct) + (mWeightsMidgame[i] * midgamePct) + (mWeightsEndgame[i] * endgamePct));
+            for( int i = 0; i < EVAL_TERMS; i++ )
+                weights[i] = (EvalWeight) (((mWeightsOpening[i] * openingPct) + (mWeightsMidgame[i] * midgamePct) + (mWeightsEndgame[i] * endgamePct)) * WEIGHT_SCALE);
+        }
     }
 
 

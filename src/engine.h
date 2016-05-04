@@ -7,32 +7,35 @@ namespace Pigeon {
 
 class Engine
 {
-    HashTable           mHashTable;                 // Transposition table
-    Position            mRoot;                      // The root of the search tree (the "current position")
-    SearchConfig        mConfig;                    // Search parameters
-    SearchMetrics       mMetrics;                   // Runtime metrics
-    Evaluator           mEvaluator;                 // Evaluation weights
-    OpeningBook         mOpeningBook;               // Placeholder opening book implementation
-    MoveList            mBestLine;                  // Best line found in the search
-    MoveList*           mStorePv;                   // Target for PV in active search
-    EvalTerm            mValuePv;                   // The evaluation of *mStorePv
-    int                 mTableSize;                 // Transposition table size (in megs)
-    int                 mTargetTime;                // Time to stop current search
-    int                 mDepthLimit;                // Depth limit for current search (not counting quiesence)
-    Timer               mSearchElapsed;             // Time elapsed since the "go" command
-    volatile bool       mExitSearch;                // Flag to terminate search threads immediately
-    int                 mThreadsRunning;            // Number of worker threads currently running
-    Semaphore           mThreadsDone;               // Semaphore to help gather up completed threads                                                
-    bool                mPrintBestMove;             // Output best move while searching
-    bool                mPrintedMove;               // Make sure only one "bestmove" is output per "go" 
-    bool                mDebugMode;                 // This currently does nothing
-    bool                mUsePopcnt;                 // Enable use of the hardware POPCNT instruction
-    bool                mAllowEarlyMove;            // Bail on iterative deepening if the next level will take too long
-    int                 mCpuLevel;                  // A CPU_* enum value to select the code path
-	int					mNumHelperThreads;			// Number of lazy SMP threads to spawn
-    EvalWeight          mRootWeights[EVAL_TERMS];   // Evaluation weights calculated at root position
-    bool                mUseRootWeights;            // When false, recalculate weights at every level
-    bool                mUseOpeningBook;            // Enable use of the opening book
+    HashTable               mHashTable;                 // Transposition table
+    Position                mRoot;                      // The root of the search tree (the "current position")
+    SearchConfig            mConfig;                    // Search parameters
+    SearchMetrics           mMetrics;                   // Runtime metrics
+    Evaluator               mEvaluator;                 // Evaluation weights
+    OpeningBook             mOpeningBook;               // Placeholder opening book implementation
+    MoveList                mBestLine;                  // Best line found in the search
+    MoveList                mPvDepth[METRICS_DEPTH];    // Best line found at 
+    MoveList*               mStorePv;                   // Target for PV in active search
+    EvalTerm                mValuePv;                   // The evaluation of *mStorePv
+    int                     mTableSize;                 // Transposition table size (in megs)
+    int                     mTargetTime;                // Time to stop current search
+    int                     mDepthLimit;                // Depth limit for current search (not counting quiesence)
+    Timer                   mSearchElapsed;             // Time elapsed since the "go" command
+    volatile bool           mExitSearch;                // Flag to terminate search threads immediately
+    int                     mThreadsRunning;            // Number of worker threads currently running
+    Semaphore               mThreadsDone;               // Semaphore to help gather up completed threads                                                
+    bool                    mPrintBestMove;             // Output best move while searching
+    bool                    mPrintedMove;               // Make sure only one "bestmove" is output per "go" 
+    bool                    mDebugMode;                 // This currently does nothing
+    bool                    mUsePopcnt;                 // Enable use of the hardware POPCNT instruction
+    bool                    mAllowEarlyMove;            // Bail on iterative deepening if the next level will take too long
+    int                     mCpuLevel;                  // A CPU_* enum value to select the code path
+	int					    mNumHelperThreads;			// Number of lazy SMP threads to spawn
+    EvalWeight              mRootWeights[EVAL_TERMS];   // Evaluation weights calculated at root position
+    bool                    mUseRootWeights;            // When false, recalculate weights at every level
+    bool                    mUseOpeningBook;            // Enable use of the opening book
+    int                     mHistoryTable[2][64][64];   // Indexed as [whiteToMove][dest][src]
+    std::map< u64, int >    mPositionReps;              // Indexed by hash, detects repetitions to avoid (unwanted) draw
 
 public:
     Engine()
@@ -56,10 +59,11 @@ public:
         mAllowEarlyMove     = true;
         mNumHelperThreads   = 0;
         mUseRootWeights     = true;
-        mUseOpeningBook     = true;
+        mUseOpeningBook     = OWNBOOK_DEFAULT;
 
         mHashTable.SetSize( mTableSize );
-        mOpeningBook.Init();
+        mOpeningBook.Init();               
+        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
     }
 
     ~Engine()
@@ -71,14 +75,21 @@ public:
     {
         this->Stop();
         mRoot.Reset();
+        mEvaluator.EnableOpening( true );
+        mHashTable.Clear();
+        mPositionReps.clear();
+
+        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
     }
 
     void SetPosition( const Position& pos )
     {
         this->Reset();
         mRoot = pos;
+        mEvaluator.EnableOpening( false );
 
         mRoot.mHash = mRoot.CalcHash();
+        mPositionReps[mRoot.mHash]++;
     }
 
     Position GetPosition() const
@@ -143,6 +154,10 @@ public:
             if( idx >= 0 )
             {
                 mRoot.Step( move );
+                mPositionReps[mRoot.mHash]++;
+
+                if( mPositionReps[mRoot.mHash] > 1 )
+                    printf( "info string repeated position\n" );
             }
             else
             {
@@ -248,6 +263,24 @@ public:
         printf( "\n" );
     }
 
+    void PrintValidMoves()
+    {
+        MoveList valid;
+        valid.FindMoves( mRoot );
+
+        printf( "info string validmoves " );
+        while( valid.mTried < valid.mCount )
+        {
+            int idx = valid.ChooseBestUntried();
+            const MoveSpec& spec = valid.mMove[idx];
+
+            FEN::PrintMoveSpec( spec );
+            printf( "/%d ", spec.mType );
+        }
+
+        printf( "\n" );
+    }
+
 private:
 
     static void* SearchThreadProc( void* param )
@@ -308,6 +341,23 @@ private:
                 prevLevelElapsed = currLevelElapsed;
             }
 
+            
+            //TODO: only under short time controls
+
+            if( (depth < METRICS_DEPTH) && (depth > 7) )
+            {
+                bool sameMove = true;
+
+                for( int i = depth - 2; i <= depth; i++ )
+                    if( mPvDepth[i].mMove[0] != mPvDepth[depth].mMove[0] )
+                        sameMove = false;
+
+                if( sameMove )
+                    break;
+            }
+            
+
+
             depth++;
 
         }
@@ -361,16 +411,6 @@ private:
         mExitSearch = false;
     }
 
-    void PrintValidMoves()
-    {
-        MoveList valid;
-        valid.FindMoves( mRoot );
-
-        printf( "info string validmoves " );
-        FEN::PrintMoveList( valid );
-        printf( "\n" );
-    }
-
     void PrintResult()
     {
         if( !mPrintedMove )
@@ -388,7 +428,7 @@ private:
 
     int CalcTargetTime()
     {
-        int moveTimeLimit   = mConfig.mTimeLimit;
+        int moveTimeLimit   = mConfig.mTimeLimit;   
         int totalTimeLeft   = mRoot.mWhiteToMove? mConfig.mWhiteTimeLeft : mConfig.mBlackTimeLeft;
         int timeBonus       = mRoot.mWhiteToMove? mConfig.mWhiteTimeInc  : mConfig.mBlackTimeInc;
 
@@ -449,6 +489,29 @@ private:
         return( targetTime );
     }
 
+    int ChooseNextMove( MoveList& moves, int whiteToMove )
+    {
+        int best = moves.mTried;
+
+        for( int idx = best + 1; idx < moves.mCount; idx++ )
+        {
+            MoveSpec& bestMove = moves.mMove[best];
+            MoveSpec& currMove = moves.mMove[idx];
+
+            if( currMove.mType < bestMove.mType )
+                continue;
+
+            if( currMove.mType == bestMove.mType )
+                if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
+                    continue;   
+
+            best = idx;
+        }
+
+        Exchange( moves.mMove[moves.mTried], moves.mMove[best] );
+        return( moves.mTried++ );
+    }
+
     template< int POPCNT, typename SIMD >
     EvalTerm NegaMax( const Position& pos, const MoveMap& moveMap, EvalTerm score, int ply, int depth, EvalTerm alpha, EvalTerm beta, MoveList* pv_new, bool onPvPrev )
     {
@@ -482,7 +545,7 @@ private:
         if( depth < 1 )
         {
             if( !inCheck )
-                moves.DiscardQuietMoves();
+                moves.DiscardMovesBelow( CAPTURE_LOSING );
 
             if( moves.mCount == 0 )
                 return( score );
@@ -522,6 +585,7 @@ private:
         EvalWeight* weights     = mRootWeights;
         int         movesTried  = 0;
         int         simdIdx     = LANES - 1;
+        bool        nullSearch  = false;
         EvalTerm    bestScore   = alpha;
         MoveSpec    bestMove;
 
@@ -553,7 +617,7 @@ private:
                     if( moves.mTried >= moves.mCount )
                         break;
 
-                    int idxMove = moves.ChooseBestUntried();
+                    int idxMove = this->ChooseNextMove( moves, (int) pos.mWhiteToMove );
                     childSpec[idxLane] = moves.mMove[idxMove];
 
                     SimdInsert( simdSpec.mSrc,  childSpec[idxLane].mSrc,  idxLane );
@@ -580,23 +644,77 @@ private:
 				simdIdx = 0;
             }
 
-            MoveList pv_child;
-            EvalTerm subScore = -this->NegaMax< POPCNT, SIMD >( 
-                    childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], 
-                    ply + 1, depth - 1, -beta, -bestScore, &pv_child, 
-                    (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
+            bool allowMove = true;
 
-            if( subScore > bestScore )
+            if( ply == 0 )
             {
-                bestScore   = subScore;
-                bestMove    = childSpec[simdIdx];
+                // TODO: make sure that this does not eliminate all valid moves! 
 
-                pv_new->mCount = 1;
-                pv_new->mMove[0] = bestMove;
-                pv_new->Append( pv_child );
+                bool repeatedPosition = (mPositionReps[childPos[simdIdx].mHash] > 1);
+                bool notReadyToDraw   = (score > -ALLOW_REP_SCORE);
+
+                if( repeatedPosition && notReadyToDraw && !inCheck )
+                {
+                    allowMove = false;
+
+                    if( mDebugMode )
+                    {
+                        printf( "info string preventing " );
+                        FEN::PrintMoveSpec( childSpec[simdIdx] );
+                        printf( " to avoid draw by repetition\n" );
+                    }
+                }
             }
 
+            if( allowMove )
+            {
+                MoveList pv_child;
+                EvalTerm subScore;
+            
+                bool fullSearch = true;
+
+                if( nullSearch )
+                {
+                    subScore = -this->NegaMax< POPCNT, SIMD >( 
+                        childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -(bestScore + 1), -bestScore, 
+                        &pv_child, (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
+            
+                    fullSearch = (subScore > bestScore) && (subScore < beta);
+                }
+
+                if( fullSearch )
+                {
+                    subScore = -this->NegaMax< POPCNT, SIMD >( 
+                        childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -beta, -bestScore, 
+                        &pv_child, (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
+                }
+
+                if( subScore > bestScore )
+                {
+                    bestScore   = subScore;
+                    bestMove    = childSpec[simdIdx];
+                    nullSearch  = true;
+
+                    pv_new->mCount = 1;
+                    pv_new->mMove[0] = bestMove;
+                    pv_new->Append( pv_child );
+
+                    if( depth > 2 )
+                        mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (depth * depth);
+
+                    if( depth < 1 )
+                        break;
+                }
+            }
+
+            if( (ply < METRICS_DEPTH) && (movesTried < METRICS_MOVES) )
+                mMetrics.mMovesTriedByPly[ply][movesTried]++;
+
             movesTried++;
+
+            //if( depth < -1 )
+            //    break;
+
         }
 
         if( mExitSearch )
@@ -605,6 +723,9 @@ private:
         bool        failedHigh  = (bestScore >= beta);
         bool        failedLow   = (bestScore == alpha);
         EvalTerm    result      = failedHigh? beta : (failedLow? alpha : bestScore);
+
+        //if( failedHigh )
+        //    mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (ply * ply);
 
         if( depth > 0 )
         {
@@ -657,13 +778,16 @@ private:
         MoveList	pv;
         Timer		searchTime;
         MoveMap     moveMap;
+        MoveList    moves;
         EvalTerm    rootScore;
 
         mRoot.CalcMoveMap( &moveMap );
+        moves.UnpackMoveMap( mRoot, moveMap );
 
         float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( mRoot );
         mEvaluator.GenerateWeights( mRootWeights, gamePhase );
         rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, mRootWeights );
+
 
 		searchTime.Reset();
         EvalTerm score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
@@ -678,9 +802,12 @@ private:
             int hashfull    = (int) (mHashTable.EstimateUtilization() * 1000);
             int seldepth    = 0;
 
-            for( seldepth = MAX_METRICS_DEPTH - 1; seldepth > depth; seldepth-- )
+            for( seldepth = METRICS_DEPTH - 1; seldepth > depth; seldepth-- )
                  if( mMetrics.mNodesAtPly[seldepth] )
                      break;
+
+            //if( score == EVAL_SEARCH_ABORTED )
+            //    score = rootScore;
 
             printf( "info " );
             printf( "depth %d ",            depth );
@@ -696,10 +823,17 @@ private:
             fflush( stdout );
 
             if( mDebugMode )
-                printf( "info string simdnodes %" PRId64 "\n", mMetrics.mNodesTotalSimd );
+            { 
+                printf( "info string gamephase %.2f simdnodes %" PRId64 "\n", gamePhase, mMetrics.mNodesTotalSimd );
+
+
+            }
 
             *mStorePv   = pv;
             mValuePv    = score;
+
+            if( depth < METRICS_DEPTH )
+                mPvDepth[depth] = pv;
         }
     }
 };

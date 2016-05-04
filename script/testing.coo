@@ -489,3 +489,6 @@ position startpos
 
 # Mate in 2 (f3f7 e8f7 g4h5)
 # 2bqkbn1/2pppp2/np2N3/r3P1p1/p2N2B1/5Q2/PPPPKPP1/RNB2r2 w KQkq - 0 1
+
+# Bug was here: black is about to queen, but white is not alarmed
+# 5rk1/3N4/3p2pp/2pPn3/4P2P/1P4P1/P1R1p1K1/8 w - - 0 31 
