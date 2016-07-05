@@ -35,7 +35,7 @@ struct PIGEON_ALIGN_SIMD MoveMapT
     SIMD        mBlackControl;
     SIMD        mCheckMask;
 
-    INLINE SIMD CalcMoveTargets() const
+    INLINE PDECL SIMD CalcMoveTargets() const
     {
         SIMD slidingMoves   = mSlidingMovesNW | mSlidingMovesNE | mSlidingMovesSW | mSlidingMovesSE | mSlidingMovesN  | mSlidingMovesW  | mSlidingMovesE  | mSlidingMovesS;
         SIMD knightMoves    = mKnightMovesNNW | mKnightMovesNNE | mKnightMovesWNW | mKnightMovesENE | mKnightMovesWSW | mKnightMovesESE | mKnightMovesSSW | mKnightMovesSSE;
@@ -45,7 +45,7 @@ struct PIGEON_ALIGN_SIMD MoveMapT
         return( targets );
     }
 
-    INLINE SIMD IsInCheck() const
+    INLINE PDECL SIMD IsInCheck() const
     {
         return( ~CmpEqual( mCheckMask, MaskAllSet< SIMD >() ) );
     }
@@ -76,7 +76,7 @@ struct PIGEON_ALIGN_SIMD PositionT
     SIMD        mHalfmoveClock;     // Number of halfmoves since the last capture or pawn move
     SIMD        mFullmoveNum;       // Starts at 1, increments after black moves
 
-    void Reset()
+    PDECL void Reset()
     {
         mWhitePawns                 = RANK_2;
         mWhiteKnights               = SQUARE_B1 | SQUARE_G1;
@@ -99,7 +99,7 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
     template< typename SCALAR >
-    void Broadcast( const PositionT< SCALAR >& src )
+    PDECL void Broadcast( const PositionT< SCALAR >& src )
     {
         mWhitePawns                 = src.mWhitePawns;   
         mWhiteKnights               = src.mWhiteKnights; 
@@ -121,7 +121,7 @@ struct PIGEON_ALIGN_SIMD PositionT
         mFullmoveNum                = src.mFullmoveNum;  
     }
 
-    void Step( const MoveSpecT< SIMD >& move )
+    PDECL void Step( const MoveSpecT< SIMD >& move )
     {
         SIMD    moveSrc             = SelectWithMask( mBoardFlipped,  FlipSquareIndex( move.mSrc ), move.mSrc );
         SIMD    srcBit              = SquareBit( moveSrc );
@@ -142,7 +142,7 @@ struct PIGEON_ALIGN_SIMD PositionT
         mHalfmoveClock              = (mHalfmoveClock + 1) & ~(isPawnMove | isCapture);
     }
 
-    void ApplyMove( const SIMD& srcIdx, const SIMD& destIdx, const SIMD& moveType ) 
+    PDECL void ApplyMove( const SIMD& srcIdx, const SIMD& destIdx, const SIMD& moveType ) 
     {
         SIMD    whitePawns          = mWhitePawns;    
         SIMD    whiteKnights        = mWhiteKnights;  
@@ -204,7 +204,7 @@ struct PIGEON_ALIGN_SIMD PositionT
         mHash                       = this->CalcHash();
     }
 
-    SIMD CalcHash() const
+    PDECL SIMD CalcHash() const
     {
         SIMD    whitePawns          = SelectWithMask( mBoardFlipped, ByteSwap( mBlackPawns    ), mWhitePawns    );
         SIMD    whiteKnights        = SelectWithMask( mBoardFlipped, ByteSwap( mBlackKnights  ), mWhiteKnights  );
@@ -229,7 +229,7 @@ struct PIGEON_ALIGN_SIMD PositionT
         return( hash );
     }
 
-    void CalcMoveMap( MoveMapT< SIMD >* RESTRICT dest ) const
+    PDECL void CalcMoveMap( MoveMapT< SIMD >* RESTRICT dest ) const
     {
         SIMD    whitePawns          = mWhitePawns;    
         SIMD    whiteKnights        = mWhiteKnights;  
@@ -376,7 +376,7 @@ struct PIGEON_ALIGN_SIMD PositionT
         dest->mBlackControl         = blackControl;
     }
 
-    void FlipFrom( const PositionT< SIMD >& prev )
+    PDECL void FlipFrom( const PositionT< SIMD >& prev )
     {
         SIMD    newWhitePawns       = ByteSwap( prev.mBlackPawns   );
         SIMD    newWhiteKnights     = ByteSwap( prev.mBlackKnights );
@@ -411,8 +411,8 @@ struct PIGEON_ALIGN_SIMD PositionT
         mFullmoveNum                = prev.mFullmoveNum;
     }
 
-    void    FlipInPlace()           { this->FlipFrom( *this ); }
-    int     GetPlyZeroBased() const { return( (int) ((mFullmoveNum - 1) * 2 + (1 - mWhiteToMove)) ); }
+    PDECL void    FlipInPlace()           { this->FlipFrom( *this ); }
+    PDECL int     GetPlyZeroBased() const { return( (int) ((mFullmoveNum - 1) * 2 + (1 - mWhiteToMove)) ); }
 };
 
 #endif // PIGEON_POSITION_H__

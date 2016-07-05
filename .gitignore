@@ -8,8 +8,9 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # Visual Studio spam
-proj/ipch/
 proj/.vs/
+proj/ipch/
+proj/x64/
 proj/*.aps
 proj/*.ncb
 proj/*.opensdf
@@ -25,4 +26,5 @@ proj/*.userosscache
 proj/*.sln.docstates
 proj/*.VC.opendb
 proj/*.VC.db
+proj/*.pdb
 

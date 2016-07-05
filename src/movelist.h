@@ -14,20 +14,20 @@ struct MoveSpecT
     T   mDest;
     T   mType;
 
-    INLINE MoveSpecT() {}
-    INLINE MoveSpecT( const T& _src, const T& _dest, const T& _type = MOVE ) : mSrc(  _src ), mDest(  _dest ), mType(  _type ) {}
-    INLINE void Set(  const T& _src, const T& _dest, const T& _type = MOVE ) { mSrc = _src;   mDest = _dest;   mType = _type; }
+    INLINE PDECL MoveSpecT() {}
+    INLINE PDECL MoveSpecT( const T& _src, const T& _dest, const T& _type = MOVE ) : mSrc(  _src ), mDest(  _dest ), mType(  _type ) {}
+    INLINE PDECL void Set(  const T& _src, const T& _dest, const T& _type = MOVE ) { mSrc = _src;   mDest = _dest;   mType = _type; }
 
-    template< typename U > INLINE MoveSpecT( const MoveSpecT< U >& rhs ) : mSrc( rhs.mSrc ), mDest( rhs.mDest ), mType( rhs.mType ) {}
+    template< typename U > INLINE PDECL MoveSpecT( const MoveSpecT< U >& rhs ) : mSrc( rhs.mSrc ), mDest( rhs.mDest ), mType( rhs.mType ) {}
 
-    INLINE int  IsCapture() const       { return( ((mType >= CAPTURE_LOSING) & (mType <= CAPTURE_WINNING)) | ((mType >= CAPTURE_PROMOTE_KNIGHT) & (mType <= CAPTURE_PROMOTE_QUEEN)) ); }
-    INLINE int  IsPromotion() const     { return( (mType >= PROMOTE_KNIGHT) & (mType <= CAPTURE_PROMOTE_QUEEN) ); }
-    INLINE int  IsSpecial() const       { return( (mType == TT_BEST_MOVE) | (mType == PRINCIPAL_VARIATION) ); }
-    INLINE void Flip()                  { mSrc = FlipSquareIndex( mSrc ); mDest = FlipSquareIndex( mDest ); }
-    INLINE char GetPromoteChar() const  { return( "\0\0\0\0nbrqnbrq\0\0"[mType] ); }
+    INLINE PDECL int  IsCapture() const       { return( ((mType >= CAPTURE_LOSING) & (mType <= CAPTURE_WINNING)) | ((mType >= CAPTURE_PROMOTE_KNIGHT) & (mType <= CAPTURE_PROMOTE_QUEEN)) ); }
+    INLINE PDECL int  IsPromotion() const     { return( (mType >= PROMOTE_KNIGHT) & (mType <= CAPTURE_PROMOTE_QUEEN) ); }
+    INLINE PDECL int  IsSpecial() const       { return( (mType == TT_BEST_MOVE) | (mType == PRINCIPAL_VARIATION) ); }
+    INLINE PDECL void Flip()                  { mSrc = FlipSquareIndex( mSrc ); mDest = FlipSquareIndex( mDest ); }
+    INLINE PDECL char GetPromoteChar() const  { return( "\0\0\0\0nbrqnbrq\0\0"[mType] ); }
 
-    INLINE bool operator==( const MoveSpecT& rhs ) const { return( (mSrc == rhs.mSrc) && (mDest == rhs.mDest) && (mType == rhs.mType) ); }
-    INLINE bool operator!=( const MoveSpecT& rhs ) const { return( (mSrc != rhs.mSrc) || (mDest != rhs.mDest) || (mType != rhs.mType) ); }
+    INLINE PDECL bool operator==( const MoveSpecT& rhs ) const { return( (mSrc == rhs.mSrc) && (mDest == rhs.mDest) && (mType == rhs.mType) ); }
+    INLINE PDECL bool operator!=( const MoveSpecT& rhs ) const { return( (mSrc != rhs.mSrc) || (mDest != rhs.mDest) || (mType != rhs.mType) ); }
 };
 
 
@@ -39,12 +39,12 @@ struct MoveList
     int         mTried;
     MoveSpec    mMove[MAX_MOVE_LIST];
 
-    INLINE      MoveList()                      { this->Clear(); }
-    INLINE void FlipAll()                       { for( int i = 0; i < mCount; i++ ) mMove[i].Flip(); }
-    INLINE void Clear()                         { mCount = 0; mTried = 0; }
-    INLINE void Append( const MoveSpec& spec )  { mMove[mCount++] = spec; }
+    INLINE PDECL      MoveList()                      { this->Clear(); }
+    INLINE PDECL void FlipAll()                       { for( int i = 0; i < mCount; i++ ) mMove[i].Flip(); }
+    INLINE PDECL void Clear()                         { mCount = 0; mTried = 0; }
+    INLINE PDECL void Append( const MoveSpec& spec )  { mMove[mCount++] = spec; }
 
-    void Append( const MoveList& other )
+    PDECL void Append( const MoveList& other )
     {
         MoveSpec*       RESTRICT dest = mMove + mCount;
         const MoveSpec* RESTRICT src  = other.mMove;
@@ -55,7 +55,7 @@ struct MoveList
         mCount += other.mCount;
     }
 
-    int LookupMove( const MoveSpec& spec )
+    PDECL int LookupMove( const MoveSpec& spec )
     {
         for( int idx = 0; idx < mCount; idx++ )
         {
@@ -71,7 +71,7 @@ struct MoveList
         return( -1 );
     }
 
-    int ChooseBestUntried()
+    PDECL int ChooseBestUntried()
     {
         int best = mTried;
 
@@ -83,7 +83,7 @@ struct MoveList
         return( mTried++ );
     }
 
-    void DiscardMovesBelow( int type )
+    PDECL void DiscardMovesBelow( int type )
     {
         int prevCount = mCount;
 
@@ -98,12 +98,12 @@ struct MoveList
         mTried = 0;
     }
 
-    void DiscardQuietMoves()
+    PDECL void DiscardQuietMoves()
     {
         this->DiscardMovesBelow( CAPTURE_EQUAL );
     }
 
-    int MarkSpecialMoves( int src, int dest, int newType )
+    PDECL int MarkSpecialMoves( int src, int dest, int newType )
     {
         int marked = 0;
 
@@ -114,7 +114,7 @@ struct MoveList
         return( marked );
     }
 
-    void PrioritizeDest( u64 mask )
+    PDECL void PrioritizeDest( u64 mask )
     {
         int selected = 0;
 
@@ -126,7 +126,7 @@ struct MoveList
                 Exchange( mMove[idx], mMove[selected++] ); 
     }
 
-    void UnpackMoveMap( const Position& pos, const MoveMap& mmap )
+    PDECL void UnpackMoveMap( const Position& pos, const MoveMap& mmap )
     {
         u64 whitePieces = pos.mWhitePawns | pos.mWhiteKnights | pos.mWhiteBishops | pos.mWhiteRooks | pos.mWhiteQueens | pos.mWhiteKing;
 
@@ -161,7 +161,7 @@ struct MoveList
             this->FlipAll();
     }
 
-    int FindMoves( const Position& pos )
+    PDECL int FindMoves( const Position& pos )
     {
         MoveMap mmap;
 
@@ -172,7 +172,7 @@ struct MoveList
     }
 
 private:
-    INLINE void ClassifyAndStoreMove( const Position& pos, int srcIdx, int destIdx, int promote = 0 ) 
+    INLINE PDECL void ClassifyAndStoreMove( const Position& pos, int srcIdx, int destIdx, int promote = 0 ) 
     {
         u64 src         = SquareBit( (u64) srcIdx );
         u64 dest        = SquareBit( (u64) destIdx );
@@ -185,7 +185,7 @@ private:
         mMove[mCount++].Set( srcIdx, destIdx, type );
     }
 
-    void StorePromotions( const Position& pos, u64 dest, int ofs ) 
+    PDECL void StorePromotions( const Position& pos, u64 dest, int ofs ) 
     {
         while( dest )
         {
@@ -198,7 +198,7 @@ private:
         }
     }
 
-    INLINE void StoreStepMoves( const Position& pos, u64 dest, int ofs ) 
+    INLINE PDECL void StoreStepMoves( const Position& pos, u64 dest, int ofs ) 
     {
         while( dest )
         {
@@ -208,7 +208,7 @@ private:
     }
 
     template< int SHIFT >
-    INLINE void StoreSlidingMoves( const Position& pos, u64 dest, u64 pieces, u64 checkMask ) 
+    INLINE PDECL void StoreSlidingMoves( const Position& pos, u64 dest, u64 pieces, u64 checkMask ) 
     {
         u64 src = Shift< -SHIFT >( dest ) & pieces;
         u64 cur = Shift<  SHIFT >( src );
@@ -222,13 +222,13 @@ private:
         }
     }
 
-    void StorePawnMoves( const Position& pos, u64 dest, int ofs ) 
+    PDECL void StorePawnMoves( const Position& pos, u64 dest, int ofs ) 
     {
         this->StoreStepMoves(  pos, dest & ~RANK_8, ofs );
         this->StorePromotions( pos, dest &  RANK_8, ofs );
     }
 
-    void StoreKingMoves( const Position& pos, u64 dest, u64 king ) 
+    PDECL void StoreKingMoves( const Position& pos, u64 dest, u64 king ) 
     {
         int kingIdx = (int) LowestBitIndex( king );
 

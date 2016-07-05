@@ -4,12 +4,6 @@ namespace Pigeon {
 #ifndef PIGEON_SIMD_H__
 #define PIGEON_SIMD_H__
 
-template< typename T >
-struct SimdWidth
-{
-    enum { LANES = 1 };
-};
-
 
 
 // SSE2

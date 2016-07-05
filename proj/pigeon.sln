@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pigeon", "pigeon.vcxproj", "{5CC63264-3586-4E61-ACF6-4B26850AACE6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pigeon-cuda", "pigeon-cuda.vcxproj", "{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -17,6 +19,14 @@ Global
 		{5CC63264-3586-4E61-ACF6-4B26850AACE6}.Release|Win32.ActiveCfg = Release|x64
 		{5CC63264-3586-4E61-ACF6-4B26850AACE6}.Release|x64.ActiveCfg = Release|x64
 		{5CC63264-3586-4E61-ACF6-4B26850AACE6}.Release|x64.Build.0 = Release|x64
+		{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}.Debug|Win32.Build.0 = Debug|Win32
+		{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}.Debug|x64.ActiveCfg = Debug|x64
+		{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}.Debug|x64.Build.0 = Debug|x64
+		{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}.Release|Win32.ActiveCfg = Release|Win32
+		{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}.Release|Win32.Build.0 = Release|Win32
+		{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}.Release|x64.ActiveCfg = Release|x64
+		{1714DD72-5E93-4B90-A178-1AE1E0EB86F1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

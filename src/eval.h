@@ -105,7 +105,7 @@ public:
     }
 
     template< int POPCNT >
-    float CalcGamePhase( const Position& pos ) const
+    PDECL float CalcGamePhase( const Position& pos ) const
     {
         // "openingness" starts at 1, then reduces to 0 over at most EVAL_OPENING_PLIES
         // "endingness" starts at 0, then increases as minor/major pieces are taken
@@ -132,7 +132,7 @@ public:
     }
 
 
-    void GenerateWeights( EvalWeight* weights, float gamePhase ) const
+    PDECL void GenerateWeights( EvalWeight* weights, float gamePhase ) const
     {
         if( mEnableTuning )
         {
@@ -152,7 +152,7 @@ public:
 
 
     template< int POPCNT, typename SIMD >
-    SIMD Evaluate( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, const EvalWeight* weights ) const
+    PDECL SIMD Evaluate( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, const EvalWeight* weights ) const
     {
         PositionT< SIMD > flipped;
         flipped.FlipFrom( pos );
@@ -170,7 +170,7 @@ public:
 
 
     template< int POPCNT, typename SIMD >
-    SIMD EvalSide( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, const EvalWeight* weights ) const
+    PDECL SIMD EvalSide( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, const EvalWeight* weights ) const
     {
         SIMD    whitePawns          = pos.mWhitePawns;    
         SIMD    whiteKnights        = pos.mWhiteKnights;  

@@ -18,7 +18,7 @@ struct TableEntry
     bool        mFailHigh;
     bool        mWhiteMove;
 
-    INLINE u64 Pack() const
+    INLINE PDECL u64 Pack() const
     {
         return(
             ((u64) mHashVerify  << 40) |
@@ -31,7 +31,7 @@ struct TableEntry
             ((u64) mWhiteMove   <<  1) );
     }
 
-    INLINE void Unpack( const u64& val )
+    INLINE PDECL void Unpack( const u64& val )
     {
         mHashVerify = (u32)   (val >> 40);
         mScore      = (i16)   (val >> 24);

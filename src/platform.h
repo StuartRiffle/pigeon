@@ -9,15 +9,16 @@
 
 #include <stdint.h>
 
+//#if defined( __CUDA_ARCH__ )
 #if defined( __CUDA_ARCH__ )
 
     #define PIGEON_CUDA         (1)
     #define RESTRICT            __restrict
-    #define DEBUGBREAK          __debugbreak
-    #define INLINE              __inline
+    #define INLINE              __inline    
+    #define PDECL               __device__
+    #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  
     #define PIGEON_ALIGN_SIMD   
-    //#define PRId64              "I64d"
 
 #elif defined( _MSC_VER )
 
@@ -36,14 +37,15 @@
     #define PIGEON_MSVC         (1)
     #define PIGEON_ENABLE_SSE2  (1)
     #define PIGEON_ENABLE_SSE4  (1)
-    //#define PIGEON_ENABLE_AVX2  (1)
+    #define PIGEON_USE_HASH     (1)
     #define RESTRICT            __restrict
     #define DEBUGBREAK          __debugbreak
     #define INLINE              __forceinline
+    #define PDECL         
+    #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  __declspec( align( _N ) )
     #define PIGEON_ALIGN_SIMD   __declspec( align( 32 ) )
     #define PRId64              "I64d"
-    #define PIGEON_ALLOW_POPCNT (1)
 
     extern "C" void * __cdecl memset(void *, int, size_t);
     #pragma intrinsic( memset )        
@@ -59,17 +61,17 @@
     #include <cpuid.h>
     #include <string.h>
 
-
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 
     #define PIGEON_GCC          (1)
-    //#define PIGEON_ENABLE_SSE2  (1)
+    #define PIGEON_USE_HASH     (1)
     #define RESTRICT            __restrict
     #define DEBUGBREAK          void
     #define INLINE              inline __attribute__(( always_inline ))
+    #define PDECL         
+    #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  __attribute__(( aligned( _N ) ))
     #define PIGEON_ALIGN_SIMD   __attribute__(( aligned( 32 ) ))
-    #define PIGEON_ALLOW_POPCNT (1)
     #define stricmp             strcasecmp
     #define strnicmp            strncasecmp
 
@@ -105,7 +107,7 @@ namespace Pigeon
         CPU_LEVELS
     };
 
-    INLINE u64 PlatByteSwap64( const u64& val )             
+    INLINE PDECL u64 PlatByteSwap64( const u64& val )             
     { 
     #if PIGEON_CUDA
         u32 hi = __byte_perm( (u32) val, 0, 0x0123 );
@@ -118,7 +120,7 @@ namespace Pigeon
     #endif
     }
 
-    INLINE u64 PlatLowestBitIndex64( const u64& val )
+    INLINE PDECL u64 PlatLowestBitIndex64( const u64& val )
     {
     #if PIGEON_CUDA
          return( __ffsll( val ) );
@@ -131,19 +133,8 @@ namespace Pigeon
     #endif
     }
 
-    template< int POPCNT >
-    INLINE u64 PlatCountBits64( const u64& val )
+    INLINE PDECL u64 SoftCountBits64( const u64& val )
     {
-    #if PIGEON_ALLOW_POPCNT
-        #if PIGEON_CUDA
-            return( __popcll( val ) );
-        #elif PIGEON_MSVC
-            if( POPCNT ) return( __popcnt64( val ) );
-        #elif PIGEON_GCC
-            if( POPCNT ) return( __builtin_popcountll( val ) );
-        #endif
-    #endif
-
         const u64 mask01 = 0x0101010101010101ULL;
         const u64 mask0F = 0x0F0F0F0F0F0F0F0FULL;
         const u64 mask33 = 0x3333333333333333ULL;
@@ -159,7 +150,27 @@ namespace Pigeon
         return( n );
     }
 
-    INLINE void PlatClearMemory( void* mem, size_t bytes )
+    template< int POPCNT >
+    INLINE PDECL u64 PlatCountBits64( const u64& val )
+    {
+    #if PIGEON_CUDA
+        return( __popcll( val ) );
+    #else
+        #if PIGEON_ALLOW_POPCNT
+            #if PIGEON_MSVC
+                if( POPCNT ) 
+                    return( __popcnt64( val ) );
+            #elif PIGEON_GCC
+                if( POPCNT ) 
+                    return( __builtin_popcountll( val ) );
+            #endif
+        #endif
+
+        return( SoftCountBits64( val ) );
+    #endif
+    }
+
+    INLINE PDECL void PlatClearMemory( void* mem, size_t bytes )
     {
     #if PIGEON_CUDA
         cudaMemset( mem, 0, bytes );
@@ -170,7 +181,7 @@ namespace Pigeon
     #endif
     }
 
-    INLINE void PlatPrefetch( void* mem )
+    INLINE PDECL void PlatPrefetch( void* mem )
     {
     #if PIGEON_MSVC
         _mm_prefetch( (char*) mem, _MM_HINT_NTA );
@@ -181,7 +192,7 @@ namespace Pigeon
 
 #if !PIGEON_CUDA
 
-    INLINE bool PlatCheckCpuFlag( int leaf, int idxWord, int idxBit )
+    INLINE PDECL bool PlatCheckCpuFlag( int leaf, int idxWord, int idxBit )
     {
     #if PIGEON_MSVC
         int info[4] = { 0 };
@@ -195,7 +206,7 @@ namespace Pigeon
         return( (info[idxWord] & (1 << idxBit)) != 0 );
     }
 
-    INLINE bool PlatDetectPopcnt()
+    INLINE PDECL bool PlatDetectPopcnt()
     {
     #if PIGEON_MSVC
         return( PlatCheckCpuFlag( 1, 2, 23 ) );
@@ -204,7 +215,7 @@ namespace Pigeon
     #endif
     }
 
-    INLINE int PlatDetectCpuLevel()
+    INLINE PDECL int PlatDetectCpuLevel()
     {
     #if PIGEON_ENABLE_AVX2
         if( PlatCheckCpuFlag( 7, 1, 5 ) )   return( CPU_AVX2 );
@@ -219,7 +230,7 @@ namespace Pigeon
         return( CPU_X64 );
     }
 
-    INLINE ThreadId PlatSpawnThread( void* (*func)( void* ), void* arg )
+    INLINE PDECL ThreadId PlatSpawnThread( void* (*func)( void* ), void* arg )
     {
     #if PIGEON_MSVC
         ThreadId id = _beginthread( reinterpret_cast< void (*)( void* ) >( func ), 0, arg ); 
@@ -231,7 +242,7 @@ namespace Pigeon
     #endif
     }
 
-    INLINE void PlatSleep( int ms )
+    INLINE PDECL void PlatSleep( int ms )
     {
     #if PIGEON_MSVC
         Sleep( ms );

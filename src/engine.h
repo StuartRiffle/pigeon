@@ -4,9 +4,9 @@ namespace Pigeon {
 #ifndef PIGEON_ENGINE_H__
 #define PIGEON_ENGINE_H__
 
-
-class Engine
+PDECL class EngineBase                                        
 {
+protected:
     HashTable               mHashTable;                 // Transposition table
     Position                mRoot;                      // The root of the search tree (the "current position")
     SearchConfig            mConfig;                    // Search parameters
@@ -17,6 +17,10 @@ class Engine
     MoveList                mPvDepth[METRICS_DEPTH];    // Best line found at 
     MoveList*               mStorePv;                   // Target for PV in active search
     EvalTerm                mValuePv;                   // The evaluation of *mStorePv
+};
+
+PDECL class Engine : EngineBase
+{
     int                     mTableSize;                 // Transposition table size (in megs)
     int                     mTargetTime;                // Time to stop current search
     int                     mDepthLimit;                // Depth limit for current search (not counting quiesence)
@@ -511,6 +515,8 @@ private:
         Exchange( moves.mMove[moves.mTried], moves.mMove[best] );
         return( moves.mTried++ );
     }
+
+    #include "negamax.h"
 
     template< int POPCNT, typename SIMD >
     EvalTerm NegaMax( const Position& pos, const MoveMap& moveMap, EvalTerm score, int ply, int depth, EvalTerm alpha, EvalTerm beta, MoveList* pv_new, bool onPvPrev )

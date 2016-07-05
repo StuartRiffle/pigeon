@@ -52,6 +52,9 @@
     <ClInclude Include="..\src\book.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\negamax.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
