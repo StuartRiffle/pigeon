@@ -73,6 +73,7 @@ const PDECL int       PIGEON_VER_MIN      = 40;
          
 const PDECL int       TT_MEGS_DEFAULT     = 512;
 const PDECL int       TT_SAMPLE_SIZE      = 128;
+const PDECL int       MAX_SEARCH_DEPTH    = 64;
 const PDECL int       METRICS_DEPTH       = 64;
 const PDECL int       METRICS_MOVES       = 20;
 const PDECL int       MAX_MOVE_LIST       = 218;
