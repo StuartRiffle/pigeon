@@ -9,6 +9,14 @@ namespace Pigeon {
 
 struct SearchState
 {
+    enum
+    {
+        STEP_PREPARE,
+        STEP_ITERATE_CHILDREN,
+        STEP_CHECK_SCORE,
+        STEP_FINALIZE,
+    };
+
     struct Frame
     {
         Position        pos; 
@@ -19,7 +27,7 @@ struct SearchState
         EvalTerm        score; 
         EvalTerm        alpha; 
         EvalTerm        beta; 
-        EvalTerm        score; 
+        EvalTerm        result;
         bool            onPv;
         bool            inCheck;
         int             movesTried;
@@ -29,13 +37,14 @@ struct SearchState
     };
 
     Frame               mFrames[MAX_SEARCH_DEPTH];
-    Frame*              mCurrFrame;
+    int                 mCurrFrameIdx;
+    MoveList            mBestLine;
 
     void Advance()
     {
-        SearchFrame* RESTRICT f = mCurrFrame;
+        Frame* RESTRICT f = mFrames + mCurrFrameIdx;
 
-        if( f->step == UNPACK_MOVES )
+        if( f->step == STEP_PREPARE )
         {
             if( f->depth < 1 )
             {
@@ -49,7 +58,7 @@ struct SearchState
             }
         }
 
-        if( f->step == UNPACK_MOVES )
+        if( f->step == STEP_PREPARE )
         {
             f->moves.UnpackMoveMap( f->pos, f->moveMap );
             f->inCheck = (f->moveMap.IsInCheck() != 0);
@@ -61,7 +70,7 @@ struct SearchState
             }
         }
 
-        if( f->step == UNPACK_MOVES )
+        if( f->step == STEP_PREPARE )
         {
             if( f->depth < 1 )
             {
@@ -76,7 +85,7 @@ struct SearchState
             }
         }
 
-        if( f->step == UNPACK_MOVES )
+        if( f->step == STEP_PREPARE )
         {
             if( f->depth >= 0 )
             {
@@ -91,7 +100,7 @@ struct SearchState
                     bool        samePlayer          = (f->pos.mWhiteToMove != 0) == tt.mWhiteMove;
                     bool        failedHighBefore    = samePlayer? tt.mFailHigh : tt.mFailLow;
                     EvalTerm    lowerBoundBefore    = samePlayer? tt.mScore    : -tt.mScore;
-                    int         depthBefore         = tt.mf->depth;
+                    int         depthBefore         = tt.mDepth;
 
                     if( failedHighBefore && (lowerBoundBefore >= f->beta) && (depthBefore >= f->depth) )
                     {
@@ -106,24 +115,24 @@ struct SearchState
             }
         }
 
-        if( f->step == UNPACK_MOVES )
+        if( f->step == STEP_PREPARE )
         {
-            if( f->onPv && (mStorePv->mCount > f->ply) )
+            if( f->onPv && (mBestLine.mCount > f->ply) )
             {
-                MoveSpec& pvMove = mStorePv->mMove[f->ply];
+                MoveSpec& pvMove = mBestLine.mMove[f->ply];
                 f->moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, PRINCIPAL_VARIATION );
             }
 
             f->movesTried   = 0;
             f->bestScore    = f->alpha;
-            f->step         = ITERATE_CHILDREN;
+            f->step         = STEP_ITERATE_CHILDREN;
         }
 
-        if( f->step == ITERATE_CHILDREN )
+        if( f->step == STEP_ITERATE_CHILDREN )
         {
             if( (f->movesTried >= f->moves.mCount) || (f->bestScore >= f->beta) )
             {
-                f->step = FINALIZE;
+                f->step = STEP_FINALIZE;
             }
             else
             {
@@ -138,13 +147,15 @@ struct SearchState
                 f[1].depth      = f->depth - 1; 
                 f[1].alpha      = -f->beta; 
                 f[1].beta       = -f->bestScore;
-                f[1].step       = UNPACK_MOVES;
-                f->step         = CHECK_SCORE;
+                f[1].step       = STEP_PREPARE;
+                f->step         = STEP_CHECK_SCORE;
+                f->movesTried++;
+
                 f++;
             }
         }
 
-        if( f->step == CHECK_SCORE )
+        if( f->step == STEP_CHECK_SCORE )
         {
             EvalTerm subScore = f[1].result;
 
@@ -153,19 +164,19 @@ struct SearchState
                 f->bestScore   = subScore;
                 f->bestMove    = f->childSpec[f->simdIdx];
 
-                MoveList pv;
 
+                mBestLine.Clear();
                 for( int i = 0; i <= f->ply; i++ )
-                    pv.Append( mFrames[i].bestMove );
+                    mBestLine.Append( mFrames[i].bestMove );
 
                 RegisterBestLine( pv, f->alpha, f->beta );
             }
 
             f->movesTried++;
-            f->step = ITERATE_CHILDREN;
+            f->step = STEP_ITERATE_CHILDREN;
         }
 
-        if( f->step == FINALIZE )
+        if( f->step == STEP_FINALIZE )
         {
             bool        failedHigh  = (f->bestScore >= f->beta);
             bool        failedLow   = (f->bestScore == f->alpha);
@@ -191,7 +202,7 @@ struct SearchState
             f--;
         }
 
-        mCurrFrame = f;
+        mCurrFrameIdx = f - mFrames;
     }
 };
 
