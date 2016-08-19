@@ -68,8 +68,9 @@ enum
 typedef i16     EvalTerm;
 typedef i32     EvalWeight;
 
-const PDECL int       PIGEON_VER_MAJ      = 1;
-const PDECL int       PIGEON_VER_MIN      = 40;
+const PDECL int       PIGEON_VER_MAJOR    = 1;
+const PDECL int       PIGEON_VER_MINOR    = 5;
+const PDECL int       PIGEON_VER_PATCH    = 0;
          
 const PDECL int       TT_MEGS_DEFAULT     = 512;
 const PDECL int       TT_SAMPLE_SIZE      = 128;

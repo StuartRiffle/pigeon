@@ -12,8 +12,8 @@
 #include "defs.h"
 #include "bits.h"
 #include "position.h"
-#include "eval.h"
 #include "movelist.h"
+#include "eval.h"
 #include "table.h"
 
 #include <stdio.h>

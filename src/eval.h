@@ -90,7 +90,7 @@ public:
         {
             const char* weightName = this->GetWeightName( idx );
 
-            if( weightName && (strcmp( name, weightName ) == 0) )
+            if( weightName && (strnicmp( name, weightName, strlen( weightName ) ) == 0) )
                 return( idx );
         }
 
@@ -132,6 +132,48 @@ public:
     }
 
 
+    template< int POPCNT >
+    void AdjustWeights( const Position& pos0, EvalTerm score0, const Position& pos1, EvalTerm score1, float learningRate )
+    {
+        float       phase0                  = this->CalcGamePhase< POPCNT >( pos0 );
+        float       phase1                  = this->CalcGamePhase< POPCNT >( pos1 );
+        MoveMap     mmap0;                  pos0.CalcMoveMap( &mmap0 );
+        MoveMap     mmap1;                  pos1.CalcMoveMap( &mmap1 );
+        MoveList    moves0;                 moves0.UnpackMoveMap( pos0, mmap0 );
+        MoveList    moves1;                 moves1.UnpackMoveMap( pos1, mmap1 );
+
+        EvalWeight  weights0[EVAL_TERMS];   this->GenerateWeights( weights0, phase0 );
+        EvalWeight  weights1[EVAL_TERMS];   this->GenerateWeights( weights1, phase1 );
+        u64         eval0[EVAL_TERMS];      this->CalcEvalTerms< POPCNT, u64 >( pos0, mmap0, eval0 );
+        u64         eval1[EVAL_TERMS];      this->CalcEvalTerms< POPCNT, u64 >( pos1, mmap1, eval1 );
+
+        float       advantage0              = 1.0f / (1.0f + exp( -(score0 * 0.1f) ));
+        float       advantage1              = 1.0f / (1.0f + exp( -(score1 * 0.1f) ));
+        float       error                   = advantage1 - advantage0;
+        float       openingPct              = 1 - Max( 0.0f, Min( 1.0f, phase0 ) );
+        float       endgamePct              = Max( 0.0f, Min( 1.0f, phase0 - 1 ) );
+        float       midgamePct              = 1 - (openingPct + endgamePct);
+
+        for( int i = 0; i < EVAL_TERMS; i++ )
+        {
+            float gradient = (float) ((i32) ((eval0[i] * weights0[i]) >> WEIGHT_SHIFT));
+            float adjust   = learningRate * error * (1 - error) * -gradient;
+
+            if( adjust != 0.0f )
+                printf( "" );
+
+            mWeightsOpening[i] += Max( 0.0f, adjust * openingPct );
+            mWeightsMidgame[i] += Max( 0.0f, adjust * midgamePct );
+            mWeightsEndgame[i] += Max( 0.0f, adjust * endgamePct );
+        }
+
+        //FILE* dump = fopen( "autotune.coo", "w" );
+        //for( int i = 0; i < EVAL_TERMS; i++ )
+        //    fprintf( dump, "tune %-25s %14.7f %14.7f %14.7f\n", this->GetWeightName( i ),  mWeightsOpening[i],  mWeightsMidgame[i],  mWeightsEndgame[i] );
+        //fclose( dump );
+    }
+
+
     PDECL void GenerateWeights( EvalWeight* weights, float gamePhase ) const
     {
         if( mEnableTuning )
@@ -154,23 +196,50 @@ public:
     template< int POPCNT, typename SIMD >
     PDECL SIMD Evaluate( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, const EvalWeight* weights ) const
     {
-        PositionT< SIMD > flipped;
-        flipped.FlipFrom( pos );
+        SIMD    eval[EVAL_TERMS];
 
-        SIMD    evalAsWhite         = this->EvalSide< POPCNT >( pos,     mmap, weights );
-        SIMD    evalAsBlack         = this->EvalSide< POPCNT >( flipped, mmap, weights );
-        SIMD    evalBalance         = evalAsWhite - evalAsBlack;
+        this->CalcEvalTerms< POPCNT, SIMD >( pos, mmap, eval );
+
+        SIMD    score               = this->ApplyWeights( eval, weights );
         SIMD    moveTargets         = mmap.CalcMoveTargets();
         SIMD    inCheck             = mmap.IsInCheck();
         SIMD    mateFlavor          = SelectIfNotZero( inCheck, (SIMD) EVAL_CHECKMATE, (SIMD) EVAL_STALEMATE );
-        SIMD    evalConsideringMate = SelectIfNotZero( moveTargets, evalBalance, mateFlavor );    
+        SIMD    evalConsideringMate = SelectIfNotZero( moveTargets, score, mateFlavor );    
 
         return( evalConsideringMate );
     }
 
 
+    template< typename SIMD >
+    PDECL SIMD ApplyWeights( const SIMD* eval, const EvalWeight* weights ) const
+    {
+        SIMD score = MulLow32( eval[0], weights[0] );
+        for( int i = 1; i < EVAL_TERMS; i++ )
+            score += MulLow32( eval[i], weights[i] );
+
+        return( score >> WEIGHT_SHIFT );
+    }
+
+
     template< int POPCNT, typename SIMD >
-    PDECL SIMD EvalSide( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, const EvalWeight* weights ) const
+    PDECL void CalcEvalTerms( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, SIMD* eval ) const
+    {
+        PositionT< SIMD > flipped;
+        flipped.FlipFrom( pos );
+
+        SIMD    evalWhite[EVAL_TERMS];
+        SIMD    evalBlack[EVAL_TERMS];
+
+        this->CalcSideEval< POPCNT, SIMD >( pos,     mmap, evalWhite );
+        this->CalcSideEval< POPCNT, SIMD >( flipped, mmap, evalBlack );
+
+        for( int i = 0; i < EVAL_TERMS; i++ )
+            eval[i] = evalWhite[i] - evalBlack[i];
+    }
+
+
+    template< int POPCNT, typename SIMD >
+    PDECL void CalcSideEval( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, SIMD* eval ) const
     {
         SIMD    whitePawns          = pos.mWhitePawns;    
         SIMD    whiteKnights        = pos.mWhiteKnights;  
@@ -202,43 +271,36 @@ public:
         SIMD    whiteAttacking      = whiteControl & blackPieces;
         SIMD    whiteDefending      = whiteControl & whitePieces;
         SIMD    inEnemyTerritory    = whitePieces & (RANK_5 | RANK_6 | RANK_7 | RANK_8);
-        SIMD    evalKnightsDevel    = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );
-        SIMD    evalBishopsDevel    = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) );
-        SIMD    evalKnightsFirst    = SubClampZero( evalKnightsDevel, evalBishopsDevel );
-        SIMD    evalBothBishops     = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 );
-        SIMD    evalRooksConnected  = CountBits< POPCNT >( PropExOrtho( whiteRooks, empty ) & whiteRooks );
-        SIMD    evalPawnsGuardKing  = CountBits< POPCNT >( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );
-        SIMD    score               = MulLow32( CountBits< POPCNT >( whitePawns ),                                weights[EVAL_PAWNS]            ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteKnights ),                              weights[EVAL_KNIGHTS]          ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteBishops ),                              weights[EVAL_BISHOPS]          ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteRooks ),                                weights[EVAL_ROOKS]            ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteQueens ),                               weights[EVAL_QUEENS]           ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteKing ),                                 weights[EVAL_KINGS]            ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteMobility ),                             weights[EVAL_MOBILITY]         ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteAttacking ),                            weights[EVAL_ATTACKING]        ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteDefending ),                            weights[EVAL_DEFENDING]        ) 
-                                    + MulLow32( CountBits< POPCNT >( inEnemyTerritory ),                          weights[EVAL_ENEMY_TERRITORY]  ) 
-                                    + MulLow32( CountBits< POPCNT >( whitePawns   & CENTER_SQUARES ),             weights[EVAL_CENTER_PAWNS]     ) 
-                                    + MulLow32( CountBits< POPCNT >( whitePieces  & CENTER_SQUARES ),             weights[EVAL_CENTER_PIECES]    ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteControl & CENTER_SQUARES ),             weights[EVAL_CENTER_CONTROL]   ) 
-                                    + MulLow32( evalKnightsDevel,                                                 weights[EVAL_KNIGHTS_DEVEL]    ) 
-                                    + MulLow32( evalBishopsDevel,                                                 weights[EVAL_BISHOPS_DEVEL]    ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteRooks   & ~(SQUARE_A1 | SQUARE_H1) ),   weights[EVAL_ROOKS_DEVEL]      ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteRooks   & ~(SQUARE_D1) ),               weights[EVAL_QUEEN_DEVEL]      ) 
-                                    + MulLow32( CountBits< POPCNT >( whitePawns   & RANK_6 ),                     weights[EVAL_PROMOTING_SOON]   ) 
-                                    + MulLow32( CountBits< POPCNT >( whitePawns   & RANK_7 ),                     weights[EVAL_PROMOTING_IMMED]  ) 
-                                    + MulLow32( CountBits< POPCNT >( pawnsChained ),                              weights[EVAL_CHAINED_PAWNS]    ) 
-                                    + MulLow32( CountBits< POPCNT >( PropN( whitePawns, ~blackPawns ) & RANK_8 ), weights[EVAL_PASSED_PAWNS]     ) 
-                                    + MulLow32( evalKnightsFirst,                                                 weights[EVAL_KNIGHTS_FIRST]    ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteKnights & ~EDGE_SQUARES ),              weights[EVAL_KNIGHTS_NOT_RIM]  ) 
-                                    + MulLow32( evalBothBishops,                                                  weights[EVAL_BOTH_BISHOPS]     ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteRooks & RANK_7 ),                       weights[EVAL_ROOK_ON_RANK_7]   ) 
-                                    + MulLow32( evalRooksConnected,                                               weights[EVAL_ROOKS_CONNECTED]  ) 
-                                    + MulLow32( CountBits< POPCNT >( PropN( whiteRooks, empty ) & RANK_8 ),       weights[EVAL_ROOKS_OPEN_FILE]  ) 
-                                    + MulLow32( CountBits< POPCNT >( whiteKing & RANK_1 & ~SQUARE_E1 ),           weights[EVAL_KING_CASTLED]     ) 
-                                    + MulLow32( evalPawnsGuardKing,                                               weights[EVAL_PAWNS_GUARD_KING] );
 
-        return( score >> WEIGHT_SHIFT );
+        eval[EVAL_PAWNS]            = CountBits< POPCNT >( whitePawns );                                
+        eval[EVAL_KNIGHTS]          = CountBits< POPCNT >( whiteKnights );                              
+        eval[EVAL_BISHOPS]          = CountBits< POPCNT >( whiteBishops );                              
+        eval[EVAL_ROOKS]            = CountBits< POPCNT >( whiteRooks );                                
+        eval[EVAL_QUEENS]           = CountBits< POPCNT >( whiteQueens );                               
+        eval[EVAL_KINGS]            = CountBits< POPCNT >( whiteKing );                                 
+        eval[EVAL_MOBILITY]         = CountBits< POPCNT >( whiteMobility );                             
+        eval[EVAL_ATTACKING]        = CountBits< POPCNT >( whiteAttacking );                            
+        eval[EVAL_DEFENDING]        = CountBits< POPCNT >( whiteDefending );                            
+        eval[EVAL_ENEMY_TERRITORY]  = CountBits< POPCNT >( inEnemyTerritory );                          
+        eval[EVAL_CENTER_PAWNS]     = CountBits< POPCNT >( whitePawns   & CENTER_SQUARES );             
+        eval[EVAL_CENTER_PIECES]    = CountBits< POPCNT >( whitePieces  & CENTER_SQUARES );             
+        eval[EVAL_CENTER_CONTROL]   = CountBits< POPCNT >( whiteControl & CENTER_SQUARES );             
+        eval[EVAL_KNIGHTS_DEVEL]    = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );                                                 
+        eval[EVAL_BISHOPS_DEVEL]    = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) );                                                 
+        eval[EVAL_ROOKS_DEVEL]      = CountBits< POPCNT >( whiteRooks   & ~(SQUARE_A1 | SQUARE_H1) );   
+        eval[EVAL_QUEEN_DEVEL]      = CountBits< POPCNT >( whiteRooks   & ~(SQUARE_D1) );               
+        eval[EVAL_PROMOTING_SOON]   = CountBits< POPCNT >( whitePawns   & RANK_6 );                     
+        eval[EVAL_PROMOTING_IMMED]  = CountBits< POPCNT >( whitePawns   & RANK_7 );                     
+        eval[EVAL_CHAINED_PAWNS]    = CountBits< POPCNT >( pawnsChained );                              
+        eval[EVAL_PASSED_PAWNS]     = CountBits< POPCNT >( PropN( whitePawns, ~blackPawns ) & RANK_8 ); 
+        eval[EVAL_KNIGHTS_FIRST]    = SubClampZero( eval[EVAL_KNIGHTS_DEVEL], eval[EVAL_BISHOPS_DEVEL] );                                                 
+        eval[EVAL_KNIGHTS_NOT_RIM]  = CountBits< POPCNT >( whiteKnights & ~EDGE_SQUARES );              
+        eval[EVAL_BOTH_BISHOPS]     = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 );                                                  
+        eval[EVAL_ROOK_ON_RANK_7]   = CountBits< POPCNT >( whiteRooks & RANK_7 );                       
+        eval[EVAL_ROOKS_CONNECTED]  = CountBits< POPCNT >( PropExOrtho( whiteRooks, empty ) & whiteRooks );                                               
+        eval[EVAL_ROOKS_OPEN_FILE]  = CountBits< POPCNT >( PropN( whiteRooks, empty ) & RANK_8 );       
+        eval[EVAL_KING_CASTLED]     = CountBits< POPCNT >( whiteKing & RANK_1 & ~SQUARE_E1 );           
+        eval[EVAL_PAWNS_GUARD_KING] = CountBits< POPCNT >( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );                                               
     }
 };
 

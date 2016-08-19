@@ -165,6 +165,7 @@ struct MoveList
     {
         MoveMap mmap;
 
+        this->Clear();
         pos.CalcMoveMap( &mmap );
         this->UnpackMoveMap( pos, mmap );
 
