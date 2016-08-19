@@ -16,7 +16,7 @@ struct UCI
         }
         else if( tokens.Consume( "uci" ) )
         {                                                                                        
-            printf( "id name Pigeon %d.%02d\n", PIGEON_VER_MAJ, PIGEON_VER_MIN );
+            printf( "id name Pigeon %d.%d.%d\n", PIGEON_VER_MAJOR, PIGEON_VER_MINOR, PIGEON_VER_PATCH );
             printf( "id author Stuart Riffle \n" );
             printf( "option name Hash type spin min 64 max 16384 default %d\n", TT_MEGS_DEFAULT );
             printf( "option name OwnBook type check default %s\n", OWNBOOK_DEFAULT? "true" : "false" );
@@ -249,8 +249,7 @@ struct UCI
                             if( !fgets( line, sizeof( line ), script ) )
                                 break;
                              
-                            if( !ProcessCommand( engine, line ) )
-                                break;
+                            ProcessCommand( engine, line );
                         }
 
                         fclose( script );

@@ -40,6 +40,12 @@ PDECL class Engine : EngineBase
     bool                    mUseOpeningBook;            // Enable use of the opening book
     int                     mHistoryTable[2][64][64];   // Indexed as [whiteToMove][dest][src]
     std::map< u64, int >    mPositionReps;              // Indexed by hash, detects repetitions to avoid (unwanted) draw
+    bool                    mAllowLearning;             // Update weights using temporal difference approach
+    float                   mLearningRate;              // Learning rate (TODO: make adaptive)
+    Position                mPrevRoot;                  // Previous root, for learning
+    MoveList                mPrevBestLine;              // Previous best line, for learning
+    EvalTerm                mPrevLeafScore;
+    int                     mPrevLearnPly;  
 
 public:
     Engine()
@@ -47,6 +53,7 @@ public:
         mConfig.Clear();
         mMetrics.Clear();
         mRoot.Reset();
+        mPrevRoot.Reset();
 
         mStorePv            = NULL;
         mValuePv            = EVAL_MAX;
@@ -64,6 +71,10 @@ public:
         mNumHelperThreads   = 0;
         mUseRootWeights     = true;
         mUseOpeningBook     = OWNBOOK_DEFAULT;
+        mAllowLearning      = false;
+        mLearningRate       = 0.5f;
+        mPrevLeafScore      = 0;
+        mPrevLearnPly       = -1;
 
         mHashTable.SetSize( mTableSize );
         mOpeningBook.Init();               
@@ -331,7 +342,7 @@ private:
                 {
                     if( currLevelElapsed > 500 )
                     {
-                        if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
+                        if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 8) > mTargetTime )
                         {
                             if( mDebugMode )
                                 printf( "info string bailing at level %d\n", depth );
@@ -428,6 +439,22 @@ private:
 
             mPrintedMove = true;
         }
+
+        if( mAllowLearning )
+        {
+            int ply = mRoot.GetPlyZeroBased();
+
+            if( (ply & 1) == 0 )
+            {
+                if( ply > 1 )
+                    mEvaluator.AdjustWeights< 0 >( mPrevRoot, mPrevLeafScore, mRoot, mValuePv, mLearningRate );
+
+                mPrevRoot = mRoot;
+                mPrevBestLine = mBestLine;
+                mPrevLeafScore = mValuePv;
+                mPrevLearnPly = mRoot.GetPlyZeroBased();
+            }
+        }
     }
 
     int CalcTargetTime()
@@ -463,14 +490,14 @@ private:
             
                 TimePolicy policyTable[] =
                 {
-                    {   60000,  5000,   0   },  
-                    {   30000,  3000,   0   },  
-                    {   20000,  2000,   0   },  
-                    {   10000,  1000,   0   },  
-                    {    5000,   800,   0   },  
-                    {    3000,   500,   0   },  
-                    {    2000,   500,   7   },  
-                    {    1000,   500,   5   },  
+                    {   60000,  3000,   0   },  
+                    {   30000,  2000,   0   },  
+                    {   20000,  1500,   0   },  
+                    {   10000,  1000,   8   },  
+                    {    5000,   800,   7   },  
+                    {    3000,   500,   7   },  
+                    {    2000,   400,   7   },  
+                    {    1000,   300,   5   },  
                     {       0,   200,   3   },  
                 };
 
