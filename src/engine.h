@@ -604,14 +604,14 @@ private:
                 if( failedHighBefore && (lowerBoundBefore >= beta) && (depthBefore >= depth) )
                     return( beta );
 
-                moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, TT_BEST_MOVE );
+                moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, FLAG_TT_BEST_MOVE );
             }
         }
 
         if( onPvPrev && (mStorePv->mCount > ply) )
         {
             MoveSpec& pvMove = mStorePv->mMove[ply];
-            moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, PRINCIPAL_VARIATION );
+            moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, FLAG_PRINCIPAL_VARIATION );
         }
 
         EvalWeight  currWeights[EVAL_TERMS];
@@ -684,7 +684,7 @@ private:
                 // TODO: make sure that this does not eliminate all valid moves! 
 
                 bool repeatedPosition = (mPositionReps[childPos[simdIdx].mHash] > 1);
-                bool notReadyToDraw   = (score > -ALLOW_REP_SCORE);
+                bool notReadyToDraw   = (score > ALLOW_REP_SCORE);
 
                 if( repeatedPosition && notReadyToDraw && !inCheck )
                 {
@@ -710,7 +710,7 @@ private:
                 {
                     subScore = -this->NegaMax< POPCNT, SIMD >( 
                         childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -(bestScore + 1), -bestScore, 
-                        &pv_child, (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
+                        &pv_child, (childSpec[simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false );
             
                     fullSearch = (subScore > bestScore) && (subScore < beta);
                 }
@@ -719,7 +719,7 @@ private:
                 {
                     subScore = -this->NegaMax< POPCNT, SIMD >( 
                         childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -beta, -bestScore, 
-                        &pv_child, (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
+                        &pv_child, (childSpec[simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false );
                 }
 
                 if( subScore > bestScore )
@@ -820,7 +820,6 @@ private:
         float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( mRoot );
         mEvaluator.GenerateWeights( mRootWeights, gamePhase );
         rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, mRootWeights );
-
 
 		searchTime.Reset();
         EvalTerm score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
