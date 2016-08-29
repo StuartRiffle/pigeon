@@ -36,12 +36,12 @@ int main( int argc, char** argv )
     const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
      
     printf( "\n" );                      
-    printf( "     /O_"  "    Pigeon %d.%d.%d\n", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH );
-    printf( "     || "  "    \n" );
-    printf( "    / \\\\""    (UCI/%s%s)\n", cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : ""  );
+    printf( "     /O_"  "    Pigeon Chess Engine %d.%d.%d\n", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH );
+    printf( "     || "  "    UCI/%s%s\n", cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : ""  );
+    printf( "    / \\\\""    \n" );
     printf( "  =/__//"  "    pigeonengine.com\n" );
     printf( "     ^^ "  "    \n" );
-    printf( "\n" );
+    printf( "\n" );          
 
     Pigeon::Engine pigeon;
 

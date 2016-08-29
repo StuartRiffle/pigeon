@@ -55,6 +55,12 @@
     <ClInclude Include="..\src\negamax.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\amoeba.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tune.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

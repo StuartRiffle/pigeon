@@ -236,6 +236,8 @@ public:
         mBestLine.Clear();
         mMetrics.Clear();
 
+        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
+
         mStorePv        = &mBestLine;
         mValuePv        = 0;
         mDepthLimit     = mConfig.mDepthLimit;
@@ -359,17 +361,17 @@ private:
             
             //TODO: only under short time controls
 
-            if( (depth < METRICS_DEPTH) && (depth > 7) )
-            {
-                bool sameMove = true;
-
-                for( int i = depth - 2; i <= depth; i++ )
-                    if( mPvDepth[i].mMove[0] != mPvDepth[depth].mMove[0] )
-                        sameMove = false;
-
-                if( sameMove )
-                    break;
-            }
+            //if( (depth < METRICS_DEPTH) && (depth > 7) )
+            //{
+            //    bool sameMove = true;
+            //
+            //    for( int i = depth - 2; i <= depth; i++ )
+            //        if( mPvDepth[i].mMove[0] != mPvDepth[depth].mMove[0] )
+            //            sameMove = false;
+            //
+            //    if( sameMove )
+            //        break;
+            //}
             
 
 
@@ -532,9 +534,12 @@ private:
             if( currMove.mType < bestMove.mType )
                 continue;
 
-            if( currMove.mType == bestMove.mType )
-                if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
-                    continue;   
+            if( currMove.mFlags < bestMove.mFlags )
+                continue;
+
+            //if( currMove.mType == bestMove.mType )
+            //    if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
+            //        continue;   
 
             best = idx;
         }
@@ -684,7 +689,7 @@ private:
                 // TODO: make sure that this does not eliminate all valid moves! 
 
                 bool repeatedPosition = (mPositionReps[childPos[simdIdx].mHash] > 1);
-                bool notReadyToDraw   = (score > ALLOW_REP_SCORE);
+                bool notReadyToDraw   = (score < ALLOW_REP_SCORE);
 
                 if( repeatedPosition && notReadyToDraw && !inCheck )
                 {
@@ -732,9 +737,9 @@ private:
                     pv_new->mMove[0] = bestMove;
                     pv_new->Append( pv_child );
 
-                    if( depth > 2 )
+                    if( (depth > 2) && !bestMove.IsCapture() )
                         mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (depth * depth);
-
+                    
                     if( depth < 1 )
                         break;
                 }
@@ -758,7 +763,7 @@ private:
         EvalTerm    result      = failedHigh? beta : (failedLow? alpha : bestScore);
 
         //if( failedHigh )
-        //    mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (ply * ply);
+        //    mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (depth * depth);
 
         if( depth > 0 )
         {

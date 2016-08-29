@@ -115,6 +115,7 @@
     <ClCompile Include="..\src\pigeon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\amoeba.h" />
     <ClInclude Include="..\src\bits.h" />
     <ClInclude Include="..\src\book.h" />
     <ClInclude Include="..\src\defs.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="..\src\terms.inc" />
     <ClInclude Include="..\src\timer.h" />
     <ClInclude Include="..\src\token.h" />
+    <ClInclude Include="..\src\tune.h" />
     <ClInclude Include="..\src\uci.h" />
   </ItemGroup>
   <ItemGroup>
