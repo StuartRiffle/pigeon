@@ -10,5 +10,5 @@ elseif( "${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" )
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w" )
 endif()
 
-add_executable( pigeon-${PIGEON_VERSION}-x64 src/pigeon.cpp )
+add_executable( pigeon-${PIGEON_VERSION} src/pigeon.cpp )
 

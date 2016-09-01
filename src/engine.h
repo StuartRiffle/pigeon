@@ -329,6 +329,9 @@ private:
         int depth = 2;
         i64 prevLevelElapsed = 0;
 
+        if( mDebugMode && (mTargetTime != NO_TIME_LIMIT) )
+            printf( "info string DEBUG: available time %" PRId64 "\n", mTargetTime - mSearchElapsed.GetElapsedMs() );
+
         while( !mExitSearch )
         {
             if( (mDepthLimit > 0) && (depth > mDepthLimit) )
@@ -342,12 +345,20 @@ private:
                 i64 currLevelElapsed = levelTimer.GetElapsedMs();
                 if( !mExitSearch && (mTargetTime != NO_TIME_LIMIT) )
                 {
-                    if( currLevelElapsed > 500 )
+                    if( (depth > 4) && (currLevelElapsed > 100) )
                     {
-                        if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 8) > mTargetTime )
+                        float levelRatio = currLevelElapsed * 1.0f / prevLevelElapsed;
+                        levelRatio *= 1.3f;
+
+                        i64 nextLevelExpected = (i64) (currLevelElapsed * levelRatio);
+
+                        if( mDebugMode )
+                            printf( "info string DEBUG: elapsed %" PRId64 ", prev %" PRId64 ", expect %" PRId64 ", remaining %" PRId64 "\n", currLevelElapsed, prevLevelElapsed, nextLevelExpected, mTargetTime - mSearchElapsed.GetElapsedMs() );
+
+                        if( mSearchElapsed.GetElapsedMs() + nextLevelExpected > mTargetTime )
                         {
                             if( mDebugMode )
-                                printf( "info string bailing at level %d\n", depth );
+                                printf( "info string DEBUG: bailing at level %d\n", depth );
 
 						    mExitSearch = true;
                             break;
@@ -358,6 +369,8 @@ private:
                 prevLevelElapsed = currLevelElapsed;
             }
 
+            if( mDebugMode && mExitSearch )
+                printf( "info string DEBUG: out of time at %" PRId64 "\n", mSearchElapsed.GetElapsedMs() );
             
             //TODO: only under short time controls
 
@@ -531,15 +544,15 @@ private:
             MoveSpec& bestMove = moves.mMove[best];
             MoveSpec& currMove = moves.mMove[idx];
 
-            if( currMove.mType < bestMove.mType )
-                continue;
-
             if( currMove.mFlags < bestMove.mFlags )
                 continue;
 
-            //if( currMove.mType == bestMove.mType )
-            //    if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
-            //        continue;   
+            if( currMove.mType < bestMove.mType )
+                continue;
+
+            if( (currMove.mType == bestMove.mType) && (currMove.mFlags == bestMove.mFlags) )
+                if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
+                    continue;   
 
             best = idx;
         }
@@ -737,7 +750,7 @@ private:
                     pv_new->mMove[0] = bestMove;
                     pv_new->Append( pv_child );
 
-                    if( (depth > 2) && !bestMove.IsCapture() )
+                    if( (depth > 2) )//&& !bestMove.IsCapture() )
                         mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (depth * depth);
                     
                     if( depth < 1 )
@@ -860,11 +873,7 @@ private:
             fflush( stdout );
 
             if( mDebugMode )
-            { 
-                printf( "info string gamephase %.2f simdnodes %" PRId64 "\n", gamePhase, mMetrics.mNodesTotalSimd );
-
-
-            }
+                printf( "info string DEBUG: gamephase %.2f simdnodes %" PRId64 "\n", gamePhase, mMetrics.mNodesTotalSimd );
 
             *mStorePv   = pv;
             mValuePv    = score;

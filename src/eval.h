@@ -34,46 +34,40 @@ public:
         mEnableOpening  = true;
         mEnableTuning   = false;
 
-        this->SetWeight( EVAL_PAWNS,                 100,    100,    100 );   //    100,
-        this->SetWeight( EVAL_CENTER_PAWNS,           10,     10,      0 );   //     10,
-        this->SetWeight( EVAL_CHAINED_PAWNS,          10,     30,     20 );   //     30,
-        this->SetWeight( EVAL_PASSED_PAWNS,           10,     20,     10 );   //     20,
-        this->SetWeight( EVAL_PAWNS_GUARD_KING,       10,     10,      0 );   //     10,
-        this->SetWeight( EVAL_PROMOTING_SOON,          0,     10,     20 );   //     10,
-        this->SetWeight( EVAL_PROMOTING_IMMED,         0,     30,     40 );   //     20,
-
-        this->SetWeight( EVAL_KNIGHTS,               300,    300,    300 );   //    300,
-        this->SetWeight( EVAL_KNIGHTS_DEVEL,          20,     10,      0 );   //     10,
-        this->SetWeight( EVAL_KNIGHTS_FIRST,          20,      0,      0 );   //      0,
-        this->SetWeight( EVAL_KNIGHTS_INTERIOR,       30,     20,     10 );   //     20,
-        this->SetWeight( EVAL_KNIGHTS_CENTRAL,         0,     20,     10 );   //     20,
-
-        this->SetWeight( EVAL_BISHOPS,               330,    330,    330 );   //    320,
-        this->SetWeight( EVAL_BISHOPS_DEVEL,          20,     10,      0 );   //     20,
-        this->SetWeight( EVAL_BOTH_BISHOPS,           10,     30,     20 );   //     20,
-        this->SetWeight( EVAL_BISHOPS_INTERIOR,        0,     20,     10 );   //     20,
-        this->SetWeight( EVAL_BISHOPS_CENTRAL,         0,     20,     10 );   //     20,
-
-        this->SetWeight( EVAL_ROOKS,                 500,    500,    500 );   //    500,
-        this->SetWeight( EVAL_ROOKS_DEVEL,            20,     10,      0 );   //     20,
-        this->SetWeight( EVAL_ROOK_ON_RANK_7,          0,     20,     10 );   //     30,
-        this->SetWeight( EVAL_ROOKS_CONNECTED,         0,     10,      0 );   //     30,
-        this->SetWeight( EVAL_ROOKS_OPEN_FILE,        10,     10,      0 );   //     40,
-
-        this->SetWeight( EVAL_QUEENS,                900,    900,    900 );   //    900,
-        this->SetWeight( EVAL_QUEEN_DEVEL,            20,      5,      0 );   //     10,
-        this->SetWeight( EVAL_QUEENS_INTERIOR,         0,     50,     50 );   //     20,
-        this->SetWeight( EVAL_QUEENS_CENTRAL,          0,     30,     20 );   //     20,
-
-        this->SetWeight( EVAL_KINGS,               20000,  20000,  20000 );   //  10000,
-        this->SetWeight( EVAL_KING_CASTLED,           40,     20,      0 );   //     30,
-
-        this->SetWeight( EVAL_MOBILITY,               10,      5,      0 );   //      5,
-        this->SetWeight( EVAL_ATTACKING,              10,      5,      0 );   //     10,
-        this->SetWeight( EVAL_DEFENDING,              10,      5,      0 );   //     10,
-        this->SetWeight( EVAL_ENEMY_TERRITORY,        10,      5,      0 );   //     10,
-        this->SetWeight( EVAL_CENTER_PIECES,          20,     10,      5 );   //     20,
-        this->SetWeight( EVAL_CENTER_CONTROL,         20,     10,      5 );   //     30,
+        this->SetWeight( EVAL_PAWNS,                100.00,    100.00,    100.00 );   //    100,    100.00
+        this->SetWeight( EVAL_CENTER_PAWNS,          10.00,      0.00,      0.00 );   //     10,      0.00
+        this->SetWeight( EVAL_CHAINED_PAWNS,         10.00,      2.75,      2.75 );   //     30,      2.75
+        this->SetWeight( EVAL_PASSED_PAWNS,           0.01,      0.01,      0.01 );   //     20,      0.01
+        this->SetWeight( EVAL_PAWNS_GUARD_KING,      10.00,      5.62,      5.62 );   //     10,      5.62
+        this->SetWeight( EVAL_PROMOTING_SOON,        32.98,     32.98,     50.00 );   //     10,     32.98
+        this->SetWeight( EVAL_PROMOTING_IMMED,       80.09,     80.09,    100.00 );   //     20,     80.09
+        this->SetWeight( EVAL_KNIGHTS,              262.62,    262.62,    262.62 );   //    300,    262.62
+        this->SetWeight( EVAL_KNIGHTS_DEVEL,         15.00,      0.00,      0.00 );   //     10,      0.03
+        this->SetWeight( EVAL_KNIGHTS_FIRST,         10.00,      0.00,      0.00 );   //      0,      0.09
+        this->SetWeight( EVAL_KNIGHTS_INTERIOR,      15.10,     15.10,     15.10 );   //     20,     15.10
+        this->SetWeight( EVAL_KNIGHTS_CENTRAL,       20.17,     20.17,     20.17 );   //     20,     20.17
+        this->SetWeight( EVAL_BISHOPS,              282.00,    282.00,    282.00 );   //    320,    275.25
+        this->SetWeight( EVAL_BISHOPS_DEVEL,         10.00,      0.00,      0.00 );   //     20,      6.36
+        this->SetWeight( EVAL_BOTH_BISHOPS,          33.25,     33.25,     33.25 );   //     20,     33.25
+        this->SetWeight( EVAL_BISHOPS_INTERIOR,       6.26,      6.26,      6.26 );   //     20,      6.26
+        this->SetWeight( EVAL_BISHOPS_CENTRAL,       16.72,     16.72,     16.72 );   //     20,     16.72
+        this->SetWeight( EVAL_ROOKS,                453.00,    453.00,    453.00 );   //    500,    433.85
+        this->SetWeight( EVAL_ROOKS_DEVEL,           10.00,      0.00,      0.00 );   //     20,     19.17
+        this->SetWeight( EVAL_ROOK_ON_RANK_7,        15.69,     15.69,     15.69 );   //     30,     15.69
+        this->SetWeight( EVAL_ROOKS_CONNECTED,        0.00,      0.00,      0.00 );   //     30,      0.00
+        this->SetWeight( EVAL_ROOKS_OPEN_FILE,       33.30,     33.30,     33.30 );   //     40,     33.30
+        this->SetWeight( EVAL_QUEENS,               920.00,    920.00,    920.00 );   //    900,    918.40
+        this->SetWeight( EVAL_QUEEN_DEVEL,           10.00,      0.00,      0.00 );   //     10,      0.11
+        this->SetWeight( EVAL_QUEENS_INTERIOR,        4.57,      4.57,      4.57 );   //     20,      4.57
+        this->SetWeight( EVAL_QUEENS_CENTRAL,         8.72,      8.72,      8.72 );   //     20,      8.72
+        this->SetWeight( EVAL_KINGS,              20000.00,  20000.00,  20000.00 );   //  10000,  20000.00
+        this->SetWeight( EVAL_KING_CASTLED,          30.00,     10.00,      0.00 );   //     30,      0.14
+        this->SetWeight( EVAL_MOBILITY,               2.13,      2.13,      2.13 );   //      5,      2.13
+        this->SetWeight( EVAL_ATTACKING,              8.14,      8.14,      8.14 );   //     10,      8.14
+        this->SetWeight( EVAL_DEFENDING,              0.02,      0.02,      0.02 );   //     10,      0.02
+        this->SetWeight( EVAL_ENEMY_TERRITORY,       10.00,     24.09,     10.00 );   //     10,     24.09
+        this->SetWeight( EVAL_CENTER_PIECES,         10.00,      0.00,      0.00 );   //     20,      0.01
+        this->SetWeight( EVAL_CENTER_CONTROL,         5.00,      1.69,      0.00 );   //     30,      1.69
     }
 
     void EnableOpening( bool enable )

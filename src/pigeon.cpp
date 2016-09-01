@@ -14,8 +14,10 @@
 #include <ctype.h>
 #include <time.h>
 #include <vector>
+#include <list>
 #include <string>
 #include <map>
+#include <algorithm>
 
 #include "timer.h"
 #include "fen.h"
@@ -23,8 +25,9 @@
 #include "book.h"
 #include "perft.h"
 #include "engine.h"
+#include "amoeba.h"
+#include "tune.h"
 #include "uci.h"
-
         
 int main( int argc, char** argv )
 {
