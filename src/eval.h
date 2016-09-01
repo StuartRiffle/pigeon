@@ -140,6 +140,7 @@ public:
     template< int POPCNT >
     void AdjustWeights( const Position& pos0, EvalTerm score0, const Position& pos1, EvalTerm score1, float learningRate )
     {
+        /*
         float       phase0                  = this->CalcGamePhase< POPCNT >( pos0 );
         float       phase1                  = this->CalcGamePhase< POPCNT >( pos1 );
         MoveMap     mmap0;                  pos0.CalcMoveMap( &mmap0 );
@@ -164,13 +165,11 @@ public:
             float gradient = (float) ((i32) ((eval0[i] * weights0[i]) >> WEIGHT_SHIFT));
             float adjust   = learningRate * error * (1 - error) * -gradient;
 
-            if( adjust != 0.0f )
-                printf( "" );
-
             mWeightsOpening[i] += Max( 0.0f, adjust * openingPct );
             mWeightsMidgame[i] += Max( 0.0f, adjust * midgamePct );
             mWeightsEndgame[i] += Max( 0.0f, adjust * endgamePct );
         }
+        */
 
         //FILE* dump = fopen( "autotune.coo", "w" );
         //for( int i = 0; i < EVAL_TERMS; i++ )
