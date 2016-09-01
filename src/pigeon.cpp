@@ -14,8 +14,10 @@
 #include <ctype.h>
 #include <time.h>
 #include <vector>
+#include <list>
 #include <string>
 #include <map>
+#include <algorithm>
 
 #include "timer.h"
 #include "fen.h"
@@ -23,20 +25,26 @@
 #include "book.h"
 #include "perft.h"
 #include "engine.h"
+#include "amoeba.h"
+#include "tune.h"
 #include "uci.h"
-
         
 int main( int argc, char** argv )
 {
+    // Disable I/O buffering
+
+    setbuf( stdin, NULL );
+    setbuf( stdout, NULL );
+
     const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
      
     printf( "\n" );                      
-    printf( "     /O_"  "    \n" );
-    printf( "     || "  "    P I G E O N   C H E S S   E N G I N E\n" );
+    printf( "     /O_"  "    Pigeon Chess Engine %d.%d.%d\n", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH );
+    printf( "     || "  "    UCI/%s%s\n", cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : ""  );
     printf( "    / \\\\""    \n" );
-    printf( "  =/__//"  "    v%d.%02d  (UCI/%s%s)\n", Pigeon::PIGEON_VER_MAJ, Pigeon::PIGEON_VER_MIN, cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : ""  );
+    printf( "  =/__//"  "    pigeonengine.com\n" );
     printf( "     ^^ "  "    \n" );
-    printf( "\n" );
+    printf( "\n" );          
 
     Pigeon::Engine pigeon;
 
@@ -48,6 +56,7 @@ int main( int argc, char** argv )
         commands += std::string( argv[i] ) + " ";
 
     commands += ";";
+    //commands += "run autotune.coo;";
 
     for( ;; )
     {

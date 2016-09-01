@@ -13,16 +13,17 @@ struct MoveSpecT
     T   mSrc;
     T   mDest;
     T   mType;
+    T   mFlags;
 
     INLINE PDECL MoveSpecT() {}
-    INLINE PDECL MoveSpecT( const T& _src, const T& _dest, const T& _type = MOVE ) : mSrc(  _src ), mDest(  _dest ), mType(  _type ) {}
-    INLINE PDECL void Set(  const T& _src, const T& _dest, const T& _type = MOVE ) { mSrc = _src;   mDest = _dest;   mType = _type; }
+    INLINE PDECL MoveSpecT( const T& _src, const T& _dest, const T& _type = MOVE ) : mSrc(  _src ), mDest(  _dest ), mType(  _type ), mFlags(  0 ) {}
+    INLINE PDECL void Set(  const T& _src, const T& _dest, const T& _type = MOVE ) { mSrc = _src;   mDest = _dest;   mType = _type;   mFlags = 0; }
 
     template< typename U > INLINE PDECL MoveSpecT( const MoveSpecT< U >& rhs ) : mSrc( rhs.mSrc ), mDest( rhs.mDest ), mType( rhs.mType ) {}
 
-    INLINE PDECL int  IsCapture() const       { return( ((mType >= CAPTURE_LOSING) & (mType <= CAPTURE_WINNING)) | ((mType >= CAPTURE_PROMOTE_KNIGHT) & (mType <= CAPTURE_PROMOTE_QUEEN)) ); }
-    INLINE PDECL int  IsPromotion() const     { return( (mType >= PROMOTE_KNIGHT) & (mType <= CAPTURE_PROMOTE_QUEEN) ); }
-    INLINE PDECL int  IsSpecial() const       { return( (mType == TT_BEST_MOVE) | (mType == PRINCIPAL_VARIATION) ); }
+    INLINE PDECL int  IsCapture() const       { return( ((mType >= CAPTURE_LOSING) && (mType <= CAPTURE_WINNING)) || ((mType >= CAPTURE_PROMOTE_KNIGHT) && (mType <= CAPTURE_PROMOTE_QUEEN)) ); }
+    INLINE PDECL int  IsPromotion() const     { return( (mType >= PROMOTE_KNIGHT) && (mType <= CAPTURE_PROMOTE_QUEEN) ); }
+    INLINE PDECL int  IsSpecial() const       { return( mFlags != 0 ); }
     INLINE PDECL void Flip()                  { mSrc = FlipSquareIndex( mSrc ); mDest = FlipSquareIndex( mDest ); }
     INLINE PDECL char GetPromoteChar() const  { return( "\0\0\0\0nbrqnbrq\0\0"[mType] ); }
 
@@ -103,13 +104,13 @@ struct MoveList
         this->DiscardMovesBelow( CAPTURE_EQUAL );
     }
 
-    PDECL int MarkSpecialMoves( int src, int dest, int newType )
+    PDECL int MarkSpecialMoves( int src, int dest, int flag )
     {
         int marked = 0;
 
         for( int idx = 0; idx < mCount; idx++ )
             if( (mMove[idx].mSrc == src) && (mMove[idx].mDest == dest) )
-                mMove[idx].mType = (marked++, newType);
+                mMove[idx].mFlags |= (marked++, flag);
 
         return( marked );
     }
@@ -165,6 +166,7 @@ struct MoveList
     {
         MoveMap mmap;
 
+        this->Clear();
         pos.CalcMoveMap( &mmap );
         this->UnpackMoveMap( pos, mmap );
 

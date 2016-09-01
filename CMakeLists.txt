@@ -1,7 +1,7 @@
 cmake_minimum_required( VERSION 3.0 )
 
 project( pigeon )
-set( PIGEON_VERSION 1.40 )
+set( PIGEON_VERSION 1.5.0 )
 
 if( "${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC" )
 	add_compile_options( /GS- /GL /W3 /Gy- /Zc:wchar_t /Zi /Gm- /Ox /Ob2 /fp:fast /fp:except- /WX- /GR- /Gd /Oy /Oi /MT )
@@ -10,5 +10,5 @@ elseif( "${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" )
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w" )
 endif()
 
-add_executable( pigeon-${PIGEON_VERSION}-x64 src/pigeon.cpp )
+add_executable( pigeon-${PIGEON_VERSION} src/pigeon.cpp )
 

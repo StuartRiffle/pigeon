@@ -109,7 +109,7 @@ struct SearchState
                     }
                     else
                     {
-                        f->moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, TT_BEST_MOVE );
+                        f->moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, FLAG_TT_BEST_MOVE );
                     }
                 }
             }
@@ -120,7 +120,7 @@ struct SearchState
             if( f->onPv && (mBestLine.mCount > f->ply) )
             {
                 MoveSpec& pvMove = mBestLine.mMove[f->ply];
-                f->moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, PRINCIPAL_VARIATION );
+                f->moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, FLAG_PRINCIPAL_VARIATION );
             }
 
             f->movesTried   = 0;

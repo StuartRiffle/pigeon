@@ -34,6 +34,7 @@
     #pragma inline_recursion( on )
     #pragma inline_depth( 255 )
     
+    #define PIGEON_CPU          (1)
     #define PIGEON_MSVC         (1)
     #define PIGEON_ENABLE_SSE2  (1)
     #define PIGEON_ENABLE_SSE4  (1)
@@ -63,6 +64,7 @@
 
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 
+    #define PIGEON_CPU          (1)
     #define PIGEON_GCC          (1)
     #define PIGEON_USE_HASH     (1)
     #define RESTRICT            __restrict

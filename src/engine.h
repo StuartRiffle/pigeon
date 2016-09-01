@@ -40,6 +40,12 @@ PDECL class Engine : EngineBase
     bool                    mUseOpeningBook;            // Enable use of the opening book
     int                     mHistoryTable[2][64][64];   // Indexed as [whiteToMove][dest][src]
     std::map< u64, int >    mPositionReps;              // Indexed by hash, detects repetitions to avoid (unwanted) draw
+    bool                    mAllowLearning;             // Update weights using temporal difference approach
+    float                   mLearningRate;              // Learning rate (TODO: make adaptive)
+    Position                mPrevRoot;                  // Previous root, for learning
+    MoveList                mPrevBestLine;              // Previous best line, for learning
+    EvalTerm                mPrevLeafScore;
+    int                     mPrevLearnPly;  
 
 public:
     Engine()
@@ -47,6 +53,7 @@ public:
         mConfig.Clear();
         mMetrics.Clear();
         mRoot.Reset();
+        mPrevRoot.Reset();
 
         mStorePv            = NULL;
         mValuePv            = EVAL_MAX;
@@ -64,6 +71,10 @@ public:
         mNumHelperThreads   = 0;
         mUseRootWeights     = true;
         mUseOpeningBook     = OWNBOOK_DEFAULT;
+        mAllowLearning      = false;
+        mLearningRate       = 0.5f;
+        mPrevLeafScore      = 0;
+        mPrevLearnPly       = -1;
 
         mHashTable.SetSize( mTableSize );
         mOpeningBook.Init();               
@@ -225,6 +236,8 @@ public:
         mBestLine.Clear();
         mMetrics.Clear();
 
+        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
+
         mStorePv        = &mBestLine;
         mValuePv        = 0;
         mDepthLimit     = mConfig.mDepthLimit;
@@ -316,6 +329,9 @@ private:
         int depth = 2;
         i64 prevLevelElapsed = 0;
 
+        if( mDebugMode && (mTargetTime != NO_TIME_LIMIT) )
+            printf( "info string DEBUG: available time %" PRId64 "\n", mTargetTime - mSearchElapsed.GetElapsedMs() );
+
         while( !mExitSearch )
         {
             if( (mDepthLimit > 0) && (depth > mDepthLimit) )
@@ -329,12 +345,20 @@ private:
                 i64 currLevelElapsed = levelTimer.GetElapsedMs();
                 if( !mExitSearch && (mTargetTime != NO_TIME_LIMIT) )
                 {
-                    if( currLevelElapsed > 500 )
+                    if( (depth > 4) && (currLevelElapsed > 100) )
                     {
-                        if( mSearchElapsed.GetElapsedMs() + (currLevelElapsed * 4) > mTargetTime )
+                        float levelRatio = currLevelElapsed * 1.0f / prevLevelElapsed;
+                        levelRatio *= 1.3f;
+
+                        i64 nextLevelExpected = (i64) (currLevelElapsed * levelRatio);
+
+                        if( mDebugMode )
+                            printf( "info string DEBUG: elapsed %" PRId64 ", prev %" PRId64 ", expect %" PRId64 ", remaining %" PRId64 "\n", currLevelElapsed, prevLevelElapsed, nextLevelExpected, mTargetTime - mSearchElapsed.GetElapsedMs() );
+
+                        if( mSearchElapsed.GetElapsedMs() + nextLevelExpected > mTargetTime )
                         {
                             if( mDebugMode )
-                                printf( "info string bailing at level %d\n", depth );
+                                printf( "info string DEBUG: bailing at level %d\n", depth );
 
 						    mExitSearch = true;
                             break;
@@ -345,20 +369,22 @@ private:
                 prevLevelElapsed = currLevelElapsed;
             }
 
+            if( mDebugMode && mExitSearch )
+                printf( "info string DEBUG: out of time at %" PRId64 "\n", mSearchElapsed.GetElapsedMs() );
             
             //TODO: only under short time controls
 
-            if( (depth < METRICS_DEPTH) && (depth > 7) )
-            {
-                bool sameMove = true;
-
-                for( int i = depth - 2; i <= depth; i++ )
-                    if( mPvDepth[i].mMove[0] != mPvDepth[depth].mMove[0] )
-                        sameMove = false;
-
-                if( sameMove )
-                    break;
-            }
+            //if( (depth < METRICS_DEPTH) && (depth > 7) )
+            //{
+            //    bool sameMove = true;
+            //
+            //    for( int i = depth - 2; i <= depth; i++ )
+            //        if( mPvDepth[i].mMove[0] != mPvDepth[depth].mMove[0] )
+            //            sameMove = false;
+            //
+            //    if( sameMove )
+            //        break;
+            //}
             
 
 
@@ -428,6 +454,22 @@ private:
 
             mPrintedMove = true;
         }
+
+        if( mAllowLearning )
+        {
+            int ply = mRoot.GetPlyZeroBased();
+
+            if( (ply & 1) == 0 )
+            {
+                if( ply > 1 )
+                    mEvaluator.AdjustWeights< 0 >( mPrevRoot, mPrevLeafScore, mRoot, mValuePv, mLearningRate );
+
+                mPrevRoot = mRoot;
+                mPrevBestLine = mBestLine;
+                mPrevLeafScore = mValuePv;
+                mPrevLearnPly = mRoot.GetPlyZeroBased();
+            }
+        }
     }
 
     int CalcTargetTime()
@@ -463,14 +505,14 @@ private:
             
                 TimePolicy policyTable[] =
                 {
-                    {   60000,  5000,   0   },  
-                    {   30000,  3000,   0   },  
-                    {   20000,  2000,   0   },  
-                    {   10000,  1000,   0   },  
-                    {    5000,   800,   0   },  
-                    {    3000,   500,   0   },  
-                    {    2000,   500,   7   },  
-                    {    1000,   500,   5   },  
+                    {   60000,  3000,   0   },  
+                    {   30000,  2000,   0   },  
+                    {   20000,  1500,   0   },  
+                    {   10000,  1000,   8   },  
+                    {    5000,   800,   7   },  
+                    {    3000,   500,   7   },  
+                    {    2000,   400,   7   },  
+                    {    1000,   300,   5   },  
                     {       0,   200,   3   },  
                 };
 
@@ -502,10 +544,13 @@ private:
             MoveSpec& bestMove = moves.mMove[best];
             MoveSpec& currMove = moves.mMove[idx];
 
+            if( currMove.mFlags < bestMove.mFlags )
+                continue;
+
             if( currMove.mType < bestMove.mType )
                 continue;
 
-            if( currMove.mType == bestMove.mType )
+            if( (currMove.mType == bestMove.mType) && (currMove.mFlags == bestMove.mFlags) )
                 if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
                     continue;   
 
@@ -577,14 +622,14 @@ private:
                 if( failedHighBefore && (lowerBoundBefore >= beta) && (depthBefore >= depth) )
                     return( beta );
 
-                moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, TT_BEST_MOVE );
+                moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, FLAG_TT_BEST_MOVE );
             }
         }
 
         if( onPvPrev && (mStorePv->mCount > ply) )
         {
             MoveSpec& pvMove = mStorePv->mMove[ply];
-            moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, PRINCIPAL_VARIATION );
+            moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, FLAG_PRINCIPAL_VARIATION );
         }
 
         EvalWeight  currWeights[EVAL_TERMS];
@@ -657,7 +702,7 @@ private:
                 // TODO: make sure that this does not eliminate all valid moves! 
 
                 bool repeatedPosition = (mPositionReps[childPos[simdIdx].mHash] > 1);
-                bool notReadyToDraw   = (score > -ALLOW_REP_SCORE);
+                bool notReadyToDraw   = (score < ALLOW_REP_SCORE);
 
                 if( repeatedPosition && notReadyToDraw && !inCheck )
                 {
@@ -683,7 +728,7 @@ private:
                 {
                     subScore = -this->NegaMax< POPCNT, SIMD >( 
                         childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -(bestScore + 1), -bestScore, 
-                        &pv_child, (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
+                        &pv_child, (childSpec[simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false );
             
                     fullSearch = (subScore > bestScore) && (subScore < beta);
                 }
@@ -692,7 +737,7 @@ private:
                 {
                     subScore = -this->NegaMax< POPCNT, SIMD >( 
                         childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -beta, -bestScore, 
-                        &pv_child, (childSpec[simdIdx].mType == PRINCIPAL_VARIATION) );
+                        &pv_child, (childSpec[simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false );
                 }
 
                 if( subScore > bestScore )
@@ -705,9 +750,9 @@ private:
                     pv_new->mMove[0] = bestMove;
                     pv_new->Append( pv_child );
 
-                    if( depth > 2 )
+                    if( (depth > 2) )//&& !bestMove.IsCapture() )
                         mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (depth * depth);
-
+                    
                     if( depth < 1 )
                         break;
                 }
@@ -731,7 +776,7 @@ private:
         EvalTerm    result      = failedHigh? beta : (failedLow? alpha : bestScore);
 
         //if( failedHigh )
-        //    mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (ply * ply);
+        //    mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] += (depth * depth);
 
         if( depth > 0 )
         {
@@ -794,7 +839,6 @@ private:
         mEvaluator.GenerateWeights( mRootWeights, gamePhase );
         rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, mRootWeights );
 
-
 		searchTime.Reset();
         EvalTerm score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
 
@@ -829,11 +873,7 @@ private:
             fflush( stdout );
 
             if( mDebugMode )
-            { 
-                printf( "info string gamephase %.2f simdnodes %" PRId64 "\n", gamePhase, mMetrics.mNodesTotalSimd );
-
-
-            }
+                printf( "info string DEBUG: gamephase %.2f simdnodes %" PRId64 "\n", gamePhase, mMetrics.mNodesTotalSimd );
 
             *mStorePv   = pv;
             mValuePv    = score;

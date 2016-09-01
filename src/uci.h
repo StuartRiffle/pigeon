@@ -16,7 +16,7 @@ struct UCI
         }
         else if( tokens.Consume( "uci" ) )
         {                                                                                        
-            printf( "id name Pigeon %d.%02d\n", PIGEON_VER_MAJ, PIGEON_VER_MIN );
+            printf( "id name Pigeon %d.%d.%d\n", PIGEON_VER_MAJOR, PIGEON_VER_MINOR, PIGEON_VER_PATCH );
             printf( "id author Stuart Riffle \n" );
             printf( "option name Hash type spin min 64 max 16384 default %d\n", TT_MEGS_DEFAULT );
             printf( "option name OwnBook type check default %s\n", OWNBOOK_DEFAULT? "true" : "false" );
@@ -131,8 +131,59 @@ struct UCI
         {
             // NOT UCI COMMANDS
 
-            if( tokens.Consume( "book" ) )
+            if( tokens.Consume( "autotune" ) )
             {
+                const char* filename = "d:\\chess\\pgn\\ccrl-train.txt";//tokens.ConsumeAll();
+                if( filename != NULL )
+                {
+                    AutoTuner autoTuner;
+
+                    FILE* fenFile = fopen( filename, "r" );
+                    if( fenFile != NULL )
+                    {
+                        u64 lineIdx = 0;
+
+                        for( ;; )
+                        {
+                            char line[8192];
+
+                            if( !fgets( line, sizeof( line ), fenFile ) )
+                                break;
+                        
+                            lineIdx++;
+                            if( !autoTuner.LoadGameLine( line ) )
+                            {
+                                printf( "info string invalid game line %d\n", lineIdx );
+                                break;
+                            }
+
+                            if( (lineIdx % 10000) == 0 )
+                                printf( "%d lines\n" );
+                            //if( lineIdx >= 10000 )
+                            //    break;
+                        }
+
+                        printf( "info string %d games loaded\n", lineIdx );
+                        fclose( fenFile );
+                    }
+
+                    autoTuner.Reset();
+
+                    double bestErr = 1.0;
+                    for( ;; )
+                    {
+                        autoTuner.Step();
+
+                        const ParameterSet& best = autoTuner.GetBest();
+                        u64 iters = autoTuner.GetIterCount();
+
+                        if( ((iters % 100) == 0) && (best.mError < bestErr) )
+                        {
+                            autoTuner.Dump();
+                            bestErr = best.mError;
+                        }
+                    }
+                }
             }
             else if( tokens.Consume( "cpu" ) )
             {
@@ -249,8 +300,7 @@ struct UCI
                             if( !fgets( line, sizeof( line ), script ) )
                                 break;
                              
-                            if( !ProcessCommand( engine, line ) )
-                                break;
+                            ProcessCommand( engine, line );
                         }
 
                         fclose( script );

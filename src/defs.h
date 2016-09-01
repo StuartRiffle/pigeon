@@ -53,9 +53,13 @@ enum
     CAPTURE_PROMOTE_KNIGHT,
     CAPTURE_PROMOTE_BISHOP,
     CAPTURE_PROMOTE_ROOK,
-    CAPTURE_PROMOTE_QUEEN,
-    TT_BEST_MOVE,
-    PRINCIPAL_VARIATION
+    CAPTURE_PROMOTE_QUEEN
+};
+
+enum
+{
+    FLAG_TT_BEST_MOVE           = (1 << 0),
+    FLAG_PRINCIPAL_VARIATION    = (1 << 1)
 };
 
 enum
@@ -68,8 +72,9 @@ enum
 typedef i16     EvalTerm;
 typedef i32     EvalWeight;
 
-const PDECL int       PIGEON_VER_MAJ      = 1;
-const PDECL int       PIGEON_VER_MIN      = 40;
+const PDECL int       PIGEON_VER_MAJOR    = 1;
+const PDECL int       PIGEON_VER_MINOR    = 5;
+const PDECL int       PIGEON_VER_PATCH    = 0;
          
 const PDECL int       TT_MEGS_DEFAULT     = 512;
 const PDECL int       TT_SAMPLE_SIZE      = 128;
@@ -137,6 +142,15 @@ const PDECL u64       RANK_5              = 0x000000FF00000000ULL;
 const PDECL u64       RANK_6              = 0x0000FF0000000000ULL;
 const PDECL u64       RANK_7              = 0x00FF000000000000ULL;
 const PDECL u64       RANK_8              = 0xFF00000000000000ULL;
+
+const PDECL u64       CENTER_DIST_0       = 0x0000001818000000ULL;
+const PDECL u64       CENTER_DIST_1       = 0x0000182424180000ULL;
+const PDECL u64       CENTER_DIST_2       = 0x0018244242241800ULL;
+const PDECL u64       CENTER_DIST_3       = 0x1824428181422418ULL;
+const PDECL u64       CENTER_DIST_4       = 0x2442810000814224ULL;
+const PDECL u64       CENTER_DIST_5       = 0x4281000000008142ULL;
+const PDECL u64       CENTER_DIST_6       = 0x8100000000000081ULL;
+
          
 const PDECL u64       LIGHT_SQUARES       = 0x55AA55AA55AA55AAULL;
 const PDECL u64       DARK_SQUARES        = 0xAA55AA55AA55AA55ULL;
@@ -144,6 +158,7 @@ const PDECL u64       ALL_SQUARES         = 0xFFFFFFFFFFFFFFFFULL;
 const PDECL u64       CASTLE_ROOKS        = SQUARE_A1 | SQUARE_H1 | SQUARE_A8 | SQUARE_H8;
 const PDECL u64       EP_SQUARES          = RANK_3 | RANK_6;
 const PDECL u64       EDGE_SQUARES        = FILE_A | FILE_H | RANK_1 | RANK_8;
+const PDECL u64       CORNER_SQUARES      = (FILE_A | FILE_H) & (RANK_1 | RANK_8);
 const PDECL u64       CENTER_SQUARES      = (FILE_C | FILE_D | FILE_E | FILE_F) & (RANK_3 | RANK_4 | RANK_5 | RANK_6);
 
 
