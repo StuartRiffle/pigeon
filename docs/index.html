@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pigeon Chess Engine</title>
+    <style>
+        body {
+            font: 1.3em/1.5em "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #000;
+            background-color: #eee;
+            margin: 0 0;
+            width: 100%;
+        }
+        .headerArea {
+            background-color: #369;
+            margin: 0 0;
+        }
+        .headerInner {
+            max-width: 32em;
+            min-width: 16em;
+            padding: 2em;
+            margin: 0 auto;                        
+        }
+        .banner {
+            width: 100%;
+        }        
+        .bodyArea {
+            color: #303030;
+            background-color: #eee;
+            width: 100%;
+            max-width: 34em;
+            min-width: 20em;
+            margin: 0em auto;
+        }
+        .bodyInner {
+            padding: 1em;
+        }
+        #buttonPart {
+            text-align: center;
+            margin: 0 auto;
+        }
+        .button {
+            color: #fff;  
+            background-color: #369;
+            font-size: 1em;
+            border: 0;            
+            padding: 0.7em;
+            display: inline-block;
+            border-radius: 0.25em;
+        }        
+        .buttonIcon {
+            float: left;
+            height: 1.5em;
+            width: auto;
+        }   
+    </style>
+</head>
+<body>
+<div class="headerArea">
+    <div class="headerInner">
+        <img class="banner" src="pigeon-header.png" />
+    </div>
+</div>
+<div class="bodyArea">
+    <div class="bodyInner">
+        <p>
+            Pigeon is a 64-bit chess engine, written by <a href="https://www.linkedin.com/in/stuartriffle">Stuart Riffle</a>. 
+            It runs on Windows and Linux, and will plug into any UCI-compatible <a href="http://www.pychess.org/">chess GUI</a>.
+        </p>
+        <p>
+            The latest version is rated about <b>2000</b> against humans online (at <a href="https://www.chessclub.com/">ICC</a> 
+            and <a href="http://freechess.org/">FICS</a>), which is pretty good. Playing against <i>other</i> chess engines, it has a 
+            <a href="http://www.computerchess.org.uk/ccrl/404/">CCRL 40/4</a> rating of about <b>1750</b>, which is... somewhat less good.
+            But it always tries very hard.
+        </p>
+        <p>
+            Full C++ <a href="https://github.com/StuartRiffle/pigeon">source code</a> is available on GitHub,
+            under the terms of the <a href="https://en.wikipedia.org/wiki/MIT_License">MIT license</a>, so knock yourself out.
+        </p>
+        <p id="buttonPart">
+            <br>
+            <a href="https://github.com/StuartRiffle/pigeon/releases">
+                <span class="button">
+                    <img class="buttonIcon" src="download-logo.png" />&nbsp;&nbsp;Download Pigeon 1.5.0&nbsp;
+                </span>
+            </a>    
+        </p>
+    </div>
+</div>
+</body>
+</html>
+<!-- PIGEON CHESS ENGINE copyright (c) 2012-2016 Stuart Riffle -->

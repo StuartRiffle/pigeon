@@ -61,6 +61,9 @@
     <ClInclude Include="..\src\tune.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\material.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -97,6 +100,9 @@
     <None Include="build_msvc.bat">
       <Filter>misc</Filter>
     </None>
+    <None Include="doxygen\Doxyfile">
+      <Filter>misc</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\CMakeLists.txt">
@@ -106,6 +112,9 @@
       <Filter>misc</Filter>
     </Text>
     <Text Include="build-readme.txt">
+      <Filter>misc</Filter>
+    </Text>
+    <Text Include="scratch.txt">
       <Filter>misc</Filter>
     </Text>
   </ItemGroup>

@@ -133,56 +133,104 @@ struct UCI
 
             if( tokens.Consume( "autotune" ) )
             {
-                const char* filename = "d:\\chess\\pgn\\ccrl-train.txt";//tokens.ConsumeAll();
+                const char* filename = "d:\\chess\\pgn\\all-train.txt";//tokens.ConsumeAll();
                 if( filename != NULL )
                 {
                     AutoTuner autoTuner;
 
-                    FILE* fenFile = fopen( filename, "r" );
-                    if( fenFile != NULL )
+                    //FILE* fenFile = fopen( filename, "r" );
+                    //if( fenFile != NULL )
+                    //{
+                    //    u64 lineIdx = 0;
+                    //
+                    //    for( ;; )
+                    //    {
+                    //        char line[8192];
+                    //
+                    //        if( !fgets( line, sizeof( line ), fenFile ) )
+                    //            break;
+                    //    
+                    //        lineIdx++;
+                    //        if( !autoTuner.LoadGameLine( line ) )
+                    //        {
+                    //            //printf( "\ninvalid game line %d: %s\n", lineIdx, line );
+                    //            //break;
+                    //        }
+                    //
+                    //        if( (lineIdx % 10000) == 0 )
+                    //            printf( "/" );
+                    //        //if( lineIdx >= 250000 )
+                    //        //    break;
+                    //    }
+                    //
+                    //    printf( "\n%d games loaded\n", lineIdx );
+                    //    fclose( fenFile );
+                    //}
+
+                    //autoTuner.Deserialize( "d:\\chess\\pgn\\all-train-end.bin" );
+                    autoTuner.Deserialize( "d:\\chess\\pgn\\all-train.bin" );
+                    //autoTuner.Serialize( "d:\\chess\\pgn\\all-train.bin" );
+
+                    for( int cat = 0; cat < 54; cat++ )
                     {
-                        u64 lineIdx = 0;
+                        printf( "Starting category %d\n", cat );
+
+                        autoTuner.PrepForCategory( cat );
+                        autoTuner.Reset();
+
+                        ParameterSet orig = autoTuner.GetBest();
+                        ParameterSet prev = orig;
+
+                        int timesLowProgress = 0;
 
                         for( ;; )
                         {
-                            char line[8192];
+                            autoTuner.Step();
 
-                            if( !fgets( line, sizeof( line ), fenFile ) )
+                            const ParameterSet& best = autoTuner.GetBest();
+                            u64 iters = autoTuner.GetIterCount();
+
+
+                            if( iters > 50000 )
                                 break;
-                        
-                            lineIdx++;
-                            if( !autoTuner.LoadGameLine( line ) )
+
+                            if( ((iters % 100) == 0) && (best.mError < prev.mError) )
                             {
-                                printf( "info string invalid game line %d\n", lineIdx );
-                                break;
+                                autoTuner.Dump( true );
+
+                                double improvement = prev.mError - best.mError;
+                                timesLowProgress = (improvement < 0.000001)? (timesLowProgress + 1) : 0;
+
+                                if( (iters >= 10000) || (timesLowProgress > 2) )
+                                    break;
+
+
+                                //printf( "\n" );
+                                //for( int pieces = 0; pieces < 4; pieces++ )
+                                //    printf( "%16.10f", best.mElem[pieces] );
+                                //printf( "\n\n" );
+
+                            
+                                for( int pieces = 0; pieces < 6; pieces++ )
+                                {
+                                    double pieceBase = best.mElem[pieces];
+                            
+                                    for( int i = 0; i < 64; i++ )
+                                    {
+                                        if( (i > 0) && (i % 8 == 0) )
+                                            printf( "\n" );
+                            
+                                        int idx = 6 + (pieces * 64) + i;
+                                        printf( "%5.0f", pieceBase + best.mElem[idx] );
+                                    }
+                                    printf( "\n\n" );
+                                }
+
+                                prev = best;
                             }
-
-                            if( (lineIdx % 10000) == 0 )
-                                printf( "%d lines\n" );
-                            //if( lineIdx >= 10000 )
-                            //    break;
-                        }
-
-                        printf( "info string %d games loaded\n", lineIdx );
-                        fclose( fenFile );
-                    }
-
-                    autoTuner.Reset();
-
-                    double bestErr = 1.0;
-                    for( ;; )
-                    {
-                        autoTuner.Step();
-
-                        const ParameterSet& best = autoTuner.GetBest();
-                        u64 iters = autoTuner.GetIterCount();
-
-                        if( ((iters % 100) == 0) && (best.mError < bestErr) )
-                        {
-                            autoTuner.Dump();
-                            bestErr = best.mError;
                         }
                     }
+
                 }
             }
             else if( tokens.Consume( "cpu" ) )

@@ -122,11 +122,11 @@ public:
 
         while( *str && (*str != ' ') )
         {
-            if( *str == 'K' )   pos.mCastlingAndEP |= SQUARE_H1; else
-            if( *str == 'Q' )   pos.mCastlingAndEP |= SQUARE_A1; else
-            if( *str == 'k' )   pos.mCastlingAndEP |= SQUARE_H8; else
-            if( *str == 'q' )   pos.mCastlingAndEP |= SQUARE_A8; else
-            if( *str != '-' )   return( NULL );
+            if( (*str == 'K') || (*str == 'H')) pos.mCastlingAndEP |= SQUARE_H1; else
+            if( (*str == 'Q') || (*str == 'A')) pos.mCastlingAndEP |= SQUARE_A1; else
+            if( (*str == 'k') || (*str == 'h')) pos.mCastlingAndEP |= SQUARE_H8; else
+            if( (*str == 'q') || (*str == 'a')) pos.mCastlingAndEP |= SQUARE_A8; else
+            if( *str != '-' )                   return( NULL );
 
             str++;
         }

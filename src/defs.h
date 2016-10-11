@@ -4,7 +4,7 @@ namespace Pigeon {
 #ifndef PIGEON_DEFS_H__
 #define PIGEON_DEFS_H__
 
-enum
+enum SquareID
 {
     H1, G1, F1, E1, D1, C1, B1, A1,
     H2, G2, F2, E2, D2, C2, B2, A2,
@@ -73,7 +73,7 @@ typedef i16     EvalTerm;
 typedef i32     EvalWeight;
 
 const PDECL int       PIGEON_VER_MAJOR    = 1;
-const PDECL int       PIGEON_VER_MINOR    = 5;
+const PDECL int       PIGEON_VER_MINOR    = 6;
 const PDECL int       PIGEON_VER_PATCH    = 0;
          
 const PDECL int       TT_MEGS_DEFAULT     = 512;
@@ -99,7 +99,7 @@ const PDECL EvalTerm  EVAL_MAX            = 0x7F00;
 const PDECL EvalTerm  EVAL_MIN            = -EVAL_MAX;
 const PDECL EvalTerm  EVAL_CHECKMATE      = EVAL_MIN + 1;
 const PDECL EvalTerm  EVAL_STALEMATE      = 0;
-const PDECL int       EVAL_OPENING_PLIES  = 10;
+const PDECL int       EVAL_OPENING_PLIES  = 16;
 const PDECL EvalTerm  ALLOW_REP_SCORE     = 190;
          
 const PDECL u64       HASH_SEED0          = 0xF59C66FB26DCF319ULL;
@@ -151,15 +151,20 @@ const PDECL u64       CENTER_DIST_4       = 0x2442810000814224ULL;
 const PDECL u64       CENTER_DIST_5       = 0x4281000000008142ULL;
 const PDECL u64       CENTER_DIST_6       = 0x8100000000000081ULL;
 
+const PDECL u64       CENTER_RING_3       = (FILE_A | FILE_H | RANK_1 | RANK_8);
+const PDECL u64       CENTER_RING_2       = (FILE_B | FILE_G | RANK_2 | RANK_7) & ~(CENTER_RING_3);
+const PDECL u64       CENTER_RING_1       = (FILE_C | FILE_F | RANK_3 | RANK_6) & ~(CENTER_RING_3 | CENTER_RING_2);
+const PDECL u64       CENTER_RING_0       = (FILE_D | FILE_E | RANK_4 | RANK_5) & ~(CENTER_RING_3 | CENTER_RING_2 | CENTER_RING_1);
          
 const PDECL u64       LIGHT_SQUARES       = 0x55AA55AA55AA55AAULL;
 const PDECL u64       DARK_SQUARES        = 0xAA55AA55AA55AA55ULL;
 const PDECL u64       ALL_SQUARES         = 0xFFFFFFFFFFFFFFFFULL;
 const PDECL u64       CASTLE_ROOKS        = SQUARE_A1 | SQUARE_H1 | SQUARE_A8 | SQUARE_H8;
 const PDECL u64       EP_SQUARES          = RANK_3 | RANK_6;
-const PDECL u64       EDGE_SQUARES        = FILE_A | FILE_H | RANK_1 | RANK_8;
-const PDECL u64       CORNER_SQUARES      = (FILE_A | FILE_H) & (RANK_1 | RANK_8);
 const PDECL u64       CENTER_SQUARES      = (FILE_C | FILE_D | FILE_E | FILE_F) & (RANK_3 | RANK_4 | RANK_5 | RANK_6);
+const PDECL u64       CORNER_SQUARES      = (FILE_A | FILE_H) & (RANK_1 | RANK_8);
+const PDECL u64       RIM_SQUARES         = (FILE_A | FILE_H | RANK_1 | RANK_8);
+const PDECL u64       EDGE_SQUARES        = (FILE_A | FILE_H | RANK_1 | RANK_8) & ~CORNER_SQUARES;
 
 
 template< int POPCNT, typename T >
@@ -180,6 +185,8 @@ template< typename T > INLINE PDECL T       CmpEqual( const T& a, const T& b )  
 template< typename T > INLINE PDECL T       ByteSwap( const T& val )                                            { return PlatByteSwap64( val ); }
 template< typename T > INLINE PDECL T       MulLow32( const T& val, u32 scale )                                 { return( val * scale ); }
 template< typename T > INLINE PDECL T       SubClampZero( const T& a, const T& b )                              { return( (a > b)? (a - b) : 0 ); }
+template< typename T > INLINE PDECL T       LoadIndirect32( const i32* ptr, const T& ofs )                      { return( ((i64) ptr[ofs]) ); }
+template< typename T > INLINE PDECL T       LoadIndirectMasked32( const i32* ptr, const T& ofs, const T& mask ) { return( mask? (((i64) ptr[ofs]) & mask) : 0); }
                                 
 template< typename T > INLINE PDECL T       Min( const T& a, const T& b )                                       { return( (a < b)? a : b ); }
 template< typename T > INLINE PDECL T       Max( const T& a, const T& b )                                       { return( (b > a)? b : a ); }

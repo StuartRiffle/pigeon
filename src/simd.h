@@ -57,6 +57,34 @@ INLINE __m128i _mm_bswap_epi64_sse2( const __m128i& v )
 
     return( result );
 }
+
+INLINE __m128i _mm_i64gather_epi32_sse2( const i32* ptr, const __m128i& ofs )
+{
+    i64 PIGEON_ALIGN_SIMD qword[2];
+
+    *((__m128i*) qword) = ofs;
+
+    qword[0] = (i64) ptr[qword[0]];
+    qword[1] = (i64) ptr[qword[1]];
+
+    return( *((__m128i*) qword) );
+}
+
+INLINE __m128i _mm_mask_i64gather_epi32_sse2( const i32* ptr, const __m128i& ofs, const __m128i& mask )
+{
+    i64 PIGEON_ALIGN_SIMD qword[2];
+    i64 PIGEON_ALIGN_SIMD qmask[2];
+
+    *((__m128i*) qword) = ofs;
+    *((__m128i*) qmask) = mask;
+
+    // This is gross, but it doesn't happen often
+
+    qword[0] = qmask[0]? (ptr[qword[0]] & qmask[0]) : 0;
+    qword[1] = qmask[1]? (ptr[qword[1]] & qmask[1]) : 0;
+
+    return( *((__m128i*) qword) );
+}
                                     
 struct simd2_sse2
 {
@@ -104,7 +132,6 @@ template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2&
 template<> INLINE simd2_sse2    SelectWithMask<  simd2_sse2 >( const simd2_sse2& mask, const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( b.vec, a.vec, mask.vec ) ); }
 template<> INLINE simd2_sse2    SubClampZero<    simd2_sse2 >( const simd2_sse2& a,    const simd2_sse2& b )                        { return( _mm_select( _mm_setzero_si128(), _mm_sub_epi64( a.vec, b.vec ), _mm_cmplt_epi32( b.vec, a.vec ) ) ); }
 
-
 template<>
 struct SimdWidth< simd2_sse2 >
 {
@@ -129,6 +156,18 @@ INLINE void Transpose< simd2_sse2 >( const simd2_sse2* src, int srcStep, simd2_s
 
     dest_r[0]         = _mm_unpacklo_epi64( src_r[0], src_r[srcStep] );
     dest_r[destStep]  = _mm_unpackhi_epi64( src_r[0], src_r[srcStep] );
+}
+
+template<>
+INLINE simd2_sse2 LoadIndirect32< simd2_sse2 >( const i32* ptr, const simd2_sse2& ofs )
+{
+    return( _mm_i64gather_epi32_sse2( ptr, ofs ) );
+}
+
+template<>
+INLINE simd2_sse2 LoadIndirectMasked32< simd2_sse2 >( const i32* ptr, const simd2_sse2& ofs, const simd2_sse2& mask )
+{
+    return( _mm_mask_i64gather_epi32_sse2( ptr, ofs, mask ) );
 }
 
 #endif // PIGEON_ENABLE_SSE2
@@ -223,6 +262,18 @@ INLINE void Transpose< simd2_sse4 >( const simd2_sse4* src, int srcStep, simd2_s
 
     dest_r[0]         = _mm_unpacklo_epi64( src_r[0], src_r[srcStep] );
     dest_r[destStep]  = _mm_unpackhi_epi64( src_r[0], src_r[srcStep] );
+}
+
+template<>
+INLINE simd2_sse4 LoadIndirect32< simd2_sse4 >( const i32* ptr, const simd2_sse4& ofs )
+{
+    return( _mm_i64gather_epi32_sse2( ptr, ofs ) );
+}
+
+template<>
+INLINE simd2_sse4 LoadIndirectMasked32< simd2_sse4 >( const i32* ptr, const simd2_sse4& ofs, const simd2_sse4& mask )
+{
+    return( _mm_mask_i64gather_epi32_sse2( ptr, ofs, mask ) );
 }
 
 

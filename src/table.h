@@ -6,7 +6,7 @@ namespace Pigeon {
 
 
 /// Hash table entry for a Position that has been evaluated
-//
+
 struct TableEntry
 {
     u32         mHashVerify;    
@@ -17,6 +17,9 @@ struct TableEntry
     bool        mFailLow;
     bool        mFailHigh;
     bool        mWhiteMove;
+
+
+    /// Pack all fields into a 64-bit word
 
     INLINE PDECL u64 Pack() const
     {
@@ -31,6 +34,9 @@ struct TableEntry
             ((u64) mWhiteMove   <<  1) );
     }
 
+
+    /// Unpack fields from a 64-bit word
+
     INLINE PDECL void Unpack( const u64& val )
     {
         mHashVerify = (u32)   (val >> 40);
@@ -44,6 +50,8 @@ struct TableEntry
     }
 };
 
+
+/// Transposition table
 
 class HashTable
 {

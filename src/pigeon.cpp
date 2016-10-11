@@ -4,6 +4,8 @@
 #include "defs.h"
 #include "bits.h"
 #include "simd.h"
+#include <stdio.h>
+#include "material.h"
 #include "position.h"
 #include "eval.h"
 #include "movelist.h"
@@ -18,6 +20,7 @@
 #include <string>
 #include <map>
 #include <algorithm>
+#include <random>
 
 #include "timer.h"
 #include "fen.h"
@@ -35,6 +38,9 @@ int main( int argc, char** argv )
 
     setbuf( stdin, NULL );
     setbuf( stdout, NULL );
+
+    setvbuf( stdin, NULL, _IONBF, 0 );
+    setvbuf( stdout, NULL, _IONBF, 0 );
 
     const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
      
