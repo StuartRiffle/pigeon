@@ -4,8 +4,8 @@ Pigeon is an open source chess engine, written in C++ by Stuart Riffle.
 
 It runs on 64-bit Windows and Linux, and will plug into any UCI-compatible chess GUI.
 A lot of the core code is branch-free, which allows it to process multiple positions in SIMD. 
-But the *real* fun will start when Pigeon runs on the GPU, and a port to CUDA is in progress,
-so stay tuned!
+But the *real* fun will start when Pigeon runs on the GPU, and a port to CUDA is in progress now.
+Stay tuned!
 
 
 ## Playing strength
