@@ -6,7 +6,7 @@ namespace Pigeon {
 
 
 /// A map of valid move target squares
-///
+
 template< typename SIMD >
 struct PIGEON_ALIGN_SIMD MoveMapT
 {
@@ -54,6 +54,22 @@ struct PIGEON_ALIGN_SIMD MoveMapT
     }
 };
                 
+
+/// A piece-square table for incremental update of material values
+
+struct MaterialTable
+{
+    i32     mValue[6][64];              ///< Piece-square value in centipawns, as 16.16 fixed point
+    i64     mCastlingQueenside;         ///< Account for the rook when castling queenside
+    i64     mCastlingKingside;          ///< Account for the rook when castling kingside
+
+    void CalcCastlingFixup()
+    {
+        mCastlingQueenside = mValue[ROOK][D1] - mValue[ROOK][A1];
+        mCastlingKingside  = mValue[ROOK][F1] - mValue[ROOK][H1];
+    }
+};
+
 
 /// A snapshot of the game state
 

@@ -193,10 +193,8 @@ private:
         {
             int idx = (int) ConsumeLowestBitIndex( dest );
 
-            this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_KNIGHT );
-            //this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_BISHOP );
-            //this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_ROOK   );
             this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_QUEEN  );
+            this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_KNIGHT );
         }
     }
 

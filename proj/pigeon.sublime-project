@@ -1,0 +1,44 @@
+{
+    "folders":
+    [
+        {
+            "path": ".."
+        }
+    ],
+    "build_systems":
+    [
+        {
+            //"name": "cmake",
+            //"cmd": [ "cmake", 
+            //    "--build", ".",
+            //    "--config", "Release" ],
+            //"file_regex": "^  ([^\\(]+)\\((\\d+)\\):",
+            //"working_dir": "${project_path}/../build",
+
+            "name": "cmake",
+            "cmd": [ "build_msvc.bat" ], 
+            "file_regex": "^  ([^\\(]+)\\((\\d+)\\):",
+            "working_dir": "${project_path}/../proj",
+
+            //"variants": [
+            //    {
+            //        "name": "generate",
+            //        "cmd": [ "cmake", 
+            //            //"-D", "CMAKE_CXX_COMPILER=g++.exe", 
+            //            //"-D", "CMAKE_MAKE_PROGRAM=make.exe", 
+            //            //"-G", "MinGW Makefiles",
+            //            "-G", "Visual Studio 11 2012 Win64",
+            //            "-D", "CMAKE_CXX_COMPILER=cl.exe", 
+            //            ".."],
+            //        "working_dir": "${project_path}/../build"
+            //    },
+            //]
+        }
+    ],
+    "settings":
+    {
+        "tab_size": 4,
+        "font_size": 8,
+        "translate_tabs_to_spaces": true
+    }
+}

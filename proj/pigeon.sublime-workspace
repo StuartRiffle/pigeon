@@ -1,0 +1,1988 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/D/Software/Sublime Text/Data/Packages/User/Default (Windows).sublime-keymap",
+			"settings":
+			{
+				"buffer_size": 2656,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/position.h",
+			"settings":
+			{
+				"buffer_size": 37072,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/docs/index.html",
+			"settings":
+			{
+				"buffer_size": 3103,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/table.h",
+			"settings":
+			{
+				"buffer_size": 2900,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/.gitignore",
+			"settings":
+			{
+				"buffer_size": 374,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/engine.h",
+			"settings":
+			{
+				"buffer_size": 28186,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nPackage Control:\n---------------\n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n\n\nPackage Control:\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n  \n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n\n\nPackage Control:\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n  \n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n\n\nPackage Control:\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n  \n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n\n\nPackage Control:\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n  \n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n\n\nPackage Control:\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n  \n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n\n\nPackage Control:\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n  \n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n\n\nPackage Control:\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n  \n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n\n\nPackage Control:\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n  \n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n",
+			"settings":
+			{
+				"buffer_size": 36137,
+				"line_ending": "Windows",
+				"name": "Package Control Messages",
+				"scratch": true
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/neural.h",
+			"settings":
+			{
+				"buffer_size": 15815,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/perft.h",
+			"settings":
+			{
+				"buffer_size": 2957,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/simd.h",
+			"settings":
+			{
+				"buffer_size": 28482,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/negamax.h",
+			"settings":
+			{
+				"buffer_size": 8979,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/defs.h",
+			"settings":
+			{
+				"buffer_size": 11803,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "pigeon.sublime-project",
+			"settings":
+			{
+				"buffer_size": 1395,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 513,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/pigeon.cpp",
+			"settings":
+			{
+				"buffer_size": 2599,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/amoeba.h",
+			"settings":
+			{
+				"buffer_size": 6694,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/material.h",
+			"settings":
+			{
+				"buffer_size": 177,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/git/pigeon/src/movelist.h",
+			"settings":
+			{
+				"buffer_size": 9844,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "",
+			"file": "/D/git/pigeon/build/  d:/git/pigeon/src/eval.h",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/d/git/pigeon/src/eval.h",
+			"settings":
+			{
+				"buffer_size": 18472,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "cmake",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/MSBuild/MSBuild.sublime-build",
+					""
+				],
+				[
+					"Packages/MSBuild/MSBuild.sublime-build",
+					"Parallel Build"
+				],
+				[
+					"Packages/MSBuild/MSBuild.sublime-build",
+					"Debug Configuration"
+				],
+				[
+					"Packages/MSBuild/MSBuild.sublime-build",
+					"Release Configuration"
+				]
+			],
+			[
+				"Packages/MSBuild/MSBuild.sublime-build",
+				"Release Configuration"
+			]
+		],
+		[
+			[
+				[
+					"cmake",
+					""
+				],
+				[
+					"cmake",
+					"Run"
+				]
+			],
+			[
+				"cmake",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"cmake",
+					""
+				],
+				[
+					"cmake",
+					"generate"
+				]
+			],
+			[
+				"cmake",
+				""
+			]
+		],
+		[
+			[
+				[
+					"cmake",
+					""
+				],
+				[
+					"cmake",
+					"generate"
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"cmake",
+				""
+			]
+		],
+		[
+			[
+				[
+					"make",
+					""
+				],
+				[
+					"make",
+					"cmake"
+				]
+			],
+			[
+				"make",
+				""
+			]
+		],
+		[
+			[
+				[
+					"make",
+					""
+				],
+				[
+					"make",
+					"cmake"
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/Vintageous/Vintageous.sublime-build",
+					""
+				],
+				[
+					"Packages/Vintageous/Vintageous.sublime-build",
+					"Vintageous - Test (All)"
+				],
+				[
+					"Packages/Vintageous/Vintageous.sublime-build",
+					"Vintageous - Test (This File Only)"
+				]
+			],
+			[
+				"make",
+				""
+			]
+		],
+		[
+			[
+				[
+					"make",
+					""
+				],
+				[
+					"make",
+					"cmake"
+				],
+				[
+					"Packages/Vintageous/Vintageous.sublime-build",
+					""
+				],
+				[
+					"Packages/Vintageous/Vintageous.sublime-build",
+					"Vintageous - Test (All)"
+				],
+				[
+					"Packages/Vintageous/Vintageous.sublime-build",
+					"Vintageous - Test (This File Only)"
+				]
+			],
+			[
+				"make",
+				"cmake"
+			]
+		]
+	],
+	"build_varint": "Run",
+	"command_palette":
+	{
+		"height": 334.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Discover Packages"
+			],
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: dis",
+				"Package Control: Disable Package"
+			],
+			[
+				"cta",
+				"CTags: Rebuild Tags"
+			],
+			[
+				"pci",
+				"Package Control: Discover Packages"
+			],
+			[
+				"build:",
+				"Build: Debug Configuration"
+			],
+			[
+				"pcl",
+				"Package Control: List Packages"
+			],
+			[
+				"pc",
+				"Package Control: List Packages"
+			],
+			[
+				"c",
+				"Code Folding: Unfold All"
+			],
+			[
+				"pcr",
+				"Package Control: Remove Package"
+			],
+			[
+				"colorsu",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"color",
+				"Colorsublime: Install Theme"
+			]
+		],
+		"width": 514.0
+	},
+	"console":
+	{
+		"height": 132.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/git/pigeon"
+	],
+	"file_history":
+	[
+		"/D/git/pigeon/src/cat/cat15.txt",
+		"/D/git/pigeon/src/cat/cat08.txt",
+		"/D/git/pigeon/src/cat/cat07.txt",
+		"/D/git/pigeon/src/cat/cat06.txt",
+		"/D/git/pigeon/src/cat/cat00.txt",
+		"/D/git/pigeon/src/cat0/cat00.txt",
+		"/D/Software/Sublime Text/Data/Packages/User/Package Control.sublime-settings",
+		"/D/git/pigeon/src/position.h",
+		"/d/mingw/include/c++/5.1.0/bits/c++0x_warning.h",
+		"/D/p4/delphi/pigeon2/proj/go.bat",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/eval.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/simd.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/bits.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/platform.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/defs.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/position.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/uci/buffer.h",
+		"/D/Software/Sublime Text/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/D/p4/delphi/pigeon2/include/pigeon/uci/fen.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/uci/token.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/pigeon.h",
+		"/d/mingw/x86_64-w64-mingw32/include/stdio.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/pigeon-core.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/movemap.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/movelist.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/table.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/uci/uci.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/uci/engine.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/core/search.h",
+		"/D/Software/Sublime Text/Data/Packages/User/Preferences.sublime-settings",
+		"/D/p4/delphi/pigeon2/src/pigeon-dll.cpp",
+		"/D/p4/delphi/pigeon2/proj/setting.sublime-project",
+		"/D/p4/delphi/pigeon2/cmakelists.txt",
+		"/D/Software/Sublime Text/Data/Packages/Default/Preferences.sublime-settings",
+		"/d/mingw/include/c++/5.1.0/cstdarg",
+		"/D/p4/delphi/pigeon2/build/defs.h",
+		"/D/p4/delphi/pigeon2/build/platform.h",
+		"/D/p4/delphi/pigeon2/include/pigeon/port/token.h",
+		"/D/p4/delphi/pigeon2/src/pigeon.h",
+		"/D/p4/delphi/pigeon2/src/pigeon-lib.cpp",
+		"/D/p4/delphi/pigeon2/include/pigeon/uci/uci.cpp",
+		"/D/p4/delphi/pigeon2/src/pigeon_dll.h",
+		"/D/p4/delphi/pigeon2/src/uci/uci.cpp",
+		"/D/p4/delphi/pigeon2/src/port/buffer.h",
+		"/D/p4/delphi/pigeon2/src/port/Misc.cpp",
+		"/D/p4/delphi/pigeon2/src/core/position.h",
+		"/D/p4/delphi/pigeon2/src/core/bits.h",
+		"/D/Ruby193/onebitdash/assets/stylesheets/application.scss",
+		"/D/Ruby193/onebitdash/widgets/cameras/cameras.scss",
+		"/D/Ruby193/onebitdash/widgets/cameras/cameras.html",
+		"/D/Ruby193/onebitdash/widgets/cameras/cameras.coffee",
+		"/D/Ruby193/onebitdash/jobs/jirafeed.rb",
+		"/D/Ruby193/onebitdash/history.yml",
+		"/D/Ruby193/onebitdash/dashboards/onebitdash.erb",
+		"/D/Ruby193/onebitdash/jobs/twitter.rb",
+		"/D/Ruby193/onebitdash/jobs/cameras.rb",
+		"/D/Ruby193/onebitdash/widgets/klimato/klimato.html",
+		"/D/Ruby193/onebitdash/widgets/klimato/klimato.coffee",
+		"/D/Ruby193/onebitdash/widgets/feed_view/feed_view.scss",
+		"/D/Ruby193/onebitdash/widgets/feed_view/feed_view.html",
+		"/D/p4/class3/hd_ul/code/Tools/Build/Makefile",
+		"/D/Ruby193/onebitdash/jobs/p4view.rb",
+		"/D/Ruby193/onebitdash/jobs/jenkins_build.rb",
+		"/D/Ruby193/onebitdash/widgets/weather/weather.scss",
+		"/D/Ruby193/onebitdash/widgets/weather/weather.coffee",
+		"/D/Ruby193/onebitdash/Gemfile",
+		"/D/Ruby193/onebitdash/widgets/weather/weather.html",
+		"/D/Ruby193/onebitdash/widgets/jenkins_build/jenkins_build.scss",
+		"/D/Ruby193/onebitdash/widgets/jenkins_build/jenkins_build.html",
+		"/D/Ruby193/onebitdash/jobs/server_status.rb",
+		"/D/Ruby193/onebitdash/widgets/jenkins_build/jenkins_build.coffee",
+		"/D/Ruby193/onebitdash/assets/javascripts/rickshaw-1.4.3.min.js",
+		"/D/Ruby193/onebitdash/assets/javascripts/jquery.knob.js",
+		"/D/Ruby193/onebitdash/widgets/image/image.html",
+		"/D/Ruby193/onebitdash/widgets/image/image.scss",
+		"/D/Ruby193/onebitdash/dashboards/layout.erb",
+		"/D/Ruby193/onebitdash/dashboards/sampletv.erb",
+		"/D/Ruby193/onebitdash/assets/javascripts/dashing.gridster.coffee",
+		"/D/Ruby193/onebitdash/assets/javascripts/application.coffee",
+		"/D/Ruby193/onebitdash/widgets/klimato/klimato.sass",
+		"/D/Ruby193/onebitdash/jobs/klimato.rb",
+		"/D/Ruby193/onebitdash/jobs/weather.rb",
+		"/D/Ruby193/lib/ruby/gems/1.9.1/gems/jira-ruby-0.1.11/lib/jira/base.rb",
+		"/D/Ruby193/lib/ruby/gems/1.9.1/gems/jira-ruby-0.1.11/lib/jira/http_client.rb",
+		"/D/Ruby193/lib/ruby/gems/1.9.1/gems/jira-ruby-0.1.11/lib/jira/resource/issue.rb",
+		"/D/Ruby193/lib/ruby/gems/1.9.1/gems/jira-ruby-0.1.11/lib/jira/resource/worklog.rb",
+		"/D/Ruby193/lib/ruby/gems/1.9.1/gems/jira-ruby-0.1.11/lib/jira/client.rb",
+		"/d/echo/depot/Class3/hd/code/Tools/Build/Makefile",
+		"/D/Ruby193/onebitdash/jobs/jira_number_of_issues_in_query.rb",
+		"/D/Ruby193/onebitdash/widgets/jira_activity/jira_activity.html",
+		"/D/Ruby193/onebitdash/widgets/jira_activity/jira_activity.coffee",
+		"/D/Ruby193/onebitdash/widgets/jira_activity/jira_activity.scss",
+		"/D/Ruby193/onebitdash/jobs/jira_activity.rb",
+		"/D/Ruby193/onebitdash/widgets/number/number.html",
+		"/D/Ruby193/onebitdash/widgets/logtext/logtext.scss",
+		"/D/Ruby193/onebitdash/widgets/logtext/logtext.html",
+		"/D/Ruby193/onebitdash/widgets/logtext/logtext.coffee",
+		"/D/Ruby193/onebitdash/widgets/text/text.html",
+		"/D/Ruby193/onebitdash/widgets/text/text.coffee",
+		"/D/Ruby193/onebitdash/widgets/countdown/countdown.html",
+		"/D/Ruby193/onebitdash/widgets/countdown/countdown.scss",
+		"/D/Ruby193/onebitdash/widgets/server_status/server_status.scss",
+		"/D/hecate/class3/hd_ul/code/Tools/Build/Makefile",
+		"/D/Ruby193/onebitdash/assets/javascripts/gridster/jquery.leanModal.min.js",
+		"/D/Ruby193/onebitdash/widgets/feedview/feed_view.coffee",
+		"/D/Ruby193/onebitdash/widgets/feedview/feed_view.html",
+		"/D/Ruby193/onebitdash/widgets/feedview/feed_view.scss",
+		"/D/echo/depot/Class3/CryENGINE3/Code/CryEngine/RenderDLL/XRenderD3D9/DriverD3D.cpp",
+		"/D/echo/depot/Class3/hd/systemoverride.cfg",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/DynamicIB_.h",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/Common/Shaders/RemoteCompiler.cpp",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/Common/Renderer.cpp",
+		"/d/echo/depot/Class3/hd/systemcfgoverride.cfg",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/Common/Textures/Image/CImage.cpp",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/D3DFont.cpp",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/Profiler/PerfCounters.cpp",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/FallbackFont.h",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderNULL/NULL_Font.cpp",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/Common/FrameProfiler.h",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/Common/Defs.h",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/D3DRECloud.cpp",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/D3DRenderRE.cpp",
+		"/d/echo/depot/Class3/hd/code/Tools/OneBitLabs/MakeEnv/build",
+		"/d/echo/depot/Class3/hd/code/Tools/OneBitLabs/MakeEnv/makefile",
+		"/d/echo/depot/Class3/hd/code/Tools/OneBitLabs/MakeEnv/runmake.abt",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/PostProcessRain.cpp",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/Common/Shaders/Parser.cpp",
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/CryRenderD3D11.vcxproj.user"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"",
+			"*.cpp,*.h",
+			"*.cpp;*.h",
+			"",
+			"D:\\echo\\depot\\Class3\\hd\\Engine\\Shaders\\HWScripts",
+			"*.cfx;*.cfi,D:\\echo\\depot\\Class3\\hd\\Engine\\Shaders\\HWScripts",
+			"*.cfx;*.cfi",
+			"*.cpp,*.h",
+			"*.cpp;*.h",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"mSimdIdx",
+			"childSpec",
+			"negama",
+			"EVAL_MAX",
+			"PIGEON_ASSERT",
+			"mHashVerify",
+			"mPopulated",
+			"mFailLow",
+			"mWhiteMove",
+			"mSearchDepthLimit",
+			"mRoot",
+			"condition_variable",
+			"(T)",
+			"simd_avx3",
+			"simd_avx2",
+			"simd_neon",
+			"simd_sse2",
+			"DebugLog",
+			"mActiveSearch",
+			"mExitNow",
+			"Alarm",
+			"mRoot",
+			"mSearchElapsed",
+			"mThinkingTimer",
+			"mRoot",
+			"T    ",
+			"T& ",
+			"< T >",
+			"T    ",
+			"    //",
+			"\\n\",",
+			"    \"",
+			"PigeonUci::",
+			"StringConsumeInt64( str );",
+			"StringConsumeInt( str );",
+			"StringConsumeNext( str )",
+			"StringConsume( str, ",
+			"std::string",
+			"StringConsumeNext",
+			"StringSkipWhite",
+			"String",
+			"String.*\\(",
+			"String",
+			"//",
+			"DEVCACHEPATH",
+			"clear_bin32",
+			"Cry*",
+			"mainexe_clean",
+			"buildshaders",
+			"sys_build",
+			"deltree",
+			"Gold",
+			"cd",
+			"set",
+			"DurangoLauncher",
+			"cache",
+			"fmod",
+			"##################################################################",
+			")\\$(",
+			"convert",
+			"gsub",
+			"sample",
+			"puts",
+			"BMD_",
+			"XML_CLASS3",
+			".bmd",
+			"\"]",
+			"title",
+			"mkdirsafe",
+			"mkdir",
+			"-mkdir ",
+			"deltree",
+			"cleanshaders",
+			"manifest",
+			"sandbox",
+			"Editor",
+			"editor",
+			"sandboxlauncher",
+			"sandboxlaungher",
+			"mainrelease",
+			"editor",
+			"mkdir",
+			"lame",
+			"dissolve",
+			"textbuild",
+			"livefiles",
+			"up to date",
+			"rc",
+			"rc.exe",
+			"lame",
+			"mkdir",
+			"MSBUILD",
+			"UL_OUTPUT=",
+			"MSBUILD_ARGS",
+			"\",",
+			"*\\\\.\\\\\\\\(.*)\\\\(.*\"",
+			"msbuild",
+			"BUILD_ROOT",
+			"pak",
+			"3.14",
+			"\"D3D10\"",
+			"D3D10",
+			"eT_1",
+			"\"D3D10\"",
+			"GRASS",
+			"HIDE",
+			"SCATTER",
+			"RT_NO_TESSELATION",
+			"_RT_",
+			"d3d10",
+			"skin",
+			"devicecontext",
+			"DXUT",
+			"Unknown compiler version",
+			"common_typeinfo",
+			"cry_vector3_info",
+			"_INFO.*Vec3",
+			"STRUCT_INFO_BEGIN",
+			"TYPE_INFO",
+			"CTypeInfo",
+			"ENABLE_TYPE_INFO",
+			"AUTO_STRUCT_INFO",
+			"TypeInfo",
+			"CTypeInfo",
+			"struct LightInfo",
+			"pd3dDeviceContext",
+			"target",
+			"devicecontext"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": true,
+		"regex": false,
+		"replace_history":
+		[
+			"f->simdIdx",
+			"mChildSpec",
+			"mDepthLimit",
+			"(SIMD)",
+			"simd8_avx3",
+			"simd4_avx2",
+			"simd2_neon",
+			"simd2_sse2",
+			"simd_neon",
+			"mSearcher",
+			"SIMD ",
+			"SIMD& ",
+			"< SIMD >",
+			"SIMD ",
+			"#",
+			"",
+			"tokens.ConsumeInt64();",
+			"tokens.ConsumeInt();",
+			"tokens.ConsumeNext()",
+			"tokens.Consume( ",
+			"call mkdirsafe.bat",
+			"-mkdirsafe "
+		],
+		"reverse": false,
+		"show_context": false,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 12,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/D/Software/Sublime Text/Data/Packages/User/Default (Windows).sublime-keymap",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2656,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2304,
+								2304
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 29,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/git/pigeon/src/position.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 37072,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								342,
+								342
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 85.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/git/pigeon/docs/index.html",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 3103,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/git/pigeon/src/table.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2900,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2900,
+								2900
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 574.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 25,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/git/pigeon/.gitignore",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 374,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								361,
+								361
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 28,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/D/git/pigeon/src/engine.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 28186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3811.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 36137,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3360,
+								3360
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 30,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/D/git/pigeon/src/neural.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15815,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10597,
+								10597
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2207.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/D/git/pigeon/src/perft.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2957,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1894,
+								1894
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 23.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 24,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/D/git/pigeon/src/simd.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 28482,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								162,
+								162
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 27,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/D/git/pigeon/src/negamax.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8979,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2099,
+								2099
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 335.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/D/git/pigeon/src/defs.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11803,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								133,
+								133
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "pigeon.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1395,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1395,
+								1395
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/D/git/pigeon/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 513,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								513,
+								513
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/D/git/pigeon/src/pigeon.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2599,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1783,
+								1783
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 135.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 10,
+					"file": "/D/git/pigeon/src/negamax.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8979,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/D/git/pigeon/src/simd.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 28482,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1481,
+								1481
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 22,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "/D/git/pigeon/src/amoeba.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6694,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								326,
+								326
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1380.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 21,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "/D/git/pigeon/src/material.h",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 177,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 110.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/D/git/pigeon/src/engine.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 28186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5331.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 23,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/D/git/pigeon/src/engine.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 28186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								16909,
+								16909
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5568.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "/D/git/pigeon/src/movelist.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9844,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8826,
+								8826
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1964.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 26,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/git/pigeon/src/position.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 37072,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "/D/git/pigeon/build/  d:/git/pigeon/src/eval.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "/d/git/pigeon/src/eval.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18472,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								953,
+								953
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 120.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/D/git/pigeon/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 513,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								81,
+								81
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/D/git/pigeon/src/negamax.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8979,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "pigeon.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1395,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/D/git/pigeon/src/pigeon.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2599,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2599,
+								2599
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 650.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/D/git/pigeon/src/negamax.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8979,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								224,
+								256
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "/d/git/pigeon/src/eval.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18472,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18386,
+								18386
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2310.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 20.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.460416666667,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 227.0
+	},
+	"output.find_results":
+	{
+		"height": 218.0
+	},
+	"pinned_build_system": "",
+	"project": "pigeon.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"pigeon.cpp",
+				"src\\pigeon.cpp"
+			],
+			[
+				"pigeon",
+				"proj\\pigeon.sublime-project"
+			],
+			[
+				"cmak",
+				"CMakeLists.txt"
+			],
+			[
+				"eval",
+				"src\\eval.h"
+			],
+			[
+				"pos",
+				"src\\position.h"
+			],
+			[
+				"defs",
+				"src\\defs.h"
+			],
+			[
+				"nega",
+				"src\\negamax.h"
+			],
+			[
+				"cmake",
+				"CMakeLists.txt"
+			],
+			[
+				"pigeon.sub",
+				"proj\\pigeon.sublime-project"
+			],
+			[
+				"pigeon.s",
+				"proj\\pigeon.sublime-project"
+			],
+			[
+				"eng",
+				"src\\engine.h"
+			],
+			[
+				"simd",
+				"src\\simd.h"
+			],
+			[
+				"engine",
+				"src\\engine.h"
+			],
+			[
+				"move",
+				"src\\movelist.h"
+			],
+			[
+				"engin",
+				"src\\engine.h"
+			],
+			[
+				"negam",
+				"src\\negamax.h"
+			],
+			[
+				"per",
+				"src\\perft.h"
+			],
+			[
+				"tok",
+				"include\\pigeon\\uci\\token.h"
+			],
+			[
+				"make",
+				"D:\\p4\\class3\\hd_ul\\code\\Tools\\Build\\Makefile"
+			],
+			[
+				"gem",
+				"Gemfile"
+			],
+			[
+				"mak",
+				"d:\\echo\\depot\\Class3\\hd\\code\\Tools\\Build\\Makefile"
+			],
+			[
+				"makefile",
+				"d:\\echo\\depot\\Class3\\hd\\code\\Tools\\Build\\Makefile"
+			],
+			[
+				"issue",
+				"D:\\Ruby193\\lib\\ruby\\gems\\1.9.1\\gems\\jira-ruby-0.1.11\\lib\\jira\\resource\\issue.rb"
+			],
+			[
+				"makef",
+				"d:\\echo\\depot\\Class3\\hd\\code\\Tools\\Build\\Makefile"
+			],
+			[
+				"font",
+				"XRenderD3D9\\D3DFont.cpp"
+			],
+			[
+				"profseg",
+				"XRenderD3D9\\Profiler\\ProfilerSegment.cpp"
+			],
+			[
+				"profile",
+				"XRenderD3D9\\Profiler\\ProfilerSegment.cpp"
+			],
+			[
+				"cimag",
+				"Common\\Textures\\Image\\CImage.cpp"
+			],
+			[
+				"driver",
+				"XRenderD3D9\\DriverD3D.cpp"
+			],
+			[
+				"lightsystem",
+				"code\\Game\\GameDll\\UL\\LightSystem\\LightSystem.cpp"
+			],
+			[
+				"ul_char",
+				"Engine\\Shaders\\HWScripts\\CryFX\\UL_Character.cfx"
+			],
+			[
+				"crytype",
+				"code\\CryEngine\\CryCommon\\CryTypeInfo.cpp"
+			],
+			[
+				"sdk",
+				"code\\Solutions\\SDK.DirectX.props"
+			],
+			[
+				"find",
+				"Find Results"
+			],
+			[
+				"procomp",
+				"code\\Solutions\\ProjectCommon.props"
+			],
+			[
+				"direpro",
+				"code\\Solutions\\SDK.DirectX.props"
+			],
+			[
+				"directxprops",
+				"code\\Solutions\\SDK.DirectX.props"
+			],
+			[
+				"sublime",
+				"code\\Tools\\OneBitLabs\\Projects\\Class3.sublime-project"
+			],
+			[
+				"cry_vec",
+				"code\\CryEngine\\CryCommon\\Cry_Vector3.h"
+			],
+			[
+				"lightsyse",
+				"code\\Game\\GameDll\\UL\\LightSystem\\LightSystem.h"
+			],
+			[
+				"lightsyste",
+				"code\\Game\\GameDll\\UL\\LightSystem\\LightSystem.cpp"
+			],
+			[
+				"dxutdevice11",
+				"code\\CryEngine\\RenderDLL\\XRenderD3D9\\DXUT11\\DXUTDevice11.cpp"
+			],
+			[
+				"shadercompiling",
+				"code\\CryEngine\\RenderDLL\\XRenderD3D9\\D3DHWShaderCompiling.cpp"
+			],
+			[
+				"xenonspec",
+				"code\\CryEngine\\CryCommon\\XenonSpecific.h"
+			],
+			[
+				"d3dfont",
+				"code\\CryEngine\\RenderDLL\\XRenderD3D9\\D3DFont.cpp"
+			],
+			[
+				"d3dhw",
+				"code\\CryEngine\\RenderDLL\\XRenderD3D9\\D3DHWShader.cpp"
+			],
+			[
+				"d3dhwsha",
+				"code\\CryEngine\\RenderDLL\\XRenderD3D9\\D3DHWShader.cpp"
+			],
+			[
+				"",
+				"system.cfg"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"D:\\echo\\depot\\Class3\\hd\\code\\Tools\\OneBitLabs\\Projects\\Class3.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 284.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 530.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"_vintageous_last_char_search_command": "vi_big_t",
+		"_vintageous_last_character_search": "<",
+		"_vintageous_reset_during_init": true,
+		"vintage":
+		{
+			"_cmdline_cd": "D:\\p4\\delphi\\pigeon2\\include\\pigeon\\uci"
+		}
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": false,
+	"side_bar_visible": true,
+	"side_bar_width": 193.0,
+	"status_bar_visible": false,
+	"template_settings":
+	{
+	}
+}

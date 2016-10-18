@@ -219,16 +219,16 @@ struct SearchState
 
             Frame* n = f + 1;
 
-            n->pos          = f->childPos[f->simdIdx];
-            n->moveMap      = f->childMoveMap[f->simdIdx];
-            n->score        = f->childScore[f->simdIdx];
-            n->ply          = f->ply + 1; 
-            n->depth        = f->depth - 1; 
-            n->alpha        = -f->beta; 
-            n->beta         = -f->bestScore;
-            f->step         = STEP_CHECK_SCORE;
-            f->movesTried++;
+            n->pos      = f->childPos[f->simdIdx];
+            n->moveMap  = f->childMoveMap[f->simdIdx];
+            n->score    = f->childScore[f->simdIdx];
+            n->ply      = f->ply + 1; 
+            n->depth    = f->depth - 1; 
+            n->alpha    = -f->beta; 
+            n->beta     = -f->bestScore;
 
+            f->step     = STEP_CHECK_SCORE;
+            f->movesTried++;
             f++;
         }
 
@@ -249,7 +249,7 @@ struct SearchState
             for( int i = 0; i <= f->ply; i++ )
                 mBestLine.Append( mFrames[i].bestMove );
 
-            RegisterBestLine( pv, f->alpha, f->beta );
+            this->RegisterBestLine( mBestLine, f->alpha, f->beta );
         }
 
         f->movesTried++;
@@ -317,7 +317,6 @@ struct SearchState
             f = this->StoreIntoHashTable( f );
 
         mFrameIdx = f - mFrames;
-
         return( f->step == STEP_DONE );
     }
 };

@@ -4,7 +4,7 @@ namespace Pigeon {
 #ifndef PIGEON_DEFS_H__
 #define PIGEON_DEFS_H__
 
-enum SquareID
+enum
 {
     H1, G1, F1, E1, D1, C1, B1, A1,
     H2, G2, F2, E2, D2, C2, B2, A2,
@@ -28,7 +28,7 @@ enum
     SHIFT_NE   =  7,
 };
 
-enum 
+enum
 {
     PAWN,
     KNIGHT,
@@ -37,6 +37,7 @@ enum
     QUEEN,
     KING,
 
+    PIECE_TYPES,
     NO_PROMOTION = PAWN
 };
 
