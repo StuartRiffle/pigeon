@@ -220,7 +220,6 @@
     <ClInclude Include="..\src\engine.h" />
     <ClInclude Include="..\src\eval.h" />
     <ClInclude Include="..\src\fen.h" />
-    <ClInclude Include="..\src\material.h" />
     <ClInclude Include="..\src\movelist.h" />
     <ClInclude Include="..\src\negamax.h" />
     <ClInclude Include="..\src\perft.h" />

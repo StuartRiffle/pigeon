@@ -173,7 +173,18 @@ BISHOP 2|  259 275 271 268 260 275 265 268      -16   0  -4  -7 -15   0 -10  -7
 
 
 
+            if( LANES == 1 )
+            {
+                f->childSpec[0] = this->ChooseNextMove( f );
+                f->childPos[0] = f->pos;
+                f->childPos[0].Step( f->childSpec[0], whiteMat, blackMat );
+                f->pos.CalcMoveMap( &f->childMoveMap[0] );
+                f->childScore[0] = mEvaluator->Evaluate< POPCNT, SIMD >( f->pos, *f->childMoveMap[0], mWeights );
 
+                f->simdIdx = 0;
+            }
+            else
+            {
 
 
 

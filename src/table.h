@@ -116,12 +116,12 @@ public:
         PlatPrefetch( mTable + (hash & mMask) );
     }
 
-    INLINE void Load( const u64& hash, TableEntry& tt ) const
+    INLINE PDECL void Load( const u64& hash, TableEntry& tt ) const
     {
         tt.Unpack( mTable[hash & mMask] );
     }
 
-    INLINE void Store( const u64& hash, const TableEntry& tt )
+    INLINE PDECL void Store( const u64& hash, const TableEntry& tt )
     {
         mTable[hash & mMask] = tt.Pack();
     }

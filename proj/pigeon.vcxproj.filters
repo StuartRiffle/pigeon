@@ -61,9 +61,6 @@
     <ClInclude Include="..\src\tune.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\material.h">
-      <Filter>src</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

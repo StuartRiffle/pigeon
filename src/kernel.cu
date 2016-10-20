@@ -11,10 +11,14 @@
 #include "platform.h"
 #include "defs.h"
 #include "bits.h"
+#include "simd.h"
 #include "position.h"
 #include "movelist.h"
 #include "eval.h"
 #include "table.h"
+#include "negamax.h"
+
+
 
 #include <stdio.h>
 
@@ -24,13 +28,13 @@ __device__ void Foo()
 {
     int i = threadIdx.x;
 
-    Pigeon::Position pos;
-    pos.Reset();
+	Pigeon::Position pos;
+	pos.Reset();
 
-    Pigeon::MoveList moves;
-    moves.FindMoves( pos );
+	Pigeon::SearchState< 1, Pigeon::u64 > ss;
+	Pigeon::EvalTerm score = ss.RunToDepth( pos, 3 );
 
-    printf( "Thread %d says %d\n", i, moves.mCount );
+    printf( "Thread %d says %d\n", i, score );
 }
 
 __global__ void RunFoo()
@@ -39,8 +43,6 @@ __global__ void RunFoo()
 }
 
 using namespace Pigeon;
-
-#include "negamax.h"
 
 int main()
 {

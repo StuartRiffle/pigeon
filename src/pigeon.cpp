@@ -6,11 +6,11 @@
 #include "simd.h"
 #include <stdio.h>
 #include "position.h"
-#include "material.h"
 #include "eval.h"
 #include "movelist.h"
 #include "table.h"
 #include "search.h"
+#include "negamax.h"
 
 #include <stdio.h>
 #include <ctype.h>

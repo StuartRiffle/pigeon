@@ -444,7 +444,7 @@ template<> INLINE simd8_avx3     SelectWithMask<  simd8_avx3 >( const simd8_avx3
 
 
 template< typename SIMD, typename PACKED, typename UNPACKED >
-INLINE void Unswizzle( const PACKED* srcStruct, UNPACKED* destStruct )
+INLINE PDECL void Unswizzle( const PACKED* srcStruct, UNPACKED* destStruct )
 {
     const int LANES = SimdWidth< SIMD >::LANES;
 

@@ -8,10 +8,10 @@ namespace Pigeon {
 
 
 
-template< typename SIMD >
+template< int POPCNT, typename SIMD >
 struct SearchState
 {
-    const int LANES = SimdWidth< SIMD >::LANES;
+    static const int LANES = SimdWidth< SIMD >::LANES;
 
     enum
     {
@@ -28,7 +28,7 @@ struct SearchState
     struct Frame
     {
         Position        pos; 
-        MoveMap         moveMap; 
+        MoveMap*        moveMap; 
         int             step;
         int             ply; 
         int             depth; 
@@ -52,7 +52,39 @@ struct SearchState
 
     int                 mFrameIdx;
     MoveList            mBestLine;
+    HashTable*          mHashTable;
+    Evaluator*          mEvaluator;
+    MoveMap             mRootMoveMap;
+    EvalWeight          mWeights[EVAL_TERMS];
     Frame               mFrames[MAX_SEARCH_DEPTH];
+
+
+    PDECL INLINE int ChooseNextMove( Frame* f )
+    {
+        int best = f->moves.mTried;
+        //int whiteToMove = f->pos.mWhiteToMove;
+
+        for( int idx = best + 1; idx < f->moves.mCount; idx++ )
+        {
+            MoveSpec& bestMove = f->moves.mMove[best];
+            MoveSpec& currMove = f->moves.mMove[idx];
+
+            if( currMove.mFlags < bestMove.mFlags )
+                continue;
+
+            if( currMove.mType < bestMove.mType )
+                continue;
+
+            //if( (currMove.mType == bestMove.mType) && (currMove.mFlags == bestMove.mFlags) )
+            //    if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
+            //        continue;   
+
+            best = idx;
+        }
+
+        Exchange( f->moves.mMove[f->moves.mTried], f->moves.mMove[best] );
+        return( f->moves.mTried++ );        
+    }
 
 
     PDECL INLINE Frame* HandleLeaf( Frame* f )
@@ -74,8 +106,8 @@ struct SearchState
 
     PDECL INLINE Frame* HandleMate( Frame* f )
     {
-        f->moves.UnpackMoveMap( f->pos, f->moveMap );
-        f->inCheck = (f->moveMap.IsInCheck() != 0);
+        f->moves.UnpackMoveMap( f->pos, *f->moveMap );
+        f->inCheck = (f->moveMap->IsInCheck() != 0);
 
         if( f->moves.mCount == 0 )
         {
@@ -107,17 +139,17 @@ struct SearchState
 
     PDECL INLINE Frame* CheckHashTable( Frame* f )
     {
+        // FIXME
+        return( f );
+
         if( f->depth > 0 )
         {
             TableEntry tt;
-
-            hashTable.Load( f->pos.mHash, tt );
+            mHashTable->Load( f->pos.mHash, tt );
 
             u32 verify = (u32) (f->pos.mHash >> 40);
             if( tt.mHashVerify == verify )
             {
-                mMetrics.mHashHitsAtPly[f->ply]++;
-
                 bool        samePlayer          = (f->pos.mWhiteToMove != 0) == tt.mWhiteMove;
                 bool        failedHighBefore    = samePlayer? tt.mFailHigh : tt.mFailLow;
                 EvalTerm    lowerBoundBefore    = samePlayer? tt.mScore    : -tt.mScore;
@@ -164,6 +196,9 @@ struct SearchState
         }
         else
         {
+            const MaterialTable* whiteMat = NULL;
+            const MaterialTable* blackMat = NULL;
+
             f->simdIdx++;
             if( f->simdIdx >= LANES )
             {
@@ -181,29 +216,20 @@ struct SearchState
                     if( f->moves.mTried >= f->moves.mCount )
                         break;
 
-                    int idxMove = this->ChooseNextMove( f->moves, (int) f->pos.mWhiteToMove );
+                    int idxMove = this->ChooseNextMove( f );
                     f->childSpec[idxLane] = f->moves.mMove[idxMove];
 
                     SimdInsert( simdSpec.mSrc,  f->childSpec[idxLane].mSrc,  idxLane );
                     SimdInsert( simdSpec.mDest, f->childSpec[idxLane].mDest, idxLane );
                     SimdInsert( simdSpec.mType, f->childSpec[idxLane].mType, idxLane );
 
-                    mMetrics.mNodesTotalSimd++;
-                }
-
-                const MaterialTable* whiteMat = NULL;
-                const MaterialTable* blackMat = NULL;
-
-                if( 0 ) // FIXME
-                {
-                    whiteMat = &mMaterialTable[pos.mWhiteToMove];
-                    blackMat = &mMaterialTable[pos.mWhiteToMove ^ 1];
+                    //mMetrics.mNodesTotalSimd++;
                 }
 
                 simdPos.Broadcast( f->pos );
                 simdPos.Step( simdSpec, whiteMat, blackMat );
                 simdPos.CalcMoveMap( &simdMoveMap );
-                simdScore = mEvaluator.Evaluate< POPCNT, SIMD >( simdPos, simdMoveMap, mRootWeights );
+                simdScore = mEvaluator->Evaluate< POPCNT, SIMD >( simdPos, simdMoveMap, mWeights );
 
                 Unswizzle< SIMD >( &simdPos,     f->childPos );
                 Unswizzle< SIMD >( &simdMoveMap, f->childMoveMap );
@@ -215,19 +241,19 @@ struct SearchState
                     f->childScore[idxLane] = (EvalTerm) unpackScore[idxLane];
 
                 f->simdIdx = 0;
-            }   
+            }
 
             Frame* n = f + 1;
 
             n->pos      = f->childPos[f->simdIdx];
-            n->moveMap  = f->childMoveMap[f->simdIdx];
+            n->moveMap  = &f->childMoveMap[f->simdIdx];
             n->score    = f->childScore[f->simdIdx];
             n->ply      = f->ply + 1; 
             n->depth    = f->depth - 1; 
             n->alpha    = -f->beta; 
             n->beta     = -f->bestScore;
 
-            f->step     = STEP_CHECK_SCORE;
+            f->step = STEP_CHECK_SCORE;
             f->movesTried++;
             f++;
         }
@@ -245,15 +271,19 @@ struct SearchState
             f->bestScore    = subScore;
             f->bestMove     = f->childSpec[f->simdIdx];
 
-            mBestLine.Clear();
-            for( int i = 0; i <= f->ply; i++ )
-                mBestLine.Append( mFrames[i].bestMove );
+            if( subScore < f->beta )
+            {
+                mBestLine.Clear();
+                for( int i = 0; i <= f->ply; i++ )
+                    mBestLine.Append( mFrames[i].bestMove );
+            }
 
-            this->RegisterBestLine( mBestLine, f->alpha, f->beta );
+            // FIXME
+            //this->RegisterBestLine( mBestLine, f->alpha, f->beta );
         }
 
-        f->movesTried++;
         f->step = STEP_ITERATE_CHILDREN;
+        f->movesTried++;
 
         return( f );
     }
@@ -278,7 +308,8 @@ struct SearchState
             tt.mFailHigh    = failedHigh;
             tt.mWhiteMove   = f->pos.mWhiteToMove? true : false;
 
-            hashTable.Store( f->pos.mHash, tt );
+            // FIXME
+            //mHashTable->Store( f->pos.mHash, tt );
         }
 
         f->result = result;
@@ -290,6 +321,9 @@ struct SearchState
 
     PDECL bool Advance()
     {
+        assert( mFrameIdx >= 0 );
+        assert( mFrameIdx < MAX_SEARCH_DEPTH );
+
         Frame* f = mFrames + mFrameIdx;
 
         if( f->step == STEP_PREPARE )            
@@ -317,7 +351,50 @@ struct SearchState
             f = this->StoreIntoHashTable( f );
 
         mFrameIdx = f - mFrames;
-        return( f->step == STEP_DONE );
+        return( mFrameIdx >= 0 );
+    }
+
+
+    PDECL EvalTerm GetFinalScore()
+    {
+        return( mFrames[0].score );
+    }
+
+
+    PDECL void PrepareSearch( const Position& root, int depth )
+    {
+        Frame* f = mFrames;
+
+        float gamePhase = mEvaluator->CalcGamePhase< POPCNT >( root );
+        mEvaluator->GenerateWeights( mWeights, gamePhase );
+
+        root.CalcMoveMap( &mRootMoveMap );
+
+        f->pos      = root;
+        f->moveMap  = &mRootMoveMap;
+        f->score    = mEvaluator->Evaluate< POPCNT >( root, mRootMoveMap, mWeights );
+        f->ply      = 0;
+        f->depth    = depth;
+        f->alpha    = -f->beta; 
+        f->beta     = -f->bestScore; 
+        f->step     = STEP_PREPARE;       
+
+        mFrameIdx = 0;
+    }
+
+
+    PDECL EvalTerm RunToDepth( const Position& root, int depth )
+    {
+        this->PrepareSearch( root, depth );
+
+        for( ;; )
+        {
+            bool running = this->Advance();
+            if( !running )
+                break;
+        }
+
+        return( this->GetFinalScore() );
     }
 };
 

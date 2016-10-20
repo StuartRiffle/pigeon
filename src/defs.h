@@ -100,7 +100,7 @@ const PDECL EvalTerm  EVAL_MAX            = 0x7F00;
 const PDECL EvalTerm  EVAL_MIN            = -EVAL_MAX;
 const PDECL EvalTerm  EVAL_CHECKMATE      = EVAL_MIN + 1;
 const PDECL EvalTerm  EVAL_STALEMATE      = 0;
-const PDECL int       EVAL_OPENING_PLIES  = 16;
+const PDECL int       EVAL_OPENING_PLIES  = 10;
 const PDECL EvalTerm  ALLOW_REP_SCORE     = 190;
          
 const PDECL u64       HASH_SEED0          = 0xF59C66FB26DCF319ULL;

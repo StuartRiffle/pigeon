@@ -34,59 +34,40 @@ public:
         assert( (CENTER_DIST_0 | CENTER_DIST_1 | CENTER_DIST_2 | CENTER_DIST_3 | CENTER_DIST_4 | CENTER_DIST_5 | CENTER_DIST_6) == ALL_SQUARES );
         assert( (CENTER_RING_0 | CENTER_RING_1 | CENTER_RING_2 | CENTER_RING_3) == ALL_SQUARES );
 
-        this->SetWeight( EVAL_PAWN,                100.00000f,   100.00000f,   100.00000f );  
-        this->SetWeight( EVAL_PAWN_CHAINED,          0.43266f,     0.14918f,     2.24521f );  
-        this->SetWeight( EVAL_PAWN_PASSED,           3.78850f,     0.01971f,     0.03716f );  
-        this->SetWeight( EVAL_PAWN_CLEAR,           30.58570f,     1.60770f,     1.84895f );  
-        this->SetWeight( EVAL_PAWN_GUARD_KING,      10.34970f,     4.51141f,     8.51882f );  
-        this->SetWeight( EVAL_PAWN_RANK_4,          23.39273f,     1.58597f,     0.00939f );  
-        this->SetWeight( EVAL_PAWN_RANK_5,           6.35503f,     8.21703f,     8.83197f );  
-        this->SetWeight( EVAL_PAWN_RANK_6,           0.98910f,    45.78074f,    44.54308f );  
-        this->SetWeight( EVAL_PAWN_RANK_7,          69.08373f,    90.58780f,    82.52876f );  
-        this->SetWeight( EVAL_KNIGHT_DEVEL,         14.51974f,     0.00000f,     0.00000f );  
-        this->SetWeight( EVAL_KNIGHT_EDGE,         250.63967f,   248.32707f,   262.98608f );  
-        this->SetWeight( EVAL_KNIGHT_CORNER,       270.38517f,   165.01715f,   201.47506f );  
-        this->SetWeight( EVAL_KNIGHT_BACK_RANK,      1.03804f,    20.51836f,    15.11453f );  
-        this->SetWeight( EVAL_KNIGHT_RING_0,       226.77008f,   276.40084f,   308.13009f );  
-        this->SetWeight( EVAL_KNIGHT_RING_1,       253.39178f,   275.03958f,   295.75897f );  
-        this->SetWeight( EVAL_KNIGHT_RING_2,       246.52185f,   257.37457f,   275.84324f );  
-        this->SetWeight( EVAL_BISHOP_DEVEL,          8.91278f,     0.00000f,     0.00000f );  
-        this->SetWeight( EVAL_BISHOP_PAIR,           5.62908f,    38.73975f,    36.48099f );  
-        this->SetWeight( EVAL_BISHOP_EDGE,         272.70089f,   272.81248f,   283.37436f );  
-        this->SetWeight( EVAL_BISHOP_CORNER,       238.47599f,   263.00823f,   271.29253f );  
-        this->SetWeight( EVAL_BISHOP_RING_0,       217.41415f,   277.96289f,   294.04214f );  
-        this->SetWeight( EVAL_BISHOP_RING_1,       257.83660f,   281.61956f,   299.62788f );  
-        this->SetWeight( EVAL_BISHOP_RING_2,       271.12501f,   273.75466f,   291.77377f );  
-        this->SetWeight( EVAL_ROOK_DEVEL,           12.49096f,     0.00000f,     0.00000f );  
-        this->SetWeight( EVAL_ROOK_CONNECTED,        1.00000f,     1.00000f,     1.00000f );  
-        this->SetWeight( EVAL_ROOK_OPEN_FILE,        2.95221f,    28.51943f,    29.97842f );  
-        this->SetWeight( EVAL_ROOK_RING_0,         721.16189f,   422.53224f,   436.92308f );  
-        this->SetWeight( EVAL_ROOK_RING_1,         321.85842f,   429.82509f,   445.87453f );  
-        this->SetWeight( EVAL_ROOK_RING_2,         380.50480f,   433.02880f,   449.08436f );  
-        this->SetWeight( EVAL_ROOK_RING_3,         502.39359f,   445.52623f,   460.86179f );  
-        this->SetWeight( EVAL_ROOK_BACK_RANK,        4.40942f,    23.79803f,    26.06871f );  
-        this->SetWeight( EVAL_QUEEN,               851.78743f,   899.75277f,   932.38865f );  
-        this->SetWeight( EVAL_QUEEN_DEVEL,          10.66272f,     0.00000f,     0.00000f );  
-        this->SetWeight( EVAL_KING,              20000.00000f, 20000.00000f, 20000.00000f );  
-        this->SetWeight( EVAL_KING_CASTLED,          4.13342f,     9.07229f,     2.52904f );  
-        this->SetWeight( EVAL_KING_EDGE,            53.47085f,    16.78878f,    48.47494f );  
-        this->SetWeight( EVAL_KING_CORNER,           1.73069f,     7.68011f,    39.87398f );  
-        this->SetWeight( EVAL_KING_RING_0,          61.22929f,    21.64032f,    70.32323f );  
-        this->SetWeight( EVAL_KING_RING_1,           9.26425f,    27.93207f,    63.21985f );  
-        this->SetWeight( EVAL_KING_RING_2,          11.74106f,    21.27715f,    50.78455f );  
-        this->SetWeight( EVAL_MOBILITY,              0.17624f,     0.26167f,     0.02061f );  
-        this->SetWeight( EVAL_ATTACKING,             0.05187f,     6.05545f,    10.79501f );  
-        this->SetWeight( EVAL_DEFENDING,             0.00618f,     0.35709f,     0.17124f );  
-        this->SetWeight( EVAL_CONTROL_RANK_5,        0.69690f,     4.13653f,     1.31370f );  
-        this->SetWeight( EVAL_CONTROL_RANK_6,        0.21382f,     3.59474f,     5.42215f );  
-        this->SetWeight( EVAL_CONTROL_RANK_7,        0.02038f,     9.02705f,    10.99075f );  
-        this->SetWeight( EVAL_CONTROL_RANK_8,        0.06104f,    11.76331f,    12.37675f );  
-        this->SetWeight( EVAL_CONTROL_FILE_AH,       2.11963f,     1.98983f,     2.82921f );  
-        this->SetWeight( EVAL_CONTROL_FILE_BG,       0.22629f,     0.03941f,     0.00875f );  
-        this->SetWeight( EVAL_CONTROL_FILE_CF,       6.90315f,     0.11079f,     0.10983f );  
-        this->SetWeight( EVAL_CONTROL_FILE_DE,       0.29918f,     0.01624f,     0.00138f );  
-        this->SetWeight( EVAL_KNIGHT_FIRST,          0.20367f,     0.00000f,     0.00000f );  
-
+        this->SetWeight( EVAL_PAWNS,                100.00,    100.00,    100.00 );   //    100,    100.00
+        this->SetWeight( EVAL_CENTER_PAWNS,          10.00,      0.00,      0.00 );   //     10,      0.00
+        this->SetWeight( EVAL_CHAINED_PAWNS,         10.00,      2.75,      2.75 );   //     30,      2.75
+        this->SetWeight( EVAL_PASSED_PAWNS,           0.01,      0.01,      0.01 );   //     20,      0.01
+        this->SetWeight( EVAL_PAWNS_GUARD_KING,      10.00,      5.62,      5.62 );   //     10,      5.62
+        this->SetWeight( EVAL_PROMOTING_SOON,        32.98,     32.98,     50.00 );   //     10,     32.98
+        this->SetWeight( EVAL_PROMOTING_IMMED,       80.09,     80.09,    100.00 );   //     20,     80.09
+        this->SetWeight( EVAL_KNIGHTS,              262.62,    262.62,    262.62 );   //    300,    262.62
+        this->SetWeight( EVAL_KNIGHTS_DEVEL,         15.00,      0.00,      0.00 );   //     10,      0.03
+        this->SetWeight( EVAL_KNIGHTS_FIRST,         10.00,      0.00,      0.00 );   //      0,      0.09
+        this->SetWeight( EVAL_KNIGHTS_INTERIOR,      15.10,     15.10,     15.10 );   //     20,     15.10
+        this->SetWeight( EVAL_KNIGHTS_CENTRAL,       20.17,     20.17,     20.17 );   //     20,     20.17
+        this->SetWeight( EVAL_BISHOPS,              282.00,    282.00,    282.00 );   //    320,    275.25
+        this->SetWeight( EVAL_BISHOPS_DEVEL,         10.00,      0.00,      0.00 );   //     20,      6.36
+        this->SetWeight( EVAL_BOTH_BISHOPS,          33.25,     33.25,     33.25 );   //     20,     33.25
+        this->SetWeight( EVAL_BISHOPS_INTERIOR,       6.26,      6.26,      6.26 );   //     20,      6.26
+        this->SetWeight( EVAL_BISHOPS_CENTRAL,       16.72,     16.72,     16.72 );   //     20,     16.72
+        this->SetWeight( EVAL_ROOKS,                453.00,    453.00,    453.00 );   //    500,    433.85
+        this->SetWeight( EVAL_ROOKS_DEVEL,           10.00,      0.00,      0.00 );   //     20,     19.17
+        this->SetWeight( EVAL_ROOK_ON_RANK_7,        15.69,     15.69,     15.69 );   //     30,     15.69
+        this->SetWeight( EVAL_ROOKS_CONNECTED,        0.00,      0.00,      0.00 );   //     30,      0.00
+        this->SetWeight( EVAL_ROOKS_OPEN_FILE,       33.30,     33.30,     33.30 );   //     40,     33.30
+        this->SetWeight( EVAL_QUEENS,               920.00,    920.00,    920.00 );   //    900,    918.40
+        this->SetWeight( EVAL_QUEEN_DEVEL,           10.00,      0.00,      0.00 );   //     10,      0.11
+        this->SetWeight( EVAL_QUEENS_INTERIOR,        4.57,      4.57,      4.57 );   //     20,      4.57
+        this->SetWeight( EVAL_QUEENS_CENTRAL,         8.72,      8.72,      8.72 );   //     20,      8.72
+        this->SetWeight( EVAL_KINGS,              20000.00,  20000.00,  20000.00 );   //  10000,  20000.00
+        this->SetWeight( EVAL_KING_CASTLED,          30.00,     10.00,      0.00 );   //     30,      0.14
+        this->SetWeight( EVAL_MOBILITY,               2.13,      2.13,      2.13 );   //      5,      2.13
+        this->SetWeight( EVAL_ATTACKING,              8.14,      8.14,      8.14 );   //     10,      8.14
+        this->SetWeight( EVAL_DEFENDING,              0.02,      0.02,      0.02 );   //     10,      0.02
+        this->SetWeight( EVAL_ENEMY_TERRITORY,       10.00,     24.09,     10.00 );   //     10,     24.09
+        this->SetWeight( EVAL_CENTER_PIECES,         10.00,      0.00,      0.00 );   //     20,      0.01
+        this->SetWeight( EVAL_CENTER_CONTROL,         5.00,      1.69,      0.00 );   //     30,      1.69
     }
 
     void EnableOpening( bool enable ) 
@@ -121,11 +102,11 @@ public:
         return( -1 );
     }
 
-    void SetWeight( int idx, float openingVal, float midgameVal, float endgameVal )
+    void SetWeight( int idx, double openingVal, double midgameVal, double endgameVal )
     {
-        mWeightsOpening[idx] = openingVal;
-        mWeightsMidgame[idx] = midgameVal;
-        mWeightsEndgame[idx] = endgameVal;
+        mWeightsOpening[idx] = (float) openingVal;
+        mWeightsMidgame[idx] = (float) midgameVal;
+        mWeightsEndgame[idx] = (float) endgameVal;
     }
 
     template< int POPCNT >
@@ -248,59 +229,103 @@ public:
         SIMD    whiteMobility       = whiteControl & empty;
         SIMD    whiteAttacking      = whiteControl & blackPieces;
         SIMD    whiteDefending      = whiteControl & whitePieces;
+        SIMD    inEnemyTerritory    = whitePieces & (RANK_5 | RANK_6 | RANK_7 | RANK_8);        
 
-        eval[EVAL_PAWN]             = CountBits< POPCNT >( whitePawns );                                
-        eval[EVAL_PAWN_CHAINED]     = CountBits< POPCNT >( pawnsChained );                              
-        eval[EVAL_PAWN_PASSED]      = CountBits< POPCNT >( PropN( whitePawns, ~blackPawns ) & RANK_8 ); 
-        eval[EVAL_PAWN_CLEAR]       = CountBits< POPCNT >( PropN( whitePawns, empty ) & RANK_8 ); 
-        eval[EVAL_PAWN_GUARD_KING]  = CountBits< POPCNT >( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );
-        eval[EVAL_PAWN_RANK_4]      = CountBits< POPCNT >( whitePawns & RANK_4 );
-        eval[EVAL_PAWN_RANK_5]      = CountBits< POPCNT >( whitePawns & RANK_5 );
-        eval[EVAL_PAWN_RANK_6]      = CountBits< POPCNT >( whitePawns & RANK_6 );
-        eval[EVAL_PAWN_RANK_7]      = CountBits< POPCNT >( whitePawns & RANK_7 );
-        eval[EVAL_KNIGHT_DEVEL]     = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );    
-        eval[EVAL_KNIGHT_EDGE]      = CountBits< POPCNT >( whiteKnights & EDGE_SQUARES );
-        eval[EVAL_KNIGHT_CORNER]    = CountBits< POPCNT >( whiteKnights & CORNER_SQUARES );
-        eval[EVAL_KNIGHT_BACK_RANK] = CountBits< POPCNT >( whiteKnights & (RANK_5 | RANK_6 | RANK_7 | RANK_7) );
-        eval[EVAL_KNIGHT_RING_0]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_0 );
-        eval[EVAL_KNIGHT_RING_1]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_1 );
-        eval[EVAL_KNIGHT_RING_2]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_2 );
-        eval[EVAL_BISHOP_DEVEL]     = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) ); 
-        eval[EVAL_BISHOP_PAIR]      = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 ); 
-        eval[EVAL_BISHOP_EDGE]      = CountBits< POPCNT >( whiteBishops & EDGE_SQUARES );
-        eval[EVAL_BISHOP_CORNER]    = CountBits< POPCNT >( whiteBishops & CORNER_SQUARES );
-        eval[EVAL_BISHOP_RING_0]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_0 );
-        eval[EVAL_BISHOP_RING_1]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_1 );
-        eval[EVAL_BISHOP_RING_2]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_2 );
-        eval[EVAL_ROOK_DEVEL]       = CountBits< POPCNT >( whiteRooks & ~(SQUARE_A1 | SQUARE_H1) );   
-        eval[EVAL_ROOK_CONNECTED]   = CountBits< POPCNT >( PropExOrtho( whiteRooks, empty ) & whiteRooks ); 
-        eval[EVAL_ROOK_OPEN_FILE]   = CountBits< POPCNT >( PropN( whiteRooks, empty ) & RANK_8 );       
-        eval[EVAL_ROOK_RING_0]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_0 );
-        eval[EVAL_ROOK_RING_1]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_1 );
-        eval[EVAL_ROOK_RING_2]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_2 );
-        eval[EVAL_ROOK_RING_3]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_3 );
-        eval[EVAL_ROOK_BACK_RANK]   = CountBits< POPCNT >( whiteRooks & (RANK_5 | RANK_6 | RANK_7 | RANK_7) );
-        eval[EVAL_QUEEN]            = CountBits< POPCNT >( whiteQueens );
-        eval[EVAL_QUEEN_DEVEL]      = CountBits< POPCNT >( whiteQueens & ~(SQUARE_D1) );
-        eval[EVAL_KING]             = CountBits< POPCNT >( whiteKing );                      
-        eval[EVAL_KING_CASTLED]     = CountBits< POPCNT >( whiteKing & RANK_1 & ~SQUARE_E1 );
-        eval[EVAL_KING_EDGE]        = CountBits< POPCNT >( whiteKing & EDGE_SQUARES );
-        eval[EVAL_KING_CORNER]      = CountBits< POPCNT >( whiteKing & CORNER_SQUARES );
-        eval[EVAL_KING_RING_0]      = CountBits< POPCNT >( whiteKing & CENTER_RING_0 );
-        eval[EVAL_KING_RING_1]      = CountBits< POPCNT >( whiteKing & CENTER_RING_1 );
-        eval[EVAL_KING_RING_2]      = CountBits< POPCNT >( whiteKing & CENTER_RING_2 );
-        eval[EVAL_MOBILITY]         = CountBits< POPCNT >( whiteMobility ); 
-        eval[EVAL_ATTACKING]        = CountBits< POPCNT >( whiteAttacking );
-        eval[EVAL_DEFENDING]        = CountBits< POPCNT >( whiteDefending );
-        eval[EVAL_CONTROL_RANK_5]   = CountBits< POPCNT >( whiteControl & RANK_5 );
-        eval[EVAL_CONTROL_RANK_6]   = CountBits< POPCNT >( whiteControl & RANK_6 );
-        eval[EVAL_CONTROL_RANK_7]   = CountBits< POPCNT >( whiteControl & RANK_7 );
-        eval[EVAL_CONTROL_RANK_8]   = CountBits< POPCNT >( whiteControl & RANK_8 );
-        eval[EVAL_CONTROL_FILE_AH]  = CountBits< POPCNT >( whiteControl & (FILE_A | FILE_H) );
-        eval[EVAL_CONTROL_FILE_BG]  = CountBits< POPCNT >( whiteControl & (FILE_B | FILE_G) );
-        eval[EVAL_CONTROL_FILE_CF]  = CountBits< POPCNT >( whiteControl & (FILE_C | FILE_F) );
-        eval[EVAL_CONTROL_FILE_DE]  = CountBits< POPCNT >( whiteControl & (FILE_D | FILE_E) );
-        eval[EVAL_KNIGHT_FIRST]     = SubClampZero( eval[EVAL_KNIGHT_DEVEL], eval[EVAL_BISHOP_DEVEL] );
+
+        eval[EVAL_PAWNS]            = CountBits< POPCNT >( whitePawns );                                
+        eval[EVAL_CENTER_PAWNS]     = CountBits< POPCNT >( whitePawns   & CENTER_SQUARES );             
+        eval[EVAL_CHAINED_PAWNS]    = CountBits< POPCNT >( pawnsChained );                              
+        eval[EVAL_PASSED_PAWNS]     = CountBits< POPCNT >( PropN( whitePawns, ~blackPawns ) & RANK_8 ); 
+        eval[EVAL_PAWNS_GUARD_KING] = CountBits< POPCNT >( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );                                               
+        eval[EVAL_PROMOTING_SOON]   = CountBits< POPCNT >( whitePawns & RANK_6 );                     
+        eval[EVAL_PROMOTING_IMMED]  = CountBits< POPCNT >( whitePawns & RANK_7 );                     
+
+        eval[EVAL_KNIGHTS]          = CountBits< POPCNT >( whiteKnights );                              
+        eval[EVAL_KNIGHTS_DEVEL]    = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );                                                 
+        eval[EVAL_KNIGHTS_FIRST]    = SubClampZero( eval[EVAL_KNIGHTS_DEVEL], eval[EVAL_BISHOPS_DEVEL] );                                                 
+        eval[EVAL_KNIGHTS_INTERIOR] = CountBits< POPCNT >( whiteKnights & ~EDGE_SQUARES );              
+        eval[EVAL_KNIGHTS_CENTRAL]  = CountBits< POPCNT >( whiteKnights & CENTER_SQUARES );              
+
+        eval[EVAL_BISHOPS]          = CountBits< POPCNT >( whiteBishops );                              
+        eval[EVAL_BISHOPS_DEVEL]    = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) );    
+        eval[EVAL_BISHOPS_INTERIOR] = CountBits< POPCNT >( whiteBishops & ~EDGE_SQUARES );              
+        eval[EVAL_BISHOPS_CENTRAL]  = CountBits< POPCNT >( whiteBishops & CENTER_SQUARES );              
+        eval[EVAL_BOTH_BISHOPS]     = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 );                                                  
+
+        eval[EVAL_ROOKS]            = CountBits< POPCNT >( whiteRooks );                                
+        eval[EVAL_ROOKS_DEVEL]      = CountBits< POPCNT >( whiteRooks & ~(SQUARE_A1 | SQUARE_H1) );   
+        eval[EVAL_ROOK_ON_RANK_7]   = CountBits< POPCNT >( whiteRooks & RANK_7 );                       
+        eval[EVAL_ROOKS_CONNECTED]  = CountBits< POPCNT >( PropExOrtho( whiteRooks, empty ) & whiteRooks );                                               
+        eval[EVAL_ROOKS_OPEN_FILE]  = CountBits< POPCNT >( PropN( whiteRooks, empty ) & RANK_8 );       
+
+        eval[EVAL_QUEENS]           = CountBits< POPCNT >( whiteQueens );                               
+        eval[EVAL_QUEEN_DEVEL]      = CountBits< POPCNT >( whiteQueens & ~(SQUARE_D1) );               
+        eval[EVAL_QUEENS_INTERIOR]  = CountBits< POPCNT >( whiteQueens & ~EDGE_SQUARES );              
+        eval[EVAL_QUEENS_CENTRAL]   = CountBits< POPCNT >( whiteQueens & CENTER_SQUARES );              
+
+        eval[EVAL_KINGS]            = CountBits< POPCNT >( whiteKing );                                 
+        eval[EVAL_KING_CASTLED]     = CountBits< POPCNT >( whiteKing & RANK_1 & ~SQUARE_E1 );           
+
+        eval[EVAL_MOBILITY]         = CountBits< POPCNT >( whiteMobility );                             
+        eval[EVAL_ATTACKING]        = CountBits< POPCNT >( whiteAttacking );                            
+        eval[EVAL_DEFENDING]        = CountBits< POPCNT >( whiteDefending );                            
+        eval[EVAL_ENEMY_TERRITORY]  = CountBits< POPCNT >( inEnemyTerritory );                          
+        eval[EVAL_CENTER_PIECES]    = CountBits< POPCNT >( whitePieces  & CENTER_SQUARES );             
+        eval[EVAL_CENTER_CONTROL]   = CountBits< POPCNT >( whiteControl & CENTER_SQUARES );   
+
+
+        //eval[EVAL_PAWN]             = CountBits< POPCNT >( whitePawns );                                
+        //eval[EVAL_PAWN_CHAINED]     = CountBits< POPCNT >( pawnsChained );                              
+        //eval[EVAL_PAWN_PASSED]      = CountBits< POPCNT >( PropN( whitePawns, ~blackPawns ) & RANK_8 ); 
+        //eval[EVAL_PAWN_CLEAR]       = CountBits< POPCNT >( PropN( whitePawns, empty ) & RANK_8 ); 
+        //eval[EVAL_PAWN_GUARD_KING]  = CountBits< POPCNT >( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );
+        //eval[EVAL_PAWN_RANK_4]      = CountBits< POPCNT >( whitePawns & RANK_4 );
+        //eval[EVAL_PAWN_RANK_5]      = CountBits< POPCNT >( whitePawns & RANK_5 );
+        //eval[EVAL_PAWN_RANK_6]      = CountBits< POPCNT >( whitePawns & RANK_6 );
+        //eval[EVAL_PAWN_RANK_7]      = CountBits< POPCNT >( whitePawns & RANK_7 );
+        //eval[EVAL_KNIGHT_DEVEL]     = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );    
+        //eval[EVAL_KNIGHT_EDGE]      = CountBits< POPCNT >( whiteKnights & EDGE_SQUARES );
+        //eval[EVAL_KNIGHT_CORNER]    = CountBits< POPCNT >( whiteKnights & CORNER_SQUARES );
+        //eval[EVAL_KNIGHT_BACK_RANK] = CountBits< POPCNT >( whiteKnights & (RANK_5 | RANK_6 | RANK_7 | RANK_7) );
+        //eval[EVAL_KNIGHT_RING_0]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_0 );
+        //eval[EVAL_KNIGHT_RING_1]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_1 );
+        //eval[EVAL_KNIGHT_RING_2]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_2 );
+        //eval[EVAL_BISHOP_DEVEL]     = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) ); 
+        //eval[EVAL_BISHOP_PAIR]      = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 ); 
+        //eval[EVAL_BISHOP_EDGE]      = CountBits< POPCNT >( whiteBishops & EDGE_SQUARES );
+        //eval[EVAL_BISHOP_CORNER]    = CountBits< POPCNT >( whiteBishops & CORNER_SQUARES );
+        //eval[EVAL_BISHOP_RING_0]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_0 );
+        //eval[EVAL_BISHOP_RING_1]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_1 );
+        //eval[EVAL_BISHOP_RING_2]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_2 );
+        //eval[EVAL_ROOK_DEVEL]       = CountBits< POPCNT >( whiteRooks & ~(SQUARE_A1 | SQUARE_H1) );   
+        //eval[EVAL_ROOK_CONNECTED]   = CountBits< POPCNT >( PropExOrtho( whiteRooks, empty ) & whiteRooks ); 
+        //eval[EVAL_ROOK_OPEN_FILE]   = CountBits< POPCNT >( PropN( whiteRooks, empty ) & RANK_8 );       
+        //eval[EVAL_ROOK_RING_0]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_0 );
+        //eval[EVAL_ROOK_RING_1]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_1 );
+        //eval[EVAL_ROOK_RING_2]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_2 );
+        //eval[EVAL_ROOK_RING_3]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_3 );
+        //eval[EVAL_ROOK_BACK_RANK]   = CountBits< POPCNT >( whiteRooks & (RANK_5 | RANK_6 | RANK_7 | RANK_7) );
+        //eval[EVAL_QUEEN]            = CountBits< POPCNT >( whiteQueens );
+        //eval[EVAL_QUEEN_DEVEL]      = CountBits< POPCNT >( whiteQueens & ~(SQUARE_D1) );
+        //eval[EVAL_KING]             = CountBits< POPCNT >( whiteKing );                      
+        //eval[EVAL_KING_CASTLED]     = CountBits< POPCNT >( whiteKing & RANK_1 & ~SQUARE_E1 );
+        //eval[EVAL_KING_EDGE]        = CountBits< POPCNT >( whiteKing & EDGE_SQUARES );
+        //eval[EVAL_KING_CORNER]      = CountBits< POPCNT >( whiteKing & CORNER_SQUARES );
+        //eval[EVAL_KING_RING_0]      = CountBits< POPCNT >( whiteKing & CENTER_RING_0 );
+        //eval[EVAL_KING_RING_1]      = CountBits< POPCNT >( whiteKing & CENTER_RING_1 );
+        //eval[EVAL_KING_RING_2]      = CountBits< POPCNT >( whiteKing & CENTER_RING_2 );
+        //eval[EVAL_MOBILITY]         = CountBits< POPCNT >( whiteMobility ); 
+        //eval[EVAL_ATTACKING]        = CountBits< POPCNT >( whiteAttacking );
+        //eval[EVAL_DEFENDING]        = CountBits< POPCNT >( whiteDefending );
+        //eval[EVAL_CONTROL_RANK_5]   = CountBits< POPCNT >( whiteControl & RANK_5 );
+        //eval[EVAL_CONTROL_RANK_6]   = CountBits< POPCNT >( whiteControl & RANK_6 );
+        //eval[EVAL_CONTROL_RANK_7]   = CountBits< POPCNT >( whiteControl & RANK_7 );
+        //eval[EVAL_CONTROL_RANK_8]   = CountBits< POPCNT >( whiteControl & RANK_8 );
+        //eval[EVAL_CONTROL_FILE_AH]  = CountBits< POPCNT >( whiteControl & (FILE_A | FILE_H) );
+        //eval[EVAL_CONTROL_FILE_BG]  = CountBits< POPCNT >( whiteControl & (FILE_B | FILE_G) );
+        //eval[EVAL_CONTROL_FILE_CF]  = CountBits< POPCNT >( whiteControl & (FILE_C | FILE_F) );
+        //eval[EVAL_CONTROL_FILE_DE]  = CountBits< POPCNT >( whiteControl & (FILE_D | FILE_E) );
+        //eval[EVAL_KNIGHT_FIRST]     = SubClampZero( eval[EVAL_KNIGHT_DEVEL], eval[EVAL_BISHOP_DEVEL] );
     }
 
     PDECL void CalcMaterialTable( const Position& pos, MaterialTable* mat ) const
@@ -311,7 +336,7 @@ public:
         {
             i32* dest = mat->mValue[piece];
 
-            
+            // TODO (obviously)
         }
 
         mat->CalcCastlingFixup();
