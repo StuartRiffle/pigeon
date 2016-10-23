@@ -129,6 +129,8 @@ struct MoveList
 
     PDECL void UnpackMoveMap( const Position& pos, const MoveMap& mmap )
     {
+        this->Clear();
+
         u64 whitePieces = pos.mWhitePawns | pos.mWhiteKnights | pos.mWhiteBishops | pos.mWhiteRooks | pos.mWhiteQueens | pos.mWhiteKing;
 
         if( mmap.mPawnMovesN )      this->StorePawnMoves( pos, mmap.mPawnMovesN,     SHIFT_N            );

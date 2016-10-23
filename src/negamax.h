@@ -27,7 +27,7 @@ struct SearchState
 
     struct Frame
     {
-        Position        pos; 
+        Position*       pos; 
         MoveMap*        moveMap; 
         int             step;
         int             ply; 
@@ -51,18 +51,37 @@ struct SearchState
     };
 
     int                 mFrameIdx;
+    Position            mRoot;
+    MoveMap             mRootMoveMap;
     MoveList            mBestLine;
     HashTable*          mHashTable;
     Evaluator*          mEvaluator;
-    MoveMap             mRootMoveMap;
+    SearchMetrics*      mMetrics;
+    volatile bool*      mExitSearch;
     EvalWeight          mWeights[EVAL_TERMS];
     Frame               mFrames[MAX_SEARCH_DEPTH];
+
+
+    PDECL SearchState()
+    {
+        mFrameIdx   = 0;
+        mHashTable  = NULL;
+        mEvaluator  = NULL;
+        mMetrics    = NULL;
+        mExitSearch = NULL;
+        mBestLine.Clear();
+
+#if !PIGEON_CUDA
+        PlatClearMemory( mWeights, sizeof( mWeights ) );
+        memset( mFrames, 0xAA, sizeof( mFrames ) );
+#endif
+    }
 
 
     PDECL INLINE int ChooseNextMove( Frame* f )
     {
         int best = f->moves.mTried;
-        //int whiteToMove = f->pos.mWhiteToMove;
+        //int whiteToMove = f->pos->mWhiteToMove;
 
         for( int idx = best + 1; idx < f->moves.mCount; idx++ )
         {
@@ -89,6 +108,8 @@ struct SearchState
 
     PDECL INLINE Frame* HandleLeaf( Frame* f )
     {
+        mMetrics->mNodesTotal++;
+
         if( f->depth < 1 )
         {
             f->alpha = Max( f->alpha, f->score );
@@ -106,7 +127,7 @@ struct SearchState
 
     PDECL INLINE Frame* HandleMate( Frame* f )
     {
-        f->moves.UnpackMoveMap( f->pos, *f->moveMap );
+        f->moves.UnpackMoveMap( *f->pos, *f->moveMap );
         f->inCheck = (f->moveMap->IsInCheck() != 0);
 
         if( f->moves.mCount == 0 )
@@ -139,18 +160,15 @@ struct SearchState
 
     PDECL INLINE Frame* CheckHashTable( Frame* f )
     {
-        // FIXME
-        return( f );
-
         if( f->depth > 0 )
         {
             TableEntry tt;
-            mHashTable->Load( f->pos.mHash, tt );
+            mHashTable->Load( f->pos->mHash, tt );
 
-            u32 verify = (u32) (f->pos.mHash >> 40);
+            u32 verify = (u32) (f->pos->mHash >> 40);
             if( tt.mHashVerify == verify )
             {
-                bool        samePlayer          = (f->pos.mWhiteToMove != 0) == tt.mWhiteMove;
+                bool        samePlayer          = (f->pos->mWhiteToMove != 0) == tt.mWhiteMove;
                 bool        failedHighBefore    = samePlayer? tt.mFailHigh : tt.mFailLow;
                 EvalTerm    lowerBoundBefore    = samePlayer? tt.mScore    : -tt.mScore;
                 int         depthBefore         = tt.mDepth;
@@ -226,7 +244,7 @@ struct SearchState
                     //mMetrics.mNodesTotalSimd++;
                 }
 
-                simdPos.Broadcast( f->pos );
+                simdPos.Broadcast( *f->pos );
                 simdPos.Step( simdSpec, whiteMat, blackMat );
                 simdPos.CalcMoveMap( &simdMoveMap );
                 simdScore = mEvaluator->Evaluate< POPCNT, SIMD >( simdPos, simdMoveMap, mWeights );
@@ -245,16 +263,18 @@ struct SearchState
 
             Frame* n = f + 1;
 
-            n->pos      = f->childPos[f->simdIdx];
+            n->pos      = &f->childPos[f->simdIdx];
             n->moveMap  = &f->childMoveMap[f->simdIdx];
             n->score    = f->childScore[f->simdIdx];
             n->ply      = f->ply + 1; 
             n->depth    = f->depth - 1; 
             n->alpha    = -f->beta; 
             n->beta     = -f->bestScore;
+            n->onPv     = (f->childSpec[f->simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false;
+            n->step     = STEP_PREPARE;
 
-            f->step = STEP_CHECK_SCORE;
-            f->movesTried++;
+            f->step     = STEP_CHECK_SCORE;
+            //f->movesTried++;
             f++;
         }
 
@@ -264,7 +284,10 @@ struct SearchState
 
     PDECL INLINE Frame* CheckScore( Frame* f )
     {
-        EvalTerm subScore = f[1].result;
+        EvalTerm subScore = -f[1].result;
+
+        //FEN::PrintMoveSpec( f->childSpec[f->simdIdx] );
+        //printf( " %d\n", subScore );
 
         if( subScore > f->bestScore )
         {
@@ -299,17 +322,16 @@ struct SearchState
         {
             TableEntry tt;
 
-            tt.mHashVerify  = f->pos.mHash >> 40;
+            tt.mHashVerify  = f->pos->mHash >> 40;
             tt.mDepth       = f->depth;
             tt.mScore       = result;
             tt.mBestSrc     = f->bestMove.mSrc;
             tt.mBestDest    = f->bestMove.mDest;
             tt.mFailLow     = failedLow;
             tt.mFailHigh    = failedHigh;
-            tt.mWhiteMove   = f->pos.mWhiteToMove? true : false;
+            tt.mWhiteMove   = f->pos->mWhiteToMove? true : false;
 
-            // FIXME
-            //mHashTable->Store( f->pos.mHash, tt );
+            mHashTable->Store( f->pos->mHash, tt );
         }
 
         f->result = result;
@@ -357,7 +379,7 @@ struct SearchState
 
     PDECL EvalTerm GetFinalScore()
     {
-        return( mFrames[0].score );
+        return( mFrames[0].result );
     }
 
 
@@ -368,15 +390,17 @@ struct SearchState
         float gamePhase = mEvaluator->CalcGamePhase< POPCNT >( root );
         mEvaluator->GenerateWeights( mWeights, gamePhase );
 
-        root.CalcMoveMap( &mRootMoveMap );
+        mRoot = root;
+        mRoot.CalcMoveMap( &mRootMoveMap );
 
-        f->pos      = root;
+        f->pos      = &mRoot;
         f->moveMap  = &mRootMoveMap;
         f->score    = mEvaluator->Evaluate< POPCNT >( root, mRootMoveMap, mWeights );
         f->ply      = 0;
         f->depth    = depth;
-        f->alpha    = -f->beta; 
-        f->beta     = -f->bestScore; 
+        f->alpha    = -EVAL_MAX; 
+        f->beta     = EVAL_MAX;
+        f->onPv     = true;
         f->step     = STEP_PREPARE;       
 
         mFrameIdx = 0;
@@ -391,6 +415,9 @@ struct SearchState
         {
             bool running = this->Advance();
             if( !running )
+                break;
+
+            if( mExitSearch && *mExitSearch )
                 break;
         }
 

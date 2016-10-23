@@ -83,44 +83,5 @@ int main()
         return 1;
     }
 
-
-    // Allocate GPU buffers for three vectors (two input, one output)    .
-    //cudaStatus = cudaMalloc((void**)&dev_c, size * sizeof(int));
-    //if (cudaStatus != cudaSuccess) {
-    //    fprintf(stderr, "cudaMalloc failed!");
-    //    goto Error;
-    //}
-    //
-    //cudaStatus = cudaMalloc((void**)&dev_a, size * sizeof(int));
-    //if (cudaStatus != cudaSuccess) {
-    //    fprintf(stderr, "cudaMalloc failed!");
-    //    goto Error;
-    //}
-    //
-    //cudaStatus = cudaMalloc((void**)&dev_b, size * sizeof(int));
-    //if (cudaStatus != cudaSuccess) {
-    //    fprintf(stderr, "cudaMalloc failed!");
-    //    goto Error;
-    //}
-    //
-    //// Copy input vectors from host memory to GPU buffers.
-    //cudaStatus = cudaMemcpy(dev_a, a, size * sizeof(int), cudaMemcpyHostToDevice);
-    //if (cudaStatus != cudaSuccess) {
-    //    fprintf(stderr, "cudaMemcpy failed!");
-    //    goto Error;
-    //}
-    //
-    //cudaStatus = cudaMemcpy(dev_b, b, size * sizeof(int), cudaMemcpyHostToDevice);
-    //if (cudaStatus != cudaSuccess) {
-    //    fprintf(stderr, "cudaMemcpy failed!");
-    //    goto Error;
-    //}
-    // Copy output vector from GPU buffer to host memory.
-    //cudaStatus = cudaMemcpy(c, dev_c, size * sizeof(int), cudaMemcpyDeviceToHost);
-    //if (cudaStatus != cudaSuccess) {
-    //    fprintf(stderr, "cudaMemcpy failed!");
-    //    goto Error;
-    //}
-
     return 0;
 }

@@ -523,10 +523,10 @@ private:
             if( currMove.mType < bestMove.mType )
                 continue;
 
-            if( (currMove.mType == bestMove.mType) && (currMove.mFlags == bestMove.mFlags) )
+            //if( (currMove.mType == bestMove.mType) && (currMove.mFlags == bestMove.mFlags) )
 //            if( currMove.mFlags == bestMove.mFlags )
-                if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
-                    continue;   
+            //    if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
+            //        continue;   
 
             best = idx;
         }
@@ -694,14 +694,14 @@ private:
                 }
             }
 
-            if( allowMove )
+            if( 1 )//allowMove )
             {
                 MoveList pv_child;
                 EvalTerm subScore;
             
                 bool fullSearch = true;
 
-                if( nullSearch )
+                if( 0 )//nullSearch )
                 {
                     subScore = -this->NegaMax< POPCNT, SIMD >( 
                         childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -(bestScore + 1), -bestScore, 
@@ -716,6 +716,9 @@ private:
                         childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -beta, -bestScore, 
                         &pv_child, (childSpec[simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false );
                 }
+
+        //FEN::PrintMoveSpec( childSpec[simdIdx] );
+        //printf( " %d\n", subScore );
 
                 if( subScore > bestScore )
                 {
@@ -832,7 +835,23 @@ private:
         rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, mRootWeights );
 
 		searchTime.Reset();
-        EvalTerm score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
+        EvalTerm score = 0;
+
+        SearchState< POPCNT, SIMD > ss;
+        ss.mHashTable = &mHashTable;
+        ss.mEvaluator = &mEvaluator;
+        ss.mExitSearch = &mExitSearch;
+        ss.mMetrics = &mMetrics;
+
+        if( 1 )
+        {
+            score = this->NegaMax< POPCNT, SIMD >( mRoot, moveMap, rootScore, 0, depth, -EVAL_MAX, EVAL_MAX, &pv, true );
+        }
+        else
+        {
+            score = ss.RunToDepth( mRoot, depth );
+            pv = ss.mBestLine;
+        }
 
         if( mExitSearch )
             return;
