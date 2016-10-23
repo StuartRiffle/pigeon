@@ -10,7 +10,6 @@
 #include "movelist.h"
 #include "table.h"
 #include "search.h"
-#include "negamax.h"
 
 #include <stdio.h>
 #include <ctype.h>

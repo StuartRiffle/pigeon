@@ -16,7 +16,8 @@
 #include "movelist.h"
 #include "eval.h"
 #include "table.h"
-#include "negamax.h"
+#include "search.h"
+
 
 
 

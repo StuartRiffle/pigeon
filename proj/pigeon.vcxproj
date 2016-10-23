@@ -216,12 +216,12 @@
     <ClInclude Include="..\src\amoeba.h" />
     <ClInclude Include="..\src\bits.h" />
     <ClInclude Include="..\src\book.h" />
+    <ClInclude Include="..\src\cuda.h" />
     <ClInclude Include="..\src\defs.h" />
     <ClInclude Include="..\src\engine.h" />
     <ClInclude Include="..\src\eval.h" />
     <ClInclude Include="..\src\fen.h" />
     <ClInclude Include="..\src\movelist.h" />
-    <ClInclude Include="..\src\negamax.h" />
     <ClInclude Include="..\src\perft.h" />
     <ClInclude Include="..\src\platform.h" />
     <ClInclude Include="..\src\position.h" />

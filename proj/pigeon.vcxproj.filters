@@ -52,13 +52,13 @@
     <ClInclude Include="..\src\book.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\negamax.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\amoeba.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\tune.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cuda.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

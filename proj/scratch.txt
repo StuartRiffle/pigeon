@@ -187,32 +187,269 @@ BISHOP 2|  259 275 271 268 260 275 265 268      -16   0  -4  -7 -15   0 -10  -7
             {
 
 
-b1c3 -74
-h2h3 -21
-g2g3 -69
-f2f3 -50
-e2e3 -65
-d2d3 -61
-c2c3 -62
-b2b3 -69
-a2a3 -21
-h2h4 -3
-g2g4 -41
-f2f4 -22
-e2e4 -43
-d2d4 -38
-c2c4 -34
-b2b4 -41
-a2a4 -3
-g1f3 -74
-b1a3 -25
-g1h3 -25
+go depth 5
+info depth 1 seldepth 1 score cp 74 hashfull 0 nodes 21 time 7 nps 21000 pv b1c3
+
+info string DEBUG: simdnodes 20  >>>> 1: 74
+info depth 2 seldepth 2 score cp 0 hashfull 0 nodes 100 time 24 nps 50000 pv g1f
+3 b8c6
+info string DEBUG: simdnodes 98  >>>> 2: 0
+info depth 3 seldepth 3 score cp 74 hashfull 0 nodes 732 time 57 nps 43058 pv g1
+f3 b8c6 b1c3
+info string DEBUG: simdnodes 729  >>>> 3: 74
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 2363 time 129 nps 42963 pv g
+1f3 b8c6 b1c3 g8f6
+info string DEBUG: simdnodes 2359  >>>> 4: 0
+info depth 5 seldepth 13 score cp 57 hashfull 0 nodes 17333 time 388 nps 70746 p
+v g1f3 b8c6 b1c3 g8f6 e2e3
+info string DEBUG: simdnodes 17328  >>>> 5: 57
 
 
 
 
 
+    template< int POPCNT, typename SIMD >
+    EvalTerm NegaMax( const Position& pos, const MoveMap& moveMap, EvalTerm score, int ply, int depth, EvalTerm alpha, EvalTerm beta, MoveList* pv_new, bool onPvPrev )
+    {
+        const int LANES = SimdWidth< SIMD >::LANES;
 
+        mMetrics.mNodesTotal++;
+        mMetrics.mNodesAtPly[ply]++;
+
+        if( depth < 1 )
+        {
+            alpha = Max( alpha, score );
+            
+            if( alpha >= beta )
+                return( beta );
+        }
+
+        if( mExitSearch )
+            return( EVAL_SEARCH_ABORTED );
+
+        if( POPCNT )
+            mHashTable.Prefetch( pos.mHash );
+
+        bool inCheck = (moveMap.IsInCheck() != 0);
+
+        MoveList moves;
+        moves.UnpackMoveMap( pos, moveMap );
+
+        if( moves.mCount == 0 )
+            return( inCheck? EVAL_CHECKMATE : EVAL_STALEMATE );
+
+        if( depth < 1 )
+        {
+            if( !inCheck )
+                moves.DiscardMovesBelow( CAPTURE_LOSING );
+
+            if( moves.mCount == 0 )
+                return( score );
+        }
+
+        if( depth > 0 )
+        {
+            TableEntry tt;
+
+            mHashTable.Load( pos.mHash, tt );
+            mMetrics.mHashLookupsAtPly[ply]++;
+
+            u32 verify = (u32) (pos.mHash >> 40);
+            if( tt.mHashVerify == verify )
+            {
+                mMetrics.mHashHitsAtPly[ply]++;
+
+                bool        samePlayer          = (pos.mWhiteToMove != 0) == tt.mWhiteMove;
+                bool        failedHighBefore    = samePlayer? tt.mFailHigh : tt.mFailLow;
+                EvalTerm    lowerBoundBefore    = samePlayer? tt.mScore    : -tt.mScore;
+                int         depthBefore         = tt.mDepth;
+
+                if( failedHighBefore && (lowerBoundBefore >= beta) && (depthBefore >= depth) )
+                    return( beta );
+
+                moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, FLAG_TT_BEST_MOVE );
+            }
+        }
+
+        if( onPvPrev && (mStorePv->mCount > ply) )
+        {
+            MoveSpec& pvMove = mStorePv->mMove[ply];
+            moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, FLAG_PRINCIPAL_VARIATION );
+        }
+
+        int         movesTried  = 0;
+        int         simdIdx     = LANES - 1;
+        bool        nullSearch  = false;
+        EvalTerm    bestScore   = alpha;
+        MoveSpec    bestMove;
+
+        MoveSpec PIGEON_ALIGN_SIMD childSpec[LANES];
+        Position PIGEON_ALIGN_SIMD childPos[LANES];
+        MoveMap  PIGEON_ALIGN_SIMD childMoveMap[LANES];
+        EvalTerm PIGEON_ALIGN_SIMD childScore[LANES];
+
+        while( (movesTried < moves.mCount) && (bestScore < beta) )
+        {
+            simdIdx++;
+            if( simdIdx >= LANES )
+            {
+                MoveSpecT< SIMD >   simdSpec;
+                PositionT< SIMD >   simdPos;
+                MoveMapT< SIMD >    simdMoveMap;
+                SIMD                simdScore;
+
+                simdSpec.mSrc  = 0;
+                simdSpec.mDest = 0;
+                simdSpec.mType = 0;
+
+                for( int idxLane = 0; idxLane < LANES; idxLane++ )
+                {
+                    if( moves.mTried >= moves.mCount )
+                        break;
+
+                    int idxMove = this->ChooseNextMove( moves, (int) pos.mWhiteToMove );
+                    childSpec[idxLane] = moves.mMove[idxMove];
+
+                    SimdInsert( simdSpec.mSrc,  childSpec[idxLane].mSrc,  idxLane );
+                    SimdInsert( simdSpec.mDest, childSpec[idxLane].mDest, idxLane );
+                    SimdInsert( simdSpec.mType, childSpec[idxLane].mType, idxLane );
+
+                    mMetrics.mNodesTotalSimd++;
+                }
+
+                const MaterialTable* whiteMat = NULL;
+                const MaterialTable* blackMat = NULL;
+
+                if( 0 ) // FIXME
+                {
+                    whiteMat = &mMaterialTable[pos.mWhiteToMove];
+                    blackMat = &mMaterialTable[pos.mWhiteToMove ^ 1];
+                }
+
+                simdPos.Broadcast( pos );
+                simdPos.Step( simdSpec, whiteMat, blackMat );
+                simdPos.CalcMoveMap( &simdMoveMap );
+                simdScore = mEvaluator.Evaluate< POPCNT, SIMD >( simdPos, simdMoveMap, mRootWeights );
+
+                Unswizzle< SIMD >( &simdPos,     childPos );
+                Unswizzle< SIMD >( &simdMoveMap, childMoveMap );
+
+				u64 PIGEON_ALIGN_SIMD unpackScore[LANES];
+				*((SIMD*) unpackScore) = simdScore;
+
+				for( int idxLane = 0; idxLane < LANES; idxLane++ )
+					childScore[idxLane] = (EvalTerm) unpackScore[idxLane];
+
+				simdIdx = 0;
+            }
+
+            bool allowMove = true;
+
+            if( ply == 0 )
+            {
+                // TODO: make sure that this does not eliminate all valid moves! 
+
+                bool repeatedPosition = (mPositionReps[childPos[simdIdx].mHash] > 1);
+                bool notReadyToDraw   = (score < ALLOW_REP_SCORE);
+
+                if( repeatedPosition && notReadyToDraw && !inCheck )
+                {
+                    allowMove = false;
+
+                    if( mDebugMode )
+                    {
+                        printf( "info string preventing " );
+                        FEN::PrintMoveSpec( childSpec[simdIdx] );
+                        printf( " to avoid draw by repetition\n" );
+                    }
+                }
+            }
+
+            if( 1 )//allowMove )
+            {
+                MoveList pv_child;
+                EvalTerm subScore;
+            
+                bool fullSearch = true;
+
+                if( 0 )//nullSearch )
+                {
+                    subScore = -this->NegaMax< POPCNT, SIMD >( 
+                        childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -(bestScore + 1), -bestScore, 
+                        &pv_child, (childSpec[simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false );
+                
+                    fullSearch = (subScore > bestScore) && (subScore < beta);
+                }
+
+                if( fullSearch )
+                {
+                    subScore = -this->NegaMax< POPCNT, SIMD >( 
+                        childPos[simdIdx], childMoveMap[simdIdx], childScore[simdIdx], ply + 1, depth - 1, -beta, -bestScore, 
+                        &pv_child, (childSpec[simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false );
+                }
+
+        //FEN::PrintMoveSpec( childSpec[simdIdx] );
+        //printf( " %d\n", subScore );
+
+                if( subScore > bestScore )
+                {
+                    bestScore   = subScore;
+                    bestMove    = childSpec[simdIdx];
+                    nullSearch  = true;
+
+                    if( subScore < beta )
+                    {
+                        pv_new->mCount = 1;
+                        pv_new->mMove[0] = bestMove;
+                        pv_new->Append( pv_child );
+                    }
+
+                    if( depth > 1 )
+                    {
+                        int sidePlies       = ply >> 1;
+                        int maxHistoryPlies = sizeof( mHistoryTable[0][0][0] ) * 8 - 1;
+                        int historyBit      = maxHistoryPlies - sidePlies;
+
+                        if( historyBit >= 0 )
+                            mHistoryTable[pos.mWhiteToMove][bestMove.mDest][bestMove.mSrc] |= (1 << historyBit);
+                    }
+                }
+            }
+
+            if( (ply < METRICS_DEPTH) && (movesTried < METRICS_MOVES) )
+                mMetrics.mMovesTriedByPly[ply][movesTried]++;
+
+            movesTried++;
+
+            //if( depth < -1 )
+            //    break;
+        }
+
+        if( mExitSearch )
+            return( EVAL_SEARCH_ABORTED );
+
+        bool        failedHigh  = (bestScore >= beta);
+        bool        failedLow   = (bestScore == alpha);
+        EvalTerm    result      = failedHigh? beta : (failedLow? alpha : bestScore);
+
+        if( depth > 0 )
+        {
+            TableEntry tt;
+
+            tt.mHashVerify  = pos.mHash >> 40;
+            tt.mDepth       = depth;
+            tt.mScore       = result;
+            tt.mBestSrc     = bestMove.mSrc;
+            tt.mBestDest    = bestMove.mDest;
+            tt.mFailLow     = failedLow;
+            tt.mFailHigh    = failedHigh;
+            tt.mWhiteMove   = pos.mWhiteToMove? true : false;
+
+            mHashTable.Store( pos.mHash, tt );
+        }
+
+        return( result );
+    }
 
 
 
