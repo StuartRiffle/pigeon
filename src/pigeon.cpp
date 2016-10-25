@@ -34,8 +34,8 @@ int main( int argc, char** argv )
 {
     // Disable I/O buffering
 
-    setbuf( stdin, NULL );
-    setbuf( stdout, NULL );
+    setvbuf( stdin,  NULL, _IONBF, 0 );
+    setvbuf( stdout, NULL, _IONBF, 0 );
 
     const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
      

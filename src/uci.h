@@ -74,7 +74,7 @@ struct UCI
                     engine->Move( movetext );
             }
 
-            engine->PrintPosition();
+            //engine->PrintPosition();
             //engine->PrintValidMoves();
         }
         else if( tokens.Consume( "go" ) )
