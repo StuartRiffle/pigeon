@@ -10,9 +10,15 @@
 #include <stdint.h>
 #include <assert.h>
 
+#if PIGEON_ENABLE_CUDA
+#include <cuda_runtime_api.h>
+#endif
+
 #if defined( __CUDA_ARCH__ )
 
-    #define PIGEON_CUDA         (1)
+    // We are running __device__ code
+
+    #define PIGEON_CUDA_DEVICE  (1)
     #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  
     #define PIGEON_ALIGN_SIMD   
@@ -63,6 +69,7 @@
     #include <emmintrin.h>
     #include <cpuid.h>
     #include <string.h>
+    #include <unistd.h>
 
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 
@@ -115,7 +122,7 @@ namespace Pigeon
 
     INLINE PDECL u64 PlatByteSwap64( const u64& val )             
     { 
-    #if PIGEON_CUDA
+    #if PIGEON_CUDA_DEVICE
         u32 hi = __byte_perm( (u32) val, 0, 0x0123 );
         u32 lo = __byte_perm( (u32) (val >> 32), 0, 0x0123 );
         return( ((u64) hi << 32ULL) | lo );
@@ -128,8 +135,8 @@ namespace Pigeon
 
     INLINE PDECL u64 PlatLowestBitIndex64( const u64& val )
     {
-    #if PIGEON_CUDA
-         return( __ffsll( val ) );
+    #if PIGEON_CUDA_DEVICE
+         return( __ffsll( val ) - 1 );
     #elif PIGEON_MSVC
         unsigned long result;
         _BitScanForward64( &result, val );
@@ -159,7 +166,7 @@ namespace Pigeon
     template< int POPCNT >
     INLINE PDECL u64 PlatCountBits64( const u64& val )
     {
-    #if PIGEON_CUDA
+    #if PIGEON_CUDA_DEVICE
         return( __popcll( val ) );
     #else
         #if PIGEON_ALLOW_POPCNT
@@ -178,7 +185,7 @@ namespace Pigeon
 
     INLINE PDECL void PlatClearMemory( void* mem, size_t bytes )
     {
-    #if PIGEON_CUDA
+    #if PIGEON_CUDA_DEVICE
         cudaMemset( mem, 0, bytes );
     #elif PIGEON_MSVC
         ::memset( mem, 0, bytes );
@@ -196,7 +203,7 @@ namespace Pigeon
     #endif
     }
 
-#if !PIGEON_CUDA
+#if !PIGEON_CUDA_DEVICE
 
     INLINE PDECL bool PlatCheckCpuFlag( int leaf, int idxWord, int idxBit )
     {
@@ -234,6 +241,17 @@ namespace Pigeon
     #endif
 
         return( CPU_X64 );
+    }
+
+    INLINE PDECL int PlatDetectCpuCores()
+    {
+    #if PIGEON_MSVC
+        SYSTEM_INFO si = { 0 };
+        GetSystemInfo( &si );
+        return( si.dwNumberOfProcessors );
+    #elif PIGEON_GCC
+        return( sysconf( _SC_NPROCESSORS_ONLN ) );
+    #endif
     }
 
     INLINE PDECL ThreadId PlatSpawnThread( void* (*func)( void* ), void* arg )

@@ -4,7 +4,7 @@
 #include "defs.h"
 #include "bits.h"
 #include "simd.h"
-#include <stdio.h>
+//#include <stdio.h>
 #include "position.h"
 #include "eval.h"
 #include "movelist.h"
@@ -30,22 +30,23 @@
 #include "amoeba.h"
 #include "tune.h"
 #include "uci.h"
+#include "gpu.h"
+
         
 int main( int argc, char** argv )
 {
     // Disable I/O buffering
 
-    setbuf( stdin, NULL );
-    setbuf( stdout, NULL );
-
-    setvbuf( stdin, NULL, _IONBF, 0 );
+    setvbuf( stdin,  NULL, _IONBF, 0 );
     setvbuf( stdout, NULL, _IONBF, 0 );
 
-    const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
+    bool cudaDetected = (Pigeon::CudaSystem::GetDeviceCount() > 0); 
      
+    const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
+
     printf( "\n" );                      
-    printf( "     /O_"  "    Pigeon %d.%d.%d\n", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH );
-    printf( "     || "  "    UCI/%s%s\n", cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : ""  );
+    printf( "     /O_"  "    Pigeon %d.%d.%d (UCI)\n", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH );
+    printf( "     || "  "    %s%s%s\n", cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : "", cudaDetected? "/CUDA" : ""  );
     printf( "    / \\\\""    \n" );
     printf( "  =/__//"  "    pigeonengine.com\n" );
     printf( "     ^^ "  "    \n" );

@@ -33,13 +33,11 @@ PDECL class Engine : EngineBase
     bool                    mPrintBestMove;             ///< Output best move while searching
     bool                    mPrintedMove;               ///< Make sure only one "bestmove" is output per "go" 
     bool                    mDebugMode;                 ///< This currently does nothing
-    bool                    mUsePopcnt;                 ///< Enable use of the hardware POPCNT instruction
-    bool                    mAllowEarlyMove;            ///< Bail on iterative deepening if the next level will take too long
-    int                     mCpuLevel;                  ///< A CPU_* enum value to select the code path
-	int					    mNumHelperThreads;			///< Number of lazy SMP threads to spawn
-    bool                    mUseOpeningBook;            ///< Enable use of the opening book
+    int                     mCpuLevel;                  ///< A CPU_* enum value that reflects the hardware capabilities
+    bool                    mPopcntSupported;           ///< True if the CPU can do POPCNT
     u8                      mHistoryTable[2][64][64];   ///< Indexed as [whiteToMove][dest][src]
     std::map< u64, int >    mPositionReps;              ///< Indexed by hash, detects repetitions to avoid (unwanted) draw
+    int                     mOptions[OPTION_COUNT];     ///< Runtime options exposed via UCI
 
 public:
     Engine()
@@ -50,7 +48,6 @@ public:
 
         mStorePv            = NULL;
         mValuePv            = EVAL_MAX;
-        mTableSize          = TT_MEGS_DEFAULT;
         mTargetTime         = NO_TIME_LIMIT;
         mDepthLimit         = 0;
         mExitSearch         = false;
@@ -58,15 +55,24 @@ public:
         mPrintBestMove      = false;
         mPrintedMove        = false;
         mDebugMode          = false;
-        mUsePopcnt          = PlatDetectPopcnt();
+        mPopcntSupported    = PlatDetectPopcnt();
         mCpuLevel           = PlatDetectCpuLevel();
-        mAllowEarlyMove     = true;
-        mNumHelperThreads   = 0;
-        mUseOpeningBook     = OWNBOOK_DEFAULT;
 
-        mHashTable.SetSize( mTableSize );
         mOpeningBook.Init();               
         PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
+        PlatClearMemory( mOptions, sizeof( mOptions ) );
+
+        mOptions[OPTION_HASH_SIZE]      = TT_MEGS_DEFAULT;
+        mOptions[OPTION_CLEAR_HASH]     = 0;
+        mOptions[OPTION_OWN_BOOK]       = OWNBOOK_DEFAULT? 1 : 0;
+        mOptions[OPTION_NUM_THREADS]    = PlatDetectCpuCores();
+        mOptions[OPTION_ENABLE_SIMD]    = 1;
+        mOptions[OPTION_ENABLE_POPCNT]  = 1;
+        mOptions[OPTION_ENABLE_CUDA]    = 1;
+        mOptions[OPTION_EARLY_MOVE]     = 1;
+        mOptions[OPTION_GPU_HASH_SIZE]  = TT_MEGS_DEFAULT;
+
+        mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
     }
 
     ~Engine()
@@ -100,14 +106,15 @@ public:
         return( mRoot );    
     }
 
-    void SetHashTableSize( int megs )
+    void OverrideCpuLevel( int level )
     {
-        mTableSize = megs;
+        mCpuLevel = level;
     }
 
-    void EnableOpeningBook( bool enabled )
+    void SetOption( int idx, int value )
     {
-        mUseOpeningBook = enabled;
+        if( (idx >= 0) && (idx < OPTION_COUNT) )
+            mOptions[idx] = value;
     }
 
     void Init()
@@ -120,21 +127,6 @@ public:
     {
         mDebugMode = debug;
     }
-
-	void SetThreadCount( int count )
-	{
-        mNumHelperThreads = (count > 1)? (count - 1) : 0;
-	}
-
-    void OverrideCpuLevel( int level )
-    {
-        mCpuLevel = level;
-    }
-
-    void OverridePopcnt( bool enabled )
-    {
-        mUsePopcnt = enabled;
-    }    
 
     void LoadWeightParam( const char* name, float openingVal, float midgameVal, float endgameVal ) 
     {
@@ -193,22 +185,21 @@ public:
         MoveList valid;
         valid.FindMoves( mRoot );
 
-        if( mUseOpeningBook )
+        if( mOptions[OPTION_OWN_BOOK] )
         {
             const char* movetext = mOpeningBook.GetBookMove( mRoot );
             if( movetext != NULL )
             {
-                if( mDebugMode )
-                    printf( "info string opening book says %s\n", movetext );
-
                 MoveSpec spec;
                 FEN::StringToMoveSpec( movetext, spec );
 
                 int idx = valid.LookupMove( spec );
                 if( idx >= 0 )
                 {
+                    if( mDebugMode )
+                        printf( "info string using book move %s\n", movetext );
+
                     printf( "bestmove %s\n", movetext );
-                    fflush( stdout );
                     return;
                 }
             }
@@ -236,12 +227,6 @@ public:
         mPrintedMove    = false;
 
         this->RunToDepthForCpu( 1, true );
-
-        for( int i = 0; i < mNumHelperThreads; i++ )
-        {
-            PlatSpawnThread( &Engine::HelperThreadProc, this );
-            mThreadsRunning++;
-        }
 
         PlatSpawnThread( &Engine::SearchThreadProc, this );
         mThreadsRunning++;
@@ -297,14 +282,6 @@ private:
         return( NULL );
     }
 
-	static void* HelperThreadProc( void* param )
-	{
-		Engine* engine = reinterpret_cast< Engine* >( param );
-		engine->LazyHelperThread();
-		engine->mThreadsDone.Post();
-		return( NULL );
-	}
-
 	static void* TimerThreadProc( void* param )
     {
         Engine* engine = reinterpret_cast< Engine* >( param );
@@ -329,7 +306,7 @@ private:
             Timer levelTimer;
             this->RunToDepthForCpu( depth, true );
 
-            if( mAllowEarlyMove )
+            if( mOptions[OPTION_EARLY_MOVE] )
             {
                 i64 currLevelElapsed = levelTimer.GetElapsedMs();
                 if( !mExitSearch && (mTargetTime != NO_TIME_LIMIT) )
@@ -387,17 +364,6 @@ private:
             mPrintBestMove = false;
         }
     }
-
-	void LazyHelperThread()
-	{
-		int depth = 5;
-
-		while( !mExitSearch )
-        {
-			this->RunToDepthForCpu( depth );
-            depth++;
-        }
-	}
 
     void TimerThread()
     {
@@ -538,7 +504,12 @@ private:
 
     void RunToDepthForCpu( int depth, bool printPv = false )
     {
-        switch( mCpuLevel )
+        int level = mCpuLevel;
+
+        if( !mOptions[OPTION_ENABLE_SIMD] )
+            level = CPU_X64;
+
+        switch( level )
         {
 #if PIGEON_ENABLE_SSE2
         case  CPU_SSE2: this->RunToDepth< simd2_sse2 >( depth, printPv ); break;
@@ -556,7 +527,12 @@ private:
     template< typename SIMD >
     void RunToDepth( int depth, bool printPv )
     {
-        if( mUsePopcnt )
+        bool usePopcnt = mPopcntSupported;
+
+        if( !mOptions[OPTION_ENABLE_POPCNT] )
+            usePopcnt = false;
+
+        if( usePopcnt )
             this->RunToDepth< ENABLE_POPCNT, SIMD >(  depth, printPv );
         else
             this->RunToDepth< DISABLE_POPCNT, SIMD >( depth, printPv );

@@ -1,12 +1,4 @@
-
-//__CUDACC__ defines whether nvcc is steering compilation or not
-//__CUDA_ARCH__is always undefined when compiling host code, steered by nvcc or not
-//__CUDA_ARCH__is only defined for the device code trajectory of compilation steered by nvcc
-
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-
-
+// kernel.cu - PIGEON CHESS ENGINE (c) 2012-2016 Stuart Riffle
 
 #include "platform.h"
 #include "defs.h"
@@ -19,70 +11,44 @@
 #include "search.h"
 
 
-
-
-#include <stdio.h>
-
-
-
-__device__ void Foo()
+__global__ void SearchPositionsOnGPU( const Pigeon::SearchJobInput* inputBuf, Pigeon::SearchJobOutput* outputBuf, int count )
 {
-    int i = threadIdx.x;
-
-	Pigeon::Position pos;
-	pos.Reset();
+	int idx = (blockIdx.x * blockDim.x) + threadIdx.x;
+	if( idx >= count )
+		return;
+		 
+	const Pigeon::SearchJobInput*	input	= inputBuf  + idx;
+	Pigeon::SearchJobOutput*		output	= outputBuf + idx;
 
 	Pigeon::SearchState< 1, Pigeon::u64 > ss;
-	Pigeon::EvalTerm score = ss.RunToDepth( pos, 3 );
 
-    printf( "Thread %d says %d\n", i, score );
+    ss.mHashTable	= input->mHashTable;
+    ss.mEvaluator	= input->mEvaluator;
+    ss.mMetrics		= &output->mMetrics;
+
+    output->mScore = ss.RunToDepth( input->mPosition, input->mSearchDepth );
+    ss.ExtractBestLine( &output->mBestLine  );
+
+	__threadfence();
 }
 
-__global__ void RunFoo()
+
+extern "C" void QueueSearchBatch( Pigeon::SearchBatch* batch )
 {
-    Foo();
+	cudaMemcpyAsync( batch->mInputDev, batch->mInputHost, sizeof( Pigeon::SearchJobInput ) * batch->mCount, cudaMemcpyHostToDevice, batch->mStream );
+	cudaMemsetAsync( batch->mOutputDev, 0, sizeof( Pigeon::SearchJobOutput ) * batch->mCount, batch->mStream );
+
+	int	minGridSize;
+	int blockSize;
+
+	if( cudaOccupancyMaxPotentialBlockSize( &minGridSize, &blockSize, SearchPositionsOnGPU, 0, 0 ) != cudaSuccess )
+		blockSize = 32;
+
+	int blockCount = (batch->mCount + blockSize - 1) / blockSize;
+
+	SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount );
+
+	cudaMemcpyAsync( batch->mOutputHost, batch->mOutputDev, sizeof( Pigeon::SearchJobOutput ) * batch->mCount, cudaMemcpyDeviceToHost, batch->mStream );
+	cudaEventRecord( batch->mEvent, batch->mStream );
 }
 
-using namespace Pigeon;
-
-int main()
-{
-    cudaError_t cudaStatus;
-
-    // Choose which GPU to run on, change this on a multi-GPU system.
-    //cudaStatus = cudaSetDevice(0);
-    //if (cudaStatus != cudaSuccess) {
-    //    fprintf(stderr, "cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
-    //    goto Error;
-    //}
-
-    RunFoo<<< 1, 1 >>>();
-
-
-    // Check for any errors launching the kernel
-    cudaStatus = cudaGetLastError();
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
-        //goto Error;
-    }
-    
-    // cudaDeviceSynchronize waits for the kernel to finish, and returns
-    // any errors encountered during the launch.
-    cudaStatus = cudaDeviceSynchronize();
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
-        //goto Error;
-    }
-
-
-
-    // cudaDeviceReset must be called before exiting in order for profiling and
-    // tracing tools such as Nsight and Visual Profiler to show complete traces.
-    cudaStatus = cudaDeviceReset();
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaDeviceReset failed!");
-        return 1;
-    }
-
-    return 0;
-}

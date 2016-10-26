@@ -41,6 +41,39 @@ struct SearchMetrics
 };
 
 
+struct SearchJobInput
+{
+	Position            mPosition;
+	HashTable*          mHashTable;
+	Evaluator*          mEvaluator;
+	int                 mSearchDepth;
+};
+
+struct SearchJobOutput
+{
+	SearchMetrics		mMetrics;
+	MoveList			mBestLine;
+	EvalTerm			mScore;
+};
+
+
+#ifdef PIGEON_ENABLE_CUDA
+
+struct SearchBatch
+{
+    SearchJobInput*     mInputHost;
+    SearchJobInput*     mInputDev;
+    SearchJobOutput*    mOutputHost;
+    SearchJobOutput*    mOutputDev;
+    cudaEvent_t         mEvent;
+    cudaStream_t        mStream;
+    int                 mCount;
+};
+
+extern "C" void QueueSearchBatch( SearchBatch* batch );
+
+#endif
+
 
 template< int POPCNT, typename SIMD >
 struct SearchState
@@ -49,11 +82,10 @@ struct SearchState
 
     enum
     {
-        STEP_PREPARE,
+        STEP_PROCESS,
         STEP_ITERATE_CHILDREN,
         STEP_CHECK_SCORE,
         STEP_FINALIZE,
-        STEP_DONE
     };
 
 
@@ -109,7 +141,7 @@ struct SearchState
         mExitSearch     = NULL;
         mBestLine.Clear();
 
-#if !PIGEON_CUDA
+#if !PIGEON_CUDA_DEVICE
         PlatClearMemory( mWeights, sizeof( mWeights ) );
         memset( mFrames, 0xAA, sizeof( mFrames ) );
 #endif
@@ -312,7 +344,7 @@ struct SearchState
             n->alpha    = -f->beta; 
             n->beta     = -f->bestScore;
             n->onPv     = (f->childSpec[f->simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false;
-            n->step     = STEP_PREPARE;
+            n->step     = STEP_PROCESS;
 
             f->step     = STEP_CHECK_SCORE;
             //f->movesTried++;
@@ -389,19 +421,19 @@ struct SearchState
 
         Frame* f = mFrames + mFrameIdx;
 
-        if( f->step == STEP_PREPARE )            
+        if( f->step == STEP_PROCESS )            
             f = this->HandleLeaf( f );
 
-        if( f->step == STEP_PREPARE )            
+        if( f->step == STEP_PROCESS )            
             f = this->HandleMate( f );
 
-        if( f->step == STEP_PREPARE )            
+        if( f->step == STEP_PROCESS )            
             f = this->Quieten( f );
 
-        if( f->step == STEP_PREPARE )            
+        if( f->step == STEP_PROCESS )            
             f = this->CheckHashTable( f );
 
-        if( f->step == STEP_PREPARE )            
+        if( f->step == STEP_PROCESS )            
             f = this->PrepareToIterate( f );
 
         if( f->step == STEP_ITERATE_CHILDREN )   
@@ -413,7 +445,7 @@ struct SearchState
         if( f->step == STEP_FINALIZE )           
             f = this->StoreIntoHashTable( f );
 
-        mFrameIdx = f - mFrames;
+        mFrameIdx = (int) (f - mFrames);
     }
 
 
@@ -452,13 +484,13 @@ struct SearchState
 
         f->pos      = &mRoot;
         f->moveMap  = &mRootMoveMap;
-        f->score    = mEvaluator->Evaluate< POPCNT >( root, mRootMoveMap, mWeights );
+        f->score    = (EvalTerm) mEvaluator->Evaluate< POPCNT >( root, mRootMoveMap, mWeights );
         f->ply      = 0;
         f->depth    = depth;
         f->alpha    = -EVAL_MAX; 
         f->beta     = EVAL_MAX;
         f->onPv     = true;
-        f->step     = STEP_PREPARE;       
+        f->step     = STEP_PROCESS;       
 
         mFrameIdx = 0;
     }

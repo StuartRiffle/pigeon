@@ -70,6 +70,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(Configuration)\$(PlatformTarget)\</IntDir>
+    <IncludePath>$(CUDA_PATH)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -79,6 +80,7 @@
     <OutDir>$(SolutionDir)..\build\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(Configuration)\$(PlatformTarget)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
+    <IncludePath>$(CUDA_PATH)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
@@ -101,6 +103,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(CUDA_PATH)\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -159,6 +163,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map.txt</MapFileName>
+      <AdditionalLibraryDirectories>$(CUDA_PATH)\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -216,11 +222,12 @@
     <ClInclude Include="..\src\amoeba.h" />
     <ClInclude Include="..\src\bits.h" />
     <ClInclude Include="..\src\book.h" />
-    <ClInclude Include="..\src\cuda.h" />
     <ClInclude Include="..\src\defs.h" />
     <ClInclude Include="..\src\engine.h" />
     <ClInclude Include="..\src\eval.h" />
     <ClInclude Include="..\src\fen.h" />
+    <ClInclude Include="..\src\gpu.h" />
+    <ClInclude Include="..\src\jobs.h" />
     <ClInclude Include="..\src\movelist.h" />
     <ClInclude Include="..\src\perft.h" />
     <ClInclude Include="..\src\platform.h" />

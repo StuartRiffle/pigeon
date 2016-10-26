@@ -569,38 +569,36 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
-    PDECL void  CalcMaterial( const MaterialTable* matWhite, const MaterialTable* matBlack );
+    PDECL void  CalcMaterial( const MaterialTable* matWhite, const MaterialTable* matBlack ) {}
 
     PDECL void  FlipInPlace()           { this->FlipFrom( *this ); }
     PDECL int   GetPlyZeroBased() const { return( (int) ((mFullmoveNum - 1) * 2 + (1 - mWhiteToMove)) ); }
 };
 
 
-template<> 
-PDECL void PositionT< u64 >::CalcMaterial( const MaterialTable* matWhite, const MaterialTable* matBlack )
-{
-    // This horrible thing only happens at the root... during a search, material is updated incrementally
-
-    mWhiteMaterial = 0;
-    mBlackMaterial = 0;
-
-    const int tableStride = 64 * 6;
-
-    for( u64 i = mWhitePawns;               i != 0; mWhiteMaterial += matWhite->mValue[PAWN  ][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = mWhiteKnights;             i != 0; mWhiteMaterial += matWhite->mValue[KNIGHT][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = mWhiteBishops;             i != 0; mWhiteMaterial += matWhite->mValue[BISHOP][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = mWhiteRooks;               i != 0; mWhiteMaterial += matWhite->mValue[ROOK  ][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = mWhiteQueens;              i != 0; mWhiteMaterial += matWhite->mValue[QUEEN ][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = mWhiteKing;                i != 0; mWhiteMaterial += matWhite->mValue[KING  ][ConsumeLowestBitIndex( i )] ) {}
-                                                                                            
-    for( u64 i = ByteSwap( mBlackPawns );   i != 0; mBlackMaterial += matBlack->mValue[PAWN  ][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = ByteSwap( mBlackKnights ); i != 0; mBlackMaterial += matBlack->mValue[KNIGHT][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = ByteSwap( mBlackBishops ); i != 0; mBlackMaterial += matBlack->mValue[BISHOP][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = ByteSwap( mBlackRooks );   i != 0; mBlackMaterial += matBlack->mValue[ROOK  ][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = ByteSwap( mBlackQueens );  i != 0; mBlackMaterial += matBlack->mValue[QUEEN ][ConsumeLowestBitIndex( i )] ) {}
-    for( u64 i = ByteSwap( mBlackKing );    i != 0; mBlackMaterial += matBlack->mValue[KING  ][ConsumeLowestBitIndex( i )] ) {}
-}
-
+//template<> 
+//PDECL void PositionT< u64 >::CalcMaterial( const MaterialTable* matWhite, const MaterialTable* matBlack )
+//{
+//    mWhiteMaterial = 0;
+//    mBlackMaterial = 0;
+//
+//    const int tableStride = 64 * 6;
+//
+//    for( u64 i = mWhitePawns;               i != 0; mWhiteMaterial += matWhite->mValue[PAWN  ][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = mWhiteKnights;             i != 0; mWhiteMaterial += matWhite->mValue[KNIGHT][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = mWhiteBishops;             i != 0; mWhiteMaterial += matWhite->mValue[BISHOP][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = mWhiteRooks;               i != 0; mWhiteMaterial += matWhite->mValue[ROOK  ][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = mWhiteQueens;              i != 0; mWhiteMaterial += matWhite->mValue[QUEEN ][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = mWhiteKing;                i != 0; mWhiteMaterial += matWhite->mValue[KING  ][ConsumeLowestBitIndex( i )] ) {}
+//                                                                                            
+//    for( u64 i = ByteSwap( mBlackPawns );   i != 0; mBlackMaterial += matBlack->mValue[PAWN  ][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = ByteSwap( mBlackKnights ); i != 0; mBlackMaterial += matBlack->mValue[KNIGHT][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = ByteSwap( mBlackBishops ); i != 0; mBlackMaterial += matBlack->mValue[BISHOP][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = ByteSwap( mBlackRooks );   i != 0; mBlackMaterial += matBlack->mValue[ROOK  ][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = ByteSwap( mBlackQueens );  i != 0; mBlackMaterial += matBlack->mValue[QUEEN ][ConsumeLowestBitIndex( i )] ) {}
+//    for( u64 i = ByteSwap( mBlackKing );    i != 0; mBlackMaterial += matBlack->mValue[KING  ][ConsumeLowestBitIndex( i )] ) {}
+//}
+//
 
 
 #endif // PIGEON_POSITION_H__

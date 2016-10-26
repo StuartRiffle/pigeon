@@ -17,10 +17,52 @@ struct UCI
         else if( tokens.Consume( "uci" ) )
         {                                                                                        
             printf( "id name Pigeon %d.%d.%d\n", PIGEON_VER_MAJOR, PIGEON_VER_MINOR, PIGEON_VER_PATCH );
-            printf( "id author Stuart Riffle \n" );
-            printf( "option name Hash type spin min 64 max 16384 default %d\n", TT_MEGS_DEFAULT );
+            printf( "id author Stuart Riffle\n" );
+
+            printf( "option name Hash type spin min 4 max 8192 default %d\n", TT_MEGS_DEFAULT );
+            printf( "option name Clear Hash type button\n" );
             printf( "option name OwnBook type check default %s\n", OWNBOOK_DEFAULT? "true" : "false" );
+            printf( "option name Threads type spin default 1 min 1 max %d\n", PlatDetectCpuCores() );
+            printf( "option name Early Move type check default true\n" );
+            printf( "option name SIMD type check default true\n" );
+            printf( "option name POPCNT type check default true\n" );
+            printf( "option name CUDA type check default true\n" );
+            printf( "option name GPU Hash type spin min 4 max 8192 default %d\n", TT_MEGS_DEFAULT );
+
             printf( "uciok\n" );
+        }
+        else if( tokens.Consume( "setoption" ) )
+        {
+            if( tokens.Consume( "name" ) )
+            {
+                if( tokens.Consume( "hash" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_HASH_SIZE, tokens.ConsumeInt() );
+
+                if( tokens.Consume( "clear" ) && tokens.Consume( "hash" ) )
+                    engine->SetOption( OPTION_CLEAR_HASH, 1 );
+
+                if( tokens.Consume( "ownbook" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_OWN_BOOK, tokens.Consume( "true" )? 1 : 0 );
+
+                if( tokens.Consume( "threads" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_NUM_THREADS, tokens.Consume( "true" )? 1 : 0 );
+
+                if( tokens.Consume( "early" ) && tokens.Consume( "move" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_EARLY_MOVE, tokens.Consume( "true" )? 1 : 0 );
+
+                if( tokens.Consume( "simd" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_ENABLE_SIMD, tokens.Consume( "true" )? 1 : 0 );
+
+                if( tokens.Consume( "popcnt" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_ENABLE_POPCNT, tokens.Consume( "true" )? 1 : 0 );
+
+                if( tokens.Consume( "cuda" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_ENABLE_CUDA, tokens.Consume( "true" )? 1 : 0 );
+
+                if( tokens.Consume( "gpu" ) && tokens.Consume( "hash" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_GPU_HASH_SIZE, tokens.ConsumeInt() );
+
+            }
         }
         else if( tokens.Consume( "debug" ) )
         {
@@ -28,17 +70,6 @@ struct UCI
                 engine->SetDebug( true );
             else if( tokens.Consume( "off" ) ) 
                 engine->SetDebug( false );
-        }
-        else if( tokens.Consume( "setoption" ) )
-        {
-            if( tokens.Consume( "name" ) )
-            {
-                if( tokens.Consume( "hash" ) && tokens.Consume( "value" ) )
-                    engine->SetHashTableSize( tokens.ConsumeInt() );
-
-                if( tokens.Consume( "ownbook" ) && tokens.Consume( "value" ) )
-                    engine->EnableOpeningBook( tokens.Consume( "true" ) != NULL );
-            }
         }
         else if( tokens.Consume( "isready" ) )
         {
@@ -74,7 +105,7 @@ struct UCI
                     engine->Move( movetext );
             }
 
-            engine->PrintPosition();
+            //engine->PrintPosition();
             //engine->PrintValidMoves();
         }
         else if( tokens.Consume( "go" ) )
@@ -111,6 +142,12 @@ struct UCI
                     break;
             }
 
+            if( conf.mMateSearchDepth )
+                printf( "info string WARNING: mate search not implemented\n" );
+
+            if( conf.mNodesLimit )
+                printf( "info string WARNING: limiting by node count not implemented\n" );
+
             engine->Go( &conf );
         }
         else if( tokens.Consume( "stop" ) )
@@ -119,6 +156,7 @@ struct UCI
         }
         else if( tokens.Consume( "ponderhit" ) )
         {
+            printf( "info string WARNING: ponderhit not implemented\n" );
             engine->PonderHit();
         }
         else if( tokens.Consume( "quit" ) )
@@ -259,29 +297,6 @@ struct UCI
                     }
                 }
             }
-            else if( tokens.Consume( "popcnt" ) )
-            {
-                bool detected = PlatDetectPopcnt();
-
-                if( tokens.Consume( "auto" ) )
-                {
-                    engine->OverridePopcnt( detected );
-                    printf( "info string popcnt instruction %s\n", detected? "enabled" : "disabled" ); 
-                }
-                else if( tokens.Consume( "on" ) )
-                {
-                    engine->OverridePopcnt( true );
-                    printf( "info string popcnt instruction enabled\n" );
-
-                    if( !detected )
-                        printf( "info string WARNING: this is unlikely to end well\n" );
-                }
-                else if( tokens.Consume( "off" ) )
-                {
-                    engine->OverridePopcnt( false );
-                    printf( "info string popcnt instruction disabled\n" );
-                }
-            }
             else if( tokens.Consume( "divide" ) )
             {
                 int depth = tokens.ConsumeInt();
@@ -354,12 +369,6 @@ struct UCI
                         fclose( script );
                     }
                 }
-            }
-            else if( tokens.Consume( "threads" ) )
-            {
-                int count = tokens.ConsumeInt();
-                if( count > 0 )
-                    engine->SetThreadCount( count );
             }
             else if( tokens.Consume( "time" ) )
             {
