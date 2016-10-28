@@ -9,12 +9,17 @@ A port to CUDA is in progress now.
 
 ## Playing strength
 
-The current version (Pigeon 1.5.0) is rated about **2000** against humans online, 
+The current version (Pigeon 1.5.1) is rated about **2000** against humans online, 
 at both [ICC](http://www.chessclub.com) and [FICS](http://www.freechess.org). 
 That's pretty good, you know, for a bird.
 
 When playing against *other* chess engines, Pigeon has a [CCRL 40/4](http://www.computerchess.org.uk/ccrl/404) rating 
 of about **1750**, which is... somewhat less good. But it always tries very hard.
+
+
+## How it works
+
+
 
 
 ## License
