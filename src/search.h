@@ -476,7 +476,9 @@ struct SearchState
     PDECL void Advance()
     {
         assert( mFrameIdx >= 0 );
-        assert( mFrameIdx < MAX_SEARCH_DEPTH );
+        //assert( mFrameIdx < MAX_SEARCH_DEPTH );
+        if( mFrameIdx >= MAX_SEARCH_DEPTH )
+            mFrameIdx *= 1;
 
         Frame* f = mFrames + mFrameIdx;
 

@@ -19,18 +19,20 @@ struct UCI
             printf( "id name Pigeon %d.%d.%d\n", PIGEON_VER_MAJOR, PIGEON_VER_MINOR, PIGEON_VER_PATCH );
             printf( "id author Stuart Riffle\n" );
 
-            printf( "option name Hash type spin min 4 max 8192 default %d\n", TT_MEGS_DEFAULT );
+            const int* options = engine->GetOptions();
+
             printf( "option name Clear Hash type button\n" );
-            printf( "option name OwnBook type check default %s\n", OWNBOOK_DEFAULT? "true" : "false" );
-            printf( "option name Threads type spin default 1 min 1 max %d\n", PlatDetectCpuCores() );
-            printf( "option name Early Move type check default true\n" );
-            printf( "option name SIMD type check default true\n" );
-            printf( "option name POPCNT type check default true\n" );
-            printf( "option name CUDA type check default true\n" );
-            printf( "option name GPU Hash type spin min 4 max 8192 default %d\n", TT_MEGS_DEFAULT );
-            printf( "option name GPU Batch Size type spin min 32 max 8192 default %d\n", BATCH_SIZE_DEFAULT );
-            printf( "option name GPU Batch Count type spin min 4 max 1024 default %d\n", BATCH_COUNT_DEFAULT );
-            printf( "option name GPU Plies type spin min 0 max 8 default %d\n", GPU_PLIES_DEFAULT );
+            printf( "option name Hash type spin min 4 max 8192 default %d\n",               options[OPTION_HASH_SIZE] );
+            printf( "option name OwnBook type check default %s\n",                          options[OPTION_OWN_BOOK]? "true" : "false" );
+            printf( "option name Threads type spin default 1 min 1 max %d\n",               options[OPTION_NUM_THREADS] );
+            printf( "option name Early Move type check default %s\n",                       options[OPTION_EARLY_MOVE]? "true" : "false" );
+            printf( "option name SIMD type check default %s\n",                             options[OPTION_ENABLE_SIMD]? "true" : "false" );
+            printf( "option name POPCNT type check default %s\n",                           options[OPTION_ENABLE_POPCNT]? "true" : "false" );
+            printf( "option name CUDA type check default %s\n",                             options[OPTION_ENABLE_CUDA]? "true" : "false" );
+            printf( "option name GPU Hash type spin min 4 max 8192 default %d\n",           options[OPTION_GPU_HASH_SIZE] );
+            printf( "option name GPU Batch Size type spin min 32 max 8192 default %d\n",    options[OPTION_GPU_BATCH_SIZE] );
+            printf( "option name GPU Batch Count type spin min 4 max 1024 default %d\n",    options[OPTION_GPU_BATCH_COUNT] );
+            printf( "option name GPU Plies type spin min 0 max 8 default %d\n",             options[OPTION_GPU_PLIES] );
 
             printf( "uciok\n" );
         }

@@ -123,6 +123,11 @@ public:
             mOptions[idx] = value;
     }
 
+    const int* GetOptions() const
+    {
+        return( &mOptions[0] );
+    }
+
     void Init()
     {
         if( mOptions[OPTION_HASH_SIZE] != mHashTable.GetSize() )
@@ -597,7 +602,8 @@ private:
         ss.mExitSearch  = &mExitSearch;
         ss.mMetrics     = &mMetrics;
 
-        if( mCudaContext.IsInitialized() )
+#if 0//PIGEON_ENABLE_CUDA
+        if( mOptions[OPTION_ENABLE_CUDA] && mCudaContext.IsInitialized() )
         {
             if( depth >= (MIN_CPU_PLIES + mOptions[OPTION_GPU_PLIES]) )
             {
@@ -605,6 +611,7 @@ private:
                 ss.mAsyncSpawnPly = mOptions[OPTION_GPU_PLIES];
             }
         }
+#endif
 
         EvalTerm score = ss.RunToDepth( mRoot, depth );
         ss.ExtractBestLine( &pv  );
