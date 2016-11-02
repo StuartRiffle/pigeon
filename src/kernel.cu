@@ -11,7 +11,7 @@
 #include "search.h"
 
 
-__global__ void SearchPositionsOnGPU( const Pigeon::SearchJobInput* inputBuf, Pigeon::SearchJobOutput* outputBuf, int count )
+__global__ void SearchPositionsOnGPU( const Pigeon::SearchJobInput* inputBuf, Pigeon::SearchJobOutput* outputBuf, int count, Pigeon::HashTable* hashTable, Pigeon::Evaluator* evaluator )
 {
 	int idx = (blockIdx.x * blockDim.x) + threadIdx.x;
 	if( idx >= count )
@@ -23,8 +23,8 @@ __global__ void SearchPositionsOnGPU( const Pigeon::SearchJobInput* inputBuf, Pi
 
 	Pigeon::SearchState< 1, Pigeon::u64 > ss;
 
-    ss.mHashTable	= input->mHashTable;
-    ss.mEvaluator	= input->mEvaluator;
+    ss.mHashTable	= hashTable;
+    ss.mEvaluator	= evaluator;
     ss.mMetrics		= &metrics;
 
     output->mScore = ss.RunToDepth( input->mPosition, input->mSearchDepth );
@@ -36,7 +36,7 @@ __global__ void SearchPositionsOnGPU( const Pigeon::SearchJobInput* inputBuf, Pi
 }
 
 
-extern "C" void QueueSearchBatch( Pigeon::SearchBatch* batch, int blockSize )
+void QueueSearchBatch( Pigeon::SearchBatch* batch, int blockSize )
 {
 	// Copy the inputs to device
 
@@ -49,7 +49,7 @@ extern "C" void QueueSearchBatch( Pigeon::SearchBatch* batch, int blockSize )
 	// Run the search kernel
 
 	int blockCount = (batch->mCount + blockSize - 1) / blockSize;
-	SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount );
+	SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount, batch->mHashTable, batch->mEvaluator );
 
 	// Copy the outputs to host
 

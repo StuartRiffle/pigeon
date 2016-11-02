@@ -2,10 +2,47 @@
 
 #ifndef PIGEON_GPU_H__
 #define PIGEON_GPU_H__
-namespace Pigeon {
 
 #if PIGEON_ENABLE_CUDA
 
+enum
+{
+    BATCH_UNUSED = 0,
+    BATCH_HOST_FILL,
+    BATCH_DEV_RUNNING,
+    BATCH_HOST_POST
+};
+
+struct SearchJobInput
+{
+	Position            mPosition;
+	int                 mSearchDepth;
+};
+
+struct SearchJobOutput
+{
+	MoveList			mBestLine;
+    u64                 mNodes;
+	EvalTerm			mScore;
+};
+
+struct SearchBatch
+{
+    int                 mState;
+    int                 mCount;
+    int                 mLimit;
+    cudaEvent_t         mEvent;
+    cudaStream_t        mStream;
+    SearchJobInput*     mInputHost;
+    SearchJobInput*     mInputDev;
+    SearchJobOutput*    mOutputHost;
+    SearchJobOutput*    mOutputDev;
+	HashTable*          mHashTable;
+	Evaluator*          mEvaluator;
+};
+
+
+#if PIGEON_CUDA_HOST
 
 #define CUDA_REQUIRE( _CALL ) \
     if( (_CALL) != cudaSuccess ) \
@@ -17,13 +54,16 @@ namespace Pigeon {
 
 class CudaChessContext
 {
+    Mutex                       mMutex;
     bool                        mInitialized;
     int                         mDeviceIndex;
     int                         mBatchCount;
     int                         mBatchSlots;
+    int                         mBatchCursor;
     std::vector< SearchBatch >  mBatches;
     cudaDeviceProp              mProp;
     std::vector< cudaStream_t > mStream;
+    int                         mStreamIndex;
     HashTable                   mHashTableHost;
     HashTable*                  mHashTableDev;
     void*                       mHashMemoryDev;
@@ -34,17 +74,39 @@ class CudaChessContext
     SearchJobInput*             mInputDev;
     SearchJobOutput*            mOutputDev;
 
-    Mutex                       mMutex;
-    int                         mStreamIndex;
-
+public:
     CudaChessContext()
     {
-        PlatClearMemory( this, sizeof( *this ) );
+        this->Clear();
     }
 
     ~CudaChessContext()
     {
         this->Shutdown();
+    }
+
+    void Clear()
+    {
+        mInitialized    = false;
+        mDeviceIndex    = 0;
+        mBatchCount     = 0;
+        mBatchSlots     = 0;
+        mBatchCursor    = 0;
+        mStreamIndex    = 0;
+        mHashTableDev   = NULL;
+        mHashMemoryDev  = NULL;
+        mEvaluatorDev   = NULL;
+        mInputHost      = NULL;
+        mOutputHost     = NULL;
+        mInputDev       = NULL;
+        mOutputDev      = NULL;
+
+        mBatches.clear();
+        mStream.clear();
+        mHashTableHost.Clear();
+        mEvaluatorHost.SetDefaultWeights();
+
+        PlatClearMemory( &mProp, sizeof( mProp ) );
     }
 
     void Initialize( int index, int batchCount, int batchSlots, size_t hashMegs )
@@ -68,11 +130,11 @@ class CudaChessContext
 
         size_t hashMemSize = hashMegs * 1024 * 1024;
 
-        CUDA_REQUIRE(( cudaMalloc( &mHashTableDev, sizeof( HashTable ) ) ));
-        CUDA_REQUIRE(( cudaMalloc( &mHashMemoryDev, hashMemSize ) ));
+        CUDA_REQUIRE(( cudaMalloc( (void**) &mHashTableDev, sizeof( HashTable ) ) ));
+        CUDA_REQUIRE(( cudaMalloc( (void**) &mHashMemoryDev, hashMemSize ) ));
 
         mHashTableHost.CalcTableEntries( hashMemSize );
-        mHashTableHost.mTable = mHashMemoryDev;
+        mHashTableHost.mTable = (u64*) mHashMemoryDev;
 
         CUDA_REQUIRE(( cudaMemcpy( mHashTableDev, &mHashTableHost, sizeof( mHashTableHost ), cudaMemcpyHostToDevice ) ));
         CUDA_REQUIRE(( cudaMemset( mHashMemoryDev, 0, hashMemSize ) ));
@@ -81,7 +143,7 @@ class CudaChessContext
 
         mEvaluatorHost.SetDefaultWeights();
 
-        CUDA_REQUIRE(( cudaMalloc( &mEvaluatorDev, sizeof( Evaluator ) ) ));
+        CUDA_REQUIRE(( cudaMalloc( (void**) &mEvaluatorDev, sizeof( Evaluator ) ) ));
         CUDA_REQUIRE(( cudaMemcpy( mEvaluatorDev, &mEvaluatorHost, sizeof( mEvaluatorHost ), cudaMemcpyHostToDevice ) ));
 
         // I/O buffers
@@ -89,11 +151,11 @@ class CudaChessContext
         size_t inputBufSize     = mBatchCount * mBatchSlots * sizeof( SearchJobInput );
         size_t outputBufSize    = mBatchCount * mBatchSlots * sizeof( SearchJobOutput );
 
-        CUDA_REQUIRE(( cudaMallocHost( &mInputHost,  inputBufSize ) ));
-        CUDA_REQUIRE(( cudaMallocHost( &mOutputHost, outputBufSize ) ));
+        CUDA_REQUIRE(( cudaMallocHost( (void**) &mInputHost,  inputBufSize ) ));
+        CUDA_REQUIRE(( cudaMallocHost( (void**) &mOutputHost, outputBufSize ) ));
 
-        CUDA_REQUIRE(( cudaMalloc( &mInputDev,  inputBufSize ) ));
-        CUDA_REQUIRE(( cudaMalloc( &mOutputDev, outputBufSize ) ));
+        CUDA_REQUIRE(( cudaMalloc( (void**) &mInputDev,  inputBufSize ) ));
+        CUDA_REQUIRE(( cudaMalloc( (void**) &mOutputDev, outputBufSize ) ));
 
         mBatches.resize( mBatchCount );
         for( int i = 0; i < mBatchCount; i++ )
@@ -101,16 +163,42 @@ class CudaChessContext
             SearchBatch* batch = &mBatches[i];
             int offset = i * mBatchSlots;
 
+            batch->mState       = BATCH_UNUSED;
+            batch->mCount       = 0;
+            batch->mLimit       = mBatchSlots;
             batch->mInputHost   = mInputHost  + offset;
             batch->mInputDev    = mInputDev   + offset;
             batch->mOutputHost  = mOutputHost + offset;
             batch->mOutputDev   = mOutputDev  + offset;
-            batch->mState       = BATCH_UNUSED;
-            batch->mCount       = 0;
-            batch->mLimit       = mBatchSlots;
+            batch->mHashTable   = mHashTableDev;
+            batch->mEvaluator   = mEvaluatorDev;
         }
 
+        int coresPerSM = 0;
+        switch( mProp.major )
+        {
+        case 1:     coresPerSM = 8; break;
+        case 2:     coresPerSM = (mProp.minor > 0)? 48 : 32; break;
+        case 3:     coresPerSM = 192; break;
+        case 5:     coresPerSM = 128; break;
+        case 6:     coresPerSM = 64; break;
+        case 7:     coresPerSM = 128; break;
+        default:    break;
+        }
+
+        printf( "info string CUDA %d: %s (", mDeviceIndex, mProp.name );
+        printf( "CC %d.%d, ", mProp.major, mProp.minor );
+        if( coresPerSM > 0 )
+            printf( "%d cores, ", mProp.multiProcessorCount * coresPerSM );
+        printf( "%d mHz, ", mProp.clockRate / 1000 );
+        printf( "%d MB)\n", mProp.totalGlobalMem / (1024 * 1024) );
+
         mInitialized = true;
+    }
+
+    bool IsInitialized() const
+    {
+        return( mInitialized );
     }
 
     void Shutdown()
@@ -139,9 +227,7 @@ class CudaChessContext
         for( size_t i = 0; i < mStream.size(); i++ )
             cudaStreamDestroy( mStream[i] );
 
-        mStream.clear();
-
-        PlatClearMemory( this, sizeof( *this ) );
+        this->Clear();
     }
 
     SearchBatch* AllocBatch()
@@ -179,6 +265,8 @@ class CudaChessContext
 
         if( batch->mCount > 0 )
         {
+            extern void QueueSearchBatch( SearchBatch* batch, int blockSize );
+            
             int blockSize = mProp.warpSize;
             QueueSearchBatch( batch, blockSize );
         }
@@ -252,14 +340,8 @@ public:
 
         return( count );
     }
-
-    void QueuePosition( const Position& pos, int depth )
-    {
-
-    }
 };
 
+#endif // PIGEON_CUDA_HOST
 #endif // PIGEON_ENABLE_CUDA
-
-};
 #endif // PIGEON_GPU_H__

@@ -328,6 +328,7 @@ namespace Pigeon
         class Scope
         {
             Mutex& mMutex;
+        public:
             Scope( Mutex& mutex ) : mMutex( mutex ) { mMutex.Enter(); }
            ~Scope() { mMutex.Leave(); }
         };

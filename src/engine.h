@@ -23,7 +23,6 @@ protected:
 
 PDECL class Engine : EngineBase
 {
-    int                     mTableSize;                 ///< Transposition table size (in megs)
     int                     mTargetTime;                ///< Time to stop current search
     int                     mDepthLimit;                ///< Depth limit for current search (not counting quiesence)
     Timer                   mSearchElapsed;             ///< Time elapsed since the "go" command
@@ -38,6 +37,10 @@ PDECL class Engine : EngineBase
     u8                      mHistoryTable[2][64][64];   ///< Indexed as [whiteToMove][dest][src]
     std::map< u64, int >    mPositionReps;              ///< Indexed by hash, detects repetitions to avoid (unwanted) draw
     int                     mOptions[OPTION_COUNT];     ///< Runtime options exposed via UCI
+
+#if PIGEON_CUDA_HOST
+    CudaChessContext        mCudaContext;
+#endif
 
 public:
     Engine()
@@ -62,15 +65,18 @@ public:
         PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
         PlatClearMemory( mOptions, sizeof( mOptions ) );
 
-        mOptions[OPTION_HASH_SIZE]      = TT_MEGS_DEFAULT;
-        mOptions[OPTION_CLEAR_HASH]     = 0;
-        mOptions[OPTION_OWN_BOOK]       = OWNBOOK_DEFAULT? 1 : 0;
-        mOptions[OPTION_NUM_THREADS]    = PlatDetectCpuCores();
-        mOptions[OPTION_ENABLE_SIMD]    = 1;
-        mOptions[OPTION_ENABLE_POPCNT]  = 1;
-        mOptions[OPTION_ENABLE_CUDA]    = 1;
-        mOptions[OPTION_EARLY_MOVE]     = 1;
-        mOptions[OPTION_GPU_HASH_SIZE]  = TT_MEGS_DEFAULT;
+        mOptions[OPTION_HASH_SIZE]          = TT_MEGS_DEFAULT;
+        mOptions[OPTION_CLEAR_HASH]         = 0;
+        mOptions[OPTION_OWN_BOOK]           = OWNBOOK_DEFAULT? 1 : 0;
+        mOptions[OPTION_NUM_THREADS]        = PlatDetectCpuCores();
+        mOptions[OPTION_ENABLE_SIMD]        = 1;
+        mOptions[OPTION_ENABLE_POPCNT]      = 1;
+        mOptions[OPTION_ENABLE_CUDA]        = 1;
+        mOptions[OPTION_EARLY_MOVE]         = 1;
+        mOptions[OPTION_GPU_HASH_SIZE]      = TT_MEGS_DEFAULT;
+        mOptions[OPTION_GPU_BATCH_SIZE]     = BATCH_SIZE_DEFAULT;
+        mOptions[OPTION_GPU_BATCH_COUNT]    = BATCH_COUNT_DEFAULT;
+        mOptions[OPTION_GPU_PLIES]          = GPU_PLIES_DEFAULT;
 
         mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
     }
@@ -119,8 +125,24 @@ public:
 
     void Init()
     {
-        if( mTableSize != mHashTable.GetSize() )
-            mHashTable.SetSize( mTableSize );
+        if( mOptions[OPTION_HASH_SIZE] != mHashTable.GetSize() )
+            mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
+
+#if PIGEON_CUDA_HOST
+        if( CudaSystem::GetDeviceCount() > 0 )
+        {
+            if( !mCudaContext.IsInitialized() )
+            {
+                int deviceIndex = 0;
+
+                mCudaContext.Initialize( 
+                    deviceIndex, 
+                    mOptions[OPTION_GPU_BATCH_COUNT],
+                    mOptions[OPTION_GPU_BATCH_SIZE],
+                    mOptions[OPTION_GPU_HASH_SIZE] );
+            }
+        }
+#endif
     }
 
     void SetDebug( bool debug )
@@ -569,10 +591,20 @@ private:
 		searchTime.Reset();
 
         SearchState< POPCNT, SIMD > ss;
-        ss.mHashTable = &mHashTable;
-        ss.mEvaluator = &mEvaluator;
-        ss.mExitSearch = &mExitSearch;
-        ss.mMetrics = &mMetrics;
+
+        ss.mHashTable   = &mHashTable;
+        ss.mEvaluator   = &mEvaluator;
+        ss.mExitSearch  = &mExitSearch;
+        ss.mMetrics     = &mMetrics;
+
+        if( mCudaContext.IsInitialized() )
+        {
+            if( depth >= (MIN_CPU_PLIES + mOptions[OPTION_GPU_PLIES]) )
+            {
+                ss.mCudaContext   = &mCudaContext;
+                ss.mAsyncSpawnPly = mOptions[OPTION_GPU_PLIES];
+            }
+        }
 
         EvalTerm score = ss.RunToDepth( mRoot, depth );
         ss.ExtractBestLine( &pv  );

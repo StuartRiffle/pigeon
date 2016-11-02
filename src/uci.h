@@ -28,6 +28,9 @@ struct UCI
             printf( "option name POPCNT type check default true\n" );
             printf( "option name CUDA type check default true\n" );
             printf( "option name GPU Hash type spin min 4 max 8192 default %d\n", TT_MEGS_DEFAULT );
+            printf( "option name GPU Batch Size type spin min 32 max 8192 default %d\n", BATCH_SIZE_DEFAULT );
+            printf( "option name GPU Batch Count type spin min 4 max 1024 default %d\n", BATCH_COUNT_DEFAULT );
+            printf( "option name GPU Plies type spin min 0 max 8 default %d\n", GPU_PLIES_DEFAULT );
 
             printf( "uciok\n" );
         }
@@ -61,6 +64,15 @@ struct UCI
 
                 if( tokens.Consume( "gpu" ) && tokens.Consume( "hash" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_GPU_HASH_SIZE, tokens.ConsumeInt() );
+
+                if( tokens.Consume( "gpu" ) && tokens.Consume( "batch" ) && tokens.Consume( "size" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_GPU_BATCH_SIZE, tokens.ConsumeInt() );
+
+                if( tokens.Consume( "gpu" ) && tokens.Consume( "batch" ) && tokens.Consume( "count" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_GPU_BATCH_COUNT, tokens.ConsumeInt() );
+
+                if( tokens.Consume( "gpu" ) && tokens.Consume( "plies" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_GPU_PLIES, tokens.ConsumeInt() );
 
             }
         }

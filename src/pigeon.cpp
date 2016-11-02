@@ -30,7 +30,6 @@
 #include "amoeba.h"
 #include "tune.h"
 #include "uci.h"
-#include "gpu.h"
 
         
 int main( int argc, char** argv )

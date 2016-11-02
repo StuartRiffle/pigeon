@@ -80,6 +80,9 @@ enum
     OPTION_ENABLE_CUDA, 
     OPTION_EARLY_MOVE,
     OPTION_GPU_HASH_SIZE,
+    OPTION_GPU_BATCH_SIZE,
+    OPTION_GPU_BATCH_COUNT,
+    OPTION_GPU_PLIES,
 
     OPTION_COUNT
 };
@@ -106,7 +109,11 @@ const PDECL int       LAG_SAFETY_BUFFER   = 200;
 const PDECL int       NO_TIME_LIMIT       = -1;
 const PDECL int       PERFT_PARALLEL_MAX  = 5;
 const PDECL int       LAST_QUIET_LEVEL    = -4;
-const PDECL int       CUDA_BLOCKSIZE      = 32;
+const PDECL int       CUDA_STREAM_COUNT   = 4;
+const PDECL int       BATCH_SIZE_DEFAULT  = 1024;
+const PDECL int       BATCH_COUNT_DEFAULT = 32;
+const PDECL int       GPU_PLIES_DEFAULT   = 2;
+const PDECL int       MIN_CPU_PLIES       = 2;
 const PDECL int       WEIGHT_SHIFT        = 16;
 const PDECL float     WEIGHT_SCALE        = (1 << WEIGHT_SHIFT);
 const PDECL bool      OWNBOOK_DEFAULT     = true;

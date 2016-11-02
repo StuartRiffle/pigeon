@@ -1,5 +1,9 @@
 // search.h - PIGEON CHESS ENGINE (c) 2012-2016 Stuart Riffle
-        
+
+#if PIGEON_ENABLE_CUDA
+#include <vector>
+#endif
+
 namespace Pigeon {
 #ifndef PIGEON_SEARCH_H__
 #define PIGEON_SEARCH_H__
@@ -42,39 +46,7 @@ struct SearchMetrics
 };
 
 
-struct SearchJobInput
-{
-	Position            mPosition;
-	HashTable*          mHashTable;
-	Evaluator*          mEvaluator;
-	int                 mSearchDepth;
-};
-
-struct SearchJobOutput
-{
-	MoveList			mBestLine;
-    u64                 mNodes;
-	EvalTerm			mScore;
-};
-
-
-#ifdef PIGEON_ENABLE_CUDA
-
-struct SearchBatch
-{
-    SearchJobInput*     mInputHost;
-    SearchJobInput*     mInputDev;
-    SearchJobOutput*    mOutputHost;
-    SearchJobOutput*    mOutputDev;
-    cudaEvent_t         mEvent;
-    cudaStream_t        mStream;
-    int                 mCount;
-    int                 mLimit;
-};
-
-extern "C" void QueueSearchBatch( SearchBatch* batch, int blockSize );
-
-#endif
+#include "gpu.h"
 
 
 template< int POPCNT, typename SIMD >
@@ -121,6 +93,7 @@ struct SearchState
     int                 mFrameIdx;
     int                 mSearchDepth;
     int                 mDeepestPly;
+    int                 mAsyncSpawnPly;
     Position            mRoot;
     MoveMap             mRootMoveMap;
     MoveList            mBestLine;
@@ -133,6 +106,7 @@ struct SearchState
 
 #if PIGEON_CUDA_HOST
     CudaChessContext*   mCudaContext;
+    SearchBatch*        mCudaBatch;
 #endif
 
 
@@ -141,11 +115,17 @@ struct SearchState
         mFrameIdx       = 0;
         mSearchDepth    = 0;
         mDeepestPly     = 0;
+        mAsyncSpawnPly  = -1;
         mHashTable      = NULL;
         mEvaluator      = NULL;
         mMetrics        = NULL;
         mExitSearch     = NULL;
         mBestLine.Clear();
+
+#if PIGEON_CUDA_HOST
+        mCudaContext    = NULL;
+        mCudaBatch      = NULL;
+#endif
 
 #if !PIGEON_CUDA_DEVICE
         PlatClearMemory( mWeights, sizeof( mWeights ) );
@@ -179,12 +159,6 @@ struct SearchState
 
         Exchange( f->moves.mMove[f->moves.mTried], f->moves.mMove[best] );
         return( f->moves.mTried++ );        
-    }
-
-
-    PDECL void QueueAsyncSearch( const Position* pos )
-    {
-
     }
 
 
@@ -237,7 +211,7 @@ struct SearchState
         }
     }
 
-    PDECL void ProcessCompletedBatches()
+    PDECL void ProcessAllCompletedBatches()
     {
         for( ;; )
         {
@@ -257,24 +231,26 @@ struct SearchState
 #if PIGEON_CUDA_HOST
         if( mCudaContext && (f->ply == mAsyncSpawnPly) )
         {
-            bool triedBefore = false;
-
-            for( ;; )
+            if( mCudaBatch == NULL )
             {
-                if( triedBefore )
+                bool triedBefore = false;
+
+                for( ;; )
                 {
-                    // We are GPU bound
+                    mCudaBatch = mCudaContext->AllocBatch();
+                    if( mCudaBatch )
+                        break;
 
-                    PlatSleep( 1 );
+                    if( triedBefore )
+                    {
+                        // We are GPU bound
+
+                        PlatSleep( 1 );
+                    }
+
+                    triedBefore = true;
+                    this->ProcessAllCompletedBatches();
                 }
-
-                mCudaBatch = mCudaContext->AllocBatch();
-                if( mCudaBatch )
-                    break;
-
-                triedBefore = true;
-
-                this->ProcessCompletedBatches();
             }
 
             SearchJobInput* input = mCudaBatch->mInputHost + mCudaBatch->mCount;
@@ -285,7 +261,7 @@ struct SearchState
             mCudaBatch->mCount++;
             if( mCudaBatch->mCount == mCudaBatch->mLimit )
             {
-                mCudaDevice->SubmitBatch( mCudaBatch );
+                mCudaContext->SubmitBatch( mCudaBatch );
                 mCudaBatch = NULL;
             }
 
@@ -444,9 +420,6 @@ struct SearchState
     PDECL INLINE Frame* CheckScore( Frame* f )
     {
         EvalTerm subScore = -f[1].result;
-
-        //FEN::PrintMoveSpec( f->childSpec[f->simdIdx] );
-        //printf( " %d\n", subScore );
 
         if( subScore > f->bestScore )
         {
