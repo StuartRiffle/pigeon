@@ -58,9 +58,6 @@
     <ClInclude Include="..\src\tune.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\jobs.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\gpu.h">
       <Filter>src</Filter>
     </ClInclude>

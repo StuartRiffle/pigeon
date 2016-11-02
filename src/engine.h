@@ -585,11 +585,7 @@ private:
             i64 elapsed     = Max( searchTime.GetElapsedMs(), (i64) 1 );
             i64 nps         = mMetrics.mNodesTotal * 1000L / elapsed;
             int hashfull    = (int) (mHashTable.EstimateUtilization() * 1000);
-            int seldepth    = 0;
-
-            for( seldepth = METRICS_DEPTH - 1; seldepth > depth; seldepth-- )
-                 if( mMetrics.mNodesAtPly[seldepth] )
-                     break;
+            int seldepth    = ss.mDeepestPly;
 
             //if( score == EVAL_SEARCH_ABORTED )
             //    score = rootScore;

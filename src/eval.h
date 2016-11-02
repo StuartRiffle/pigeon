@@ -34,6 +34,11 @@ public:
         assert( (CENTER_DIST_0 | CENTER_DIST_1 | CENTER_DIST_2 | CENTER_DIST_3 | CENTER_DIST_4 | CENTER_DIST_5 | CENTER_DIST_6) == ALL_SQUARES );
         assert( (CENTER_RING_0 | CENTER_RING_1 | CENTER_RING_2 | CENTER_RING_3) == ALL_SQUARES );
 
+        this->SetDefaultWeights();
+    }
+
+    PDECL void SetDefaultWeights()
+    {
         this->SetWeight( EVAL_PAWNS,                100.00,    100.00,    100.00 );   //    100,    100.00
         this->SetWeight( EVAL_CENTER_PAWNS,          10.00,      0.00,      0.00 );   //     10,      0.00
         this->SetWeight( EVAL_CHAINED_PAWNS,         10.00,      2.75,      2.75 );   //     30,      2.75

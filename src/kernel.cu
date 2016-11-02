@@ -19,36 +19,44 @@ __global__ void SearchPositionsOnGPU( const Pigeon::SearchJobInput* inputBuf, Pi
 		 
 	const Pigeon::SearchJobInput*	input	= inputBuf  + idx;
 	Pigeon::SearchJobOutput*		output	= outputBuf + idx;
+	Pigeon::SearchMetrics			metrics;
 
 	Pigeon::SearchState< 1, Pigeon::u64 > ss;
 
     ss.mHashTable	= input->mHashTable;
     ss.mEvaluator	= input->mEvaluator;
-    ss.mMetrics		= &output->mMetrics;
+    ss.mMetrics		= &metrics;
 
     output->mScore = ss.RunToDepth( input->mPosition, input->mSearchDepth );
-    ss.ExtractBestLine( &output->mBestLine  );
+	output->mNodes = metrics.mNodesTotal;
+
+    ss.ExtractBestLine( &output->mBestLine );
 
 	__threadfence();
 }
 
 
-extern "C" void QueueSearchBatch( Pigeon::SearchBatch* batch )
+extern "C" void QueueSearchBatch( Pigeon::SearchBatch* batch, int blockSize )
 {
+	// Copy the inputs to device
+
 	cudaMemcpyAsync( batch->mInputDev, batch->mInputHost, sizeof( Pigeon::SearchJobInput ) * batch->mCount, cudaMemcpyHostToDevice, batch->mStream );
+
+	// Clear the device outputs
+
 	cudaMemsetAsync( batch->mOutputDev, 0, sizeof( Pigeon::SearchJobOutput ) * batch->mCount, batch->mStream );
 
-	int	minGridSize;
-	int blockSize;
-
-	if( cudaOccupancyMaxPotentialBlockSize( &minGridSize, &blockSize, SearchPositionsOnGPU, 0, 0 ) != cudaSuccess )
-		blockSize = 32;
+	// Run the search kernel
 
 	int blockCount = (batch->mCount + blockSize - 1) / blockSize;
-
 	SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount );
 
+	// Copy the outputs to host
+
 	cudaMemcpyAsync( batch->mOutputHost, batch->mOutputDev, sizeof( Pigeon::SearchJobOutput ) * batch->mCount, cudaMemcpyDeviceToHost, batch->mStream );
+
+	// Record an event we can test for completion
+
 	cudaEventRecord( batch->mEvent, batch->mStream );
 }
 

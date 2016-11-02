@@ -23,7 +23,7 @@
 			"file": "/D/git/pigeon/src/position.h",
 			"settings":
 			{
-				"buffer_size": 37072,
+				"buffer_size": 37013,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -32,7 +32,7 @@
 			"file": "/D/git/pigeon/src/table.h",
 			"settings":
 			{
-				"buffer_size": 2900,
+				"buffer_size": 2912,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -49,7 +49,7 @@
 			"file": "/D/git/pigeon/src/engine.h",
 			"settings":
 			{
-				"buffer_size": 28186,
+				"buffer_size": 19539,
 				"line_ending": "Windows"
 			}
 		},
@@ -84,16 +84,7 @@
 			"file": "/D/git/pigeon/src/simd.h",
 			"settings":
 			{
-				"buffer_size": 28482,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/D/git/pigeon/src/negamax.h",
-			"settings":
-			{
-				"buffer_size": 11150,
+				"buffer_size": 28488,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -102,7 +93,7 @@
 			"file": "/D/git/pigeon/src/search.h",
 			"settings":
 			{
-				"buffer_size": 1267,
+				"buffer_size": 14932,
 				"line_ending": "Windows"
 			}
 		},
@@ -110,7 +101,7 @@
 			"file": "/D/git/pigeon/src/defs.h",
 			"settings":
 			{
-				"buffer_size": 11803,
+				"buffer_size": 12111,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -137,7 +128,7 @@
 			"file": "/D/git/pigeon/src/pigeon.cpp",
 			"settings":
 			{
-				"buffer_size": 2598,
+				"buffer_size": 3003,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -154,7 +145,7 @@
 			"file": "/D/git/pigeon/src/kernel.cu",
 			"settings":
 			{
-				"buffer_size": 3418,
+				"buffer_size": 1675,
 				"line_ending": "Windows"
 			}
 		},
@@ -162,7 +153,7 @@
 			"file": "/D/git/pigeon/src/movelist.h",
 			"settings":
 			{
-				"buffer_size": 9844,
+				"buffer_size": 9868,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -434,6 +425,7 @@
 	],
 	"file_history":
 	[
+		"/D/git/pigeon/src/negamax.h",
 		"/D/git/pigeon/src/neural.h",
 		"/D/git/pigeon/src/cat/cat15.txt",
 		"/D/git/pigeon/src/cat/cat08.txt",
@@ -560,8 +552,7 @@
 		"/d/echo/depot/Class3/hd/code/Tools/OneBitLabs/MakeEnv/build",
 		"/d/echo/depot/Class3/hd/code/Tools/OneBitLabs/MakeEnv/makefile",
 		"/d/echo/depot/Class3/hd/code/Tools/OneBitLabs/MakeEnv/runmake.abt",
-		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/PostProcessRain.cpp",
-		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/Common/Shaders/Parser.cpp"
+		"/D/echo/depot/Class3/hd/code/CryEngine/RenderDLL/XRenderD3D9/PostProcessRain.cpp"
 	],
 	"find":
 	{
@@ -756,7 +747,7 @@
 	"groups":
 	[
 		{
-			"selected": 9,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -786,7 +777,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 30,
+					"stack_index": 26,
 					"type": "text"
 				},
 				{
@@ -795,15 +786,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 37072,
+						"buffer_size": 37013,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								342,
-								342
+								0,
+								0
 							]
 						],
 						"settings":
@@ -817,7 +808,7 @@
 						"translation.y": 85.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
@@ -826,15 +817,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2900,
+						"buffer_size": 2912,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2900,
-								2900
+								0,
+								0
 							]
 						],
 						"settings":
@@ -847,7 +838,7 @@
 						"translation.y": 574.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 26,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
@@ -875,7 +866,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 29,
+					"stack_index": 25,
 					"type": "text"
 				},
 				{
@@ -884,7 +875,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 28186,
+						"buffer_size": 19539,
 						"regions":
 						{
 						},
@@ -906,7 +897,7 @@
 						"translation.y": 3811.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 21,
+					"stack_index": 19,
 					"type": "text"
 				},
 				{
@@ -993,7 +984,7 @@
 						"translation.y": 23.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 25,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
@@ -1002,15 +993,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 28482,
+						"buffer_size": 28488,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								162,
-								162
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1023,54 +1014,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 28,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "/D/git/pigeon/src/negamax.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11150,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1580,
-								1580
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 407.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 9,
 					"file": "/D/git/pigeon/src/search.h",
 					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 1267,
+						"buffer_size": 14932,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1267,
-								1267
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1087,20 +1048,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 10,
 					"file": "/D/git/pigeon/src/defs.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11803,
+						"buffer_size": 12111,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4589,
-								4589
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1117,7 +1078,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 11,
 					"file": "pigeon.sublime-project",
 					"semi_transient": false,
 					"settings":
@@ -1146,7 +1107,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 12,
 					"file": "/D/git/pigeon/CMakeLists.txt",
 					"semi_transient": false,
 					"settings":
@@ -1170,24 +1131,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 13,
 					"file": "/D/git/pigeon/src/pigeon.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2598,
+						"buffer_size": 3003,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								281,
-								281
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1207,54 +1168,24 @@
 			]
 		},
 		{
-			"selected": 5,
+			"selected": 4,
 			"sheets":
 			[
-				{
-					"buffer": 9,
-					"file": "/D/git/pigeon/src/negamax.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11150,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								793,
-								793
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
 				{
 					"buffer": 8,
 					"file": "/D/git/pigeon/src/simd.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 28482,
+						"buffer_size": 28488,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1481,
-								1481
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1267,11 +1198,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 23,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 14,
 					"file": "/D/git/pigeon/src/amoeba.h",
 					"semi_transient": false,
 					"settings":
@@ -1301,20 +1232,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 15,
 					"file": "/D/git/pigeon/src/kernel.cu",
 					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 3418,
+						"buffer_size": 1675,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								623,
-								623
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1336,7 +1267,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 28186,
+						"buffer_size": 19539,
 						"regions":
 						{
 						},
@@ -1357,7 +1288,7 @@
 						"translation.y": 5331.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 24,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
@@ -1366,15 +1297,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 28186,
+						"buffer_size": 19539,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1354,
-								1354
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1391,20 +1322,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 16,
 					"file": "/D/git/pigeon/src/movelist.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9844,
+						"buffer_size": 9868,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8826,
-								8826
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1418,7 +1349,7 @@
 						"translation.y": 1964.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 27,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
@@ -1427,7 +1358,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 37072,
+						"buffer_size": 37013,
 						"regions":
 						{
 						},
@@ -1449,11 +1380,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
+					"buffer": 17,
 					"file": "/D/git/pigeon/build/  d:/git/pigeon/src/eval.h",
 					"semi_transient": false,
 					"settings":
@@ -1477,11 +1408,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 17,
 					"type": "text"
 				},
 				{
-					"buffer": 19,
+					"buffer": 18,
 					"file": "/d/git/pigeon/src/eval.h",
 					"semi_transient": false,
 					"settings":
@@ -1512,7 +1443,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 12,
 					"file": "/D/git/pigeon/CMakeLists.txt",
 					"semi_transient": false,
 					"settings":
@@ -1536,41 +1467,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "/D/git/pigeon/src/negamax.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11150,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 22,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
+					"buffer": 11,
 					"file": "pigeon.sublime-project",
 					"semi_transient": false,
 					"settings":
@@ -1595,24 +1496,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 13,
 					"file": "/D/git/pigeon/src/pigeon.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2598,
+						"buffer_size": 3003,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								182,
-								182
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1630,37 +1531,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "/D/git/pigeon/src/negamax.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11150,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								243,
-								275
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 18,
-					"type": "text"
-				},
-				{
-					"buffer": 19,
+					"buffer": 18,
 					"file": "/d/git/pigeon/src/eval.h",
 					"semi_transient": false,
 					"settings":
@@ -1687,7 +1558,7 @@
 						"translation.y": 2120.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 16,
 					"type": "text"
 				}
 			]

@@ -31,13 +31,14 @@ struct SearchMetrics
 {
     u64                 mNodesTotal;
     u64                 mNodesTotalSimd;
+    u64                 mGpuNodesTotal;
     u64                 mNodesAtPly[METRICS_DEPTH];
     u64                 mHashLookupsAtPly[METRICS_DEPTH];
     u64                 mHashHitsAtPly[METRICS_DEPTH];
     u64                 mMovesTriedByPly[METRICS_DEPTH][METRICS_MOVES];
 
-    SearchMetrics()     { this->Clear(); }
-    void Clear()        { PlatClearMemory( this, sizeof( *this ) ); }
+    PDECL SearchMetrics()     { this->Clear(); }
+    PDECL void Clear()        { PlatClearMemory( this, sizeof( *this ) ); }
 };
 
 
@@ -51,8 +52,8 @@ struct SearchJobInput
 
 struct SearchJobOutput
 {
-	SearchMetrics		mMetrics;
 	MoveList			mBestLine;
+    u64                 mNodes;
 	EvalTerm			mScore;
 };
 
@@ -68,9 +69,10 @@ struct SearchBatch
     cudaEvent_t         mEvent;
     cudaStream_t        mStream;
     int                 mCount;
+    int                 mLimit;
 };
 
-extern "C" void QueueSearchBatch( SearchBatch* batch );
+extern "C" void QueueSearchBatch( SearchBatch* batch, int blockSize );
 
 #endif
 
@@ -129,6 +131,10 @@ struct SearchState
     EvalWeight          mWeights[EVAL_TERMS];
     Frame               mFrames[MAX_SEARCH_DEPTH];
 
+#if PIGEON_CUDA_HOST
+    CudaChessContext*   mCudaContext;
+#endif
+
 
     PDECL SearchState()
     {
@@ -176,9 +182,16 @@ struct SearchState
     }
 
 
+    PDECL void QueueAsyncSearch( const Position* pos )
+    {
+
+    }
+
+
     PDECL INLINE Frame* HandleLeaf( Frame* f )
     {
         mMetrics->mNodesTotal++;
+        mMetrics->mNodesAtPly[f->ply]++;
 
         if( f->ply > mDeepestPly )
             mDeepestPly = f->ply;
@@ -208,6 +221,80 @@ struct SearchState
             f->result = f->inCheck? EVAL_CHECKMATE : EVAL_STALEMATE;
             f--;
         }        
+
+        return( f );
+    }
+
+
+#if PIGEON_CUDA_HOST
+    PDECL void ProcessCompletedBatch( SearchBatch* batch )
+    {
+        for( int i = 0; i < batch->mCount; i++ )
+        {
+            SearchJobOutput* result = batch->mOutputHost + i;
+
+            mMetrics->mGpuNodesTotal += result->mNodes;
+        }
+    }
+
+    PDECL void ProcessCompletedBatches()
+    {
+        for( ;; )
+        {
+            SearchBatch* batch = mCudaContext->GetCompletedBatch();
+            if( batch == NULL )
+                break;
+
+            this->ProcessCompletedBatch( batch );
+            mCudaContext->ReleaseBatch( batch );
+        }
+    }
+#endif
+
+
+    PDECL INLINE Frame* HandleSpawnAsync( Frame* f )
+    {
+#if PIGEON_CUDA_HOST
+        if( mCudaContext && (f->ply == mAsyncSpawnPly) )
+        {
+            bool triedBefore = false;
+
+            for( ;; )
+            {
+                if( triedBefore )
+                {
+                    // We are GPU bound
+
+                    PlatSleep( 1 );
+                }
+
+                mCudaBatch = mCudaContext->AllocBatch();
+                if( mCudaBatch )
+                    break;
+
+                triedBefore = true;
+
+                this->ProcessCompletedBatches();
+            }
+
+            SearchJobInput* input = mCudaBatch->mInputHost + mCudaBatch->mCount;
+
+            input->mPosition    = *f->pos;
+            input->mSearchDepth = f->depth;
+
+            mCudaBatch->mCount++;
+            if( mCudaBatch->mCount == mCudaBatch->mLimit )
+            {
+                mCudaDevice->SubmitBatch( mCudaBatch );
+                mCudaBatch = NULL;
+            }
+
+            // This subtree will be processed async, so back out
+
+            f->result = f->score;
+            f--;
+        }
+#endif
 
         return( f );
     }
@@ -313,8 +400,6 @@ struct SearchState
                     SimdInsert( simdSpec.mSrc,  f->childSpec[idxLane].mSrc,  idxLane );
                     SimdInsert( simdSpec.mDest, f->childSpec[idxLane].mDest, idxLane );
                     SimdInsert( simdSpec.mType, f->childSpec[idxLane].mType, idxLane );
-
-                    //mMetrics.mNodesTotalSimd++;
                 }
 
                 simdPos.Broadcast( *f->pos );
@@ -330,6 +415,8 @@ struct SearchState
 
                 for( int idxLane = 0; idxLane < LANES; idxLane++ )
                     f->childScore[idxLane] = (EvalTerm) unpackScore[idxLane];
+
+                mMetrics->mNodesTotalSimd += LANES;
 
                 f->simdIdx = 0;
             }
@@ -347,7 +434,6 @@ struct SearchState
             n->step     = STEP_PROCESS;
 
             f->step     = STEP_CHECK_SCORE;
-            //f->movesTried++;
             f++;
         }
 
@@ -421,29 +507,15 @@ struct SearchState
 
         Frame* f = mFrames + mFrameIdx;
 
-        if( f->step == STEP_PROCESS )            
-            f = this->HandleLeaf( f );
-
-        if( f->step == STEP_PROCESS )            
-            f = this->HandleMate( f );
-
-        if( f->step == STEP_PROCESS )            
-            f = this->Quieten( f );
-
-        if( f->step == STEP_PROCESS )            
-            f = this->CheckHashTable( f );
-
-        if( f->step == STEP_PROCESS )            
-            f = this->PrepareToIterate( f );
-
-        if( f->step == STEP_ITERATE_CHILDREN )   
-            f = this->IterateChildren( f );
-
-        if( f->step == STEP_CHECK_SCORE )        
-            f = this->CheckScore( f );
-
-        if( f->step == STEP_FINALIZE )           
-            f = this->StoreIntoHashTable( f );
+        if( f->step == STEP_PROCESS )           f = this->HandleLeaf( f );
+        if( f->step == STEP_PROCESS )           f = this->HandleMate( f );
+        if( f->step == STEP_PROCESS )           f = this->HandleSpawnAsync( f );
+        if( f->step == STEP_PROCESS )           f = this->Quieten( f );
+        if( f->step == STEP_PROCESS )           f = this->CheckHashTable( f );
+        if( f->step == STEP_PROCESS )           f = this->PrepareToIterate( f );
+        if( f->step == STEP_ITERATE_CHILDREN )  f = this->IterateChildren( f );
+        if( f->step == STEP_CHECK_SCORE )       f = this->CheckScore( f );
+        if( f->step == STEP_FINALIZE )          f = this->StoreIntoHashTable( f );
 
         mFrameIdx = (int) (f - mFrames);
     }

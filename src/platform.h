@@ -14,7 +14,7 @@
 #include <cuda_runtime_api.h>
 #endif
 
-#if defined( __CUDA_ARCH__ )
+#if PIGEON_ENABLE_CUDA && defined( __CUDA_ARCH__ )
 
     // We are running __device__ code
 
@@ -34,6 +34,8 @@
     #include <process.h>
     #include <intrin.h>
     #include <limits.h>
+
+    #include <atomic>
 
     #pragma warning( disable: 4996 )    // CRT security warnings
     #pragma warning( disable: 4293 )    // Shift count negative or too big (due to unused branch in templated function)
@@ -71,6 +73,8 @@
     #include <string.h>
     #include <unistd.h>
 
+    #include <atomic>
+
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 
     #define PIGEON_CPU          (1)
@@ -90,6 +94,10 @@
 
 #else
     #error
+#endif
+
+#if PIGEON_ENABLE_CUDA && PIGEON_CPU
+#define PIGEON_CUDA_HOST (1)
 #endif
 
 namespace Pigeon 
@@ -186,7 +194,7 @@ namespace Pigeon
     INLINE PDECL void PlatClearMemory( void* mem, size_t bytes )
     {
     #if PIGEON_CUDA_DEVICE
-        cudaMemset( mem, 0, bytes );
+        memset( mem, 0, bytes );
     #elif PIGEON_MSVC
         ::memset( mem, 0, bytes );
     #elif PIGEON_GCC
@@ -200,6 +208,15 @@ namespace Pigeon
         _mm_prefetch( (char*) mem, _MM_HINT_NTA );
     #elif PIGEON_GCC
         __builtin_prefetch( mem );  
+    #endif
+    }
+
+    INLINE PDECL void PlatMemoryFence()
+    {
+    #if PIGEON_CUDA_DEVICE
+        __threadfence();
+    #else
+        std::atomic_thread_fence( std::memory_order_seq_cst );
     #endif
     }
 
@@ -295,6 +312,27 @@ namespace Pigeon
         void Wait() { while( sem_wait( &mHandle ) ) {} }
     #endif
     };
+
+    struct Mutex
+    {
+    #if PIGEON_MSVC
+        CRITICAL_SECTION mCritSec;
+        Mutex()      { InitializeCriticalSection( &mCritSec ); }
+       ~Mutex()      { DeleteCriticalSection( &mCritSec ); }
+        void Enter() { EnterCriticalSection( &mCritSec ); }
+        void Leave() { LeaveCriticalSection( &mCritSec ); }
+    #elif PIGEON_GCC
+        #error Not implemented yet
+    #endif
+
+        class Scope
+        {
+            Mutex& mMutex;
+            Scope( Mutex& mutex ) : mMutex( mutex ) { mMutex.Enter(); }
+           ~Scope() { mMutex.Leave(); }
+        };
+    };
+
 
 
 #endif

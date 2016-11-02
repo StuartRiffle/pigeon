@@ -227,7 +227,6 @@
     <ClInclude Include="..\src\eval.h" />
     <ClInclude Include="..\src\fen.h" />
     <ClInclude Include="..\src\gpu.h" />
-    <ClInclude Include="..\src\jobs.h" />
     <ClInclude Include="..\src\movelist.h" />
     <ClInclude Include="..\src\perft.h" />
     <ClInclude Include="..\src\platform.h" />

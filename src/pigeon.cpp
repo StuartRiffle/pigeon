@@ -40,13 +40,35 @@ int main( int argc, char** argv )
     setvbuf( stdin,  NULL, _IONBF, 0 );
     setvbuf( stdout, NULL, _IONBF, 0 );
 
-    bool cudaDetected = (Pigeon::CudaSystem::GetDeviceCount() > 0); 
-     
+    // Detect hardware support
+    
+    int cudaCount = 0;
+    
+#if PIGEON_ENABLE_CUDA
+    cudaCount = Pigeon::CudaSystem::GetDeviceCount();
+#endif
+
     const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
 
+    std::string hardwareDesc = cpuDesc[Pigeon::PlatDetectCpuLevel()];
+    hardwareDesc += Pigeon::PlatDetectPopcnt()? "/POPCNT" : "";
+    hardwareDesc += cudaCount? "/CUDA" : "";
+    
+    if( cudaCount > 1 )
+    {
+        char cudaCountStr[16];
+        sprintf( cudaCountStr, "x%d", cudaCount );
+        hardwareDesc += cudaCountStr;
+    }
+     
+    char versionStr[32];
+    sprintf( versionStr, "%d.%d.%d", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH ); 
+
+    // Draw the pretty birdie
+
     printf( "\n" );                      
-    printf( "     /O_"  "    Pigeon %d.%d.%d (UCI)\n", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH );
-    printf( "     || "  "    %s%s%s\n", cpuDesc[Pigeon::PlatDetectCpuLevel()], Pigeon::PlatDetectPopcnt()? "/POPCNT" : "", cudaDetected? "/CUDA" : ""  );
+    printf( "     /O_"  "    Pigeon %s (UCI)\n", versionStr );
+    printf( "     || "  "    %s\n", hardwareDesc.c_str() );
     printf( "    / \\\\""    \n" );
     printf( "  =/__//"  "    pigeonengine.com\n" );
     printf( "     ^^ "  "    \n" );
@@ -62,7 +84,6 @@ int main( int argc, char** argv )
         commands += std::string( argv[i] ) + " ";
 
     commands += ";";
-    //commands += "run autotune.coo;";
 
     for( ;; )
     {
@@ -85,7 +106,7 @@ int main( int argc, char** argv )
         commands = commands.substr( delimPos + 1 );
     }
 
-    // Process standard input
+    // Process standard input until there's no more
 
     while( !feof( stdin ) )
     {

@@ -53,13 +53,12 @@ struct TableEntry
 
 /// Transposition table
 
-class HashTable
+struct HashTable
 {
     u64*            mTable;
     u64             mMask;
     int             mEntries;
 
-public:
     HashTable() :
         mTable( NULL ),
         mMask( 0 ),
@@ -77,14 +76,9 @@ public:
             delete[] mTable;
 
         size_t bytes = megs * 1024 * 1024;
+        this->CalcTableEntries( bytes );
 
-        u64 keyBits = 1;
-        while( ((1ULL << (keyBits + 1)) * sizeof( u64 )) <= bytes )
-            keyBits++;
-
-        mEntries = 1 << keyBits;
-        mMask    = mEntries - 1;
-        mTable   = new u64[mEntries];
+        mTable = new u64[mEntries];
 
         this->Clear();
     }
@@ -92,6 +86,16 @@ public:
     int GetSize() const
     {
         return( mEntries * sizeof( u64 ) / (1024 * 1024) ); 
+    }
+
+    void CalcTableEntries( size_t bytes )
+    {
+        u64 keyBits = 1;
+        while( ((1ULL << (keyBits + 1)) * sizeof( u64 )) <= bytes )
+            keyBits++;
+
+        mEntries = 1 << keyBits;
+        mMask    = mEntries - 1;
     }
 
     void Clear()
