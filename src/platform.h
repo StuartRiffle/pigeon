@@ -47,7 +47,7 @@
     #define PIGEON_MSVC         (1)
     #define PIGEON_ENABLE_SSE2  (1)
     #define PIGEON_ENABLE_SSE4  (1)
-    #define PIGEON_ENABLE_AVX2  (1)
+    //#define PIGEON_ENABLE_AVX2  (1)
     #define PIGEON_USE_HASH     (1)
     #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  __declspec( align( _N ) )
