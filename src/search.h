@@ -205,19 +205,12 @@ struct SearchState
 #if PIGEON_CUDA_HOST
     PDECL void ProcessCompletedBatch( SearchBatch* batch )
     {
-        int total[32] = { 0 };
-
         for( int i = 0; i < batch->mCount; i++ )
         {
             SearchJobOutput* result = batch->mOutputHost + i;
 
             mMetrics->mGpuNodesTotal += result->mNodes;
-            total[i % 32] += result->mNodes;
         }
-
-        for( int i = 0; i < 32; i++ )
-            printf( "%d\n", total[i] );
-
     }
 
     PDECL void ProcessAllCompletedBatches()
