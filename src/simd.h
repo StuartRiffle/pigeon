@@ -286,12 +286,27 @@ INLINE simd2_sse4 LoadIndirectMasked32< simd2_sse4 >( const i32* ptr, const simd
 
 INLINE __m256i _mm256_popcnt_epi64_avx2( const __m256i& v )
 {
-    return( _mm256_setzero_si256() ); // FIXME
+    static const __m256i nibbleBits = _mm256_setr_epi8( 
+        0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
+        0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4 );
+
+    __m256i loNib = _mm256_shuffle_epi8( nibbleBits, _mm256_and_si256( v,                         _mm256_set1_epi8( 0x0F ) ) );
+    __m256i hiNib = _mm256_shuffle_epi8( nibbleBits, _mm256_and_si256( _mm256_srli_epi16( v, 4 ), _mm256_set1_epi8( 0x0F ) ) );
+    __m256i pop8  = _mm256_add_epi8( loNib, hiNib );
+    __m256i pop64 = _mm256_sad_epu8( pop8, _mm256_setzero_si256() );
+
+    return( pop64 );
 }
 
 INLINE __m256i _mm256_bswap_epi64_avx2( const __m256i& v )
 {
-    return( _mm256_setzero_si256() ); // FIXME
+    static const __m256i perm = _mm256_setr_epi8( 
+         7,  6,  5,  4,  3,  2,  1,  0, 
+        15, 14, 13, 12, 11, 10,  9,  8,
+        23, 22, 21, 20, 19, 18, 17, 16,
+        31, 30, 29, 28, 27, 26, 25, 24 );
+
+    return( _mm256_shuffle_epi8( v, perm ) );
 }
 
 INLINE __m256i _mm256_select( const __m256i& a, const __m256i& b, const __m256i& mask )
@@ -344,7 +359,7 @@ template<> INLINE simd4_avx2     SelectIfZero<    simd4_avx2 >( const simd4_avx2
 template<> INLINE simd4_avx2     SelectIfNotZero< simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a )                       { return( _mm256_andnot_si256( _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ), a.vec ) ); }
 template<> INLINE simd4_avx2     SelectIfNotZero< simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( a.vec, b.vec, _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ) ) ); }
 template<> INLINE simd4_avx2     SelectWithMask<  simd4_avx2 >( const simd4_avx2& mask, const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( b.vec, a.vec, mask.vec ) ); }
-template<> INLINE simd4_avx2     SubtractSat16<   simd4_avx2 >( const simd4_avx2& a,    const simd4_avx2& b )                       { return( _mm256_subs_epi16( a.vec, b.vec ) ); }
+template<> INLINE simd4_avx2     SubClampZero<    simd4_avx2 >( const simd4_avx2& a,    const simd4_avx2& b )                       { return( _mm256_select( _mm256_setzero_si256(), _mm256_sub_epi64( a.vec, b.vec ), _mm256_cmpgt_epi64( a.vec, b.vec ) ) ); }
 
 template<>
 struct SimdWidth< simd4_avx2 >
@@ -355,6 +370,8 @@ struct SimdWidth< simd4_avx2 >
 template<>
 void SimdInsert< simd4_avx2 >( simd4_avx2& dest, u64 val, int lane )
 {
+    // FIXME: do something better using insert/extract intrinsics
+
     u64 PIGEON_ALIGN_SIMD qword[4];
 
     *((simd4_avx2*) qword) = dest;
@@ -365,33 +382,49 @@ void SimdInsert< simd4_avx2 >( simd4_avx2& dest, u64 val, int lane )
 template<> 
 INLINE void Transpose< simd4_avx2 >( const simd4_avx2* src, int srcStep, simd4_avx2* dest, int destStep )
 {
-    // UNTESTED!
-
     const simd4_avx2* RESTRICT  src_r  = src;
     simd4_avx2* RESTRICT        dest_r = dest;
 
     // abcd efgh ijkl nopq -> aein bfjo cgkp dhlq
 
-    simd4_avx2  abcd = src_r[0];
-    simd4_avx2  efgh = src_r[srcStep];
+    simd4_avx2  abcd = src_r[srcStep * 0];
+    simd4_avx2  efgh = src_r[srcStep * 1];
     simd4_avx2  ijkl = src_r[srcStep * 2];
     simd4_avx2  nopq = src_r[srcStep * 3];
 
-    simd4_avx2  aebf = _mm256_unpacklo_epi64( abcd, efgh );
-    simd4_avx2  cgdh = _mm256_unpackhi_epi64( abcd, efgh );
-    simd4_avx2  injo = _mm256_unpacklo_epi64( ijkl, nopq );
-    simd4_avx2  kplq = _mm256_unpackhi_epi64( ijkl, nopq );
+    simd4_avx2  aecg = _mm256_unpacklo_epi64( abcd, efgh );
+    simd4_avx2  bfdh = _mm256_unpackhi_epi64( abcd, efgh );
+    simd4_avx2  inkp = _mm256_unpacklo_epi64( ijkl, nopq );
+    simd4_avx2  jolq = _mm256_unpackhi_epi64( ijkl, nopq );
 
-    simd4_avx2  aein = _mm256_permute2f128_si256( aebf, injo, 0x20 );
-    simd4_avx2  bfjo = _mm256_permute2f128_si256( aebf, injo, 0x02 );
-    simd4_avx2  cgkp = _mm256_permute2f128_si256( cgdh, nopq, 0x20 );
-    simd4_avx2  dhlq = _mm256_permute2f128_si256( ijkl, nopq, 0x02 );
+    simd4_avx2  aein = _mm256_permute2f128_si256( aecg, inkp, 0x20 );
+    simd4_avx2  bfjo = _mm256_permute2f128_si256( bfdh, jolq, 0x20 );
+    simd4_avx2  cgkp = _mm256_permute2f128_si256( aecg, inkp, 0x31 );
+    simd4_avx2  dhlq = _mm256_permute2f128_si256( bfdh, jolq, 0x31 ); 
 
-    dest_r[0]               = aein;
-    dest_r[destStep]        = bfjo;
-    dest_r[destStep * 2]    = cgkp;
-    dest_r[destStep * 3]    = dhlq;
+    dest_r[destStep * 0] = aein;
+    dest_r[destStep * 1] = bfjo;
+    dest_r[destStep * 2] = cgkp;
+    dest_r[destStep * 3] = dhlq;
 }
+
+template<>
+INLINE simd4_avx2 LoadIndirect32< simd4_avx2 >( const i32* ptr, const simd4_avx2& ofs )
+{
+    __m128i dwords = _mm256_i64gather_epi32( ptr, ofs, sizeof( i32 ) );
+    __m256i qwords = _mm256_cvtepi32_epi64( dwords );
+    return( qwords );
+}
+
+template<>
+INLINE simd4_avx2 LoadIndirectMasked32< simd4_avx2 >( const i32* ptr, const simd4_avx2& ofs, const simd4_avx2& mask )
+{
+    __m128i mask32 = _mm256_extracti128_si256( _mm256_unpacklo_epi32( mask, mask ), 0 );
+    __m128i dwords = _mm256_mask_i64gather_epi32( _mm_setzero_si128(), ptr, ofs, mask32, sizeof( i32 ) );
+    __m256i qwords = _mm256_cvtepi32_epi64( dwords );
+    return( qwords );
+}
+
 
 
 #endif // PIGEON_ENABLE_AVX2
@@ -458,7 +491,7 @@ INLINE PDECL void Unswizzle( const PACKED* srcStruct, UNPACKED* destStruct )
     {
         Transpose< SIMD >( src, 1, dest, sizeof( UNPACKED ) / sizeof( SIMD ) );
 
-        src += LANES;
+        src  += LANES;
         dest += 1;
     }
 }
