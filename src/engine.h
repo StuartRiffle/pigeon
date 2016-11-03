@@ -71,7 +71,7 @@ public:
         mOptions[OPTION_NUM_THREADS]        = PlatDetectCpuCores();
         mOptions[OPTION_ENABLE_SIMD]        = 1;
         mOptions[OPTION_ENABLE_POPCNT]      = 1;
-        mOptions[OPTION_ENABLE_CUDA]        = 1;
+        mOptions[OPTION_ENABLE_CUDA]        = 0;
         mOptions[OPTION_EARLY_MOVE]         = 1;
         mOptions[OPTION_GPU_HASH_SIZE]      = TT_MEGS_DEFAULT;
         mOptions[OPTION_GPU_BATCH_SIZE]     = BATCH_SIZE_DEFAULT;
@@ -128,13 +128,10 @@ public:
         return( &mOptions[0] );
     }
 
-    void Init()
+    void LazyInitCuda()
     {
-        if( mOptions[OPTION_HASH_SIZE] != mHashTable.GetSize() )
-            mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
-
 #if PIGEON_CUDA_HOST
-        if( CudaSystem::GetDeviceCount() > 0 )
+        if( mOptions[OPTION_ENABLE_CUDA] && (CudaSystem::GetDeviceCount() > 0) )
         {
             if( !mCudaContext.IsInitialized() )
             {
@@ -148,6 +145,14 @@ public:
             }
         }
 #endif
+    }
+
+    void Init()
+    {
+        if( mOptions[OPTION_HASH_SIZE] != mHashTable.GetSize() )
+            mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
+
+        this->LazyInitCuda();
     }
 
     void SetDebug( bool debug )
@@ -206,6 +211,8 @@ public:
     {
         this->Stop();
         mConfig = *conf;
+
+        this->LazyInitCuda();
 
         mSearchElapsed.Reset();
 
@@ -602,13 +609,13 @@ private:
         ss.mExitSearch  = &mExitSearch;
         ss.mMetrics     = &mMetrics;
 
-#if 0//PIGEON_ENABLE_CUDA
+#if PIGEON_ENABLE_CUDA
         if( mOptions[OPTION_ENABLE_CUDA] && mCudaContext.IsInitialized() )
         {
             if( depth >= (MIN_CPU_PLIES + mOptions[OPTION_GPU_PLIES]) )
             {
                 ss.mCudaContext   = &mCudaContext;
-                ss.mAsyncSpawnPly = mOptions[OPTION_GPU_PLIES];
+                ss.mAsyncSpawnPly = MIN_CPU_PLIES;//mOptions[OPTION_GPU_PLIES];
             }
         }
 #endif

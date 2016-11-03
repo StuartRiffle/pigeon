@@ -36,10 +36,10 @@ struct SearchMetrics
     u64                 mNodesTotal;
     u64                 mNodesTotalSimd;
     u64                 mGpuNodesTotal;
-    u64                 mNodesAtPly[METRICS_DEPTH];
-    u64                 mHashLookupsAtPly[METRICS_DEPTH];
-    u64                 mHashHitsAtPly[METRICS_DEPTH];
-    u64                 mMovesTriedByPly[METRICS_DEPTH][METRICS_MOVES];
+    //u64                 mNodesAtPly[METRICS_DEPTH];
+    //u64                 mHashLookupsAtPly[METRICS_DEPTH];
+    //u64                 mHashHitsAtPly[METRICS_DEPTH];
+    //u64                 mMovesTriedByPly[METRICS_DEPTH][METRICS_MOVES];
 
     PDECL SearchMetrics()     { this->Clear(); }
     PDECL void Clear()        { PlatClearMemory( this, sizeof( *this ) ); }
@@ -107,24 +107,26 @@ struct SearchState
 #if PIGEON_CUDA_HOST
     CudaChessContext*   mCudaContext;
     SearchBatch*        mCudaBatch;
+    int                 mBatchesInFlight;
 #endif
 
 
     PDECL SearchState()
     {
-        mFrameIdx       = 0;
-        mSearchDepth    = 0;
-        mDeepestPly     = 0;
-        mAsyncSpawnPly  = -1;
-        mHashTable      = NULL;
-        mEvaluator      = NULL;
-        mMetrics        = NULL;
-        mExitSearch     = NULL;
+        mFrameIdx           = 0;
+        mSearchDepth        = 0;
+        mDeepestPly         = 0;
+        mAsyncSpawnPly      = -1;
+        mHashTable          = NULL;
+        mEvaluator          = NULL;
+        mMetrics            = NULL;
+        mExitSearch         = NULL;
         mBestLine.Clear();
 
 #if PIGEON_CUDA_HOST
-        mCudaContext    = NULL;
-        mCudaBatch      = NULL;
+        mCudaContext        = NULL;
+        mCudaBatch          = NULL;
+        mBatchesInFlight    = 0;
 #endif
 
 #if !PIGEON_CUDA_DEVICE
@@ -165,7 +167,7 @@ struct SearchState
     PDECL INLINE Frame* HandleLeaf( Frame* f )
     {
         mMetrics->mNodesTotal++;
-        mMetrics->mNodesAtPly[f->ply]++;
+        //mMetrics->mNodesAtPly[f->ply]++;
 
         if( f->ply > mDeepestPly )
             mDeepestPly = f->ply;
@@ -203,12 +205,19 @@ struct SearchState
 #if PIGEON_CUDA_HOST
     PDECL void ProcessCompletedBatch( SearchBatch* batch )
     {
+        int total[32] = { 0 };
+
         for( int i = 0; i < batch->mCount; i++ )
         {
             SearchJobOutput* result = batch->mOutputHost + i;
 
             mMetrics->mGpuNodesTotal += result->mNodes;
+            total[i % 32] += result->mNodes;
         }
+
+        for( int i = 0; i < 32; i++ )
+            printf( "%d\n", total[i] );
+
     }
 
     PDECL void ProcessAllCompletedBatches()
@@ -218,6 +227,9 @@ struct SearchState
             SearchBatch* batch = mCudaContext->GetCompletedBatch();
             if( batch == NULL )
                 break;
+
+            mBatchesInFlight--;
+            assert( mBatchesInFlight >= 0 );
 
             this->ProcessCompletedBatch( batch );
             mCudaContext->ReleaseBatch( batch );
@@ -263,11 +275,16 @@ struct SearchState
             {
                 mCudaContext->SubmitBatch( mCudaBatch );
                 mCudaBatch = NULL;
+
+                mBatchesInFlight++;
+
+
+this->ProcessAllCompletedBatches();
             }
 
             // This subtree will be processed async, so back out
 
-            f->result = f->score;
+            f->result = Max( f->alpha, f->score );//f->score;
             f--;
         }
 #endif

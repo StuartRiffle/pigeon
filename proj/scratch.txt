@@ -457,6 +457,8 @@ info string DEBUG: simdnodes 17328  >>>> 5: 57
 
 
 
+CUDA stride 0xa8
+
 
 
 

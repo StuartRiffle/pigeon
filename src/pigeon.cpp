@@ -4,7 +4,6 @@
 #include "defs.h"
 #include "bits.h"
 #include "simd.h"
-//#include <stdio.h>
 #include "position.h"
 #include "eval.h"
 #include "movelist.h"

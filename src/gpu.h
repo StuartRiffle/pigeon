@@ -13,20 +13,22 @@ enum
     BATCH_HOST_POST
 };
 
-struct SearchJobInput
+struct PIGEON_ALIGN( 32 ) SearchJobInput
 {
 	Position            mPosition;
 	int                 mSearchDepth;
 };
 
-struct SearchJobOutput
+struct PIGEON_ALIGN( 32 ) SearchJobOutput
 {
 	MoveList			mBestLine;
     u64                 mNodes;
 	EvalTerm			mScore;
+	int                 mSearchDepth;
+    int                 mDeepestPly;
 };
 
-struct SearchBatch
+struct PIGEON_ALIGN( 32 ) SearchBatch
 {
     int                 mState;
     int                 mCount;
@@ -188,9 +190,13 @@ public:
 
         printf( "info string CUDA %d: %s (", mDeviceIndex, mProp.name );
         printf( "CC %d.%d, ", mProp.major, mProp.minor );
+
         if( coresPerSM > 0 )
             printf( "%d cores, ", mProp.multiProcessorCount * coresPerSM );
-        printf( "%d mHz, ", mProp.clockRate / 1000 );
+        else
+            printf( "%d SM, ", mProp.multiProcessorCount );
+
+        printf( "%d MHz, ", mProp.clockRate / 1000 );
         printf( "%d MB)\n", mProp.totalGlobalMem / (1024 * 1024) );
 
         mInitialized = true;
@@ -266,12 +272,20 @@ public:
         if( batch->mCount > 0 )
         {
             extern void QueueSearchBatch( SearchBatch* batch, int blockSize );
-            
+
+            printf( "Submitting!\n" );
             int blockSize = mProp.warpSize;
             QueueSearchBatch( batch, blockSize );
         }
 
         batch->mState = BATCH_DEV_RUNNING;
+
+        printf( "Syncing!\n\n" );
+        fflush( stdout );
+
+        cudaDeviceSynchronize();
+        printf( "Syncing again!\n" );
+        cudaDeviceSynchronize();
     }
 
 

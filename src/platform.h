@@ -20,8 +20,8 @@
 
     #define PIGEON_CUDA_DEVICE  (1)
     #define PIGEON_ALLOW_POPCNT (1)
-    #define PIGEON_ALIGN( _N )  
-    #define PIGEON_ALIGN_SIMD   
+    #define PIGEON_ALIGN( _N )  __align__( _N )
+    #define PIGEON_ALIGN_SIMD   __align__( 32 )    
 
     #define RESTRICT            __restrict
     #define INLINE              __inline    
@@ -47,6 +47,7 @@
     #define PIGEON_MSVC         (1)
     #define PIGEON_ENABLE_SSE2  (1)
     #define PIGEON_ENABLE_SSE4  (1)
+    #define PIGEON_ENABLE_AVX2  (1)
     #define PIGEON_USE_HASH     (1)
     #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  __declspec( align( _N ) )
