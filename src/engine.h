@@ -76,6 +76,7 @@ public:
         mOptions[OPTION_GPU_HASH_SIZE]      = TT_MEGS_DEFAULT;
         mOptions[OPTION_GPU_BATCH_SIZE]     = BATCH_SIZE_DEFAULT;
         mOptions[OPTION_GPU_BATCH_COUNT]    = BATCH_COUNT_DEFAULT;
+        mOptions[OPTION_GPU_JOB_MULTIPLE]   = GPU_JOBMULT_DEFAULT;
         mOptions[OPTION_GPU_PLIES]          = GPU_PLIES_DEFAULT;
 
         mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
@@ -614,13 +615,15 @@ private:
         {
             if( depth >= (MIN_CPU_PLIES + mOptions[OPTION_GPU_PLIES]) )
             {
+                mCudaContext.SetJobsPerThread( mOptions[OPTION_GPU_JOB_MULTIPLE] );
+
                 ss.mCudaContext   = &mCudaContext;
-                ss.mAsyncSpawnPly = MIN_CPU_PLIES;//mOptions[OPTION_GPU_PLIES];
+                ss.mAsyncSpawnPly = MIN_CPU_PLIES;
             }
         }
 #endif
 
-        EvalTerm score = ss.RunToDepth( mRoot, depth );
+        EvalTerm score = ss.RunToDepth( &mRoot, &moveMap, depth, 0, rootScore, -EVAL_MAX, EVAL_MAX );
         ss.ExtractBestLine( &pv  );
 
         if( mExitSearch )
@@ -628,8 +631,9 @@ private:
 
         if( printPv )
         {
+            i64 nodes       = mMetrics.mNodesTotal + mMetrics.mGpuNodesTotal;
             i64 elapsed     = Max( searchTime.GetElapsedMs(), (i64) 1 );
-            i64 nps         = mMetrics.mNodesTotal * 1000L / elapsed;
+            i64 nps         = nodes * 1000L / elapsed;
             int hashfull    = (int) (mHashTable.EstimateUtilization() * 1000);
             int seldepth    = ss.mDeepestPly;
 
@@ -641,7 +645,7 @@ private:
             printf( "seldepth %d ",         seldepth );
             printf( "score cp %d ",         score );
             printf( "hashfull %d ",         hashfull );
-            printf( "nodes %" PRId64 " ",   mMetrics.mNodesTotal);
+            printf( "nodes %" PRId64 " ",   nodes );
             printf( "time %d ",             (int) mSearchElapsed.GetElapsedMs() );
             printf( "nps %" PRId64 " ",     nps );
             printf( "pv " );                FEN::PrintMoveList( pv );

@@ -58,6 +58,7 @@ struct SearchState
     {
         STEP_PROCESS,
         STEP_ITERATE_CHILDREN,
+        STEP_ALLOC_BATCH,
         STEP_CHECK_SCORE,
         STEP_FINALIZE,
     };
@@ -67,8 +68,8 @@ struct SearchState
 
     struct Frame
     {
-        Position*       pos; 
-        MoveMap*        moveMap; 
+        const Position* pos; 
+        const MoveMap*  moveMap; 
         int             step;
         int             ply; 
         int             depth; 
@@ -94,8 +95,6 @@ struct SearchState
     int                 mSearchDepth;
     int                 mDeepestPly;
     int                 mAsyncSpawnPly;
-    Position            mRoot;
-    MoveMap             mRootMoveMap;
     MoveList            mBestLine;
     HashTable*          mHashTable;
     Evaluator*          mEvaluator;
@@ -139,7 +138,6 @@ struct SearchState
     PDECL INLINE int ChooseNextMove( Frame* f )
     {
         int best = f->moves.mTried;
-        //int whiteToMove = f->pos->mWhiteToMove;
 
         for( int idx = best + 1; idx < f->moves.mCount; idx++ )
         {
@@ -151,6 +149,9 @@ struct SearchState
 
             if( currMove.mType < bestMove.mType )
                 continue;
+
+            // FIXME: I disabled the history table to simplify things while converting from
+            // recursive to iterative search. That's done now, so this needs hooking up again.
 
             //if( (currMove.mType == bestMove.mType) && (currMove.mFlags == bestMove.mFlags) )
             //    if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
@@ -197,90 +198,6 @@ struct SearchState
             f->result = f->inCheck? EVAL_CHECKMATE : EVAL_STALEMATE;
             f--;
         }        
-
-        return( f );
-    }
-
-
-#if PIGEON_CUDA_HOST
-    PDECL void ProcessCompletedBatch( SearchBatch* batch )
-    {
-        for( int i = 0; i < batch->mCount; i++ )
-        {
-            SearchJobOutput* result = batch->mOutputHost + i;
-
-            mMetrics->mGpuNodesTotal += result->mNodes;
-        }
-    }
-
-    PDECL void ProcessAllCompletedBatches()
-    {
-        for( ;; )
-        {
-            SearchBatch* batch = mCudaContext->GetCompletedBatch();
-            if( batch == NULL )
-                break;
-
-            mBatchesInFlight--;
-            assert( mBatchesInFlight >= 0 );
-
-            this->ProcessCompletedBatch( batch );
-            mCudaContext->ReleaseBatch( batch );
-        }
-    }
-#endif
-
-
-    PDECL INLINE Frame* HandleSpawnAsync( Frame* f )
-    {
-#if PIGEON_CUDA_HOST
-        if( mCudaContext && (f->ply == mAsyncSpawnPly) )
-        {
-            if( mCudaBatch == NULL )
-            {
-                bool triedBefore = false;
-
-                for( ;; )
-                {
-                    mCudaBatch = mCudaContext->AllocBatch();
-                    if( mCudaBatch )
-                        break;
-
-                    if( triedBefore )
-                    {
-                        // We are GPU bound
-
-                        PlatSleep( 1 );
-                    }
-
-                    triedBefore = true;
-                    this->ProcessAllCompletedBatches();
-                }
-            }
-
-            SearchJobInput* input = mCudaBatch->mInputHost + mCudaBatch->mCount;
-
-            input->mPosition    = *f->pos;
-            input->mSearchDepth = f->depth;
-
-            mCudaBatch->mCount++;
-            if( mCudaBatch->mCount == mCudaBatch->mLimit )
-            {
-                mCudaContext->SubmitBatch( mCudaBatch );
-                mCudaBatch = NULL;
-
-                mBatchesInFlight++;
-
-
-this->ProcessAllCompletedBatches();
-            }
-
-            // This subtree will be processed async, so back out
-
-            f->result = Max( f->alpha, f->score );//f->score;
-            f--;
-        }
-#endif
 
         return( f );
     }
@@ -360,6 +277,20 @@ this->ProcessAllCompletedBatches();
         }
         else
         {
+            bool spawnAsync = false;
+
+#if PIGEON_CUDA_HOST
+
+            spawnAsync = (mCudaContext && ((f->ply + 1) == mAsyncSpawnPly));
+            if( spawnAsync )
+            {
+                if( mCudaBatch == NULL )
+                {
+                    f->step = STEP_ALLOC_BATCH;
+                    return( f );
+                }
+            }
+#endif
             const MaterialTable* whiteMat = NULL;
             const MaterialTable* blackMat = NULL;
 
@@ -407,6 +338,30 @@ this->ProcessAllCompletedBatches();
                 f->simdIdx = 0;
             }
 
+#if PIGEON_CUDA_HOST
+
+            if( spawnAsync )
+            {
+                assert( mCudaBatch != NULL );
+
+                SearchJobInput* input = mCudaBatch->mInputHost + mCudaBatch->mCount;
+
+                input->mPosition    = f->childPos[f->simdIdx];
+                input->mMoveMap     = f->childMoveMap[f->simdIdx];
+                input->mScore       = f->childScore[f->simdIdx];
+                input->mPly         = f->ply + 1; 
+                input->mDepth       = f->depth - 1;
+                input->mAlpha       = -f->beta; 
+                input->mBeta        = -f->bestScore;
+
+                mCudaBatch->mCount++;
+                if( mCudaBatch->mCount == mCudaBatch->mLimit )
+                    this->FlushBatch();
+
+                f->movesTried++;
+                return( f );
+            }
+#endif
             Frame* n = f + 1;
 
             n->pos      = &f->childPos[f->simdIdx];
@@ -424,6 +379,22 @@ this->ProcessAllCompletedBatches();
         }
 
         return( f );        
+    }
+
+
+    PDECL INLINE Frame* AllocBatch( Frame* f )
+    {
+#if PIGEON_CUDA_HOST
+        assert( mCudaBatch == NULL );
+
+        mCudaBatch = mCudaContext->AllocBatch();
+        if( mCudaBatch )
+        {
+            f->step = STEP_ITERATE_CHILDREN;
+        }
+#endif
+
+        return( f );
     }
 
 
@@ -483,34 +454,110 @@ this->ProcessAllCompletedBatches();
     }
 
 
-    PDECL void Advance()
+    PDECL INLINE bool IsDoneIterating()
     {
-        assert( mFrameIdx >= 0 );
-        //assert( mFrameIdx < MAX_SEARCH_DEPTH );
-        if( mFrameIdx >= MAX_SEARCH_DEPTH )
-            mFrameIdx *= 1;
+        // Have we popped the last frame off the stack?
 
-        Frame* f = mFrames + mFrameIdx;
-
-        if( f->step == STEP_PROCESS )           f = this->HandleLeaf( f );
-        if( f->step == STEP_PROCESS )           f = this->HandleMate( f );
-        if( f->step == STEP_PROCESS )           f = this->HandleSpawnAsync( f );
-        if( f->step == STEP_PROCESS )           f = this->Quieten( f );
-        if( f->step == STEP_PROCESS )           f = this->CheckHashTable( f );
-        if( f->step == STEP_PROCESS )           f = this->PrepareToIterate( f );
-        if( f->step == STEP_ITERATE_CHILDREN )  f = this->IterateChildren( f );
-        if( f->step == STEP_CHECK_SCORE )       f = this->CheckScore( f );
-        if( f->step == STEP_FINALIZE )          f = this->StoreIntoHashTable( f );
-
-        mFrameIdx = (int) (f - mFrames);
+        return( mFrameIdx < 0 );
     }
 
 
     PDECL INLINE bool IsDone()
     {
-        return( mFrameIdx < 0 );
+        bool done = this->IsDoneIterating();
+
+#if PIGEON_CUDA_HOST
+        if( mBatchesInFlight )
+            done = false;
+#endif
+        return( done );
     }
 
+
+#if PIGEON_CUDA_HOST
+
+    PDECL INLINE void FlushBatch()
+    {
+        assert( mCudaBatch != NULL );
+
+        mCudaContext->SubmitBatch( mCudaBatch );
+        mCudaBatch = NULL;
+
+        mBatchesInFlight++;
+    }
+
+    PDECL void ProcessCompletedBatch( SearchBatch* batch )
+    {
+        SearchJobInput*  input  = batch->mInputHost;
+        SearchJobOutput* output = batch->mOutputHost;
+
+        for( int i = 0; i < batch->mCount; i++ )
+        {
+            mMetrics->mGpuNodesTotal += output->mNodes;
+
+
+            input++;
+            output++;
+        }
+    }
+
+    PDECL void ProcessAllCompletedBatches()
+    {
+        for( ;; )
+        {
+            SearchBatch* batch = mCudaContext->GetCompletedBatch();
+            if( batch == NULL )
+                break;
+
+            mBatchesInFlight--;
+            assert( mBatchesInFlight >= 0 );
+            printf( "!" );
+
+            this->ProcessCompletedBatch( batch );
+            mCudaContext->ReleaseBatch( batch );
+        }
+    }
+#endif
+
+
+    PDECL void Advance()
+    {
+#if PIGEON_CUDA_HOST
+
+        if( mCudaBatch && this->IsDoneIterating() )
+            this->FlushBatch();
+
+        if( mBatchesInFlight )
+        {
+            this->ProcessAllCompletedBatches();
+
+            if( this->IsDoneIterating() )
+            {
+                if( mBatchesInFlight )
+                    PlatSleep( 1 );
+
+                return;
+            }
+        }
+#endif
+
+        assert( mFrameIdx >= 0 );
+        assert( mFrameIdx < MAX_SEARCH_DEPTH );
+
+        Frame* f = mFrames + mFrameIdx;
+
+        if( f->step == STEP_PROCESS )           f = this->HandleLeaf( f );
+        if( f->step == STEP_PROCESS )           f = this->HandleMate( f );
+        if( f->step == STEP_PROCESS )           f = this->Quieten( f );
+        if( f->step == STEP_PROCESS )           f = this->CheckHashTable( f );
+        if( f->step == STEP_PROCESS )           f = this->PrepareToIterate( f );
+        if( f->step == STEP_ITERATE_CHILDREN )  f = this->IterateChildren( f );
+        if( f->step == STEP_ALLOC_BATCH )       f = this->AllocBatch( f );
+        if( f->step == STEP_CHECK_SCORE )       f = this->CheckScore( f );
+        if( f->step == STEP_FINALIZE )          f = this->StoreIntoHashTable( f );
+
+        mFrameIdx = (int) (f - mFrames);
+    }
 
 
     PDECL void ExtractBestLine( MoveList* bestLine )
@@ -521,41 +568,38 @@ this->ProcessAllCompletedBatches();
 
     }
 
+
     PDECL EvalTerm GetFinalScore()
     {
         return( mFrames[0].result );
     }
 
 
-    PDECL void PrepareSearch( const Position& root, int depth )
+    PDECL void PrepareSearch( const Position* root, const MoveMap* moveMap, int depth, int ply, EvalTerm score, EvalTerm alpha, EvalTerm beta )
     {
         Frame* f = mFrames;
 
-        float gamePhase = mEvaluator->CalcGamePhase< POPCNT >( root );
+        float gamePhase = mEvaluator->CalcGamePhase< POPCNT >( *root );
         mEvaluator->GenerateWeights( mWeights, gamePhase );
 
-        mRoot = root;
-        mRoot.CalcMoveMap( &mRootMoveMap );
-
-        mSearchDepth = depth;
-
-        f->pos      = &mRoot;
-        f->moveMap  = &mRootMoveMap;
-        f->score    = (EvalTerm) mEvaluator->Evaluate< POPCNT >( root, mRootMoveMap, mWeights );
-        f->ply      = 0;
+        f->pos      = root;
+        f->moveMap  = moveMap;
+        f->score    = score;
+        f->ply      = ply;
         f->depth    = depth;
-        f->alpha    = -EVAL_MAX; 
-        f->beta     = EVAL_MAX;
+        f->alpha    = alpha; 
+        f->beta     = beta;
         f->onPv     = true;
         f->step     = STEP_PROCESS;       
 
+        mSearchDepth = depth;
         mFrameIdx = 0;
     }
 
 
-    PDECL EvalTerm RunToDepth( const Position& root, int depth )
+    PDECL EvalTerm RunToDepth( const Position* root, const MoveMap* moveMap, int depth, int ply, EvalTerm score, EvalTerm alpha, EvalTerm beta )
     {
-        this->PrepareSearch( root, depth );
+        this->PrepareSearch( root, moveMap, depth, ply, score, alpha, beta );
 
         while( !this->IsDone() )
         {

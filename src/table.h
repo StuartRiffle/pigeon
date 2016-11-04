@@ -64,10 +64,12 @@ struct HashTable
         mMask( 0 ),
         mEntries( 0 ) {}
 
-    ~HashTable()
+    PDECL ~HashTable()
     {
+#if !PIGEON_CUDA_DEVICE
         if( mTable )
             delete[] mTable;
+#endif
     }
 
     void SetSize( size_t megs )

@@ -16,7 +16,12 @@ enum
 struct PIGEON_ALIGN( 32 ) SearchJobInput
 {
 	Position            mPosition;
-	int                 mSearchDepth;
+    MoveMap             mMoveMap;
+    int                 mPly;
+	int                 mDepth;
+    EvalTerm            mAlpha;
+    EvalTerm            mBeta;
+    EvalTerm            mScore;
 };
 
 struct PIGEON_ALIGN( 32 ) SearchJobOutput
@@ -24,7 +29,7 @@ struct PIGEON_ALIGN( 32 ) SearchJobOutput
 	MoveList			mBestLine;
     u64                 mNodes;
 	EvalTerm			mScore;
-	int                 mSearchDepth;
+	//int                 mSearchDepth;
     int                 mDeepestPly;
 };
 
@@ -59,6 +64,7 @@ class CudaChessContext
     Mutex                       mMutex;
     bool                        mInitialized;
     int                         mDeviceIndex;
+    int                         mJobsPerThread;
     int                         mBatchCount;
     int                         mBatchSlots;
     int                         mBatchCursor;
@@ -91,6 +97,7 @@ public:
     {
         mInitialized    = false;
         mDeviceIndex    = 0;
+        mJobsPerThread  = 8;
         mBatchCount     = 0;
         mBatchSlots     = 0;
         mBatchCursor    = 0;
@@ -236,6 +243,12 @@ public:
         this->Clear();
     }
 
+    void SetJobsPerThread( int jobsPerThread )
+    {
+        assert( mJobsPerThread > 0 );
+        mJobsPerThread = jobsPerThread;
+    }
+
     SearchBatch* AllocBatch()
     {
         Mutex::Scope scope( mMutex );
@@ -271,21 +284,26 @@ public:
 
         if( batch->mCount > 0 )
         {
-            extern void QueueSearchBatch( SearchBatch* batch, int blockSize );
+            extern void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize );
 
-            printf( "Submitting!\n" );
-            int blockSize = mProp.warpSize;
-            QueueSearchBatch( batch, blockSize );
+            int blockSize  = mProp.warpSize * 4;
+            int blockCount = 1;
+
+            while( (blockCount * blockSize * mJobsPerThread) < batch->mCount )
+                blockCount++;
+
+            QueueSearchBatch( batch, blockCount, blockSize );
+            printf( "." );
         }
 
         batch->mState = BATCH_DEV_RUNNING;
 
-        printf( "Syncing!\n\n" );
-        fflush( stdout );
-
-        cudaDeviceSynchronize();
-        printf( "Syncing again!\n" );
-        cudaDeviceSynchronize();
+        //printf( "Syncing!\n\n" );
+        //fflush( stdout );
+        //
+        //cudaDeviceSynchronize();
+        //printf( "Syncing again!\n" );
+        //cudaDeviceSynchronize();
     }
 
 

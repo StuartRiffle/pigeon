@@ -82,6 +82,7 @@ enum
     OPTION_GPU_HASH_SIZE,
     OPTION_GPU_BATCH_SIZE,
     OPTION_GPU_BATCH_COUNT,
+    OPTION_GPU_JOB_MULTIPLE,
     OPTION_GPU_PLIES,
 
     OPTION_COUNT
@@ -94,6 +95,7 @@ typedef i32     EvalWeight;
 const PDECL int       PIGEON_VER_MAJOR    = 1;
 const PDECL int       PIGEON_VER_MINOR    = 6;
 const PDECL int       PIGEON_VER_PATCH    = 0;
+const PDECL bool      PIGEON_VER_DEV      = true;
          
 const PDECL int       TT_MEGS_DEFAULT     = 512;
 const PDECL int       TT_SAMPLE_SIZE      = 128;
@@ -109,11 +111,12 @@ const PDECL int       LAG_SAFETY_BUFFER   = 200;
 const PDECL int       NO_TIME_LIMIT       = -1;
 const PDECL int       PERFT_PARALLEL_MAX  = 5;
 const PDECL int       LAST_QUIET_LEVEL    = -4;
-const PDECL int       CUDA_STREAM_COUNT   = 4;
-const PDECL int       BATCH_SIZE_DEFAULT  = 256;
-const PDECL int       BATCH_COUNT_DEFAULT = 64;
-const PDECL int       GPU_PLIES_DEFAULT   = 2;
-const PDECL int       MIN_CPU_PLIES       = 6;
+const PDECL int       CUDA_STREAM_COUNT   = 8;
+const PDECL int       BATCH_SIZE_DEFAULT  = 4096;
+const PDECL int       BATCH_COUNT_DEFAULT = 32;
+const PDECL int       GPU_PLIES_DEFAULT   = 1;
+const PDECL int       GPU_JOBMULT_DEFAULT = 8;
+const PDECL int       MIN_CPU_PLIES       = 5;
 const PDECL int       WEIGHT_SHIFT        = 16;
 const PDECL float     WEIGHT_SCALE        = (1 << WEIGHT_SHIFT);
 const PDECL bool      OWNBOOK_DEFAULT     = true;

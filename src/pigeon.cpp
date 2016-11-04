@@ -60,7 +60,7 @@ int main( int argc, char** argv )
     }
      
     char versionStr[32];
-    sprintf( versionStr, "%d.%d.%d", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH ); 
+    sprintf( versionStr, "%d.%d.%d%s", Pigeon::PIGEON_VER_MAJOR, Pigeon::PIGEON_VER_MINOR, Pigeon::PIGEON_VER_PATCH, Pigeon::PIGEON_VER_DEV? "-DEV" : "" ); 
 
     // Draw the pretty birdie
 

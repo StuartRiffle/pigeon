@@ -12,33 +12,63 @@
 
 using namespace Pigeon;
 
-__global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobOutput* outputBuf, int count, HashTable* hashTable, Evaluator* evaluator )
+
+/// Process a batch of search jobs
+///
+/// Individual searches take an unpredictable number of nodes to complete. If every thread
+/// handled only one search, it would be idle until the longest search in the batch was done.
+/// To reduce that effect, every thread processes a number of searches sequentially, in the 
+/// hope of averaging out the total number of nodes per thread. The UCI option "GPU Job Multiple"
+/// sets the number of searches per thread.
+
+__global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobOutput* outputBuf, int count, int stride, HashTable* hashTable, Evaluator* evaluator )
 {
-    int idx = (blockIdx.x * blockDim.x) + threadIdx.x;
-    if( idx >= count )
-        return;
-         
-    const SearchJobInput*   input   = inputBuf  + idx;
-    SearchJobOutput*	    output  = outputBuf + idx;
-    SearchMetrics	        metrics;
+    const SearchJobInput*   input   = NULL;
+    SearchJobOutput*	    output  = NULL;
+    SearchMetrics           metrics;
     SearchState< 1, u64 >   ss;
 
-    ss.mHashTable	        = hashTable;
-    ss.mEvaluator	        = evaluator;
-    ss.mMetrics		        = &metrics;
+    HashTable hashTableLocal = *hashTable;
+    Evaluator evaluatorLocal = *evaluator;
 
-    output->mScore          = ss.RunToDepth( input->mPosition, input->mSearchDepth );
-    output->mNodes          = metrics.mNodesTotal;
-    output->mSearchDepth    = input->mSearchDepth;
-    output->mDeepestPly     = ss.mDeepestPly;
+    ss.mHashTable   = &hashTableLocal;
+    ss.mEvaluator   = &evaluatorLocal;
+    ss.mMetrics	    = &metrics;
 
-    ss.ExtractBestLine( &output->mBestLine );
+    int idx = (blockIdx.x * blockDim.x) + threadIdx.x;
+    while( idx < count )
+    {
+        if( input == NULL )
+        {
+            input  = inputBuf  + idx;
+            output = outputBuf + idx;
+
+            ss.PrepareSearch( &input->mPosition, &input->mMoveMap, input->mDepth, input->mPly, input->mScore, input->mAlpha, input->mBeta );
+            metrics.Clear();
+        }
+
+        ss.Advance();
+
+        if( ss.IsDone() )
+        {
+            output->mScore          = ss.GetFinalScore();
+            output->mNodes          = metrics.mNodesTotal;
+            output->mDeepestPly     = ss.mDeepestPly;
+
+            ss.ExtractBestLine( &output->mBestLine );
+
+            input  = NULL;
+            output = NULL;
+
+            idx += stride;
+        }
+    }
 
     __threadfence();
 }
 
 
-void QueueSearchBatch( SearchBatch* batch, int blockSize )
+void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize )
 {
     // Copy the inputs to device
 
@@ -50,8 +80,10 @@ void QueueSearchBatch( SearchBatch* batch, int blockSize )
 
     // Run the search kernel
 
-    int blockCount = (batch->mCount + blockSize - 1) / blockSize;
-    SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount, batch->mHashTable, batch->mEvaluator );
+    cudaFuncSetCacheConfig( SearchPositionsOnGPU, cudaFuncCachePreferL1 );
+
+    int stride = blockCount * blockSize;
+    SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount, stride, batch->mHashTable, batch->mEvaluator );
 
     // Copy the outputs to host
 
