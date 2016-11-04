@@ -100430,3 +100430,4540 @@ Re4 {+1.66/9 1.8} Rf5 40. Rxg4+ {+1.73/10 3} Kh6 41. Rb6+ {+7.30/11 4} Kh5
 {+8.33/8 5} 15. dxe4 Qxf2+ {+13.46/8 6} 16. Kd2 Rd8+ {+15.55/8 11}
 {abhi0810 resigns} 0-1
 
+[Event "ICS Rated Blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "cthornell"]
+[Result "1-0"]
+[WhiteElo "2078"]
+[BlackElo "1596"]
+[TimeControl "120+6"]
+[Annotator "7. +0.76"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 c5 5. a3 Bxc3+ 6. bxc3 Qc7 7. Nf3
+{+0.76/9} Ne7 8. dxc5 {+0.67/8 20} Nd7 9. Bb5 {+0.77/9 9} O-O 10. Bxd7
+{+0.94/9 16} Bxd7 11. Be3 {+0.81/8 13} Nf5 12. Bd4 {+0.59/9 24} Bb5 13. Qd2
+{+0.87/9 6} Rac8 14. Qg5 {+0.75/8 4} h6 15. Qh5 {+0.72/8 23} Qa5 16. Kd1
+{+0.03/9 10} Qa4 17. Rb1 {+0.26/7 1.6} Ba6 18. Rb3 {+0.78/8 5} Qc4 19. Re1
+{+0.97/8 5} b6 20. cxb6 {+1.12/9 8} Nxd4 21. Nxd4 {+1.06/9 10} axb6 22. f4
+{+0.94/8 8} Rb8 23. f5 {+1.38/8 5} exf5 24. Nxf5 {+1.15/8 4} Bc8 25. Ne7+
+{+1.10/7 9} Kh8 26. Nxc8 {+1.18/8 9} Rbxc8 27. Qf5 {+1.11/8 18} Rc6 28. e6
+{+2.73/8 3} d4 29. e7 {+3.07/9 5} Re8 30. Qd7 {+2.69/9 9} Rcc8 31. Qxd4
+{+2.41/9 5} Qc7 32. Rxb6 {+3.19/8 2.5} Rxe7 33. Rxe7 {+2.76/10 8} Qxe7 34.
+Rxh6+ {+2.55/9 16} Kg8 35. Rh5 {+2.25/9 8} Qxa3 36. Kd2 {+2.16/8 1.8} Qa8
+37. Rd5 {+2.25/9 11} Qc6 38. h4 {+2.23/9 4} Qh6+ 39. Kd1 {+2.23/9 6} Ra8
+40. h5 {+2.19/10 7} Ra1+ 41. Ke2 {+2.24/11 10} Qe6+ 42. Re5 {+2.18/10 4}
+Qa6+
+{cthornell resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "cyam"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1568"]
+[BlackElo "2236"]
+[TimeControl "60"]
+[Annotator "3... +0.19"]
+
+1. d4 d5 2. c4 e6 3. e3 Bb4+ {+0.19/7 0.9} 4. Bd2 Nc6 {+0.20/7 1.1} 5. cxd5
+Qxd5 {+0.25/5 0.4} 6. Nf3 Qd6 {-0.05/6 0.6} 7. Bxb4 Qxb4+ {-0.06/8 1.5} 8.
+Qd2 Nf6 {-0.07/6 0.2} 9. Qxb4 Nxb4 {+0.18/8 1.3} 10. Na3 O-O {+0.17/6 0.5}
+11. Bd3 Nxd3+ {+3.25/8 0.9}
+{cyam resigns} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "cyam"]
+[Result "1-0"]
+[WhiteElo "2237"]
+[BlackElo "1567"]
+[TimeControl "60"]
+[Annotator "8. +0.03"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 6. e5 Be7 7. Qg4 O-O
+8. Nf3 {+0.03/6 0.4} f5 9. Qh5 {+0.26/7 1.0} Qe8 10. Qxe8 {+0.14/8 1.9}
+Rxe8 11. Nb5 {+0.26/7 2.0} Na6 12. Bd3 {+0.44/7 0.8} c6 13. Nc3
+{+0.09/7 1.0} Bd7 14. a3 {+0.34/7 0.9} c5 15. Bb5 {+0.38/7 0.9} Bxb5 16.
+Nxb5 {+0.37/7 0.4} cxd4 17. Nfxd4 {+0.66/7 1.2} Bc5 18. Nf3 {+0.64/7 0.6}
+Rec8 19. Rc1 {+0.54/7 0.8} Nc7 20. Nd6 {+0.69/8 1.1} Bxd6 21. exd6
+{+0.51/9 1.4} Rd8 22. dxc7 {+2.26/9 1.4} Rdc8 23. O-O {+2.14/8 0.6} Rxc7
+24. Rfe1 {+2.37/8 1.5} Rac8 25. Nd4 {+2.62/8 1.4}
+{cyam resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "cyam"]
+[Result "1-0"]
+[WhiteElo "2238"]
+[BlackElo "1585"]
+[TimeControl "60"]
+[Annotator "5. +0.00"]
+
+1. d4 Nf6 2. c4 g6 3. g3 Bg7 4. Bg2 Kf8 5. Nc3 {+0.00/6 0.4} d6 6. Nf3
+{+0.15/6 2.6} c6 7. c5 {+0.38/5 0.5} d5 8. Bf4 {+0.66/6 0.9} Bg4 9. Ne5
+{+0.83/6 1.2} Bd7 10. Bf3 {+1.41/5 2.0} Bc8 11. O-O {+1.25/5 0.6} Nbd7 12.
+e3 {+1.08/6 1.1} Nxe5 13. Bxe5 {+0.71/7 1.9} Nh5 14. Bxh5 {+1.57/7 0.6}
+Bxe5 15. dxe5 {+1.69/7 0.5} gxh5 16. Qxh5 {+1.54/7 1.0} e6 17. Qh6+
+{+2.05/7 0.7} Ke8 18. Rfb1 {+2.09/7 1.0} Qe7 19. b4 {+2.10/7 0.7} Bd7 20.
+a4 {+2.13/7 0.8} Kd8 21. a5 {+2.40/7 0.9} a6 22. Ra2 {+2.37/6 0.7} Kc7 23.
+Re2 {+2.29/6 1.2} Rag8 24. f4 {+1.92/7 1.2} Rg6 25. Qh5 {+1.92/7 0.7} f6
+26. Kf2 {+1.91/6 2.0} fxe5 27. Qxe5+ {+6.60/7 0.7} Kc8 28. Qxh8+
+{+6.48/6 0.2}
+{cyam resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1950"]
+[BlackElo "2239"]
+[TimeControl "60"]
+[Annotator "2... +0.00"]
+
+1. e3 e5 2. d3 Nf6 {+0.00/8 2.7} 3. Ne2 Nc6 {+0.55/7 0.5} 4. Nd2 d5
+{+0.78/7 1.3} 5. Rg1 Bd6 {+0.97/5 1.1} 6. Rh1 Be6 {+0.98/6 3} 7. Rg1 O-O
+{+1.23/6 2.0} 8. Rh1 a6 {+1.29/6 1.0} 9. Rg1 Ng4 {+1.55/5 0.2} 10. h3 Nh2
+{+1.30/6 0.3} 11. Nf3 Nxf3+ {+1.65/7 0.6} 12. gxf3 Qh4 {+1.41/6 1.2} 13.
+Bd2 f6 {+1.44/6 1.3} 14. c3 d4 {+1.54/6 0.7} 15. cxd4 exd4 {+1.36/6 0.4}
+16. e4 Kh8 {+1.59/5 1.1} 17. Qc2 Nb4 {+1.55/6 1.0} 18. Qb1 Nc6
+{+1.44/6 0.7} 19. Qc2 Nb4 {+1.55/6 1.0} 20. Qb1 Nc6 {+1.44/6 0.7} 21. Qc2
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1/2-1/2"]
+[WhiteElo "2228"]
+[BlackElo "1961"]
+[TimeControl "60"]
+[Annotator "3. +0.45"]
+
+1. d4 d6 2. c4 Nd7 3. Nf3 {+0.45/8 2.2} e6 4. Qd3 {+0.48/6 0.6} Ne7 5. Nc3
+{+0.60/6 1.8} Rb8 6. b4 {+0.73/6 2.0} Ra8 7. b5 {+0.96/6 2.8} Rb8 8. g4
+{+1.12/6 0.8} Ra8 9. Be3 {+1.25/6 1.4} Rb8 10. Bh3 {+1.33/6 2.9} Ra8 11.
+Kf1 {+1.44/6 0.8} Rb8 12. g5 {+1.52/6 1.2} Ra8 13. Bf4 {+1.51/6 0.5} Rb8
+14. a4 {+1.58/6 2.8} Ra8 15. a5 {+1.78/6 0.7} Rb8 16. Ra3 {+1.81/6 1.1} Ra8
+17. Kg1 {+1.84/6 1.4} Rb8 18. Kf1 {+1.81/6 0.8} Ra8 19. Kg1 {+1.84/6 0.9}
+Rb8 20. Kf1 {+1.81/6 0.8}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1971"]
+[BlackElo "2218"]
+[TimeControl "60"]
+[Annotator "2... +0.10"]
+
+1. e3 e5 2. Ne2 Nc6 {+0.10/8 2.0} 3. d3 Nf6 {+0.63/7 1.2} 4. Nd2 d5
+{+0.78/7 1.8} 5. Rg1 Bd6 {+0.97/5 1.1} 6. Rh1 Bg4 {+1.22/5 1.6} 7. Rg1 O-O
+{+1.21/7 1.8} 8. Rh1 d4 {+1.26/6 0.6} 9. e4 b5 {+1.35/6 0.4} 10. Rg1 Qd7
+{+1.43/6 0.4} 11. Rh1 a6 {+1.44/6 0.6} 12. Rg1 Bc5 {+1.51/6 1.9} 13. Rh1
+Rfd8 {+1.49/6 1.5} 14. Rg1 Rf8 {+1.51/6 1.1} 15. Rh1 Rfd8 {+1.49/6 1.7} 16.
+Rg1 Rf8 {+1.51/6 1.3}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1-0"]
+[WhiteElo "2208"]
+[BlackElo "1981"]
+[TimeControl "60"]
+[Annotator "3. +0.51"]
+
+1. e4 d6 2. d4 Nd7 3. Nc3 {+0.51/7 1.0} e6 4. Nf3 {+0.63/6 2.5} Ne7 5. a3
+{+1.45/5 1.1} Rb8 6. Bg5 {+0.85/6 3} Ra8 7. Bd3 {+0.99/6 2.0} Rb8 8. O-O
+{+1.28/7 1.9} Ra8 9. Be3 {+1.29/6 0.5} Rb8 10. Nb5 {+1.35/6 1.0} Ra8 11.
+Qd2 {+1.43/7 1.5} a6 12. Nc3 {+1.25/7 1.7} Rb8 13. b4 {+1.29/6 0.8} Ra8 14.
+Bg5 {+1.31/6 2.8} Rb8 15. d5 {+1.40/6 2.0} Ra8 16. dxe6 {+1.58/7 1.3} fxe6
+17. Qf4 {+1.48/6 0.5} Nf6 18. Bxf6 {+2.38/6 1.3} gxf6 19. Qxf6
+{+1.82/7 1.0} Rg8 20. Ng5 {+2.75/7 0.9} Rxg5 21. Qxg5 {+3.01/8 0.8} Ng6 22.
+Qh5 {+2.95/8 1.7} Qe7 23. f4 {+3.23/6 0.4} Bd7 24. e5 {+3.31/6 0.5} d5 25.
+Bxg6+ {+4.02/6 0.8} hxg6 26. Qxg6+ {+3.84/7 0.5} Kd8 27. Rad1 {+3.84/6 1.1}
+Kc8 28. f5 {+4.25/6 0.5} exf5 29. Rxf5 {+4.34/6 0.3} Bxf5 30. Qxf5+
+{+4.33/8 1.1} Kb8 31. Nxd5 {+4.44/7 1.1} Qg7 32. Rf1 {+4.38/6 0.6} Be7 33.
+Qe6 {+4.50/6 0.3} Bg5 34. Rf7 {+5.03/6 0.2} Qh6 35. Qxh6 {+5.01/8 1.4} Bxh6
+36. e6 {+6.77/8 0.6} Ka7 37. e7 {+6.92/8 0.8} Bg5 38. Nxc7 {+7.49/8 0.6}
+Rc8 39. e8=Q {+8.47/9 0.8} Rxc7 40. Rxc7 {+19.10/8 0.5}
+{ELLI resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1974"]
+[BlackElo "2215"]
+[TimeControl "60"]
+[Annotator "2... +0.00"]
+
+1. e3 e5 2. d3 Nf6 {+0.00/8 2.7} 3. Ne2 Nc6 {+0.55/7 0.5} 4. Nd2 d5
+{+0.78/7 1.9} 5. Rg1 a6 {+1.52/5 1.2} 6. Rh1 Bg4 {+0.84/6 3} 7. Rg1 Bd6
+{+1.32/5 0.1} 8. Rh1 O-O {+1.28/7 2.4} 9. Rg1 d4 {+1.34/6 0.4} 10. e4 b5
+{+1.41/6 0.9} 11. Rh1 Qe7 {+1.44/6 0.8} 12. Rg1 Qd7 {+1.46/6 1.3} 13. Rh1
+Bc5 {+1.49/6 1.9} 14. Rg1 Rfd8 {+1.51/6 1.5} 15. Rh1 Rf8 {+1.49/6 1.7} 16.
+Rg1 Rfd8 {+1.51/6 1.6} 17. Rh1 Rf8 {+1.49/6 1.7}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1-0"]
+[WhiteElo "2205"]
+[BlackElo "1984"]
+[TimeControl "60"]
+[Annotator "3. +0.79"]
+
+1. e4 d6 2. d4 Nd7 3. Nc3 {+0.79/7 0.7} e6 4. Nf3 {+0.63/6 2.8} Ne7 5. a3
+{+1.45/5 1.1} Rb8 6. Bg5 {+0.85/6 3} Ra8 7. Bd3 {+0.99/6 2.0} Rb8 8. O-O
+{+1.28/7 1.9} Ra8 9. Be3 {+1.29/6 0.5} Rb8 10. Nb5 {+1.35/6 1.0} Ra8 11.
+Qd2 {+1.43/7 1.7} a6 12. Nc3 {+1.25/7 1.7} Rb8 13. b4 {+1.29/6 0.8} Ra8 14.
+Bg5 {+1.31/6 2.8} Rb8 15. d5 {+1.40/6 2.0} Ra8 16. dxe6 {+1.58/7 1.3} Nf6
+17. e5 {+2.67/6 0.3} dxe5 18. exf7+ {+6.71/6 0.7} Kxf7 19. Bc4+
+{+5.42/6 1.4} Be6 20. Nxe5+ {+5.69/7 0.9} Ke8 21. Qxd8+ {+6.00/6 0.3} Rxd8
+22. Bxe6 {+5.82/7 0.9} Ng6 23. Bf7+ {+8.10/6 0.8} Ke7 24. Bxg6
+{+8.49/7 1.1} hxg6 25. Nxg6+ {+9.34/8 2.0} Kd7 26. Nxh8 {+9.53/7 0.5} Kc8
+27. Ng6 {+10.11/7 1.2} Bd6 28. Rfe1 {+10.11/6 0.3} Nd7 29. Bxd8
+{+12.08/7 0.8} Kxd8 30. Ne4 {+12.81/6 0.2} Be5 31. Ng5 {+14.68/8 1.0} Bxa1
+32. Nf7+ {+325.11/8 1.0} Kc8 33. Re8# {+325.11/7 0.3}
+{ELLI checkmated} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1977"]
+[BlackElo "2212"]
+[TimeControl "60"]
+[Annotator "2... +0.00"]
+
+1. e3 e5 2. d3 Nf6 {+0.00/8 2.7} 3. Ne2 Nc6 {+0.63/7 0.5} 4. Nd2 d5
+{+0.81/7 1.9} 5. Rg1 Bd6 {+0.97/5 1.1} 6. Rh1 Bg4 {+1.22/5 0.9} 7. Rg1 O-O
+{+1.21/7 2.8} 8. Rh1 a5 {+1.45/5 0.2} 9. Rg1 a4 {+1.49/7 1.4} 10. Rh1 Bc5
+{+1.71/5 0.3} 11. Rg1 Ra5 {+1.51/6 1.1} 12. Rh1 Qd6 {+1.81/5 0.3} 13. Rg1
+e4 {+1.71/6 2.6} 14. d4 Qxh2 {+2.73/7 0.9} 15. f3 exf3 {+2.29/7 1.2} 16.
+Nxf3 Bb4+ {+2.12/7 0.7} 17. c3 Bxf3 {+2.07/7 0.6} 18. gxf3 Qh4+
+{+1.73/6 0.3} 19. Kd2 Bd6 {+1.74/6 0.3} 20. Kc2 Qf2 {+2.16/6 0.8} 21. Bg2
+Bh2 {+3.61/6 0.4} 22. Qf1 Bxg1 {+6.10/7 0.5} 23. Qxg1 Qxe2+ {+6.22/8 1.3}
+24. Bd2 Re8 {+6.17/7 1.6} 25. Re1 Qc4 {+6.36/7 0.8} 26. Bf1 Qxa2
+{+6.98/7 0.6} 27. Bd3 a3 {+6.94/6 1.4} 28. Qh2 Qxb2+ {+10.79/7 1.0} 29. Kd1
+a2 {+11.39/7 1.8} 30. Ke2 a1=Q {+11.30/6 0.8} 31. Rxa1 Rxa1 {+12.87/6 0.3}
+32. f4 Rxe3+ {+17.10/6 0.2} 33. Kxe3 Ng4+ {+21.57/8 0.7}
+{ELLI resigns} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1-0"]
+[WhiteElo "2219"]
+[BlackElo "1970"]
+[TimeControl "60"]
+[Annotator "3. +0.51"]
+
+1. e4 d6 2. d4 Nd7 3. Nc3 {+0.51/7 0.8} e6 4. Nf3 {+0.69/6 2.2} Ne7 5. a3
+{+1.45/5 1.6} Rb8 6. Bg5 {+0.85/6 3} Ra8 7. Bd3 {+0.99/6 2.0} Rb8 8. O-O
+{+1.28/7 1.9} Ra8 9. Be3 {+1.29/6 0.5} Rb8 10. Nb5 {+1.35/6 1.1} a6 11. Na7
+{+1.35/6 0.2} Ra8 12. Nxc8 {+1.59/7 1.5} Rxc8 13. b4 {+1.35/6 0.9} Rb8 14.
+c4 {+1.41/6 0.9} h6 15. d5 {+1.54/6 0.8} e5 16. c5 {+1.70/6 0.9} dxc5 17.
+bxc5 {+1.73/7 1.1} Ng6 18. Qa4 {+1.63/6 0.4} Be7 19. Rfb1 {+2.13/6 0.6} O-O
+20. c6 {+1.91/7 1.7} bxc6 21. dxc6 {+1.92/7 1.1} Nb6 22. Qxa6 {+2.15/6 0.5}
+Bd6 23. Bc2 {+2.34/6 1.0} Ne7 24. Qb5 {+2.34/6 0.7} Qe8 25. Nxe5
+{+2.32/6 0.5} Bxe5 26. Qxe5 {+2.49/7 0.9} Nxc6 27. Qxc7 {+3.10/6 0.3} Na8
+28. Rxb8 {+3.14/7 0.6} Nxb8 29. Qc4 {+3.46/7 1.5} Nd7 30. Rb1 {+3.19/6 0.4}
+Qd8 31. Rb5 {+3.44/6 1.0} Nc7 32. Rb7 {+3.47/6 0.4} Ne6 33. Bb3
+{+3.30/6 0.4} Ne5 34. Qb5 {+3.05/6 0.4} Qf6 35. Bd5 {+3.03/6 0.7} Rc8 36.
+Qb2 {+2.91/6 0.8} Ng5 37. Rb8 {+4.49/6 0.5} Rxb8 38. Qxb8+ {+3.02/8 1.2}
+Kh7 39. f4 {+2.99/6 0.4} Nxe4 40. Qxe5 {+5.63/7 0.7} Qxe5 41. fxe5
+{+6.14/10 1.3} Nc3 42. Bxf7 {+6.68/9 0.6} Ne2+ 43. Kf1 {+7.85/10 1.6} Nc3
+44. Bd4 {+7.85/8 0.5} Nb5 45. e6 {+10.17/9 1.1} Nxa3 46. e7 {+325.11/9 0.9}
+Nc2 47. e8=Q {+325.11/9 0.9} h5 48. Qg8+ {+325.11/7 0.4} Kh6 49. Qxg7#
+{+325.11/8 0.8}
+{ELLI checkmated} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1964"]
+[BlackElo "2225"]
+[TimeControl "60"]
+[Annotator "2... +0.22"]
+
+1. e3 e5 2. d3 Nf6 {+0.22/7 3} 3. Nd2 Nc6 {+0.42/7 0.6} 4. Ne2 d5
+{+0.78/7 1.8} 5. Rg1 a6 {+1.52/5 0.9} 6. Rh1 Bg4 {+0.84/6 2.9} 7. Rg1 Bd6
+{+1.32/5 0.1} 8. Rh1 O-O {+1.28/7 2.6} 9. Rg1 d4 {+1.34/6 0.4} 10. e4 b5
+{+1.41/6 0.5} 11. Rh1 Qe7 {+1.44/6 1.9} 12. Rg1 Qd7 {+1.46/6 1.3} 13. Rh1
+Bc5 {+1.49/6 1.9} 14. Rg1 Rfd8 {+1.51/6 1.5} 15. Rh1 Rf8 {+1.49/6 1.6} 16.
+Rg1 Rfd8 {+1.51/6 1.6} 17. Rh1 Rf8 {+1.49/6 1.6}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1-0"]
+[WhiteElo "2215"]
+[BlackElo "1974"]
+[TimeControl "60"]
+[Annotator "3. +0.71"]
+
+1. e4 e6 2. d4 Ne7 3. Nf3 {+0.71/7 0.9} d6 4. b4 {+1.96/5 2.4} Nd7 5. c3
+{+204.53/5 2.5} Rb8 6. Bd3 {+0.68/6 0.4} Ra8 7. O-O {+0.73/6 1.7} Rb8 8.
+Be3 {+0.98/6 1.8} Ra8 9. Nbd2 {+1.08/6 3} Rb8 10. Qb3 {+1.28/6 0.6} Ra8 11.
+b5 {+1.32/6 1.4} Rb8 12. Nc4 {+1.55/6 1.1} Ra8 13. Ng5 {+1.76/5 0.9} Rb8
+14. Qa4 {+1.77/6 1.5} Ra8 15. b6 {+1.78/6 0.7} Nc6 16. d5 {+2.45/6 0.4}
+exd5 17. exd5 {+2.38/6 0.7} Nce5 18. Nxe5 {+3.46/6 0.5} dxe5 19. bxa7
+{+3.39/6 1.4} Bd6 20. Nxh7 {+4.04/6 1.0} g6 21. Ng5 {+4.09/7 1.7} O-O 22.
+Ne4 {+3.90/6 0.9} Kg7 23. Nxd6 {+4.14/6 0.9} cxd6 24. f4 {+4.08/5 0.2} Qf6
+25. f5 {+4.61/6 0.5} Nc5 26. Bxc5 {+4.66/7 0.6} dxc5 27. fxg6 {+4.21/7 1.6}
+Qh4 28. Qxh4 {+18.21/8 1.5}
+{ELLI resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1968"]
+[BlackElo "2221"]
+[TimeControl "60"]
+[Annotator "2... +0.22"]
+
+1. e3 e5 2. d3 Nf6 {+0.22/7 3} 3. Nd2 Nc6 {+0.42/7 0.6} 4. Ne2 d5
+{+0.78/7 1.8} 5. Rg1 Bd6 {+0.97/5 1.2} 6. Rh1 Bg4 {+1.22/5 0.9} 7. Rg1 O-O
+{+1.21/7 2.3} 8. Rh1 a5 {+1.45/5 0.2} 9. Rg1 a4 {+1.49/7 1.4} 10. Rh1 Bc5
+{+1.71/5 0.3} 11. Rg1 Ra5 {+1.51/6 1.2} 12. Rh1 Qd6 {+1.81/5 0.3} 13. Rg1
+e4 {+1.71/6 2.7} 14. d4 Qxh2 {+2.73/7 0.9} 15. f3 exf3 {+2.29/7 1.2} 16.
+gxf3 Qh4+ {+3.49/7 1.2} 17. Ng3 Bd6 {+3.61/7 1.1} 18. Kf2 Bxg3+
+{+4.35/7 1.2} 19. Rxg3 Nh5 {+6.16/6 0.3} 20. fxg4 Qxg3+ {+325.11/8 1.6} 21.
+Ke2 Nf4+ {+325.11/7 0.7} 22. exf4 Nxd4# {+325.11/7 0.5}
+{ELLI checkmated} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1-0"]
+[WhiteElo "2227"]
+[BlackElo "1962"]
+[TimeControl "60"]
+[Annotator "3. +0.43"]
+
+1. d4 d6 2. c4 e6 3. Nf3 {+0.43/7 0.6} Ne7 4. Qa4+ {+2.47/5 2.4} Nd7 5. Nc3
+{+0.52/6 2.1} Rg8 6. d5 {+0.86/6 0.4} e5 7. Bg5 {+1.17/6 0.8} h6 8. Be3
+{+0.89/6 0.4} Rh8 9. Bxa7 {+1.78/6 1.5} Rg8 10. e4 {+1.87/6 1.7} Rh8 11.
+Nb5 {+2.09/6 1.1} Rg8 12. h4 {+2.48/6 0.8} Rh8 13. h5 {+2.46/6 1.3} Rg8 14.
+c5 {+2.90/6 0.9} Rh8 15. cxd6 {+4.54/7 0.9} c6 16. Nc7+ {+9.16/7 1.0}
+{ELLI resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1956"]
+[BlackElo "2233"]
+[TimeControl "60"]
+[Annotator "2... +0.10"]
+
+1. e3 e5 2. Ne2 Nc6 {+0.10/8 2.0} 3. d3 Nf6 {+0.63/7 1.2} 4. Nd2 d5
+{+0.81/7 1.8} 5. Rg1 a6 {+1.52/5 1.0} 6. Rh1 Bg4 {+0.84/6 3} 7. Rg1 Bd6
+{+1.32/5 0.1} 8. Rh1 O-O {+1.28/7 2.9} 9. Rg1 d4 {+1.34/6 0.4} 10. e4 b5
+{+1.41/6 0.9} 11. Rh1 Qe7 {+1.44/6 1.9} 12. Rg1 Qd7 {+1.46/6 1.2} 13. Rh1
+Bc5 {+1.49/6 1.9} 14. Rg1 Rfd8 {+1.51/6 1.5} 15. Rh1 Rf8 {+1.49/6 1.7} 16.
+Rg1 Rfd8 {+1.51/6 1.6} 17. Rh1 Rf8 {+1.49/6 1.6}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1/2-1/2"]
+[WhiteElo "2222"]
+[BlackElo "1967"]
+[TimeControl "60"]
+[Annotator "3. +0.43"]
+
+1. d4 d6 2. c4 e6 3. Nf3 {+0.43/7 0.6} Ne7 4. Nc3 {+0.81/7 2.8} Nd7 5. Qd3
+{+0.60/6 1.7} Rb8 6. b4 {+0.73/6 1.6} Ra8 7. b5 {+0.96/6 2.8} Rb8 8. g4
+{+1.12/6 0.8} Ra8 9. Be3 {+1.25/6 1.4} Rb8 10. Bh3 {+1.33/6 1.5} Ra8 11.
+Kf1 {+1.44/6 1.7} Rb8 12. g5 {+1.52/6 1.2} Ra8 13. Bf4 {+1.51/6 0.8} Rb8
+14. a4 {+1.58/6 2.6} Ra8 15. a5 {+1.78/6 0.7} Rb8 16. Ra3 {+1.81/6 1.1} Ra8
+17. Kg1 {+1.84/6 1.4} Rb8 18. Kf1 {+1.81/6 0.9} Ra8 19. Kg1 {+1.84/6 1.1}
+Rb8 20. Kf1 {+1.81/6 0.9}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1977"]
+[BlackElo "2212"]
+[TimeControl "60"]
+[Annotator "2... +0.12"]
+
+1. e3 e5 2. Ne2 Nf6 {+0.12/8 2.2} 3. d3 Nc6 {+0.55/7 0.9} 4. Nd2 d5
+{+0.78/7 1.9} 5. Rg1 a6 {+1.52/5 1.1} 6. Rh1 Bg4 {+0.84/6 3} 7. Rg1 Bd6
+{+0.99/6 2.0} 8. Rh1 O-O {+1.28/7 1.5} 9. Rg1 d4 {+1.34/6 0.4} 10. e4 b5
+{+1.41/6 0.9} 11. Rh1 Qe7 {+1.44/6 1.9} 12. Rg1 Qd7 {+1.46/6 1.3} 13. Rh1
+Bc5 {+1.49/6 1.9} 14. Rg1 Rfd8 {+1.51/6 1.6} 15. Rh1 Rf8 {+1.49/6 1.7} 16.
+Rg1 Rfd8 {+1.51/6 1.6} 17. Rh1 Rf8 {+1.49/6 1.6}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1-0"]
+[WhiteElo "2203"]
+[BlackElo "1986"]
+[TimeControl "60"]
+[Annotator "3. +0.40"]
+
+1. e4 d6 2. d4 e6 3. Nc3 {+0.40/7 1.0} Ne7 4. Nf3 {+0.73/6 2.0} Nd7 5. a3
+{+1.45/5 1.6} Rb8 6. Bg5 {+0.85/6 3} Ra8 7. Bd3 {+0.99/6 2.0} Rb8 8. O-O
+{+1.28/7 1.9} Ra8 9. Be3 {+1.29/6 0.5} Rb8 10. Nb5 {+1.35/6 1.9} Ra8 11.
+Qd2 {+1.43/7 2.4} Rg8 12. Qc3 {+2.85/7 1.0} Rh8 13. Nxc7+ {+9.08/7 0.9}
+{ELLI resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1979"]
+[BlackElo "2210"]
+[TimeControl "60"]
+[Annotator "2... +0.22"]
+
+1. e3 e5 2. d3 Nf6 {+0.22/7 3} 3. Nd2 Nc6 {+0.42/7 0.6} 4. Ne2 d5
+{+0.78/7 1.8} 5. Rg1 a6 {+1.52/5 1.2} 6. Rh1 Bg4 {+0.84/6 3} 7. Rg1 Bd6
+{+1.32/5 0.1} 8. Rh1 O-O {+1.28/7 2.9} 9. Rg1 d4 {+1.34/6 0.4} 10. e4 b5
+{+1.41/6 1.0} 11. Rh1 Qe7 {+1.44/6 1.0} 12. Rg1 Qd7 {+1.46/6 1.3} 13. Rh1
+Bc5 {+1.49/6 1.6} 14. Rg1 Rfd8 {+1.51/6 1.3} 15. Rh1 Rf8 {+1.49/6 1.7} 16.
+Rg1 Rfd8 {+1.51/6 1.6} 17. Rh1 Rf8 {+1.49/6 1.7}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1/2-1/2"]
+[WhiteElo "2201"]
+[BlackElo "1988"]
+[TimeControl "60"]
+[Annotator "3. +0.52"]
+
+1. e4 d6 2. d4 e6 3. Nc3 {+0.52/7 1.0} Nd7 4. Nf3 {+0.63/6 2.5} Ne7 5. a3
+{+1.45/5 1.1} Rb8 6. Bg5 {+0.85/6 3} Ra8 7. Bd3 {+0.99/6 2.0} Rb8 8. O-O
+{+1.28/7 1.9} Ra8 9. Be3 {+1.29/6 0.5} Rb8 10. Nb5 {+1.35/6 1.9} Ra8 11.
+Qd2 {+1.43/7 2.3} a6 12. Nc3 {+1.25/7 1.7} Rb8 13. b4 {+1.29/6 0.8} Ra8 14.
+Bg5 {+1.31/6 2.8} Rb8 15. d5 {+1.40/6 2.0} e5 16. Rfb1 {+1.45/6 0.6} Ra8
+17. b5 {+1.49/6 1.6} h6 18. bxa6 {+1.56/7 1.1} bxa6 19. Be3 {+1.43/6 0.9}
+Rg8 20. a4 {+1.66/5 0.6} Rh8 21. a5 {+1.69/6 2.2} Rg8 22. Bc4 {+1.94/5 0.5}
+Rh8 23. Rb4 {+2.06/5 0.4} Rg8 24. Rab1 {+2.06/5 0.8} Rh8 25. g4
+{+2.14/5 0.7} Rg8 26. h4 {+1.95/6 0.8} Rh8 27. h5 {+1.98/6 0.8} Rg8 28.
+R1b2 {+2.17/6 0.7} Rh8 29. Rb1 {+2.07/6 0.9} Rg8 30. R1b2 {+2.17/6 0.7} Rh8
+31. Rb1 {+2.07/6 0.9}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1997"]
+[BlackElo "2192"]
+[TimeControl "60"]
+[Annotator "2... +0.00"]
+
+1. e3 e5 2. d3 Nf6 {+0.00/8 2.7} 3. Nd2 Nc6 {+0.60/7 0.7} 4. Ne2 d5
+{+0.81/7 1.6} 5. Rg1 Bd6 {+0.97/5 0.2} 6. Rh1 Bg4 {+1.22/5 1.4} 7. Rg1 O-O
+{+1.21/7 2.5} 8. Rh1 a5 {+1.45/5 0.2} 9. Rg1 a4 {+1.49/7 2.5} 10. Rh1 Bc5
+{+1.71/5 0.3} 11. Rg1 Ra5 {+1.51/6 1.4} 12. Rh1 Qd6 {+1.81/5 0.8} 13. Rg1
+e4 {+1.71/6 2.9} 14. d4 Qxh2 {+2.73/7 0.9} 15. dxc5 Bxe2 {+3.86/7 0.8} 16.
+Qxe2 Qxg1 {+4.54/7 2.3} 17. Nb1 Rxc5 {+4.55/7 0.8} 18. Nc3 Ra8
+{+4.50/7 1.0} 19. Bd2 d4 {+4.51/6 1.0} 20. Nb5 d3 {+6.27/7 1.0} 21. cxd3
+Rxb5 {+6.26/7 0.9} 22. O-O-O exd3 {+6.55/6 0.5} 23. Qxd3 Rc5+ {+6.97/6 0.8}
+24. Kb1 Rd8 {+7.69/6 1.1} 25. Qe2 Rcd5 {+7.69/6 0.5} 26. Kc1 Ne4
+{+10.49/6 0.3} 27. f3 Nxd2 {+12.50/7 0.8} 28. Rxd2 Rxd2 {+16.05/8 1.6} 29.
+Qxd2 Qxf1+ {+16.10/8 1.4}
+{ELLI resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ChessIsMyWife"]
+[Result "1-0"]
+[WhiteElo "2080"]
+[BlackElo "1334"]
+[TimeControl "120+6"]
+[Annotator "8. +0.42"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6 6. Be3 Bg7 7. Be2 O-O
+8. O-O {+0.42/7 22} Nc6 9. Nb3 Be6 10. f4 Qc8 11. h3 {-0.01/7 7} a5 12. Bb5
+{+0.22/7 27} a4 13. Nxa4 {+0.87/8 12} Rxa4 14. Bxa4 {+0.63/8 4} Nxe4 15.
+Bxc6 {+0.67/8 19} bxc6 16. Qd3 {+0.92/8 9} Ng3 17. Rfb1 {+0.74/8 17} Nf5
+18. g4 {+0.78/8 16} Nxe3 19. Qxe3 {+0.78/9 15} c5 20. c3 {+0.75/8 6} Qc6
+21. Nd2 {+0.76/8 10} Bc8 22. Rf1 {+1.09/7 4} Bb7 23. Nf3 {+0.93/8 5} e6 24.
+Kf2 {+1.01/7 8} Rb8 25. Kg3 {+0.83/8 17} Ba8 26. Rf2 {+1.02/7 2.5} d5 27.
+Ne5 {+1.40/8 9} Qd6 28. Re1 {+1.36/8 8} d4 29. cxd4 {+1.20/8 6} cxd4 30.
+Qd2 {+0.96/8 15} Qd5 31. b3 {+1.19/7 2.1} f6 32. Nf3 {+1.13/8 9} e5 33.
+fxe5 {+1.01/8 10} fxe5 34. Ng5 {+1.04/8 11} Bh6 35. h4 {+1.01/8 5} Rf8 36.
+Rc1 {+1.23/9 8} Bxg5 37. Rxf8+ {+1.47/10 6} Kxf8 38. hxg5 {+1.83/10 9} Qf3+
+39. Kh4 {+1.87/10 3} Be4 40. Qb4+ {+5.98/10 5} Kf7 41. Rc7+ {+325.11/11 7}
+Ke6 42. Qe7+ {+325.11/10 3}
+{ChessIsMyWife resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "JollyJake"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1375"]
+[BlackElo "2080"]
+[TimeControl "120+6"]
+[Annotator "2... +0.00"]
+
+1. f4 f5 2. Nf3 Nc6 {+0.00/9 2.7} 3. e3 Nf6 {+0.00/9 9} 4. b3 e6
+{+0.08/9 10} 5. Be2 Bb4 {+0.37/7 18} 6. O-O Ne4 {+0.30/8 8} 7. a3 Qf6
+{+0.20/8 8} 8. Ra2 Bd6 {-0.06/8 11} 9. d3 Nc5 {-0.04/7 2.6} 10. b4 Na4
+{-1.83/8 8} 11. c4 Nc5 {-2.10/8 7} 12. Bb2 Qf7 {-2.07/7 1.8} 13. bxc5 Bxc5
+{-2.54/9 14} 14. d4 Be7 {-2.54/7 10} 15. d5 exd5 {-2.54/9 22} 16. cxd5 Bc5
+{-2.67/8 11} 17. Ng5 Bxe3+ {-2.88/9 4} 18. Kh1 Qe7 {-3.01/8 5} 19. dxc6
+bxc6 {-3.60/7 5} 20. Re1 h6 {-4.62/8 10} 21. Nf3 Bf2 {-2.97/7 6} 22. Rf1
+Be3 {-3.23/7 9} 23. Bc4 d5 {-3.30/8 15} 24. Bd3 O-O {-3.32/7 3} 25. Ne5 Rf6
+{-2.96/7 6} 26. Qf3 Bb6 {-3.42/7 8} 27. Nd2 a5 {-3.54/7 3} 28. Raa1 Rb8
+{-3.17/7 11} 29. Bc3 a4 {-3.32/7 7} 30. Rae1 Qxa3 {-2.89/7 7} 31. Ba1 Qd6
+{-2.06/7 9} 32. Nd7 Bxd7 {+0.06/8 14} 33. Bxf6 Qxf6 {+0.22/8 5} 34. Re2 Bc5
+{+0.51/7 2.5} 35. Rfe1 Qd4 {+0.50/6 6} 36. Qh5 Qxd3 {+2.80/8 5} 37. Nf3 Bd6
+{+2.74/8 3} 38. Ne5 Bxe5 {+2.79/9 9} 39. fxe5 Be6 {+2.88/8 9} 40. Qg6 Qxe2
+{+4.23/10 10} 41. Qe8+ Kh7 {+19.13/11 7} 42. Rxe2 Rb1+ {+325.11/11 10}
+{JollyJake forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Drooler"]
+[Result "1-0"]
+[WhiteElo "2081"]
+[BlackElo "1696"]
+[TimeControl "120+6"]
+[Annotator "7. +0.47"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Bb4 6. e5 Nd5 7. Bd2
+{+0.47/9 22} Qa5 8. Ndb5 {+0.66/9 9} O-O 9. Nxd5 {+1.52/10 16} exd5 10. c3
+{+1.36/9 5} Be7 11. Be3 {+1.22/8 18} Nc6 12. a3 {+0.88/8 15} Nxe5 13. b4
+{+0.99/8 14} Qd8 14. Qxd5 {+0.93/8 8} Nc6 15. Bd3 {+1.05/7 4} Bf6 16. Kd2
+{+1.01/6 3} a6 17. Nd6 {+1.18/8 16} Qc7 18. Qf5 {+2.04/7 4}
+{Drooler resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Drooler"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1693"]
+[BlackElo "2084"]
+[TimeControl "120+6"]
+[Annotator "2... -0.19"]
+
+1. d4 d5 2. c3 Nc6 {-0.19/8 2.7} 3. Bg5 Nf6 {+0.32/8 7} 4. Bxf6 exf6
+{+0.32/8 15} 5. e3 a6 {+0.96/7 7} 6. a4 Be6 {+0.65/8 7} 7. Bd3 Bd6
+{+0.53/8 18} 8. Nd2 Kf8 {+0.75/7 11} 9. Ne2 Qe7 {+0.57/7 12} 10. Ng3 g6
+{+0.71/7 7} 11. O-O f5 {+0.63/7 14} 12. f4 h5 {+0.77/7 5} 13. Rf2 h4
+{+0.99/7 7} 14. Ngf1 b6 {+0.85/7 8} 15. b4 h3 {+0.75/7 2.8} 16. g3 Qd7
+{+1.04/7 3} 17. Nf3 Qe8 {+0.82/7 7} 18. N1d2 Bc8 {+0.72/7 8} 19. Qe1 Nd8
+{+0.78/7 11} 20. Kh1 Ra7 {+0.81/7 6} 21. Bf1 Qc6 {+0.69/7 11} 22. Qc1 Qe8
+{+0.70/7 4} 23. Re2 a5 {+0.89/7 4} 24. b5 c6 {+0.65/8 14} 25. Re1 Re7
+{+0.76/8 9} 26. Nb1 Bd7 {+0.92/8 7} 27. bxc6 Bxc6 {+1.32/9 6} 28. Ng1 Bxa4
+{+1.09/8 4} 29. Nxh3 Ne6 {+1.05/8 13} 30. Nf2 g5 {+1.06/7 9} 31. Bd3 Ng7
+{+1.11/7 3} 32. Na3 Nh5 {+1.03/6 1.1} 33. Kg2 gxf4 {+0.87/8 13} 34. gxf4
+Bd7 {+0.87/6 2.3} 35. Nc2 Nf6 {+0.89/7 12} 36. Nh1 Ne4 {+1.11/7 3} 37. Bxe4
+fxe4 {+1.46/8 4} 38. Ng3 Bg4 {+1.52/8 16} 39. Qd2 Re6 {+2.02/7 11} 40. Rg1
+Reh6 {+3.57/8 10} 41. Nf1 Qb5 {+2.38/7 2.1} 42. Kf2 Rh4 {+2.22/7 16} 43.
+Ne1 a4 {+2.19/8 7} 44. Qa2 a3 {+2.06/8 4} 45. Rb1 Qa5 {+1.88/7 4} 46. Rb3
+Qa6 {+2.11/8 13} 47. Ng2 Rh3 {+2.46/8 4} 48. Ne1 f5 {+2.29/7 3}
+{Drooler forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "as"]
+[Result "1-0"]
+[WhiteElo "2087"]
+[BlackElo "1560"]
+[TimeControl "120+6"]
+[Annotator "4. +0.46"]
+
+1. e4 e6 2. d4 d5 3. Nd2 Be7 4. exd5 {+0.46/7 8} exd5 5. Bd3 {+0.36/7 14}
+Nf6 6. c3 {-0.24/8 17} O-O 7. Ngf3 {-0.17/8 20} Re8 8. Ne5 {+0.02/8 6} Nbd7
+9. Ndf3 {+0.06/8 11} Bd6 10. Bf4 {-0.31/9 10} Nh5 11. Bxh7+ {+0.78/9 6}
+Kxh7 12. Ng5+ {+1.20/10 16} Kg8 13. Qxh5 {+1.01/9 5}
+{as resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "as"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1559"]
+[BlackElo "2088"]
+[TimeControl "120+6"]
+[Annotator "6... +0.17"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. d3 d6 6. c3 b5 {+0.17/8 4} 7.
+Bc2 h6 {+0.33/8 17} 8. Nbd2 g5 {+0.46/8 13} 9. h3 Be6 {+0.42/8 15} 10. g4
+h5 {+0.53/7 7} 11. Nxg5 hxg4 {+0.40/8 25} 12. Nxe6 fxe6 {+0.59/9 8} 13. d4
+exd4 {+1.74/9 11} 14. e5 dxe5 {+2.02/9 12} 15. Bg6+ Kd7 {+2.23/9 11} 16.
+Ne4 Rxh3 {+2.13/9 6} 17. Rxh3 gxh3 {+1.87/9 10} 18. Bg5 Be7 {+1.77/9 15}
+{as resigns} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1/2-1/2"]
+[WhiteElo "2200"]
+[BlackElo "1913"]
+[TimeControl "60"]
+[Annotator "3. +0.52"]
+
+1. e4 d6 2. d4 e6 3. Nc3 {+0.52/7 1.0} Ne7 4. Nf3 {+0.80/5 2.2} Nd7 5. Bd3
+{+1.03/5 1.3} Rb8 6. Be3 {+1.06/6 2.0} Ra8 7. O-O {+1.21/6 1.6} Rb8 8. a3
+{+1.47/5 1.4} Ra8 9. Qd2 {+1.34/6 2.3} Rb8 10. b4 {+1.44/6 1.5} Ra8 11. b5
+{+1.45/6 2.6} Rb8 12. a4 {+1.56/6 0.8} Ra8 13. a5 {+1.69/6 2.6} Rb8 14. Ra3
+{+1.77/6 1.0} Ra8 15. Bg5 {+2.04/5 0.3} Rb8 16. Be3 {+1.81/6 2.6} Ra8 17.
+Bg5 {+2.04/5 0.3} Rb8 18. Be3 {+1.81/6 2.5}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1924"]
+[BlackElo "2189"]
+[TimeControl "60"]
+[Annotator "2... +0.00"]
+
+1. e3 e5 2. d3 Nf6 {+0.00/8 2.7} 3. Ne2 Nc6 {+0.63/7 0.5} 4. Nd2 d5
+{+0.78/7 1.9} 5. Rg1 a6 {+1.52/5 1.2} 6. Rh1 Bg4 {+0.84/6 3} 7. Rg1 Bd6
+{+1.32/5 0.1} 8. Rh1 O-O {+1.28/7 2.5} 9. Rg1 d4 {+1.34/6 0.4} 10. e4 b5
+{+1.41/6 0.8} 11. Rh1 Qe7 {+1.44/6 2.0} 12. Rg1 Qd7 {+1.46/6 1.3} 13. Rh1
+Bc5 {+1.49/6 1.9} 14. Rg1 Rfd8 {+1.51/6 1.1} 15. Rh1 Rf8 {+1.49/6 1.7} 16.
+Rg1 Rfd8 {+1.51/6 1.6} 17. Rh1 Rf8 {+1.49/6 1.7}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1/2-1/2"]
+[WhiteElo "2179"]
+[BlackElo "1934"]
+[TimeControl "60"]
+[Annotator "3. +0.32"]
+
+1. d4 d6 2. c4 Nd7 3. Nf3 {+0.32/8 1.6} e6 4. Qd3 {+0.48/6 1.3} Ne7 5. Nc3
+{+0.66/6 2.1} Rb8 6. b4 {+0.73/6 1.7} Ra8 7. b5 {+0.96/6 2.9} Rb8 8. g4
+{+1.12/6 0.7} Ra8 9. Be3 {+1.25/6 1.4} Rb8 10. Bh3 {+1.33/6 1.6} Ra8 11.
+Kf1 {+1.44/6 1.9} Rb8 12. g5 {+1.52/6 1.5} Ra8 13. Bf4 {+1.51/6 1.5} Rb8
+14. a4 {+1.58/6 2.7} Ra8 15. a5 {+1.78/6 0.7} Rb8 16. Ra3 {+1.81/6 0.9} Ra8
+17. Kg1 {+1.84/6 1.4} Rb8 18. Kf1 {+1.81/6 1.2} Ra8 19. Kg1 {+1.84/6 1.5}
+Rb8 20. Kf1 {+1.81/6 1.2}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1944"]
+[BlackElo "2169"]
+[TimeControl "60"]
+[Annotator "2... +0.10"]
+
+1. e3 e5 2. Ne2 Nc6 {+0.10/8 2.0} 3. d3 Nf6 {+0.55/7 1.2} 4. Nd2 d5
+{+0.81/7 1.8} 5. Rg1 a6 {+1.52/5 1.2} 6. Rh1 Bg4 {+0.84/6 3} 7. Rg1 Bd6
+{+1.32/5 0.1} 8. Rh1 O-O {+1.28/7 2.8} 9. Rg1 d4 {+1.34/6 0.4} 10. e4 b5
+{+1.41/6 0.9} 11. Rh1 Qe7 {+1.44/6 2.0} 12. Rg1 Qd7 {+1.46/6 1.3} 13. Rh1
+Bc5 {+1.49/6 1.9} 14. Rg1 Rfd8 {+1.51/6 1.6} 15. Rh1 Rf8 {+1.49/6 1.7} 16.
+Rg1 Rfd8 {+1.51/6 1.6} 17. Rh1 Rf8 {+1.49/6 1.7}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1/2-1/2"]
+[WhiteElo "2160"]
+[BlackElo "1953"]
+[TimeControl "60"]
+[Annotator "3. +0.32"]
+
+1. d4 d6 2. c4 Nd7 3. Nf3 {+0.32/8 1.6} e6 4. Nc3 {+0.61/6 1.5} Ne7 5. b4
+{+1.12/5 1.7} Rb8 6. Qa4 {+0.81/6 1.7} Ra8 7. d5 {+0.89/6 1.6} e5 8. Bg5
+{+1.16/6 0.8} h6 9. Be3 {+1.00/6 0.4} Rg8 10. Bxa7 {+1.87/6 1.3} Rh8 11. e3
+{+2.03/6 1.3} Rg8 12. Bd3 {+2.22/6 0.7} Rh8 13. Nb5 {+2.48/6 1.5} Rg8 14.
+Bh7 {+2.79/6 1.1} Rh8 15. Bd3 {+2.48/6 2.0} Rg8 16. Bh7 {+2.79/6 1.1} Rh8
+17. Bd3 {+2.48/6 2.0}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1962"]
+[BlackElo "2151"]
+[TimeControl "60"]
+[Annotator "2... +0.12"]
+
+1. e3 e5 2. Ne2 Nf6 {+0.12/8 2.2} 3. d3 Nc6 {+0.55/7 1.0} 4. Nd2 d5
+{+0.81/7 1.9} 5. Rg1 Bd6 {+0.97/5 1.1} 6. Rh1 Be6 {+0.98/6 3} 7. Rg1 O-O
+{+1.23/6 2.0} 8. Rh1 a6 {+1.29/6 1.0} 9. Rg1 Ng4 {+1.55/5 0.6} 10. Rh1 Qh4
+{+1.98/6 1.3} 11. Ng3 Nxh2 {+2.08/6 0.6} 12. Qe2 Nb4 {+2.19/5 0.2} 13. Kd1
+Bg4 {+1.90/7 1.5} 14. Nf3 Bxf3 {+1.61/7 0.9} 15. gxf3 f5 {+1.48/6 0.6} 16.
+c3 Nc6 {+1.37/6 2.0} 17. Bg2 Rac8 {+1.46/5 0.4} 18. Nf1 e4 {-0.06/7 1.1}
+19. f4 exd3 {-0.06/7 0.8} 20. Qxd3 Qg4+ {+1.80/7 0.9} 21. Qe2 Qxg2
+{+1.82/7 0.6} 22. Rxh2 Qg1 {+1.66/7 0.9} 23. Bd2 Rce8 {+1.72/6 0.6} 24. Kc2
+Bxf4 {+2.92/6 0.8} 25. Ng3 Qxh2 {+6.02/7 1.0} 26. exf4 Rxe2 {+9.98/8 1.6}
+27. Rh1 Qg2 {+13.85/8 1.0} 28. Nh5 Qe4+ {+20.12/6 0.3} 29. Kc1 Qxh1+
+{+22.87/7 0.6} 30. Kc2 Qe1 {+25.92/7 0.7} 31. Kb3 Qxd2 {+325.11/7 0.4} 32.
+Nxg7 Qxb2+ {+325.11/7 0.7} 33. Ka4 Qxa2# {+325.11/7 0.8}
+{ELLI checkmated} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ELLI"]
+[Result "1-0"]
+[WhiteElo "2159"]
+[BlackElo "1954"]
+[TimeControl "60"]
+[Annotator "3. +0.40"]
+
+1. e4 d6 2. d4 e6 3. Nc3 {+0.40/7 1.0} Nd7 4. Nf3 {+0.69/6 2.0} Ne7 5. a3
+{+1.45/5 1.6} Rb8 6. Bg5 {+0.85/6 3} Ra8 7. Bd3 {+0.99/6 2.0} Rb8 8. O-O
+{+1.28/7 1.9} Ra8 9. Be3 {+1.29/6 0.5} Rb8 10. Nb5 {+1.35/6 2.0} Ra8 11.
+Qd2 {+1.43/7 2.4} a6 12. Nc3 {+1.25/7 1.8} Rb8 13. b4 {+1.29/6 0.9} Ra8 14.
+Bg5 {+1.31/6 2.8} Rb8 15. d5 {+1.40/6 2.0} e5 16. Rfb1 {+1.45/6 0.6} h6 17.
+Be3 {+1.41/7 1.7} Rg8 18. b5 {+1.64/6 1.0} Rh8 19. bxa6 {+1.83/6 1.5} bxa6
+20. Rxb8 {+1.90/6 0.6} Nxb8 21. Rb1 {+2.14/6 1.4} Nd7 22. Qe2 {+2.13/5 1.7}
+g6 23. Bxa6 {+2.57/6 0.5} Bg7 24. Bxc8 {+2.54/6 0.6} Qxc8 25. Rb5
+{+2.42/6 1.0} Kf8 26. Ra5 {+2.53/6 0.7} Kg8 27. Ra7 {+2.77/6 0.9} Kh7 28.
+Nb5 {+3.51/6 0.6} Rd8 29. Rxc7 {+4.82/6 0.4} Qb8 30. Ba7 {+4.87/6 0.9} Qa8
+31. Nxd6 {+5.07/7 0.9} Nf8 32. Nxf7 {+6.03/7 0.8} Rc8 33. N3g5+
+{+6.62/6 0.3} Kg8 34. Rxe7 {+5.86/7 0.6} Bf6 35. Nxh6+ {+7.94/7 0.5} Kh8
+36. Qf3 {+8.35/7 0.6} Bxe7 37. Qf7 {+325.11/8 0.9} Bxg5 38. Qg8#
+{+325.11/8 0.6}
+{ELLI checkmated} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "ELLI"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1946"]
+[BlackElo "2167"]
+[TimeControl "60"]
+[Annotator "4... +0.82"]
+
+1. e4 c5 2. d4 cxd4 3. Nf3 e5 4. Bc4 Nc6 {+0.82/6 0.4} 5. Bxf7+ Kxf7
+{+3.47/7 2.0} 6. c3 Nf6 {+3.49/7 2.7} 7. Qb3+ Kg6 {+3.40/6 0.3} 8. h4 Qb6
+{+3.82/5 0.3} 9. Qc2 d6 {+3.81/6 0.8} 10. Bg5 d3 {+4.44/7 1.2} 11. Qxd3
+Qxb2 {+7.31/8 1.4} 12. O-O Qxa1 {+7.91/7 0.6} 13. Nbd2 Qxa2 {+8.08/7 1.5}
+14. g4 Bxg4 {+9.94/7 1.2} 15. Nh2 Be6 {+10.03/7 1.3} 16. f4 exf4
+{+10.07/7 1.4} 17. Bxf4 Ne5 {+9.98/6 0.6} 18. Bxe5 dxe5 {+10.29/7 1.0} 19.
+h5+ Kxh5 {+11.17/8 2.0} 20. Ndf3 Bc5+ {+12.65/6 0.3} 21. Kh1 Bh3
+{+12.93/6 0.7} 22. Rg1 Bxg1 {+13.14/6 0.4} 23. Nxg1 Bg2# {+325.11/7 0.6}
+{ELLI checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "goldenmax"]
+[Result "1-0"]
+[WhiteElo "2089"]
+[BlackElo "1792"]
+[TimeControl "120+6"]
+[Annotator "5. +0.37"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Bc5 5. Nb3 {+0.37/7 2.8} Bb6 6. Nc3
+{+0.09/8 21} Ne7 7. Bg5 {+0.41/8 27} O-O 8. Bf4 {+0.58/7 4} Nbc6 9. Bd6
+{+0.71/7 14} f5 10. Bc4 {+0.90/7 14} Rf7 11. O-O {+0.92/7 11} fxe4 12. Nxe4
+{+0.34/8 16} Nf5 13. g3 {+0.35/7 7} a5 14. c3 {+0.46/7 7} a4 15. Nbd2
+{+0.26/7 10} a3 16. bxa3 {+1.10/8 11} Bc7 17. Nb3 {+1.04/8 6} Bxd6 18. Nxd6
+{+0.36/8 7} Nxd6 19. Qxd6 {+0.18/9 14} Qf6 20. Nd4 {+1.03/8 6} Ne5 21. Be2
+{+1.30/8 9} Rf8 22. f4 {+1.37/8 10} Nf7 23. Qb4 {+1.33/8 5} d5 24. Rae1
+{+1.71/7 7} Rd8 25. a4 {+1.59/7 6} Nd6 26. Bd3 {+1.78/7 15} h6 27. a5
+{+1.92/7 4} Rb8 28. Nc6 {+2.27/6 1.2} bxc6 29. Qxb8 {+2.02/8 8} Ba6 30. Qb1
+{+2.40/9 7} Bxd3 31. Qxd3 {+2.26/9 9} Nb5 32. Re5 {+3.07/8 4} Ra8 33. c4
+{+3.36/8 4} Nd6 34. cxd5 {+3.81/8 7} cxd5 35. Rxd5 {+4.01/8 8} Nf5 36. Rb1
+{+4.35/8 5} Rc8 37. Rd7 {+4.49/8 3} Rc3 38. Qe4 {+4.44/8 7} Rf3 39. Qxf3
+{+10.23/8 7}
+{goldenmax resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "KingOfTheEggs"]
+[Black "Pigeon"]
+[Result "1-0"]
+[WhiteElo "1356"]
+[BlackElo "2094"]
+[TimeControl "120+6"]
+[Annotator "8... +0.17"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8.
+a4 Bb7 {+0.17/9 16} 9. d3 b4 {+0.09/8 11} 10. Nbd2 Bc5 {+0.15/8 13} 11. h3
+d6 {+0.25/8 6} 12. Nf1 Nd4 {+0.44/8 23} 13. Nxd4 Bxd4 {+0.47/8 12} 14. Ng3
+d5 {+0.34/8 6} 15. exd5 Bxd5 {+0.48/8 4} 16. Bg5 Bxb3 {+1.89/9 15} 17. cxb3
+Bxb2 {+1.23/9 14} 18. Rb1 Bc3 {+1.52/9 15} 19. Re2 Qd7 {+1.48/8 7} 20. Bxf6
+gxf6 {+0.54/9 19} 21. Ne4 Qd4 {+0.53/7 1.5} 22. Nxf6+ Kh8 {-0.38/9 4} 23.
+Re4 Qd6 {-1.20/9 15} 24. Qf3 Qe6 {-1.25/8 5} 25. Rh4 h6 {-2.37/7 1.5} 26.
+Rxh6+ Kg7 {-4.22/9 7} 27. Rh7+ Kg6 {-325.11/10 7} 28. Qg3+ Qg4
+{-12.11/10 10} 29. Qxg4+ Kxf6 {-8.60/9 3} 30. Rh6+ Ke7 {-8.76/9 11} 31. Qc4
+Rac8 {-8.90/9 12} 32. Qc6 a5 {-8.76/9 4} 33. Rd1 Bd4 {-8.71/9 6} 34. Qf6+
+Kd7 {-8.69/9 4} 35. Rc1 c5 {-8.73/8 16} 36. Kf1 Rcd8 {-8.72/8 12} 37. Qd6+
+Kc8 {-325.11/11 10} 38. Qc6+ Kb8 {-325.11/10 5} 39. Qb6+ Kc8 {-325.11/10 9}
+40. Rxc5+ Bxc5 {-325.11/11 6} 41. Qxc5+ Kb7 {-325.11/10 9} 42. Rb6+ Ka7
+{-325.11/11 9} 43. Qxa5#
+{Pigeon checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "lundin"]
+[Result "1-0"]
+[WhiteElo "2062"]
+[BlackElo "1547"]
+[TimeControl "120+6"]
+[Annotator "6. -0.06"]
+
+1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 b6 5. Ne2 Ba6 6. Qa4 {-0.06/8 5} c5 7.
+a3 {+0.41/9 10} Bxc3+ 8. Nxc3 {+0.38/9 9} O-O 9. dxc5 {+0.36/9 20} bxc5 10.
+Bd3 {+0.26/8 7} d5 11. Nb5 {+0.21/8 6} Qb6 12. O-O {+0.14/8 19} Bxb5 13.
+Qxb5 {+0.29/9 6} Nc6 14. f4 {+0.23/9 8} Qxb5 15. cxb5 {-0.07/10 7} Na5 16.
+a4 {-0.08/10 22} Nb3 17. Ra3 {-0.08/10 8} Nxc1 18. Rxc1 {-0.05/10 15} c4
+19. Be2 {+0.07/9 11} Rfb8 20. b3 {+0.31/9 7} a6 21. bxc4 {+0.97/10 12} dxc4
+22. Bxc4 {+1.22/9 13} axb5 23. Bxb5 {+0.95/9 7} Kf8 24. Rd3 {+1.23/8 4} Nd5
+25. f5 {+1.39/9 15} Ra7 26. fxe6 {+1.73/8 3} fxe6 27. Rc5 {+1.62/8 10} Ke7
+28. e4 {+1.70/8 6} Nf4 29. Rd2 {+2.01/9 11} Rd8 30. Rxd8 {+1.60/10 11} Kxd8
+31. g3 {+1.60/10 7} Ng6 32. Kg2 {+1.54/10 8} Rc7 33. Rxc7 {+1.55/11 5} Kxc7
+34. Bc4 {+1.50/11 5} e5 35. a5 {+1.48/11 5} Kc6 36. h4 {+1.72/11 5} Kc5 37.
+a6 {+1.74/13 11} Kb6 38. Kf3 {+1.39/12 5} Ne7 39. Kg4 {+1.72/13 8} g6 40.
+Kg5 {+2.97/14 8} Nc8 41. Kh6 {+3.27/14 5} Nd6 42. Bd3 {+3.76/14 12} Nc8 43.
+Kxh7 {+3.80/14 4}
+{lundin resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "badris"]
+[Result "1-0"]
+[WhiteElo "2174"]
+[BlackElo "1334"]
+[TimeControl "60"]
+[Annotator "6. +0.55"]
+
+1. d4 Nf6 2. c4 c5 3. d5 e5 4. Nc3 d6 5. e4 Be7 6. Nf3 {+0.55/7 1.8} O-O 7.
+Bd3 {+0.43/6 0.7} Ne8 8. O-O {+0.77/6 0.4} Nd7 9. Be3 {+0.99/7 1.7} g6 10.
+Qa4 {+1.11/6 0.5} Ng7 11. b4 {+0.98/6 0.9} b6 12. Qc6 {+1.25/6 0.5} Rb8 13.
+bxc5 {+1.09/6 2.0} Nxc5 14. Bxc5 {+0.36/7 1.2} bxc5 15. Rfb1 {+0.80/7 1.2}
+Bd7 16. Rxb8 {+3.79/8 1.4} Qxb8 17. Qxd7 {+3.85/8 1.4}
+{badris resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "badris"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1334"]
+[BlackElo "2174"]
+[TimeControl "60"]
+[Annotator "9... -0.19"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. f3 O-O 6. Be3 Nc6 7. Nge2 a6 8.
+Qd2 Rb8 9. Nc1 Bd7 {-0.19/6 0.7} 10. Be2 e6 {+0.10/5 0.2} 11. O-O Qe7
+{-0.33/6 0.8} 12. a3 Rfc8 {-0.38/6 1.6} 13. b4 e5 {-0.13/6 0.4} 14. Nb3
+exd4 {-0.13/6 1.0} 15. Nxd4 Qe5 {-0.29/6 0.9} 16. Rad1 Re8 {-0.43/6 1.0}
+17. Nd5 Nxd5 {-0.57/7 1.2} 18. cxd5 Nxd4 {-0.24/7 0.7} 19. Bxd4 Qxd4+
+{-0.51/8 2.2} 20. Qxd4 Bxd4+ {-0.41/8 0.9} 21. Rxd4 Rbc8 {-0.30/7 0.6} 22.
+Rc1 Bb5 {-0.28/7 0.7} 23. Bf1 Red8 {-0.25/8 1.2} 24. Rd2 c6 {-0.28/8 1.1}
+{badris forfeits on time} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "iowa6"]
+[Result "1/2-1/2"]
+[WhiteElo "2174"]
+[BlackElo "1831"]
+[TimeControl "60"]
+[Annotator "7. +0.89"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 c5 5. a3 Bxc3+ 6. bxc3 Qc7 7. Nf3
+{+0.89/7 0.8} b6 8. dxc5 {+1.09/7 3} bxc5 9. Bf4 {+0.85/6 2.0} Ne7 10. g3
+{+0.69/6 2.0} Ba6 11. Bxa6 {+0.90/7 0.6} Nxa6 12. Ng5 {+0.67/7 1.1} h6 13.
+Qh5 {+0.32/7 0.5} O-O 14. Nf3 {+0.18/7 1.6} Rab8 15. Kd2 {+0.06/6 2.0} d4
+16. cxd4 {+0.91/7 1.0} cxd4 17. Nxd4 {-0.03/7 1.7} Rfd8 18. Be3
+{-0.41/7 1.8} Nf5 19. c3 {-0.59/6 2.0} Nc5 20. Rab1 {-0.43/7 2.0} Nb3+ 21.
+Kd3 {-0.19/5 0.2} Nbxd4 22. cxd4 {+0.09/7 1.4} Qc6 23. Rhc1 {+0.43/7 1.0}
+Qa6+ 24. Ke4 {+0.26/8 0.8} Rxb1 25. Rxb1 {+0.52/7 0.6} Qc6+ 26. Kd3
+{-0.03/7 1.2} Rc8 27. Qd1 {+0.23/7 0.5} Qc4+ 28. Ke4 {+0.37/7 0.4} Qd5+ 29.
+Kd3 {+0.33/7 0.9} Qc4+ 30. Ke4 {+0.37/7 1.5} Qd5+ 31. Kd3 {+0.33/7 1.3}
+Qc4+
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "2064"]
+[BlackElo "1725"]
+[TimeControl "120+6"]
+[Annotator "6. -0.17"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 e5 5. Nb5 d6 6. Bg5 {-0.17/8 5} Qxg5
+7. Nc7+ {+0.59/9 23} Kd8 8. Nxa8 {+0.08/9 25} Nf6 9. Nc3 {+0.49/8 10} Nd4
+10. a4 {+0.49/8 18} d5 11. Nxd5 {+0.89/8 5} Nxd5 12. exd5 {+0.33/9 9} Bg4
+13. f3 {-0.34/9 11} Bf5 14. Qc1 {-0.14/9 12} Qh4+ 15. g3 {-0.30/8 15} Nxf3+
+16. Kd1 {-3.79/9 4} Qd4+ 17. Ke2 {-4.71/9 8} Bg4 18. h3 {-9.60/9 13} Ng1+
+19. Ke1 {-5.42/9 4} Qe4+ 20. Kd2 {-325.11/9 6} Nf3+ 21. Kc3 {-325.11/9 3}
+Qd4+ 22. Kb3 {-3.68/9 5} Qxd5+ 23. Bc4 {-2.18/10 13} Nd2+ 24. Ka2
+{-1.31/10 5} Qxc4+ 25. b3 {-0.96/9 2.9} Nxb3 26. cxb3 {-1.31/10 4} Qe2+ 27.
+Qb2 {-1.12/10 18} Qxb2+ 28. Kxb2 {-1.60/11 7} Be6 29. Rhd1+ {-0.12/10 15}
+Kc8 30. Rac1+ {+2.35/11 7} Kb8 31. Rd8+ {+325.11/11 9} Bc8 32. Rdxc8#
+{+325.11/11 8}
+{vwq checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1721"]
+[BlackElo "2068"]
+[TimeControl "120+6"]
+[Annotator "6... +0.38"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O d6 6. d4 b5 {+0.38/9 10} 7.
+d5 Na5 {+0.61/9 16} 8. Bb3 Nxe4 {+0.93/8 6} 9. Qe1 Nxb3 {+0.98/9 20} 10.
+Qxe4 Nxa1 {+4.81/9 10} 11. Be3 f5 {+6.79/9 25}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Drooler"]
+[Result "1-0"]
+[WhiteElo "2072"]
+[BlackElo "1690"]
+[TimeControl "120+6"]
+[Annotator "6. +0.43"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Bb4 6. Nxc6 {+0.43/9 7}
+dxc6 7. Qxd8+ {+0.40/10 23} Kxd8 8. Bg5+ {+0.42/10 20} f6 9. Be3
+{+0.59/9 6} Kc7 10. O-O-O {+0.46/8 5} b5 11. a3 {+0.67/8 7} Ba5 12. Bc5
+{+0.92/8 7} Bb6 13. Bf8 {+1.13/9 6} h6 14. e5 {+1.26/9 12} fxe5 15. Bxg7
+{+2.34/9 8} Rh7 16. Bxe5+ {+2.32/9 19} Kb7 17. Ne4 {+2.37/8 6} a5 18. c4
+{+2.47/8 7} Bd7 19. Bd3 {+2.53/8 4} Rf7 20. Nd6+ {+5.97/9 14}
+{Drooler resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Drooler"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1687"]
+[BlackElo "2075"]
+[TimeControl "120+6"]
+[Annotator "2... +0.15"]
+
+1. d4 Nf6 2. Bg5 h6 {+0.15/8 1.8} 3. Bxf6 exf6 {+0.51/7 7} 4. e3 c6
+{+0.48/7 8} 5. c4 Bb4+ {+0.60/7 13} 6. Nc3 Qa5 {+0.08/8 16} 7. Qb3 O-O
+{-0.02/8 12} 8. Bd3 d5 {-0.01/8 9} 9. c5 b6 {+0.21/9 13} 10. cxb6 Qxb6
+{+0.12/8 7} 11. Ne2 Bd6 {+0.12/8 14} 12. Qc2 Bg4 {+0.44/7 5} 13. O-O Be6
+{+0.08/8 20} 14. Rfc1 Re8 {+0.24/7 2.8} 15. Na4 Qc7 {+0.04/8 5} 16. g3 Bg4
+{+0.07/8 11} 17. Nc5 Kf8 {+0.04/7 6} 18. a3 a5 {-0.02/7 4} 19. Nc3 Bxc5
+{-0.16/7 7} 20. dxc5 Nd7 {-0.03/7 11} 21. b4 Ne5 {+0.01/7 13} 22. Bf1 axb4
+{+0.59/7 12} 23. axb4 Rxa1 {+0.30/7 1.7} 24. Rxa1 d4 {+0.05/8 16} 25. Nd1
+Rb8 {+0.77/8 5} 26. Qa4 Nf3+ {+0.85/8 5} 27. Kh1 Qb7 {+0.90/8 8} 28. Rb1
+Nd2 {+1.13/8 5} 29. Ba6 Qd7 {+4.03/8 3}
+{Drooler resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Drooler"]
+[Result "1-0"]
+[WhiteElo "2078"]
+[BlackElo "1684"]
+[TimeControl "120+6"]
+[Annotator "3. +0.61"]
+
+1. c4 e6 2. Nf3 Bb4 3. a3 {+0.61/9 8} Bc5 4. d4 {+0.56/8 4} Be7 5. Nc3
+{+1.12/7 18} d5 6. c5 {+0.79/8 16} f5 7. Bf4 {+1.05/8 17} Nf6 8. Nb5
+{+0.91/8 8} Na6 9. e3 {+0.99/7 6} O-O 10. Bd3 {+0.82/8 11} Bd7 11. Ne5
+{+1.20/7 15} Bxb5 12. Bxb5 {+1.34/8 4} c6 13. Bd3 {+1.34/8 14} Nc7 14. Qb3
+{+1.37/6 1.1} Rb8 15. Qa4 {+1.45/7 23} a6 16. Qa5 {+1.38/6 1.3} Nb5 17.
+Qxd8 {+1.41/8 9} Rbxd8 18. a4 {+1.28/8 16} Na7 19. Ra3 {+1.48/8 7} Nh5 20.
+Rb3 {+2.02/9 10} Nxf4 21. exf4 {+2.41/9 2.7} Rb8 22. Nd7 {+2.40/8 8}
+{Drooler resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Drooler"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1681"]
+[BlackElo "2081"]
+[TimeControl "120+6"]
+[Annotator "2... +0.15"]
+
+1. d4 Nf6 2. Bg5 h6 {+0.15/8 1.9} 3. Bxf6 gxf6 {+0.22/9 11} 4. e3 c6
+{+0.36/9 20} 5. c4 e5 {+0.34/9 9} 6. Nc3 Qb6 {+0.04/8 7} 7. Qd2 exd4
+{+0.00/9 9} 8. exd4 h5 {-0.18/8 12} 9. Qe3+ Kd8 {+0.22/9 4} 10. O-O-O Bh6
+{+0.21/9 12} 11. f4 Qc7 {+0.06/9 19} 12. g3 d5 {-0.16/8 4} 13. cxd5 Bg4
+{-0.34/8 6} 14. Be2 cxd5 {-0.70/9 8} 15. Kb1 Qd7 {-0.16/8 4} 16. Bf3 Qf5+
+{-0.22/8 3} 17. Qd3 Qxd3+ {+1.55/10 7} 18. Rxd3 Bf5 {+0.70/10 16} 19. Kc2
+Nc6 {+0.57/9 5} 20. Kd2 Bxd3 {+0.47/9 10} 21. Kxd3 h4 {+0.55/9 13} 22. Nge2
+h3 {+0.51/9 5} 23. a3 Bf8 {+0.45/8 12} 24. Bxd5 Ke8 {+0.40/9 9} 25. Re1 Be7
+{+0.41/8 3} 26. Bxc6+ bxc6 {+0.65/10 12} 27. Nc1 Kf8 {+1.05/9 5} 28. Nb3
+Rb8 {+1.08/9 11} 29. Kc4 Bd6 {+1.04/9 5} 30. Re2 f5 {+0.87/9 4} 31. Na5 Rc8
+{+0.91/9 3} 32. b4 Rh6 {+0.91/9 11} 33. Nb7 Re8 {+0.80/10 9} 34. Rxe8+ Kxe8
+{+0.75/12 5} 35. Kd3 Kd7 {+0.91/11 9} 36. Ne2 Rh8 {+1.04/10 5} 37. Ng1 f6
+{+1.03/10 4} 38. Na5 Rh7 {+1.04/10 6} 39. Nb3 Kc7 {+1.16/9 5} 40. Na1 Kb6
+{+1.16/11 11} 41. Nc2 Bf8 {+1.12/10 3} 42. Kc4 Re7 {+1.06/11 5} 43. Nxh3
+Re2 {+1.50/12 7} 44. Na1 Rxh2 {+3.93/11 4} 45. Ng1 Rh1 {+4.09/12 12}
+{Drooler resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Drooler"]
+[Result "1-0"]
+[WhiteElo "2084"]
+[BlackElo "1678"]
+[TimeControl "120+6"]
+[Annotator "8. -0.26"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 e6 6. Ndb5 Bb4 7. Nd6+
+Ke7 8. Bf4 {-0.26/9 11} e5 9. Nxc8+ {-0.31/9 15} Rxc8 10. Bg5 {-0.27/9 15}
+Qa5 11. Bd2 {-0.27/7 6} Rhd8 12. a3 {+0.02/9 21} Bxc3 13. Bxc3 {-0.04/9 9}
+Qc7 14. Bd3 {+0.17/8 7} d5 15. exd5 {+0.32/9 15} Nxd5 16. Bd2 {+0.19/8 7}
+h6 17. g3 {+0.32/8 11} Rd6 18. Qg4 {+0.40/8 11} g5 19. h4 {+1.00/8 8} gxh4
+20. Qxh4+ {+1.15/8 7} f6 21. Qxh6 {+1.69/8 7} Rf8 22. c4 {+3.13/8 12} Nd4
+23. cxd5 {+4.20/8 4} Nf3+ 24. Kd1 {+4.79/9 16} Rxd5 25. Qg7+ {+4.85/8 2.1}
+Rf7 26. Bb4+ {+5.26/9 24} Ke6 27. Qg4+ {+16.69/10 6} f5 28. Qg6+
+{+22.26/10 11}
+{Drooler resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Heian"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1421"]
+[BlackElo "2087"]
+[TimeControl "120+6"]
+[Annotator "2... +0.49"]
+
+1. e4 Nf6 2. Bc4 Nxe4 {+0.49/8 1.7} 3. Bxf7+ Kxf7 {-314.26/8 6} 4. Qh5+ Kf6
+{+1.67/9 12} 5. Qf3+ Ke5 {+0.43/10 22} 6. d4+ Kxd4 {+0.69/9 7} 7. Be3+ Ke5
+{+0.49/9 8} 8. Bf4+ Kd5 {+0.12/8 24} 9. Nc3+ Ke6 {-1.06/9 13} 10. Qxe4+ Kf7
+{-0.18/9 10} 11. Qc4+ e6 {-0.14/9 6} 12. Bxc7 Qf6 {-0.36/8 18} 13. Nf3 d5
+{-0.30/8 9} 14. Nxd5 exd5 {+0.17/9 4} 15. Qxd5+ Ke8 {+0.07/8 9} 16. O-O-O
+Nc6 {+0.20/7 1.8} 17. Rhe1+ Be7 {-0.05/8 10} 18. Ne5 Nb4 {+0.51/7 2.3} 19.
+Qb5+ Kf8 {+0.39/7 0.6} 20. Nd7+ Bxd7 {-0.30/9 9} 21. Qxd7 Bc5 {-0.08/7 9}
+22. Bd6+ Bxd6 {+0.60/10 7} 23. Rxd6 Qxf2 {+1.19/10 3} 24. Rde6 Qxc2#
+{+325.11/10 4}
+{Heian checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Heian"]
+[Result "1-0"]
+[WhiteElo "2088"]
+[BlackElo "1420"]
+[TimeControl "120+6"]
+[Annotator "7. +0.30"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 d6 5. d4 exd4 6. cxd4 Bb6 7. Bg5
+{+0.30/8 11} Nge7 8. d5 {+0.58/8 9} Ne5 9. Nxe5 {+0.69/8 13} dxe5 10. Nc3
+{+0.55/8 24} f6 11. Be3 {+0.55/8 12} Bxe3 12. fxe3 {+0.45/8 12} Bd7 13.
+Qh5+ {+0.69/8 20} Ng6 14. a3 {+0.62/8 9} Qe7 15. Kd2 {+0.63/7 8} a6 16. b4
+{+0.51/8 25} O-O-O 17. Bd3 {+0.69/7 4} Kb8 18. h4 {+0.64/6 9} c6 19. g4
+{+0.62/7 14} Be8 20. Qf5 {+0.51/8 10} Bf7 21. h5 {+0.84/8 4} Nf8 22. h6
+{+0.78/8 13} g6 23. Qf3 {+1.13/8 5} cxd5 24. Nxd5 {+1.12/8 5} Bxd5 25. exd5
+{+1.16/9 13} Nd7 26. Rac1 {+1.00/8 9} Nb6 27. e4 {+1.06/8 7} Qd6 28. Qe3
+{+1.03/8 7} Rc8 29. Rhf1 {+1.04/8 4} Rxc1 30. Rxc1 {+1.15/9 7} Rc8 31.
+Rxc8+ {+1.13/9 8} Kxc8 32. Kc3 {+1.03/8 6} a5 33. Bb5 {+1.13/11 14} axb4+
+34. axb4 {+1.09/11 8} Kc7 35. Qc5+ {+1.70/11 6} Qxc5+ 36. bxc5 {+2.06/15 8}
+Nd7 37. Bxd7 {+2.34/16 9} Kxd7 38. Kc4 {+3.86/19 7} Kc7 39. Kb5
+{+9.96/20 8} Kd7 40. Kb6 {+9.99/18 2.1} Kc8 41. c6 {+15.14/19 10} bxc6 42.
+dxc6 {+17.45/20 5} f5 43. exf5 {+17.09/17 5} gxf5 44. g5 {+325.11/17 8} e4
+45. g6 {+325.11/17 7}
+{Heian resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "lichess1"]
+[Result "1-0"]
+[WhiteElo "2089"]
+[BlackElo "1706"]
+[TimeControl "120+6"]
+[Annotator "5. +1.85"]
+
+1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. e3 a6 5. b4 {+1.85/5 2.2} b5 6. c5
+{+0.37/9 26} Bg4 7. h3 {+0.37/8 13} Bxf3 8. Qxf3 {+0.96/9 8} e6 9. Bd3
+{+0.94/8 15} a5 10. Bd2 {+0.97/8 7} axb4 11. Bxb4 {+0.90/8 15} Nbd7 12. Nc3
+{+0.84/8 20} e5 13. Qg3 {+0.88/8 11} e4 14. Bc2 {+0.92/7 3} Be7 15. f3
+{+1.07/7 3} exf3 16. gxf3 {+1.05/7 3} O-O 17. Qf4 {+0.98/7 9} Re8 18. Bf5
+{+1.01/7 5} Bf8 19. Kf2 {+1.09/7 14} g6 20. Rhg1 {+0.93/7 14} Bg7 21. Bd3
+{+1.07/7 5} Nf8 22. Qd6 {+1.06/7 11} Re6 23. Qxd8 {+1.10/8 4} Rxd8 24. a4
+{+0.93/8 10} bxa4 25. Rxa4 {+1.00/8 12} Rb8 26. Rb1 {+1.08/7 8} Bh6 27. Nd1
+{+0.96/8 4} N8d7 28. Ra7 {+1.17/7 2.0} Rbe8 29. Bd2 {+1.56/8 4} Nf8 30.
+Rbb7 {+2.20/8 7}
+{lichess1 resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "lichess1"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1703"]
+[BlackElo "2092"]
+[TimeControl "120+6"]
+[Annotator "9... -0.77"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2 e5 7. O-O Nc6 8.
+d5 Ne7 9. b4 c6 {-0.77/8 11} 10. Nd2 a6 {-0.14/7 6} 11. Nb3 cxd5
+{-0.36/8 23} 12. cxd5 Qc7 {-0.46/8 19} 13. Bd2 h5 {-0.42/7 4} 14. Rc1 h4
+{-0.54/7 11} 15. h3 Qb6 {-0.80/8 24} 16. a3 Nd7 {-0.91/8 9} 17. Be3 Qd8
+{-0.94/8 19} 18. Bg5 Bf6 {-0.87/8 15} 19. Be3 Bg7 {-0.94/8 7} 20. Bg5 Bf6
+{-0.87/8 14} 21. Be3 Nb6 {-0.95/8 10} 22. a4 Bd7 {-0.94/8 9} 23. a5 Nbc8
+{-1.13/8 10} 24. Nd2 g5 {-0.90/7 3} 25. Nc4 Ng6 {-0.61/7 8} 26. Nb6 Nxb6
+{-0.41/9 14} 27. Bxb6 Qe7 {-0.41/8 8} 28. Bg4 Nf4 {-0.34/8 17} 29. Bxd7
+Qxd7 {-0.23/9 5} 30. f3 Rfc8 {-0.08/8 4} 31. Qd2 Rc4 {+0.25/8 4} 32. Ne2
+Rac8 {+0.34/8 2.8} 33. Rxc4 Rxc4 {+0.61/9 17} 34. Nxf4 exf4 {+1.02/9 5} 35.
+Rc1 Qc8 {+1.32/10 8} 36. Rxc4 Qxc4 {+1.25/10 13} 37. Kh1 Kg7 {+1.26/9 3}
+38. e5 Bxe5 {+2.26/10 5} 39. Bd8 f6 {+2.37/9 4}
+{lichess1 resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "lichess1"]
+[Result "1-0"]
+[WhiteElo "2095"]
+[BlackElo "1700"]
+[TimeControl "120+6"]
+[Annotator "3. +0.58"]
+
+1. e4 c5 2. Nc3 g6 3. Nf3 {+0.58/9 9} Bg7 4. Bc4 {+0.73/7 19} Nc6 5. O-O
+{+0.43/7 18} e6 6. Nb5 {+0.43/8 9} d6 7. d3 {+0.05/8 8} a6 8. Nc3
+{-0.13/8 14} Nge7 9. Bb3 {+0.27/7 12} O-O 10. a4 {+0.26/7 6} d5 11. exd5
+{+0.01/8 6} Nxd5 12. Ne4 {-0.01/8 9} b6 13. Ra3 {+0.02/7 7} Bb7 14. Bg5
+{+0.21/7 18} Qc7 15. Bxd5 {-0.10/6 0.9} exd5 16. Nf6+ {-0.26/8 15} Kh8 17.
+Nxd5 {+1.51/8 10} Qd6 18. Nxb6 {+1.68/8 13} Nd4 19. Nxa8 {+2.71/9 10} Nxf3+
+20. gxf3 {+2.98/9 5} Qd5 21. Be7 {+2.82/9 6} Qf5 22. d4 {+4.04/8 2.6} Rxa8
+23. Bxc5 {+3.95/8 5} Bh6 24. Re1 {+4.17/8 4} Bf4 25. Re7 {+3.82/8 11} Qh3
+26. Qe1 {+0.64/9 8} Bxh2+ 27. Kh1 {+2.01/9 2.2} Bxf3+ 28. Rxf3
+{+4.59/11 2.7} Qg3 29. Re8+ {+325.11/9 4}
+{lichess1 resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "editor"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1262"]
+[BlackElo "2098"]
+[TimeControl "120+6"]
+[Annotator "4... -0.26"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. O-O Nf6 {-0.26/8 5} 5. d4 Bxd4 6. Nxd4
+Nxd4 7. Bg5 d6 8. f4 Qe7 9. fxe5 dxe5 10. Nc3 Qc5 {+2.43/9 15} 11. Bxf6
+gxf6 {+2.36/9 5} 12. Bxf7+ Kxf7 {+2.95/10 22} 13. Qh5+ Kg7 {+3.56/10 19}
+14. Kh1 Be6 {+3.55/8 8} 15. Qh4 Rhf8 {+3.72/9 11} 16. Rf2 b5 {+3.62/8 11}
+17. Raf1 Bc4 {+3.99/8 11} 18. Qg4+ Kh8 {+4.26/8 2.2} 19. Re1 b4
+{+4.51/8 14} 20. Nd5 Bxd5 {+4.64/8 7} 21. exd5 Nxc2 {+5.01/8 9} 22. Ree2
+Ne3 {+9.83/9 7} 23. Qh4 Qc1+ {+325.11/9 15}
+{editor resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "0-1"]
+[WhiteElo "2098"]
+[BlackElo "1656"]
+[TimeControl "120+6"]
+[Annotator "6. -0.17"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 e5 5. Nb5 d6 6. Bg5 {-0.17/8 5} Qxg5
+7. Nc7+ {+0.59/9 22} Kd8 8. Nxa8 {+0.08/9 25} Nf6 9. Nc3 {+0.49/8 10} Nd4
+10. a4 {+0.49/8 17} d5 11. Nxd5 {+0.89/8 11} Nxd5 12. exd5 {+0.33/9 9} Bg4
+13. f3 {-0.34/9 11} Bf5 14. Qc1 {-0.14/9 9} Qh4+ 15. g3 {-0.30/8 17} Nxf3+
+16. Kd1 {-3.79/9 4} Qd4+ 17. Ke2 {-4.71/9 9} Bg4 18. Bh3 {-4.89/8 13} Ng1+
+19. Kf1 {-325.11/10 9} Nxh3 20. Qg5+ {-325.11/9 4} f6 21. Qf5 {-325.11/9 4}
+Bxf5 22. Ke2 {-325.11/9 10} Bg4+ 23. Kf1 {-325.11/9 4} Qf2#
+{Pigeon checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "lundin"]
+[Result "1-0"]
+[WhiteElo "2068"]
+[BlackElo "1537"]
+[TimeControl "120+6"]
+[Annotator "7. +0.05"]
+
+1. c4 c5 2. Nf3 Nf6 3. d4 cxd4 4. Nxd4 e6 5. Nc3 Nc6 6. g3 Bb4 7. a3
+{+0.05/8 4} Bxc3+ 8. bxc3 {+0.30/9 20} d5 9. Bg2 {+0.20/8 6} O-O 10. Bf4
+{+0.30/8 11} Qa5 11. Nxc6 {+0.28/8 5} bxc6 12. Qd4 {+0.29/8 19} Nd7 13. Bd6
+{+1.04/8 10} Re8 14. Rb1 {+0.77/8 17} e5 15. Qe3 {+0.67/8 8} d4 16. Qe4
+{+0.63/8 5} Qxc3+ 17. Kd1 {+0.09/8 2.3} Nf6 18. Qxc6 {-0.36/8 4} Bd7 19.
+Qa6 {-0.42/8 8} Rac8 20. Rc1 {+0.00/8 10} Qb2 21. Bb7 {-0.33/8 7}
+{lundin forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "lundin"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1536"]
+[BlackElo "2069"]
+[TimeControl "120+6"]
+[Annotator "2... -0.53"]
+
+1. Nf3 d5 2. d4 Nc6 {-0.53/8 5} 3. e3 e6 {-0.27/8 4} 4. c4 Bb4+ {-0.09/8 4}
+5. Bd2 a5 {-0.37/8 24} 6. Nc3 dxc4 {-0.25/9 16} 7. Bxc4 Nf6 {-0.41/8 12} 8.
+O-O O-O {-0.44/8 13} 9. Rc1 b6 {-0.20/7 6} 10. a3 Bd6 {-0.30/7 4} 11. e4 e5
+{-0.24/8 8} 12. Bg5 Nxd4 {+0.34/8 5} 13. Nd5 Bg4 {+0.80/9 12} 14. Bxf6 gxf6
+{+1.08/8 2.9} 15. h3 Nxf3+ {+1.95/10 13} 16. gxf3 Bxh3 {+2.05/9 5} 17. Qd2
+Bxf1 {+2.65/8 4} 18. Kxf1 Re8 {+2.69/8 14} 19. Ke2 Re6 {+2.82/7 2.1} 20.
+Rg1+ Kh8 {+2.11/9 9} 21. Qh6 Bf8 {+2.28/9 8} 22. Qh5 Rd6 {+1.53/8 10} 23.
+Rh1 h6 {+1.78/9 6} 24. f4 exf4 {+2.80/8 3} 25. Nxf4 Rd2+ {+4.01/8 6} 26.
+Kf3 Qd4 {+3.67/8 9} 27. Rh2 Qxc4 {+7.75/9 9} 28. Qf5 Bg7 {+8.06/9 7} 29.
+Nh5 Rxb2 {+8.20/9 13} 30. Nxg7 Rb3+ {+7.98/9 4} 31. Kg2 Kxg7 {+7.87/10 12}
+32. Qg4+ Kh7 {+7.86/11 7} 33. Qf5+ Kg7 {+7.85/10 12} 34. Qg4+ Kh7
+{+7.86/11 7} 35. Qf5+ Kg7 {+7.85/10 10}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "lundin"]
+[Result "1-0"]
+[WhiteElo "2054"]
+[BlackElo "1551"]
+[TimeControl "120+6"]
+[Annotator "8. -0.26"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Nc6 6. Ndb5 Bb4 7. Nd6+
+Ke7 8. Bf4 {-0.26/9 11} e5 9. Nxc8+ {-0.31/9 8} Rxc8 10. Bg5 {-0.27/9 14}
+Nd4 11. Bd2 {-0.27/7 2.9} Qa5 12. Bd3 {-0.16/9 15} Rxc3 13. bxc3
+{-0.18/10 19} Bxc3 14. a3 {-0.14/8 19} Rc8 15. Ra2 {-0.03/7 1.7} Qa4 16.
+O-O {+0.11/8 18} Kf8 17. f4 {+0.22/7 1.9} d5 18. fxe5 {+0.78/8 3} Nxe4 19.
+Qg4 {+1.09/8 18}
+{lundin forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "abhi0810"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1220"]
+[BlackElo "2056"]
+[TimeControl "120+6"]
+[Annotator "2... -0.35"]
+
+1. e4 d6 2. Nf3 Nf6 {-0.35/8 2.0} 3. Nc3 Nc6 {-0.23/7 5} 4. d3 g6
+{-0.16/8 16} 5. Be2 Bg4 {-0.16/6 2.0} 6. Bg5 h6 {-0.16/8 24} 7. Bxf6 exf6
+{-0.08/9 11} 8. Qd2 Bg7 {+0.00/7 8} 9. a3 f5 {-0.02/8 20} 10. h3 Bxf3
+{-0.11/8 2.8} 11. Bxf3 Nd4 {-0.10/8 13} 12. Be2 Qg5 {+0.36/8 8} 13. O-O-O
+Nxe2+ {+0.75/9 9} 14. Nxe2 Qxg2 {+0.36/9 8} 15. exf5 Qxf2 {+0.45/9 10} 16.
+fxg6 fxg6 {+0.35/9 8} 17. Rdf1 Qb6 {+0.54/9 7} 18. c3 g5 {+0.42/8 4} 19.
+Ng3 Be5 {+0.64/8 2.8} 20. Re1 O-O {+1.87/8 3} 21. Ne4 Bf4 {+7.57/9 10}
+{abhi0810 resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "emferg"]
+[Result "1-0"]
+[WhiteElo "2056"]
+[BlackElo "1587"]
+[TimeControl "120+6"]
+[Annotator "7. +0.61"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 c5 5. a3 Bxc3+ 6. bxc3 Qa5 7. Bd2
+{+0.61/9 10} Qa4 8. dxc5 {+0.79/9 21} Nc6 9. Be3 {+0.86/8 9} Nge7 10. Nf3
+{+0.91/8 10} O-O 11. Qd2 {+1.14/8 5} f6 12. exf6 {+1.52/8 15} Rxf6 13. Nd4
+{+1.34/8 19} e5 14. Nb5 {+1.28/8 9} a6 15. Nd6 {+1.59/8 12} h6 16. Ne8
+{+1.69/8 12} Rf8 17. Nc7 {+2.32/8 8} d4 18. Nxa8 {+2.71/8 20} dxe3 19. Qxe3
+{+2.34/8 14} Qxc2 20. Bc4+ {+2.52/8 5} Kh8 21. Nb6 {+2.71/8 13} e4 22. Rc1
+{+3.65/8 6} Qb2 23. O-O {+3.72/8 6} Qxa3 24. Nxc8 {+4.76/8 10} Nxc8 25. Ra1
+{+5.91/8 5}
+{emferg resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "emferg"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1585"]
+[BlackElo "2058"]
+[TimeControl "120+6"]
+[Annotator "5... +0.33"]
+
+1. c4 c5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7 5. e4 Qa5 {+0.33/7 20} 6. Nge2 Nf6
+{+0.17/8 11} 7. O-O d6 {+0.18/8 19} 8. d3 Kf8 {+0.29/7 6} 9. h3 a6
+{+0.31/7 15} 10. Be3 h5 {+0.09/6 4} 11. d4 cxd4 {+0.36/8 15} 12. Nxd4 h4
+{+0.24/8 16} 13. g4 Ne5 {+0.36/8 12} 14. Qb3 Qc7 {+0.26/8 12} 15. Rac1 Qxc4
+{+0.50/8 7} 16. f4 Qxb3 {+0.88/8 3} 17. axb3 Nexg4 {+1.39/9 16} 18. hxg4
+Nxg4 {+1.71/9 4} 19. Nc2 Nxe3 {+1.80/9 11} 20. Nxe3 Bd4 {+1.75/8 7} 21.
+Rce1 h3 {+1.67/8 8} 22. Bf3 Rh4 {+1.78/8 9} 23. Bd1 h2+ {+1.82/8 2.8} 24.
+Kh1 b5 {+1.62/8 10} 25. f5 gxf5 {+1.53/9 5} 26. Nxf5 Bxf5 {+1.37/10 7} 27.
+Rxf5 Rc8 {+1.62/8 3} 28. Ref1 f6 {+1.54/9 8} 29. Nd5 Bxb2 {+1.94/8 2.4} 30.
+Nf4 Kg8 {+2.00/9 12} 31. Rh5 Rxh5 {+1.56/11 10} 32. Bxh5 Rc2 {+1.73/10 4}
+33. Ne6 Be5 {+2.46/10 5} 34. Nd8 Kg7 {+2.71/9 4} 35. Nf7 Bg3 {+2.64/10 12}
+36. Nd8 Be5 {+2.57/10 9} 37. Nf7 Bg3 {+2.64/10 7} 38. Nd8 Be5 {+2.57/10 10}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "Pigeon"]
+[Black "emferg"]
+[Result "1-0"]
+[WhiteElo "2044"]
+[BlackElo "1599"]
+[TimeControl "120+6"]
+[Annotator "7. -0.28"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Be7 6. d4 d6 7. dxe5
+{-0.28/8 5} Nxe5 8. Nxe5 {+0.53/9 19} dxe5 9. Qh5 {+0.31/8 13} g6 10. Qxe5
+{+0.42/9 8} f6 11. Qg3 {+0.27/8 5} Bd6 12. Bf4 {+0.31/8 13} Qe7 13. Nd2
+{+0.49/9 20} Be6 14. Bxd6 {+0.55/9 13} cxd6 15. O-O {+0.39/8 12} Nh6 16.
+Qd3 {+0.43/8 14} Nf7 17. Bd5 {+0.55/8 6} O-O 18. Rfb1 {+0.55/8 13} Bxd5 19.
+Qxd5 {+0.59/8 6} b6 20. Nc4 {+0.54/8 8} Rac8 21. Rb5 {+0.11/8 9} Rfd8 22.
+Rab1 {+0.08/8 7} Kg7 23. R1b3 {+0.09/7 8} Rc5 24. Qd3 {-0.15/7 10} d5 25.
+Nd2 {-1.27/8 15} Ne5 26. Qc2 {-0.47/7 2.1} d4 27. c4 {-0.76/7 6} g5 28.
+Rxc5 {-0.70/8 4} bxc5 29. Rb5 {-0.24/8 9} d3 30. Qc3 {-0.28/8 4} Rd4 31.
+Qb3 {-0.23/7 4} Kh6 32. Rb7 {-0.19/7 1.8} Qd6 33. Rxa7 {+0.63/8 11} Ng4 34.
+g3 {+0.88/8 11} f5 35. Qb7 {+2.67/8 8} Qg6 36. Qc8 {+2.91/8 3} Nxf2 37.
+Kxf2 {+4.89/8 2.6} fxe4 38. Qh3+ {+12.85/9 13}
+{emferg resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "emferg"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1597"]
+[BlackElo "2046"]
+[TimeControl "120+6"]
+[Annotator "2... -0.40"]
+
+1. Nf3 f5 2. b3 Nc6 {-0.40/8 1.1} 3. Bb2 Nf6 {-0.26/8 7} 4. d4 e6
+{+0.29/9 16} 5. c4 Bb4+ {+0.36/6 18} 6. Nbd2 b6 {+0.14/8 6} 7. a3 Bd6
+{-0.04/8 13} 8. e3 O-O {+0.12/7 16} 9. Bd3 Bb7 {+0.04/7 4} 10. h3 g6
+{+0.06/6 6} 11. O-O a5 {-0.18/6 10} 12. Ne5 Ra7 {-0.16/7 14} 13. f4 Ne4
+{-0.14/7 6} 14. Nxe4 fxe4 {-0.18/8 5} 15. Bxe4 Nxe5 {-0.31/8 2.5} 16. fxe5
+Bxe4 {+0.27/10 15} 17. exd6 cxd6 {+0.29/9 3} 18. d5 Rxf1+ {+0.85/10 10} 19.
+Kxf1 Qg5 {+1.30/9 5} 20. Qd2 exd5 {+1.38/9 4} 21. cxd5 Rc7 {+1.63/9 21} 22.
+Rc1 Rxc1+ {+1.53/10 7} 23. Bxc1 Qf5+ {+1.39/10 9} 24. Kg1 Bxd5
+{+1.32/10 12} 25. Bb2 Qb1+ {+1.29/10 10} 26. Kh2 Qe4 {+1.32/9 2.9} 27. Bd4
+b5 {+1.40/9 4} 28. b4 a4 {+1.29/10 14} 29. Ba1 h5 {+1.40/9 3} 30. Qb2 Kf7
+{+1.35/11 11} 31. Qg7+ Ke8 {+1.34/12 6} 32. Qh8+ Kf7 {+1.33/12 8} 33. Qf6+
+Ke8 {+1.33/10 4} 34. Qh8+ Kf7 {+1.33/12 11} 35. Qf6+ Ke8 {+1.33/10 4} 36.
+Qh8+
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.02"]
+[Round "-"]
+[White "JollyJake"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1406"]
+[BlackElo "2032"]
+[TimeControl "120+6"]
+[Annotator "2... -0.07"]
+
+1. f4 f5 2. Nf3 Nc6 {-0.07/9 2.7} 3. e3 Nf6 {-0.05/9 6} 4. b3 e6
+{+0.08/9 8} 5. Bb2 Bc5 {+0.05/6 24} 6. Be2 O-O {+0.01/8 12} 7. O-O Nd5
+{+0.23/8 11} 8. Kh1 Bxe3 {+0.09/8 8} 9. c4 Bxf4 {-0.36/9 11} 10. cxd5 exd5
+{-0.59/9 13} 11. Nc3 Ne7 {-0.59/7 1.8} 12. Qc2 c6 {-0.51/7 6} 13. Bd3 Bd6
+{-0.41/7 5} 14. Ne2 Qc7 {-0.44/7 15} 15. Nh4 g6 {-0.78/7 1.6} 16. h3 c5
+{+0.06/7 2.8} 17. Ng1 Nc6 {+0.32/8 13} 18. a3 Nd4 {+0.62/8 5} 19. Bxd4 cxd4
+{-0.53/9 11} 20. Qxc7 Bxc7 {-0.69/9 7} 21. Rac1 Bd6 {-0.34/9 14} 22. b4 a5
+{+0.47/9 10} 23. Ngf3 axb4 {+1.41/9 4} 24. axb4 Ra3 {+0.85/9 12} 25. Bb1
+Bxb4 {+0.98/9 7} 26. Rc7 b6 {+1.46/8 4} 27. Rfc1 Ra8 {+0.90/9 10} 28. Nxd4
+Bxd2 {+2.00/9 8} 29. Rd1 Bf4 {+1.80/9 8} 30. Rc2 Bb7 {+1.62/8 4} 31. Re2
+Ba6 {+1.87/8 6} 32. Re7 Rf7 {+1.72/8 2.2} 33. Rxf7 Kxf7 {+1.43/10 13} 34.
+Ba2 Bb7 {+1.86/9 5} 35. Bb3 Ra3 {+1.71/8 12} 36. Nhf3 Be3 {+1.51/8 3} 37.
+Re1 f4 {+1.70/9 5} 38. g3 Kf6 {+1.57/9 5} 39. gxf4 Bxf4 {+1.60/9 9} 40. Kg2
+h5 {+1.48/9 9} 41. Rb1 Ra6 {+1.55/8 10} 42. Rb2 g5 {+1.88/8 1.6} 43. Ra2
+Rxa2+ {+2.06/11 9} 44. Bxa2 g4 {+2.13/10 11} 45. hxg4 hxg4 {+2.12/10 2.1}
+46. Ne1 Be5 {+2.09/11 8} 47. Nec2 Kg5 {+1.93/11 8} 48. Ne2 d4+ {+4.18/11 5}
+49. Kf1 d3 {+4.13/10 2.6} 50. Ned4 g3 {+7.57/10 7} 51. Bb3 g2+
+{+11.52/10 4} 52. Kg1 d2 {+15.75/10 4}
+{JollyJake resigns} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Lucretius"]
+[Result "1-0"]
+[WhiteElo "2162"]
+[BlackElo "1323"]
+[TimeControl "60"]
+[Annotator "5. +1.16"]
+
+1. d4 d5 2. c4 dxc4 3. Nf3 Nf6 4. e3 g6 5. Qa4+ {+1.16/5 1.2} Bd7 6. Qxc4
+{+0.30/7 2.0} Bg7 7. Ne5 {+0.59/6 0.5} O-O 8. Qb3 {+0.37/6 0.6} Nc6 9. Qxb7
+{+0.39/6 0.3} Nxe5 10. dxe5 {+0.73/7 0.7} Ne4 11. Qxe4 {+2.98/7 0.9} f5 12.
+Qd5+ {+4.02/6 0.2} e6 13. Qc5 {+3.84/7 0.7} f4 14. exf4 {+5.11/7 0.9} Bh6
+15. g3 {+5.28/6 0.4} g5 16. fxg5 {+6.19/7 2.0} Bxg5 17. Bxg5 {+5.86/7 0.7}
+Qxg5 18. Nc3 {+5.88/6 0.6} Rxf2 19. Kxf2 {+9.29/8 1.8} Rf8+ 20. Kg1
+{+9.35/7 2.0} Qf5 21. Be2 {+9.76/6 0.5}
+{Lucretius forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "JollyJake"]
+[Black "Pigeon"]
+[Result "*"]
+[WhiteElo "1413"]
+[BlackElo "2033"]
+[TimeControl "120+6"]
+[Annotator "5... -0.48"]
+
+1. f4 e5 2. fxe5 d6 3. exd6 Bxd6 4. Nf3 g5 5. d4 g4 {-0.48/8 5} 6. Ne5 Nc6
+{-0.58/8 21}
+{Game adjourned when JollyJake disconnected} *
+
+[Event "ICS Rated Blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "JollyJake"]
+[Black "Pigeon"]
+[Result "1-0"]
+[WhiteElo "1413"]
+[BlackElo "2033"]
+[TimeControl "120+6"]
+[Annotator "7... -0.60"]
+
+1. f4 e5 2. fxe5 d6 3. exd6 Bxd6 4. Nf3 g5 5. d4 g4 6. Ne5 Nc6 7. Nxc6 bxc6
+{-0.60/9 20} 8. Qd3 Be6 {-0.73/8 6} 9. e4 h5 {-0.91/8 9} 10. Nc3 Nh6
+{-1.14/8 8} 11. Be3 Qh4+ {-1.04/8 4} 12. g3 Bxg3+ {-0.45/9 8} 13. hxg3 Qxh1
+{-0.07/9 8} 14. O-O-O Qh2 {+0.53/7 6} 15. d5 cxd5 {-0.93/8 18} 16. Nxd5 Kf8
+{-1.58/8 17} 17. Qd4 Rh7 {-4.42/8 4} 18. Nf6 Nf5 {-6.01/8 4} 19. Nxh7+ Kg8
+{-10.58/10 9} 20. Nf6+ Kf8 {-11.17/9 11} 21. exf5 Qxc2+ {-15.89/9 23} 22.
+Kxc2 Bxf5+ {-21.69/9 4} 23. Bd3 Bxd3+ {-325.11/10 17} 24. Rxd3 Kg7
+{-325.11/9 6} 25. Nxh5+ Kg6 {-325.11/9 9} 26. Nf4+ Kh7 {-325.11/9 11} 27.
+Qe4+ Kg7 {-325.11/9 11} 28. Bd4+ Kf8 {-325.11/9 6} 29. Bc5+ Kg7
+{-325.11/8 1.9} 30. Nh5+ Kh8 {-325.11/9 11} 31. Qxg4 Rg8 {-325.11/9 3} 32.
+Bd4+ f6 {-325.11/10 12} 33. Bxf6+ Kh7 {-325.11/10 9} 34. Rd7+ Kh6
+{-325.11/10 8} 35. Qf4+ Kxh5 {-325.11/9 4} 36. Rh7+ Kg6 {-325.11/10 11} 37.
+Rg7+ Rxg7 {-14.83/10 2.9} 38. Bxg7 Kxg7 {-13.18/12 9} 39. Qxc7+ Kf6
+{-19.76/12 9} 40. Qxa7 Ke5 {-20.96/11 10} 41. g4 Kf4 {-20.88/11 10} 42. Qg1
+Kg5 {-20.88/11 9} 43. Kd3 Kf6 {-13.85/10 1.2} 44. g5+ Kg6 {-325.11/12 15}
+45. Ke4 Kf7 {-325.11/12 6} 46. g6+ Ke6 {-325.11/12 9} 47. g7 Kd6
+{-325.11/10 2.6} 48. g8=Q Kc6 {-325.11/9 12} 49. Qd5+ Kc7 {-325.11/8 1.0}
+50. Qg7+ Kb6 {-325.11/9 13} 51. Qh6+ Ka7 {-325.11/8 0.8} 52. Qf7+ Kb8
+{-325.11/10 12} 53. Qh8#
+{Pigeon checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "0-1"]
+[WhiteElo "2002"]
+[BlackElo "1686"]
+[TimeControl "120+6"]
+[Annotator "6. -0.17"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 e5 5. Nb5 d6 6. Bg5 {-0.17/8 5} Qxg5
+7. Nc7+ {+0.59/9 23} Kd8 8. Nxa8 {+0.08/9 25} Nf6 9. Nc3 {+0.49/8 10} Nd4
+10. a4 {+0.49/8 19} d5 11. Nxd5 {+0.89/8 12} Nxd5 12. exd5 {+0.33/9 18} Bg4
+13. f3 {-0.34/9 14} Bf5 14. Qc1 {-0.14/9 9} Qh4+ 15. g3 {-0.30/8 14} Nxf3+
+16. Kd1 {-3.79/9 4} Qd4+ 17. Ke2 {-4.71/9 14} Bg4 18. Bh3 {-4.89/8 13} Ng1+
+19. Kf1 {-325.11/9 2.7} Bxh3+ 20. Ke1 {-325.11/9 9} Qe4+ 21. Kd2
+{-325.11/9 8} Bb4+ 22. c3 {-325.11/9 9} Qe2#
+{Pigeon checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1974"]
+[BlackElo "1714"]
+[TimeControl "120+6"]
+[Annotator "7. -0.07"]
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Nf6 5. Nxf6+ exf6 6. Bc4 Bd6 7. Nf3
+{-0.07/8 9} O-O 8. O-O {-0.06/8 18} Bg4 9. h3 {+0.15/8 17} Bh5 10. d5
+{+0.48/7 16} Re8 11. Be3 {+0.42/7 6} c5 12. Bd3 {+0.60/8 10} Nd7 13. Bf5
+{+0.43/8 12} Qc7 14. b3 {+0.59/7 2.3} Rad8 15. Qd3 {+0.55/8 13} Bxf3 16.
+Bxh7+ {+0.51/8 7} Kh8 17. gxf3 {-0.55/8 9} g6 18. Bxg6 {-0.62/9 18} fxg6
+19. Rfe1 {-0.57/7 11} Ne5 20. Qe2 {-0.79/9 14} Qd7 21. Kg2 {-0.70/8 4} Kg7
+22. f4 {-0.65/8 11} Nf7 23. Qg4 {-0.82/8 7} Nh6 24. Qxd7+ {-0.84/9 4} Rxd7
+25. Bd2 {-1.11/9 14} Rde7 26. Kf1 {-1.37/10 10} Rxe1+ 27. Rxe1
+{-1.08/9 2.4} Rxe1+ 28. Kxe1 {-1.25/12 16} Nf5 29. Be3 {-1.21/11 11} b5 30.
+c4 {-1.30/10 4} a6 31. Kd2 {-1.25/10 2.6} Nd4 32. Bxd4 {-1.18/12 4} cxd4
+33. Kd3 {-1.19/14 11} Bc5 34. cxb5 {-1.01/15 6} axb5 35. a4 {-1.30/15 11}
+bxa4 36. bxa4 {-1.54/15 5} Kf7 37. a5 {-1.50/14 14} Ke7 38. f5 {-1.62/15 5}
+g5 39. Ke4 {-2.03/15 3} Kd6 40. f4 {-2.10/13 6} gxf4 41. h4 {-2.66/17 10}
+f3 42. Kxf3 {-1.62/17 9} Kxd5 43. h5 {-1.62/17 9} Bf8 44. a6 {-1.60/17 9}
+Kc6 45. Ke4 {-1.46/18 6} d3 46. Kxd3 {-1.70/14 1.6} Kb6 47. Kd4
+{-1.23/14 8} Bh6 48. Kd5 {+1.02/18 6} Kxa6 49. Ke6 {+1.04/18 6} Bg5 50. Kf7
+{+1.05/15 2.1} Kb6 51. Kg6 {+2.17/17 15} Kc6 52. h6 {+2.21/17 9} Bxh6 53.
+Kxh6 {+9.63/20 9} Kd6 54. Kg7 {+9.68/22 6} Ke7 55. Kg6 {+9.71/19 0.9} Kf8
+56. Kxf6 {+9.68/20 9}
+{vwq forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1708"]
+[BlackElo "1980"]
+[TimeControl "120+6"]
+[Annotator "4... -0.78"]
+
+1. e4 e5 2. Nf3 f5 3. Nxe5 Nc6 4. Nxc6 dxc6 {-0.78/9 6} 5. exf5 Bxf5
+{-0.40/9 12} 6. d4 Qe7+ {-0.41/8 9} 7. Be2 Qe4 {-0.39/8 15} 8. O-O Qxc2
+{-0.39/8 5} 9. Bh5+ g6 {+0.12/9 14} 10. Re1+ Be7 {+0.10/9 17} 11. Nc3 gxh5
+{+1.55/9 4} 12. Qxh5+ Kd7 {+1.52/8 26} 13. Bg5 Bg6 {+1.91/7 2.4} 14. Qh4
+Bxg5 {+2.07/8 13} 15. Qxg5 Rf8 {+1.46/7 10} 16. d5 Qxf2+ {+2.81/9 11} 17.
+Kh1 Kc8 {+2.87/9 14} 18. dxc6 bxc6 {+2.63/9 11} 19. Nb5 Rf5 {+4.75/8 4} 20.
+Nxa7+ Qxa7 {+4.75/9 7} 21. Qg4 Nf6 {+4.88/8 8} 22. Qh3 Rd8 {+5.33/8 11}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1986"]
+[BlackElo "1702"]
+[TimeControl "120+6"]
+[Annotator "6. +0.40"]
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Nf6 5. Bd3 e6 6. Nxf6+ {+0.40/8 5}
+Qxf6 7. Nf3 {+0.41/8 18} h6 8. O-O {+0.48/7 14} Bd6 9. c3 {+0.44/8 28} Nd7
+10. Be3 {+0.50/8 17} Bf4 11. Bxf4 {+0.60/8 6} Qxf4 12. Qc1 {+0.60/8 13} Qd6
+13. Qe3 {+0.59/8 15} O-O 14. Ne5 {+0.52/8 19} Nxe5 15. dxe5 {+0.69/8 3} Qe7
+16. Rad1 {+0.76/8 14} Bd7 17. Bc2 {+0.85/8 14} c5 18. Qd3 {+3.71/8 5}
+{vwq resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "asadue"]
+[Black "Pigeon"]
+[Result "*"]
+[WhiteElo "1081"]
+[BlackElo "1991"]
+[TimeControl "120+6"]
+[Annotator "2... -0.24"]
+
+1. d4 Nf6 2. Nc3 e6 {-0.24/8 2.8} 3. Bg5 h6 {+0.11/8 4} 4. Bh4 Nc6
+{+0.40/9 19} 5. e3 Bb4 {+0.20/8 11} 6. f4 g5 {+0.76/8 7} 7. Bg3 h5
+{+0.76/8 16} 8. fxg5 Ne4 {+0.86/8 11} 9. Qd3 Nxg3 {+0.75/8 5} 10. hxg3 Qxg5
+{+0.51/8 15} 11. Rh3 b6 {+0.44/8 17} 12. Nf3 Qg4 {+0.23/8 10} 13. O-O-O Bd6
+{+0.16/8 11} 14. Be2 Nb4 {+0.57/7 2.6} 15. Qd2 Bxg3 {+0.25/8 15} 16. d5 Bd6
+{+1.27/7 2.6} 17. dxe6 Qxe6 {+1.07/8 13} 18. Nd4 Nxa2+ {+1.21/9 5} 19. Kb1
+Nxc3+ {+1.04/9 11} 20. Qxc3 Qf6 {+1.02/7 4} 21. Rf3 Qg7 {+1.51/8 5} 22. Bf1
+Bb7 {+2.54/8 7}
+{Game adjourned when asadue disconnected} *
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1697"]
+[BlackElo "1991"]
+[TimeControl "120+6"]
+[Annotator "11... -0.10"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Nxe4 6. d4 b5 7. Bb3 d5 8.
+dxe5 Be6 9. Nbd2 Nc5 10. c3 d4 11. Bxe6 Nxe6 {-0.10/9 9} 12. cxd4 Nexd4
+{-0.28/8 18} 13. Nxd4 Qxd4 {-0.35/10 35} 14. Nf3 Qe4 {-0.33/8 6} 15. Re1
+Qc4 {-0.45/8 17} 16. b3 Qc3 {-0.74/8 18} 17. Bb2 Qxb2 {-1.11/9 17} 18. Qd5
+Bb4 {-1.49/9 14} 19. Qxc6+ Ke7 {-1.94/9 14} 20. Qxc7+ Kf8 {-3.12/10 23} 21.
+Ng5 Be7 {-2.50/8 13} 22. e6 f5 {-2.52/7 1.8} 23. Nf7 Rg8 {-3.70/9 11} 24.
+Ne5 g6 {-2.60/7 3} 25. Nd7+ Kg7 {-2.21/9 5} 26. Nb6 Rae8 {-2.60/9 9} 27.
+Nd5 Kh8 {-2.63/8 8} 28. Nxe7 Rg7 {-2.57/9 7} 29. Nxg6+ hxg6 {-2.77/10 5}
+30. Qd6 Rge7 {-2.41/8 2.9} 31. Rac1 Rxe6 {+0.08/10 11}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1996"]
+[BlackElo "1692"]
+[TimeControl "120+6"]
+[Annotator "7. -0.07"]
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Nf6 5. Nxf6+ exf6 6. Bc4 Bd6 7. Nf3
+{-0.07/8 9} O-O 8. O-O {-0.06/8 18} Bg4 9. h3 {+0.15/8 18} Bh5 10. d5
+{+0.48/7 15} Re8 11. Be3 {+0.42/7 10} c5 12. Bd3 {+0.60/8 21} Qc7 13. c4
+{+0.59/8 15} Nd7 14. Qc2 {+0.54/8 4} Bxf3 15. gxf3 {+0.40/8 10} g6 16. Rfe1
+{+0.41/7 10} f5 17. Bd2 {+0.09/8 16} Ne5 18. Be2 {+0.16/8 5} Rac8 19. Bg5
+{+0.38/8 9} Kg7 20. Qd2 {+0.46/8 7} f6 21. Bh6+ {+0.33/9 9} Kh8 22. Qc2
+{+0.15/8 12} Re7 23. h4 {+0.29/8 8} Rce8 24. Qc3 {+0.28/8 6} Kg8 25. Bd2
+{+0.22/8 10} Nd7 26. Bd3 {+0.12/8 12} Be5 27. Qc1 {+0.03/8 6} f4 28. Rb1
+{+0.47/7 11} a5 29. b3 {+0.44/8 8} f5 30. Kh1 {+0.57/7 2.2} Nf6 31. Rg1
+{+0.26/8 14} Kh8 32. Rg5 {+0.39/7 2.3} Nh5 33. Bxf5 {+1.09/8 7} Bf6 34. Bc3
+{+1.44/8 3} Bxc3 35. Qxc3+ {+1.63/9 4} Qe5 36. Qxa5 {+1.39/8 6} gxf5 37.
+Rxh5 {+1.52/9 5} Rg7 38. Rg1 {+2.22/9 14} Rxg1+ 39. Kxg1 {+2.30/11 8} Rg8+
+40. Rg5 {+2.62/12 9} Rxg5+ 41. hxg5 {+2.94/12 5} Qe7 42. Kf1 {+3.05/11 5}
+Kg7 43. Qb6 {+3.37/12 6} Qxg5 44. Qc7+ {+3.46/11 3} Kg6 45. d6 {+8.63/10 5}
+h6
+{vwq resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1687"]
+[BlackElo "2001"]
+[TimeControl "120+6"]
+[Annotator "3... -0.46"]
+
+1. d4 Nf6 2. c4 g6 3. Nf3 e6 {-0.46/8 4} 4. Nc3 Bb4 {-0.44/8 9} 5. Bg5 h6
+{-0.27/8 19} 6. Bh4 g5 {-0.02/8 11} 7. Bg3 g4 {+0.01/8 18} 8. Ne5 Bxc3+
+{+0.08/8 11} 9. bxc3 d6 {+0.06/9 17} 10. Nd3 Ne4 {-0.14/8 16} 11. Qc2 Qg5
+{+0.03/8 12} 12. e3 Nxg3 {+0.20/7 13} 13. hxg3 Nd7 {-0.02/8 8} 14. Be2 Nf6
+{+0.22/7 2.9} 15. c5 Bd7 {+0.33/7 5} 16. cxd6 cxd6 {+0.31/8 12} 17. Nb4 a5
+{+0.63/8 10} 18. Nd3 Bc6 {+0.73/7 5} 19. O-O h5 {+0.77/7 3} 20. c4 h4
+{+1.40/8 9} 21. Rfb1 hxg3 {+2.42/7 2.6}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "2006"]
+[BlackElo "1682"]
+[TimeControl "120+6"]
+[Annotator "5. +0.05"]
+
+1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. Nf3 O-O 5. Qd3 {+0.05/8 10} d5 6. cxd5
+{+0.26/9 28} exd5 7. a3 {+0.10/9 15} Bxc3+ 8. bxc3 {+0.04/9 6} Nc6 9. Ne5
+{+0.03/8 12} Re8 10. Nxc6 {+0.14/9 10} bxc6 11. f3 {-0.05/8 10} a5 12. Qc2
+{+0.30/7 9} Qd6 13. g3 {+0.18/8 17} c5 14. Rb1 {+0.17/8 13} Ba6 15. Bf4
+{+0.16/8 11} Qc6 16. Qb2 {+0.13/7 8} cxd4 17. cxd4 {+0.01/8 6} h6 18. Rc1
+{+0.30/8 8} Bc4 19. e4 {-0.01/8 11} Rab8 20. Qc3 {+0.53/8 7} Qa4 21. Bxc4
+{+0.69/9 8} dxc4 22. O-O {+0.66/8 6} Rb3 23. Qxc4 {+0.86/9 6} Qxa3 24. e5
+{+1.25/8 11} Nh5 25. Bd2 {+1.37/8 8} Reb8 26. g4 {+1.97/8 7} Rxf3 27. gxh5
+{+2.29/9 5} Rxf1+ 28. Rxf1 {+3.08/10 10}
+{vwq resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "demian2007"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1694"]
+[BlackElo "2162"]
+[TimeControl "60"]
+[Annotator "3... -0.13"]
+
+1. e4 e6 2. Nf3 d5 3. d3 Nc6 {-0.13/8 2.7} 4. e5 d4 {-0.03/6 0.3} 5. g3 Qd5
+{+0.15/4 2.3} 6. Bg2 Nxe5 {+0.97/7 1.2} 7. O-O Nf6 {+0.91/7 1.7} 8. Nxe5
+Qxe5 {+0.98/7 0.8} 9. Re1 Qf5 {+1.05/6 1.3} 10. Bf4 Bd6 {+1.26/7 1.4} 11.
+Bxd6 cxd6 {+0.99/7 0.9} 12. Nd2 O-O {+1.00/7 2.7} 13. Nf3 Qc5 {+1.13/6 2.0}
+14. Qd2 Bd7 {+1.05/6 0.7} 15. Rac1 Bc6 {+1.19/6 0.8} 16. Qf4 e5
+{+1.34/6 0.5} 17. Qg5 Qb4 {+1.62/6 0.7} 18. Nh4 h6 {+2.40/6 0.3} 19. Qf5
+Bd7 {+2.42/6 0.4} 20. Qf3 Bg4 {+2.06/6 0.6} 21. Qxb7 Qxb7 {+2.23/7 2.0} 22.
+Bxb7 Rab8 {+1.91/8 1.5} 23. Bg2 Rxb2 {+2.76/7 0.7} 24. a4 Rc8 {+3.06/6 0.2}
+25. h3 Be6 {+3.13/6 0.4}
+{demian2007 resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "catshow"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1785"]
+[BlackElo "2010"]
+[TimeControl "120+6"]
+[Annotator "8... +0.31"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 dxc6 5. d4 exd4 6. Qxd4 Qxd4 7. Nxd4
+Bd7 8. Be3 Nf6 {+0.31/8 4} 9. Nd2 O-O-O {+0.40/7 18} 10. f3 Re8
+{+0.21/8 24} 11. O-O-O h6 {+0.33/7 15} 12. h4 c5 {+0.31/8 15} 13. N4b3 b6
+{+0.30/9 24} 14. g4 Be6 {+0.16/8 4} 15. g5 Nh5 {+0.74/9 17} 16. Rhg1 hxg5
+{+0.76/8 2.5} 17. hxg5 Bd6 {+0.86/8 14} 18. Rdf1 Nf4 {+1.34/8 10} 19. Kb1
+Rh2 {+1.37/8 10} 20. Nc1 Ng2 {+2.25/8 5} 21. Bf2 Bf4 {+1.80/8 5} 22. Ndb3
+Ne3 {+2.23/8 5} 23. Bxe3 Bxe3 {+2.43/9 16} 24. Rg3 c4 {+3.11/8 4} 25. Na1
+Bf2 {+3.26/8 5}
+{catshow resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "catshow"]
+[Result "1-0"]
+[WhiteElo "2017"]
+[BlackElo "1778"]
+[TimeControl "120+6"]
+[Annotator "6. +0.08"]
+
+1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4 5. Qa4+ Bd7 6. Qxc4 {+0.08/9 8} Bc6
+7. Bf3 {-0.05/8 16} Bd5 8. Qd3 {+0.03/8 7} Bxf3 9. Nxf3 {+0.18/8 28} Bb4+
+10. Kf1 {+0.21/8 4} O-O 11. a3 {+0.30/8 13} Ba5 12. b4 {+0.39/8 11} Bb6 13.
+Nc3 {+0.37/8 18} a5 14. b5 {+0.74/8 7} c5 15. Be3 {+0.56/8 7} cxd4 16. Bxd4
+{+0.45/9 13} Nbd7 17. Ne4 {+0.62/7 4} Nxe4 18. Qxe4 {+0.26/9 16} Bxd4 19.
+Qxd4 {+0.22/9 9} b6 20. Rd1 {+0.25/8 6} Nc5 21. Kg2 {+0.24/8 11} Qc7 22.
+Qe5 {+0.32/8 6} Rac8 23. Qxc7 {+0.21/8 4} Rxc7 24. Rd6 {+0.33/9 14} Na4 25.
+Rc6 {+0.28/8 2.8} Rd7 26. Rhc1 {+0.38/8 6} Rfd8 27. R1c4 {+0.65/8 2.5} Nb2
+28. Rf4 {+0.73/8 2.6} Rd6 29. Rc2 {+0.88/9 9} Nd1 30. Rfc4 {+0.83/8 2.7}
+Kf8 31. Rc7 {+0.91/8 2.5} R6d7 32. R7c6 {+1.02/9 8} Rd6 33. Kf1
+{+1.28/8 2.3} f6 34. Ke1 {+1.53/8 4} e5 35. Nd2 {+2.02/10 12} Nxf2 36. Rxd6
+{+2.51/12 12}
+{catshow forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "sceptic"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1532"]
+[BlackElo "2023"]
+[TimeControl "120+6"]
+[Annotator "5... +1.01"]
+
+1. e4 e5 2. Nf3 Nc6 3. Nc3 Nf6 4. d4 exd4 5. Nd5 Nxe4 {+1.01/7 2.2} 6. Bc4
+Bc5 {+1.04/8 22} 7. O-O Kf8 {+1.46/7 4} 8. Re1 f5 {+1.33/8 19} 9. Bf4 d6
+{+1.85/8 7} 10. a3 Na5 {+1.96/7 6} 11. Bd3 c6 {+1.57/7 9} 12. b4 cxd5
+{+2.51/9 13} 13. bxa5 Qxa5 {+2.65/8 4} 14. Ng5 h6 {+3.16/8 9} 15. Nh3 g5
+{+4.06/8 13} 16. f3 gxf4 {+4.33/9 15} 17. fxe4 dxe4 {+3.92/9 12} 18. Be2
+d3+ {+6.96/9 17}
+{sceptic resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "JollyJake"]
+[Result "1-0"]
+[WhiteElo "2025"]
+[BlackElo "1444"]
+[TimeControl "120+6"]
+[Annotator "4. -0.22"]
+
+1. e4 c5 2. Nc3 Nc6 3. g3 Nf6 4. Bd3 {-0.22/8 13} e5 5. Nf3 {+0.24/7 2.8}
+Be7 6. Nd5 {+0.21/8 5} d6 7. c3 {+0.28/8 6} O-O 8. h3 {+0.28/8 8} Be6 9.
+Qb3 {+0.01/8 10} a6 10. Ng5 {+0.38/8 6} Bd7 11. Qxb7 {+0.83/8 7} Nxd5 12.
+Nxh7 {-2.52/8 10} Na5 13. Qxd5 {-1.61/9 17} Be6 14. Qxa8 {-1.49/9 11} Qxa8
+15. Nxf8 {-1.75/10 21} Bxf8 16. b3 {-1.46/9 6} g6 17. Rh2 {-1.47/8 8} f5
+18. f3 {-1.34/8 7} Bh6 19. h4 {-1.31/8 10} Qa7 20. Rg2 {-1.04/9 16} Nc6 21.
+h5 {-1.01/9 7} Kg7 22. Bb2 {-0.89/9 10} Kf6 23. hxg6 {-0.84/9 4} Kxg6 24.
+O-O-O {-0.65/9 16} a5 25. f4 {-0.61/8 6} fxe4 26. Bxe4+ {+1.83/9 15} Bf5
+27. Bxc6 {+0.67/10 8} e4 28. g4 {+3.91/9 6} Bd7 29. Bxe4+ {+3.92/10 10} Kf7
+30. g5 {+3.92/8 2.1} Bg7 31. f5 {+3.92/8 10} a4 32. Bd5+ {+5.34/10 14} Ke8
+33. f6 {+6.11/9 10} Bf8 34. g6 {+7.78/9 3} axb3 35. g7 {+14.24/9 11} bxa2
+36. gxf8=Q+ {+325.11/10 2.9} Kxf8 37. Rg8# {+325.11/11 12}
+{JollyJake checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "JollyJake"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1472"]
+[BlackElo "2026"]
+[TimeControl "120+6"]
+[Annotator "2... +0.00"]
+
+1. f4 f5 2. Nf3 Nc6 {+0.00/9 2.8} 3. e3 Nf6 {-0.05/9 10} 4. b3 e6
+{+0.08/9 10} 5. Bb2 Bd6 {+0.12/7 18} 6. Be2 Ne4 {+0.23/7 2.8} 7. O-O O-O
+{-0.01/8 6} 8. Nc3 Be7 {-0.15/8 12} 9. Nxe4 fxe4 {-0.01/9 9} 10. Ne5 Nb4
+{-0.14/8 16} 11. a3 Nd5 {-0.16/8 7} 12. c4 Nf6 {-0.21/8 6} 13. d3 Bc5
+{-0.17/8 9} 14. d4 Be7 {-0.19/8 9} 15. Ng4 b6 {-0.08/8 9} 16. Qc2 Bb7
+{-0.13/8 7} 17. Nxf6+ Bxf6 {-0.02/8 6} 18. Rad1 Qe7 {+0.11/8 13} 19. f5 Bg5
+{+1.02/8 6}
+{JollyJake forfeits on time} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "justmoves"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1390"]
+[BlackElo "2164"]
+[TimeControl "60"]
+[Annotator "4... -0.45"]
+
+1. e4 Nf6 2. Nc3 d5 3. e5 Nfd7 4. f4 d4 {-0.45/8 2.2} 5. Ne4 Nb6
+{-0.11/5 2.0} 6. Nf3 Nc6 {-0.01/7 1.3} 7. d3 f5 {+0.27/7 1.1} 8. exf6 exf6
+{+0.34/7 0.7} 9. g3 Qd5 {+0.60/7 1.2} 10. Bg2 Bg4 {+0.57/6 0.9} 11. O-O Bb4
+{+0.39/6 0.7} 12. Bd2 Bxd2 {+0.55/6 0.5} 13. Qxd2 O-O-O {+0.47/5 1.1} 14.
+Rae1 Qxa2 {+1.39/6 1.5} 15. b3 Qa3 {+1.23/7 1.8} 16. Ra1 Qe7 {+1.32/7 1.5}
+17. Nxd4 Rxd4 {+2.84/6 2.0} 18. c3 Rd7 {+2.82/6 0.5} 19. d4 Kb8
+{+2.85/6 0.9} 20. Nc5 Qxc5 {+4.92/7 0.5} 21. dxc5 Rxd2 {+4.69/8 1.1} 22.
+cxb6 cxb6 {+4.33/8 0.9} 23. Bxc6 bxc6 {+4.70/7 0.5} 24. Rfe1 Be2
+{+4.68/7 0.7} 25. Kf2 Re8 {+5.38/8 1.4} 26. g4 Re4 {+6.57/6 0.2} 27. Kg3
+Re3+ {+6.83/7 0.8} 28. Kh4 Rdd3 {+325.11/7 0.8} 29. g5 Rh3# {+325.11/8 1.1}
+{justmoves checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "manxman"]
+[Result "1-0"]
+[WhiteElo "2027"]
+[BlackElo "1154"]
+[TimeControl "120+6"]
+[Annotator "2. +0.00"]
+
+1. d4 e6 2. Nc3 {+0.00/8 3} f5 3. e4 {+0.20/8 7} Nf6 4. exf5 {+0.82/7 1.6}
+exf5 5. Bd3 {+0.48/8 24} d5 6. Bg5 {+0.38/8 17} Be7 7. Bf4 {+0.22/8 14} c6
+8. Nf3 {+0.43/8 16} O-O 9. O-O {+0.17/8 10} Ne4 10. Qe1 {+0.19/7 7} Be6 11.
+Rb1 {+0.05/7 14} Nd7 12. Ne5 {-0.03/7 16} Nxe5 13. Bxe5 {-0.04/7 4} Qd7 14.
+f3 {+0.33/8 16} Nxc3 15. bxc3 {+0.31/8 6} b6 16. Qe3 {+0.36/8 12} Bf6 17.
+Rb4 {+0.47/7 11} Rae8 18. Rd1 {+0.46/7 3} Bxe5 19. dxe5 {+0.20/9 10} Qf7
+20. Rh4 {+0.23/8 8} g6 21. g3 {+0.20/8 8} c5 22. Ba6 {+0.17/8 8} c4 23. Rb1
+{+0.23/7 4} Qe7 24. Rb5 {+0.09/8 6} Rf7 25. Rb4 {+0.07/7 1.5} Qc5 26. Qxc5
+{+0.20/9 7} bxc5 27. Rb1 {+0.07/9 11} Rc7 28. Rh6 {+0.01/8 10} Kg7 29. Rh4
+{-0.53/9 5} Bc8 30. Bxc8 {+0.10/9 2.3} Rd8 31. Ba6 {+3.09/9 9} Rdc8
+{manxman resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "manxman"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1154"]
+[BlackElo "2027"]
+[TimeControl "120+6"]
+[Annotator "1... +0.13"]
+
+1. g3 Nc6 {+0.13/9 2.5} 2. Bg2 Nf6 {+0.18/8 6} 3. Nf3 e5 {+0.16/8 12} 4. d3
+d5 {+0.26/8 7} 5. O-O e4 {+0.57/5 14} 6. dxe4 Nxe4 {-0.11/8 17} 7. Nd4 Bc5
+{+0.34/7 2.1} 8. Nxc6 bxc6 {+0.35/9 24} 9. Bxe4 dxe4 {+0.31/8 3} 10. Qxd8+
+Kxd8 {+0.11/10 15} 11. Bf4 Rb8 {+0.35/9 13} 12. b3 Bd7 {+0.23/9 11} 13. e3
+f6 {+0.64/8 2.9} 14. h4 h6 {+0.63/8 2.5} 15. h5 Bg4 {+1.22/9 10} 16. Nc3
+Re8 {+0.96/8 2.5} 17. Na4 Ba3 {+1.21/8 3} 18. c4 Bxh5 {+2.80/8 3} 19. g4
+Bxg4 {+3.25/10 13} 20. Nc3 g5 {+3.75/8 4} 21. Bg3 Kc8 {+3.39/8 11} 22. Kg2
+Bf3+ {+4.40/9 6} 23. Kg1 Bb2 {+4.37/8 8}
+{manxman resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "valdin"]
+[Result "1-0"]
+[WhiteElo "2027"]
+[BlackElo "1457"]
+[TimeControl "120+6"]
+[Annotator "4. +0.50"]
+
+1. d4 Nf6 2. Nf3 e6 3. Bg5 Be7 4. c3 {+0.50/7 9} Ne4 5. Bxe7 {+2.31/5 7}
+Qxe7 6. Qd3 {+0.05/8 21} d5 7. Nbd2 {+0.05/8 15} Nxd2 8. Kxd2 {+0.24/9 19}
+c5 9. dxc5 {+0.48/9 8} Qxc5 10. e3 {+0.29/8 10} Nc6 11. b4 {+0.31/8 10} Qe7
+12. b5 {+0.61/8 11} Na5 13. Qd4 {+0.71/9 14} O-O 14. Bd3 {+0.65/8 6} h6 15.
+Rhb1 {+0.99/7 7} b6 16. Ne5 {+0.81/7 10} Nb7 17. Nc6 {+0.50/8 15} Qg5 18.
+g3 {+0.60/8 8} Nc5 19. h4 {+0.64/8 6} Qh5 20. Be2 {+2.31/8 4} Qg6 21. Ne7+
+{+6.61/8 7}
+{valdin resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "cthornell"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1687"]
+[BlackElo "2028"]
+[TimeControl "120+6"]
+[Annotator "7... +0.16"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 g6 5. c4 Bg7 6. Nc2 d6 7. Nc3 Nf6
+{+0.16/8 16} 8. Be2 Be6 {+0.16/6 3} 9. O-O Nd7 {+0.42/7 34} 10. Qd2 Nc5
+{+0.45/7 18} 11. h3 Na5 {+0.77/6 1.8} 12. b3 Naxb3 {+1.94/8 19} 13. axb3
+Nxb3 {+1.85/8 14} 14. Qd3 Nxa1 {+2.13/8 14} 15. Nxa1 Rc8 {+2.14/8 15} 16.
+Be3 Bxc4 {+2.36/8 6} 17. Qd2 Qa5 {+2.43/8 11}
+{cthornell resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "cthornell"]
+[Result "1-0"]
+[WhiteElo "2032"]
+[BlackElo "1683"]
+[TimeControl "120+6"]
+[Annotator "4. +0.56"]
+
+1. d4 c5 2. d5 e6 3. e4 a6 4. Nf3 {+0.56/5 20} d6 5. Nc3 {+0.77/7 15} b5 6.
+dxe6 {+0.48/8 7} fxe6 7. e5 {+0.47/8 14} d5 8. Bg5 {+0.47/8 17} Be7 9. Bxe7
+{+0.25/8 10} Qxe7 10. b3 {+0.48/7 4} Nc6 11. Qd2 {+0.33/7 11} Nh6 12. a4
+{+0.17/7 24} b4 13. Na2 {-0.36/8 6} O-O 14. h3 {-0.27/7 3} Nf5 15. O-O-O
+{-0.63/7 5} Kh8 16. Bd3 {-0.28/7 3} Nfd4 17. Nxd4 {-0.40/8 4} Nxd4 18. f4
+{-0.38/7 10} Bd7 19. Qe3 {-0.34/7 11} Nf5 20. Bxf5 {-0.32/8 2.8} Rxf5 21.
+g4 {-0.31/8 12} Rff8 22. Rdf1 {-0.25/7 10} c4 23. a5 {-0.31/8 12} cxb3 24.
+cxb3 {-0.16/9 9} Rac8+ 25. Kb2 {+0.00/9 6} Bb5 26. Rc1 {+0.44/8 8} Rc7 27.
+Qd4 {+0.58/9 15} Rfc8 28. Rxc7 {+1.22/9 3} Qxc7 29. Rc1 {+1.30/8 6} Qd8 30.
+Rxc8 {+1.53/10 12} Qxc8 31. Nxb4 {+1.52/10 12} h6 32. Qb6 {+1.64/9 5} Kh7
+33. Qd6 {+1.77/9 3} Bf1 34. h4 {+1.82/9 3} Be2 35. g5 {+1.84/10 7} hxg5 36.
+hxg5 {+1.85/10 7} Kh8 37. f5 {+2.60/10 4} exf5 38. e6 {+3.22/10 11}
+{cthornell resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Punchingbag"]
+[Result "1-0"]
+[WhiteElo "2164"]
+[BlackElo "1206"]
+[TimeControl "60"]
+[Annotator "5. +0.23"]
+
+1. d4 d5 2. c4 Nc6 3. Nc3 dxc4 4. Nf3 Bg4 5. d5 {+0.23/7 0.8} Bxf3 6. exf3
+{+0.78/7 2.0} Na5 7. Qa4+ {+1.52/7 0.6} c6 8. b4 {+1.56/7 1.4} cxb3 9. axb3
+{+1.55/6 0.3} b5 10. Qxa5 {+3.15/7 0.5}
+{Punchingbag resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "rb2409"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1815"]
+[BlackElo "2036"]
+[TimeControl "120+6"]
+[Annotator "5... -0.64"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 d5 4. Nf3 Bg7 5. Bg5 dxc4 {-0.64/6 20} 6. e3 Be6
+{-0.05/8 7} 7. e4 c6 {+0.59/8 9} 8. a4 Qa5 {+0.92/8 16} 9. Bd2 Qb6
+{+0.83/8 9} 10. a5 Qxb2 {+0.76/8 5} 11. Ng5 b5 {+1.23/8 5} 12. axb6 Qxb6
+{+1.29/8 9} 13. Nxe6 fxe6 {+1.24/9 19} 14. Be3 Qb4 {+1.32/8 22} 15. Bd2 Qb6
+{+1.20/8 5} 16. Be3 Qb4 {+1.32/8 4} 17. Bd2 Qb6 {+1.20/8 14}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "rb2409"]
+[Result "0-1"]
+[WhiteElo "2027"]
+[BlackElo "1824"]
+[TimeControl "120+6"]
+[Annotator "2. +0.48"]
+
+1. Nf3 c5 2. e3 {+0.48/9 6} Nf6 3. Bd3 {+0.27/8 9} d5 4. b3 {+0.01/8 8} Nc6
+5. Nc3 {+0.03/6 22} e5 6. Bb5 {-0.23/8 2.9} Bd6 7. d4 {-0.16/8 9} cxd4 8.
+exd4 {-0.27/9 14} e4 9. Ne5 {-0.26/8 12} O-O 10. Bxc6 {-0.58/8 12} bxc6 11.
+f4 {-0.51/7 4} Bb4 12. Qd2 {-1.09/9 13} Qa5 13. Bb2 {-0.90/8 1.7} e3 14.
+Qxe3 {-0.89/9 9} Ne4 15. Nxc6 {-0.84/9 12} Bxc3+ 16. Bxc3 {-0.94/9 10}
+Qxc3+ 17. Qxc3 {-1.03/10 7} Nxc3 18. Ne7+ {-1.01/9 21} Kh8 19. Kd2
+{-1.42/10 8} Ne4+ 20. Kc1 {-1.21/9 2.1} Bb7 21. Nf5 {-1.35/9 12} g6 22. Ne3
+{-1.54/9 7} Rfe8 23. Ng4 {-1.44/9 8} f6 24. Re1 {-1.30/9 6} h5 25. Ne3
+{-1.31/9 4} Nd6 26. c3 {-1.59/9 5} Rac8 27. Kb2 {-1.68/9 8} Re4 28. g3
+{-1.84/9 7} Rce8 29. Nc2 {-2.00/9 4} Re2 30. Rxe2 {-1.64/10 4} Rxe2 31. Re1
+{-2.00/11 10} Rxe1 32. Nxe1 {-1.12/11 10} Kg7 33. Nd3 {-1.15/10 3} Kh6 34.
+a4 {-0.93/11 11} h4 35. gxh4 {-1.11/12 4} Kh5 36. Nc5 {-1.39/12 7} Kxh4 37.
+Nxb7 {-1.62/12 11} Nxb7 38. c4 {-1.97/14 3} Kg4 39. Kc3 {-2.03/13 8} Kxf4
+40. c5 {-2.09/13 8} Ke3 41. b4 {-2.20/14 9} f5 42. Kc2 {-3.68/13 2.5} Kxd4
+43. c6 {-3.77/15 7} Nd6 44. b5 {-3.77/13 5} Kc5 45. Kd3 {-3.73/13 4} a6 46.
+bxa6 {-4.10/15 9} Kxc6 47. a5 {-4.10/13 5} Nc8 48. Ke3 {-4.31/13 4} Kc5 49.
+h4 {-4.24/13 8} Na7 50. Kd3 {-4.79/14 14} d4 51. Kd2 {-10.45/15 6} Kc4 52.
+Ke2 {-10.85/14 4} d3+ 53. Ke3 {-11.31/13 6} Kc3 54. Kf2 {-13.00/13 9} d2
+55. Ke2 {-13.27/13 6} Kc2 56. Ke3 {-13.27/12 11} d1=Q 57. Kf4 {-17.38/11 5}
+Qg4+ 58. Ke5 {-17.40/10 4} f4 59. h5 {-20.12/10 6} gxh5 60. Ke4
+{-325.11/11 4} f3+ 61. Ke5 {-22.49/8 2.6} f2 62. Kd6 {-325.11/10 8} f1=Q
+63. Ke7 {-325.11/9 13} Qg6 64. Kd8 {-325.11/9 8} Qf8+ 65. Kd7
+{-325.11/8 0.8} Qff7+ 66. Kd8 {-325.11/10 11} Qgg8#
+{Pigeon checkmated} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "guduk"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1716"]
+[BlackElo "2164"]
+[TimeControl "60"]
+[Annotator "4... +0.23"]
+
+1. e4 e5 2. f4 exf4 3. Nf3 f5 4. exf5 Qf6 {+0.23/7 0.8} 5. d4 Qxf5
+{+0.58/6 1.5} 6. Bd3 Qg4 {+0.45/7 1.1} 7. O-O Nc6 {+0.55/6 2.7} 8. Qe1+ Kd8
+{+0.23/6 0.3} 9. c3 Nh6 {+0.64/6 2.6} 10. Nbd2 Bd6 {+0.47/5 0.3} 11. Ne4
+Nf7 {-0.41/5 0.8} 12. Nxd6 Nxd6 {-0.84/7 1.8} 13. Ne5 Nxe5 {-1.04/7 0.8}
+14. dxe5 Nf7 {-1.20/7 1.9} 15. Rxf4 Qe6 {-1.40/7 1.0} 16. Be3 Nxe5
+{-0.85/6 0.3} 17. Bc2 h6 {-0.25/7 1.6} 18. Bd4 Re8 {-0.19/6 2.0} 19. Qf2 b6
+{-0.07/6 0.8} 20. Rf1 Qxa2 {+0.38/6 2.0} 21. Rf8 d6 {-0.39/7 0.7} 22. Rxe8+
+Kxe8 {-0.73/7 0.6} 23. Qf8+ Kd7 {-3.03/8 1.5} 24. Bxe5 Kc6 {-3.37/7 1.4}
+25. Be4+ d5 {-4.46/7 0.5} 26. Bf3 Qc4 {-4.04/7 1.1} 27. Qxg7 Bd7
+{-4.07/7 0.8} 28. Rd1 Be6 {-5.15/7 0.7} 29. Qf6 Qc5+ {-4.12/8 1.3} 30. Bd4
+Qd6 {-3.90/7 0.9} 31. Be5 Qc5+ {-4.12/8 1.5} 32. Kh1 Kd7 {-4.05/7 0.9} 33.
+Qg7+ Kc6 {-4.89/7 1.3} 34. Qxc7+ Kb5 {-4.76/7 0.6} 35. Be2+ Ka4
+{-4.46/8 1.4} 36. b3+ Kxb3 {-4.19/8 1.0} 37. Rb1+ Ka2 {-5.24/7 0.3} 38.
+Qxc5 bxc5 {-3.74/8 1.5} 39. Rd1 Re8 {-2.71/7 0.7} 40. Bf3 Kb3 {-3.03/7 0.3}
+41. Bxd5+ Bxd5 {+0.15/9 0.4}
+{guduk forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Drooler"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1675"]
+[BlackElo "2003"]
+[TimeControl "120+6"]
+[Annotator "2... +0.15"]
+
+1. d4 Nf6 2. Bg5 h6 {+0.15/8 1.8} 3. Bxf6 gxf6 {+0.22/9 10} 4. c4 c6
+{+0.43/7 3} 5. Nc3 Qb6 {+0.29/9 31} 6. Qd2 Qb4 {+0.05/8 4} 7. e3 d6
+{+0.00/9 20} 8. Bd3 Rg8 {-0.02/8 4} 9. g3 Na6 {+0.08/7 10} 10. Nge2 Bg4
+{+0.04/8 7} 11. O-O Bh3 {-0.13/8 7} 12. Rfc1 Nc7 {-0.26/8 6} 13. Nf4 Bg4
+{-0.37/8 4} 14. Kg2 Ne6 {-0.07/8 14} 15. Nfe2 Ng5 {+0.29/8 9} 16. Ng1 Ne6
+{+0.22/7 4} 17. f4 Ng7 {-0.02/8 10} 18. h3 Be6 {+0.17/8 4} 19. a3 Qb3
+{+0.17/8 6} 20. Nce2 d5 {+0.29/7 2.7} 21. Rc3 Qb6 {+0.02/9 10} 22. c5 Qc7
+{-0.15/9 12} 23. Qc2 Qc8 {-0.04/8 9} 24. Kh2 Nf5 {+0.17/9 13} 25. Qd2 h5
+{+0.08/8 5} 26. b4 Qc7 {+0.11/8 5} 27. a4 a6 {+0.09/8 10} 28. Rb1 Bg7
+{+0.15/8 6} 29. b5 axb5 {+0.45/9 6} 30. axb5 cxb5 {+0.29/8 9} 31. Bxb5+ Kf8
+{+0.31/9 13} 32. Rcb3 b6 {+0.50/7 2.6} 33. cxb6 Qxb6 {+0.10/8 8} 34. Bd3
+Qd8 {+0.13/8 12} 35. Bxf5 Bxf5 {+0.20/9 3} 36. Rc1 Be6 {+0.18/7 1.4} 37.
+Rbc3 Rh8 {+0.47/7 6} 38. Qb2 h4 {+0.35/8 2.6} 39. g4 f5 {+0.25/8 10} 40. g5
+Bc8 {-0.03/8 11} 41. Nf3 Ba6 {-0.09/8 5} 42. Neg1 Bc4 {+0.57/7 1.6} 43.
+R1c2 Rb8 {+0.53/8 5} 44. Qc1 f6 {+0.36/7 7} 45. g6 Qe8 {+0.46/9 8} 46. Rg2
+Rh6 {+0.31/8 4} 47. Nd2 Rxg6 {+0.40/10 11} 48. Nxc4 Rxg2+ {+0.52/10 7} 49.
+Kxg2 Qg6+ {+0.27/10 13} 50. Kh1 dxc4 {-0.20/10 6} 51. Rxc4 Bh6 {-0.02/9 8}
+52. Rc8+ Rxc8 {-0.41/12 4} 53. Qxc8+ Kf7 {-0.40/12 12} 54. Qc4+ Kf8
+{-0.15/9 2.2} 55. Qe2 Qg3 {-0.07/11 4} 56. Qd2 e6 {+0.41/11 3} 57. Qc3 Kf7
+{+0.68/12 8} 58. Qd2 Bf8 {+0.75/11 7} 59. Qe2 Bb4 {+0.75/11 4} 60. Qh5+ Kg7
+{+1.34/11 7} 61. Qf3 Bd2 {+1.08/11 3} 62. Qxg3+ hxg3 {+1.07/16 8} 63. Ne2
+Bxe3 {+1.06/14 10} 64. Kg2 Bf2 {+1.10/15 9} 65. Nxg3 Bxd4 {+1.30/14 7} 66.
+Kf3 Kg6 {+1.36/13 5} 67. Ke2 Bb6 {+1.33/12 4} 68. Kf3 Bc5 {+1.41/13 9} 69.
+Kg2 e5 {+1.63/13 4} 70. Kf3 e4+ {+1.52/14 5} 71. Kg2 Be3 {+1.55/14 5} 72.
+Ne2 Bd2 {+1.51/14 8} 73. Kf2 Ba5 {+1.53/12 1.7} 74. Kg3 Be1+ {+1.57/14 8}
+75. Kg2 Bb4 {+1.65/13 12} 76. Kg3 Ba5 {+1.53/14 8} 77. Kg2 Bd2 {+1.53/14 5}
+78. Kg3 Bb4 {+1.65/11 1.5} 79. Kg2 Ba5 {+1.47/14 11} 80. Kg3 Be1+
+{+1.59/14 4} 81. Kg2 Kf7 {+1.43/13 5} 82. Nd4 Kg6 {+1.38/14 5} 83. Ne2
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Drooler"]
+[Result "1-0"]
+[WhiteElo "1991"]
+[BlackElo "1687"]
+[TimeControl "120+6"]
+[Annotator "7. +0.31"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Bb4 6. Bd3 d5 7. exd5
+{+0.31/9 15} Nxd5 8. Bd2 {+0.37/9 12} Nf4 9. Bxf4 {+3.53/9 13} Qxd4 10.
+Bb5+ {+6.99/10 8}
+{Drooler resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Drooler"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1682"]
+[BlackElo "1996"]
+[TimeControl "120+6"]
+[Annotator "2... -0.08"]
+
+1. d4 d5 2. Bg5 f6 {-0.08/8 3} 3. Bh4 Nh6 {+0.18/8 4} 4. f3 Nc6 {+0.48/8 4}
+5. c3 Nf5 {+0.77/6 31} 6. Bf2 Be6 {+0.44/8 17} 7. e4 Nd6 {+0.25/8 5} 8. Nd2
+Bf7 {+0.33/7 6} 9. exd5 Bxd5 {-0.14/9 13} 10. Bd3 Qd7 {+0.37/7 5} 11. Qc2
+g6 {+0.47/7 7} 12. Ne2 Bh6 {+0.45/7 9} 13. Ne4 b6 {+0.38/7 5} 14. a3 Nc4
+{+0.64/8 10} 15. Bxc4 Bxc4 {+0.51/9 11} 16. b3 Bf7 {+0.26/8 8} 17. O-O f5
+{+0.75/8 10} 18. Nd2 Bxd2 {+1.33/8 12} 19. Qxd2 Bxb3 {+1.30/8 5} 20. Rfe1
+Bc4 {+1.28/8 13} 21. Bh4 h6 {+1.88/7 12} 22. f4 Qd6 {+1.96/7 12} 23. Nc1 a5
+{+1.84/6 1.4} 24. Nd3 a4 {+1.39/8 13} 25. Ne5 Nxe5 {+1.39/8 2.8} 26. Rxe5
+e6 {+1.35/8 13} 27. Rd1 Qxa3 {+1.74/7 10} 28. d5 Qc5+ {+0.23/8 4} 29. Bf2
+Qb5 {-0.12/8 10} 30. Rxe6+ Kd7 {+0.03/7 0.8} 31. Rde1 Qxd5 {+1.05/8 3} 32.
+Re7+ Kc8 {+1.21/9 7} 33. Qe3 a3 {+2.42/8 4} 34. Re8+ Rxe8 {+3.82/11 5} 35.
+Qxe8+ Kb7 {+3.78/9 8}
+{Drooler resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "RAFALVAR"]
+[Result "0-1"]
+[WhiteElo "2001"]
+[BlackElo "1981"]
+[TimeControl "120+6"]
+[Annotator "4. -0.11"]
+
+1. e4 e6 2. d3 d5 3. Nd2 Bc5 4. Nb3 {-0.11/6 20} Bb6 5. a4 {-0.23/6 2.7} a6
+6. e5 {+0.42/9 22} Ne7 7. a5 {+0.39/8 5} Ba7 8. d4 {+0.41/8 15} Nd7 9. Nf3
+{+0.45/8 20} c5 10. Nxc5 {+0.52/8 9} Nxc5 11. dxc5 {+0.51/8 12} Bxc5 12. c3
+{+0.52/8 16} O-O 13. Bd3 {+0.67/8 6} h6 14. b4 {+0.70/8 11} Ba7 15. O-O
+{+0.61/7 3} Bd7 16. Qb3 {+0.77/7 11} Bb5 17. Bxb5 {+0.53/8 8} axb5 18. g4
+{+0.50/7 11} Qc7 19. g5 {+0.28/8 4} h5 20. Rb1 {+0.20/8 6} g6 21. Bf4
+{+0.35/8 6} Nf5 22. Rfd1 {+0.34/8 7} Rac8 23. Nd4 {+0.02/9 10} Bxd4 24.
+cxd4 {-0.10/9 6} Qc4 25. Qd3 {-0.25/9 11} Qxd3 26. Rxd3 {-0.32/11 9} Rc4
+27. Be3 {-0.68/10 11} Rfc8 28. h3 {-0.94/9 5} Rc3 29. Rbd1 {-1.21/11 9}
+Rxd3 30. Rxd3 {-1.43/12 5} Rc4 31. Kg2 {-1.40/11 9} Rxb4 32. Rc3
+{-1.19/11 6} Rc4 33. Rb3 {-1.09/11 7} b4 34. Bd2 {-1.34/11 8} Nxd4 35. Rxb4
+{-1.40/11 13} Rxb4 36. Bxb4 {-1.92/13 5} Nc6 37. Bd6 {-1.93/11 2.2} Nxa5
+38. Kf3 {-1.92/12 7} Nc4 39. Ke2 {-1.82/13 5} Nxd6 40. exd6 {-3.02/17 2.7}
+Kf8 41. Ke3 {-3.17/17 9} Ke8 42. Kd4 {-3.30/17 10} Kd7 43. Kc5 {-3.65/16 7}
+b5 44. f3 {-2.73/17 10} b4 45. Kxb4 {-3.29/20 8} Kxd6 46. f4 {-3.28/18 2.6}
+Kc6 47. h4 {-4.19/19 2.8} Kb6 48. Kc3 {-9.08/19 7} Kc5 49. Kd3
+{-4.24/20 13} d4 50. Ke4 {-9.07/17 2.8} Kc4 51. Ke5 {-9.17/18 8} d3 52. Kf6
+{-9.17/16 5} d2 53. Kxf7 {-9.37/15 12} d1=Q 54. Kxg6 {-9.42/13 6} Qg4 55.
+Kf7 {-9.42/11 2.7} Qxf4+ 56. Kg8 {-9.69/11 6} Qxh4 57. g6 {-10.21/12 6} Qg4
+58. g7 {-10.54/13 10} h4 59. Kh7 {-12.10/13 6} h3 60. g8=Q {-11.58/14 7}
+Qxg8+ 61. Kxg8 {-18.85/14 3} h2 62. Kf7 {-18.83/12 6} e5 63. Kf6
+{-325.11/14 13} Kd4 64. Ke7 {-325.11/14 7} h1=Q 65. Kd6 {-19.11/10 0.9} e4
+66. Kc6 {-325.11/10 5} e3+ 67. Kb6 {-325.11/12 8} e2 68. Kc7 {-325.11/10 5}
+e1=Q 69. Kb6 {-325.11/10 10} Qb4+ 70. Kc7 {-325.11/8 0.6} Qhb7+ 71. Kd8
+{-325.11/10 3} Q4e7#
+{Pigeon checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "turibio"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1240"]
+[BlackElo "1984"]
+[TimeControl "120+6"]
+[Annotator "4... -0.24"]
+
+1. c4 Nf6 2. Nc3 d5 3. cxd5 Nxd5 4. d4 Nc6 {-0.24/8 17} 5. e4 Nxc3
+{-0.19/9 17} 6. bxc3 Qd6 {-0.40/8 5} 7. Ne2 g6 {-0.01/7 2.6} 8. g3 Bg4
+{+0.08/8 19} 9. Bg2 f6 {+0.02/7 8} 10. O-O O-O-O {-0.16/8 19} 11. f3 Be6
+{-0.24/8 7} 12. d5 Qc5+ {-0.12/8 6} 13. Kh1 Bg8 {-0.21/8 15} 14. Qe1 Ne5
+{-0.07/8 4} 15. Nd4 Nd3 {+0.22/7 7} 16. Qd2 Qc4 {-0.03/8 5} 17. Rb1 e6
+{+0.46/6 1.9} 18. Nb5 Kb8 {+0.72/8 5} 19. Qe3 Bc5 {+1.29/8 9} 20. Nd4 exd5
+{+1.79/8 12} 21. Bd2 Bxd4 {+1.90/7 5} 22. cxd4 Be6 {+1.42/8 14} 23. g4 dxe4
+{+1.73/8 7} 24. fxe4 Rxd4 {+1.69/8 13}
+{turibio forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "turibio"]
+[Result "1-0"]
+[WhiteElo "1984"]
+[BlackElo "1240"]
+[TimeControl "120+6"]
+[Annotator "8. +0.90"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Qc7 6. Be3 a6 7. Be2 Bb4
+8. Nxc6 {+0.90/9 8} bxc6 9. Qd4 {+0.82/9 32} Bxc3+ 10. Qxc3 {+0.76/8 4} f6
+11. O-O-O {+1.32/7 16} Ne7 12. g3 {+1.23/8 30} O-O 13. Bc5 {+1.41/8 16} Re8
+14. Rd6 {+1.66/7 15} Ng6 15. Bh5 {+1.71/7 14} Re7 16. f4 {+1.83/6 1.5} Nf8
+17. Rd3 {+2.88/8 12} g6 18. Bxe7 {+4.06/8 5} gxh5 19. Qxf6 {+4.20/8 10}
+{turibio resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "turibio"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1240"]
+[BlackElo "1984"]
+[TimeControl "120+6"]
+[Annotator "5... +0.22"]
+
+1. c4 e5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7 5. e4 Nf6 {+0.22/7 2.4} 6. Nge2 O-O
+{+0.09/8 22} 7. O-O Nd4 {+0.08/8 17} 8. d3 c6 {+0.07/8 3} 9. Bg5 d6
+{+0.38/9 16} 10. f3 Qb6 {+0.70/8 3} 11. Bxf6 Nxe2+ {+3.78/9 6} 12. Kh1 Nxc3
+{+3.63/9 10} 13. bxc3 Bxf6 {+3.73/9 14} 14. Qb3 Be6 {+3.83/9 10} 15. Qxb6
+axb6 {+3.91/9 4} 16. Rfb1 Ra6 {+4.02/9 9} 17. Bf1 Rfa8 {+4.10/9 12} 18. Rb2
+R8a7 {+4.19/8 9} 19. Kg2 Ra3 {+4.31/9 6} 20. Rc2 b5 {+4.42/9 12} 21. cxb5
+cxb5 {+4.96/10 14} 22. c4 b4 {+5.55/9 4} 23. Rb2 b3 {+5.92/9 6} 24. Be2
+Rxa2 {+6.71/9 10} 25. Rbxa2 Rxa2 {+7.39/10 8}
+{turibio resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "valgen70"]
+[Result "1/2-1/2"]
+[WhiteElo "1984"]
+[BlackElo "1129"]
+[TimeControl "120+6"]
+[Annotator "3. +0.05"]
+
+1. c4 c5 2. Nc3 d6 3. e3 {+0.05/8 2.4} Nc6 4. Nf3 {+0.11/8 7} Nf6 5. Qb3
+{+0.16/7 17} b6 6. Bd3 {+0.14/8 20} Nb4 7. Bb1 {+0.36/9 16} Nc6 8. Nd5
+{+0.28/8 10} Nxd5 9. cxd5 {+0.59/9 6} Na5 10. Qc3 {+0.58/8 6} Nb7 11. Bd3
+{+0.89/8 12} Bd7 12. O-O {+0.85/8 14} Qc7 13. b4 {+1.06/7 7} O-O-O 14. Ng5
+{+2.06/8 10} Be8 15. Nxh7 {+2.07/8 5} f6 16. Nxf8 {+2.24/8 5} Rxf8 17. b5
+{+2.18/8 12} Bf7 18. Bf5+ {+2.18/9 11} Kb8 19. Qc4 {+1.99/8 4} Na5 20. Qd3
+{+2.07/8 5} Nb7 21. Ba3 {+2.18/8 9} Ka8 22. Rfc1 {+2.48/7 8} Kb8 23. Rc4
+{+2.62/7 12} Na5 24. Rg4 {+2.47/8 13} g6 25. Bxg6 {+3.09/8 2.8} Bxg6 26.
+Rxg6 {+3.10/9 13} Rg8 27. Rh6 {+2.84/9 13} Rh8 28. Rg6 {+2.86/9 10} Rhg8
+29. Rh6 {+2.86/8 2.2} Rh8 30. Rg6 {+2.86/9 15} Rhg8
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "cthornell"]
+[Result "1-0"]
+[WhiteElo "1968"]
+[BlackElo "1652"]
+[TimeControl "120+6"]
+[Annotator "5. -0.97"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. Bd2 dxe4 5. Nb5 {-0.97/8 7} Bxd2+ 6. Qxd2
+{-0.92/9 18} a6 7. Nc3 {-1.05/8 18} Nf6 8. O-O-O {-0.90/8 22} O-O 9. Qe3
+{-0.65/8 12} b5 10. Nxe4 {-0.31/8 11} Bb7 11. Bd3 {-0.33/8 15} Nbd7 12. f3
+{-0.08/7 9} Qe7 13. Nxf6+ {-0.12/8 18} Nxf6 14. Ne2 {-0.04/8 10} Rac8 15.
+Rd2 {+0.15/7 8} c5 16. dxc5 {-0.20/8 12} Qxc5 17. Qf4 {-0.08/7 8} Nd5 18.
+Qe4 {-0.24/8 4} g6 19. a3 {-0.22/7 3} a5 20. Nd4 {-0.23/8 9} b4 21. a4
+{-0.37/8 11} Ba8 22. Ba6 {+0.02/6 1.0} Rc7 23. Nb3 {-0.10/6 1.5} Qb6 24.
+Qe2 {-0.20/7 6} Bc6 25. Bb5 {-0.65/8 2.5} Rfc8 26. Nd4 {-0.27/9 12} Bd7 27.
+g4 {-0.07/7 1.7} b3 28. Nxb3 {+0.55/8 4} Bxb5 29. axb5 {-0.11/9 13} a4 30.
+Nd4 {+0.62/8 5} a3 31. bxa3 {+0.81/8 12} Nc3 32. Qe5 {+0.87/8 3} Qa5 33.
+Qd6 {+0.81/7 4} Rc5 34. Qa6 {+0.81/9 10} Qc7 35. Nxe6 {+1.41/8 11} fxe6 36.
+Qxe6+ {+1.36/10 7} Qf7 37. Qxf7+ {+1.14/10 7} Kxf7 38. b6 {+0.61/10 9} Na4
+39. b7 {+2.63/10 4} Rb8 40. Rd7+ {+2.76/11 12} Kg8 41. Rhd1 {+2.87/10 7}
+{cthornell resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "TCrown"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1303"]
+[BlackElo "1972"]
+[TimeControl "120+6"]
+[Annotator "3... -0.18"]
+
+1. d4 d5 2. e3 Nf6 3. Bd3 Nc6 {-0.18/8 4} 4. f4 e6 {-0.05/8 7} 5. Nd2 a6
+{+0.72/5 14} 6. c3 Bd6 {-0.09/8 26} 7. Ngf3 h5 {-0.12/8 20} 8. O-O Ng4
+{-0.03/7 6} 9. Qe2 Nf6 {-0.13/7 13} 10. Ne5 h4 {-0.39/7 13} 11. h3 Nh5
+{-0.15/7 8} 12. Qg4 Qf6 {-0.24/7 3} 13. b4 Ng3 {-0.09/7 6} 14. Rf3 Qh6
+{-0.04/7 4} 15. Nf1 Ne4 {+0.80/8 11} 16. Nd2 Nxc3 {+1.27/8 7} 17. a3 f5
+{+1.28/8 10} 18. Qg6+ Qxg6 {+1.18/9 2.5} 19. Nxg6 Rh6 {+1.13/8 13} 20. Ne5
+Bd7 {+1.07/8 9} 21. Bb2 Na4 {+1.11/8 11} 22. Nxd7 Nxb2 {+3.20/8 5} 23. Bc2
+Kxd7 {+4.05/8 2.5} 24. Rb1 Nc4 {+4.32/9 12} 25. Nxc4 dxc4 {+4.28/9 16} 26.
+Ba4 b5 {+4.62/9 4} 27. Bc2 g6 {+4.62/8 7} 28. Rd1 a5 {+5.58/9 5} 29. e4
+axb4 {+6.02/10 10} 30. e5 b3 {+6.24/10 10} 31. exd6 bxc2 {+8.80/10 4} 32.
+Rc1 Nxd4 {+8.82/10 9} 33. Rc3 Ne2+ {+11.67/9 4}
+{TCrown resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "sceptic"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1506"]
+[BlackElo "1973"]
+[TimeControl "120+6"]
+[Annotator "5... +0.00"]
+
+1. e4 e5 2. Nf3 Nc6 3. Nc3 Nf6 4. d4 Bb4 5. Nxe5 Qe7 {+0.00/5 0.9} 6. Nxc6
+Qxe4+ {+0.17/10 35} 7. Qe2 dxc6 {+0.28/10 12} 8. Bd2 Qxe2+ {+0.24/10 8} 9.
+Bxe2 Bf5 {+0.36/9 17} 10. O-O-O O-O-O {+0.24/8 15} 11. a3 Bd6 {+0.23/8 10}
+12. Bg5 h6 {+0.35/8 14} 13. Bxf6 gxf6 {+0.39/9 9} 14. h3 Be6 {+0.42/8 11}
+15. Rhe1 f5 {+0.47/8 16} 16. Bf3 Rdg8 {+0.36/8 2.7} 17. Na4 Ba2 {+0.48/8 4}
+18. Nc3 Bf4+ {+1.26/10 9} 19. Re3 Bxe3+ {+1.25/10 5} 20. fxe3 Be6
+{+1.35/10 13} 21. Na4 Bd5 {+1.94/10 13} 22. Nc5 Bxf3 {+3.01/10 4} 23. gxf3
+Rg3 {+3.12/10 11}
+{sceptic resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "w3"]
+[Result "1-0"]
+[WhiteElo "1975"]
+[BlackElo "1907"]
+[TimeControl "120+6"]
+[Annotator "10. +0.37"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6 7. f4 Be7 8.
+Qf3 Qc7 9. O-O-O Nbd7 10. f5 {+0.37/8 15} e5 11. Nb3 {+0.45/8 16} b5 12. a3
+{+0.37/8 25} Bb7 13. Be3 {+0.58/8 17} Nb6 14. Na5 {+0.35/8 15} Nc4 15. Nxb7
+{+0.64/8 7} Qxb7 16. Nd5 {+0.58/8 12} Nxe3 17. Qxe3 {+0.65/9 8} Nxd5 18.
+Rxd5 {+0.60/8 10} Rc8 19. Be2 {+0.52/8 8} h6 20. Kb1 {+0.61/7 2.3} O-O 21.
+g3 {+0.57/7 13} Rc6 22. Rhd1 {+0.40/8 12} Rfc8 23. c3 {+0.42/8 10} a5 24.
+Rxb5 {+1.77/8 7} Qc7 25. Rdd5 {+1.87/8 11} a4 26. Rb4 {+2.26/8 7} Ra8 27.
+Bb5 {+2.38/8 5} Rb6 28. Rxa4 {+2.45/8 4} Rxa4 29. Bxa4 {+2.55/9 14} Qb7 30.
+Qe2 {+2.54/9 14} Kf8 31. Bb5 {+2.61/8 5} f6 32. Qc4 {+2.88/8 7}
+{w3 resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Tede"]
+[Result "1-0"]
+[WhiteElo "1988"]
+[BlackElo "1318"]
+[TimeControl "120+6"]
+[Annotator "4. -0.01"]
+
+1. d4 d5 2. c4 c6 3. Nf3 dxc4 4. Qa4 {-0.01/6 1.0} b5 5. Qc2 {-1.08/6 36}
+Nf6 6. b3 {-1.07/8 8} cxb3 7. axb3 {-1.02/8 11} Bg4 8. e3 {-0.93/8 12} e6
+9. Ne5 {-0.90/8 14} Qc7 10. f3 {+0.62/8 10} Bf5 11. e4 {-0.23/8 10} Bg6 12.
+Bxb5 {+0.55/7 10} Bb4+ 13. Bd2 {+0.96/8 13} Bxd2+ 14. Nxd2 {+0.93/8 13} O-O
+15. Qc4 {+0.92/6 10} Qb6 16. Nxc6 {+1.20/8 14} Nxc6 17. Bxc6 {+1.18/8 9}
+Rac8 18. Ra6 {+1.63/8 11} Qc7 19. Qc5 {+1.70/6 1.2} Rfd8 20. Nc4
+{+1.24/7 3} Ne8 21. b4 {+2.29/7 5} Nd6 22. Na5 {+2.76/8 8} f6 23. Rxa7
+{+3.19/8 5} Qb8 24. b5 {+3.28/8 10} Be8 25. b6 {+4.05/8 5} Bxc6 26. Nxc6
+{+4.05/8 5} Rxc6 27. Qxc6 {+4.82/9 4} Rc8 28. Qd7 {+8.17/10 16} Ne8 29.
+Qf7+ {+325.11/8 2.2} Kh8 30. Qf8# {+325.11/9 12}
+{Tede checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Tede"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1317"]
+[BlackElo "1989"]
+[TimeControl "120+6"]
+[Annotator "10... +0.03"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8.
+c3 d6 9. d4 Bg4 10. d5 Na5 {+0.03/9 12} 11. Bc2 c6 {-0.14/8 19} 12. b4 Nc4
+{+0.22/9 16} 13. dxc6 Qc7 {+0.35/8 16} 14. Nbd2 Qxc6 {+0.27/8 15} 15. Nf1
+Nb6 {+0.64/6 2.2} 16. Ng3 Qxc3 {+1.19/8 15} 17. Bd2 Qb2 {+1.09/8 8} 18. Rb1
+Qxa2 {+1.12/8 4} 19. Bb3 Qxb1 {-2.42/9 24} 20. Qxb1 Nc4 {-2.63/8 9} 21. Qd3
+Rfc8 {-2.48/8 8} 22. Bxc4 Rxc4 {-2.08/8 13} 23. Rc1 Rxc1+ {-2.11/9 13} 24.
+Bxc1 Rc8 {-2.23/8 12} 25. Bd2 g6 {-2.11/8 10} 26. h3 Bd7 {-2.23/8 11} 27.
+Bg5 Rc6 {-2.43/9 13} 28. Bxf6 Bxf6 {-1.98/9 4} 29. Ne2 Be6 {-2.11/8 5} 30.
+Nc3 Rc4 {-2.07/8 5} 31. Nd5 Rc1+ {-2.12/9 11} 32. Kh2 Bd8 {-2.17/9 10} 33.
+Qe3 Rc2 {-2.51/9 9} 34. Qa7 Bxd5 {-2.77/10 9} 35. exd5 e4 {-3.37/9 2.6} 36.
+Nd4 Rd2 {-3.43/9 2.2} 37. Nc6 Bh4 {-3.22/10 14} 38. Qxa6 Kg7 {-3.16/10 6}
+39. Qxb5 Bxf2 {-2.86/10 13} 40. Qc4 e3 {-3.05/10 7} 41. Nd4 Rd1 {-3.26/9 5}
+42. Ne2 Kg8 {-3.57/10 5} 43. b5 Rb1 {-4.78/11 12} 44. Qd3 Rb2 {-3.29/10 5}
+45. Nf4 Rb4 {-2.84/9 2.8} 46. Qe2 Rxf4 {-0.31/11 5} 47. g3 Rb4
+{+0.15/11 10} 48. Kg2 Rb1 {+0.17/10 5} 49. Qc4 Rg1+ {+0.07/10 5} 50. Kf3
+Rxg3+ {-0.25/11 13} 51. Ke2 Rg2 {+0.39/11 5} 52. b6 Bg1+ {+0.36/12 4} 53.
+Kf1 e2+ {+3.05/12 8} 54. Ke1 Bxb6 {+3.05/10 2.9} 55. Qc8+ Kg7 {+3.18/10 4}
+56. Qc3+ Kh6 {+5.15/12 12} 57. Qf3 Ba5+ {+325.11/13 10}
+{Tede resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Drooler"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1711"]
+[BlackElo "1990"]
+[TimeControl "120+6"]
+[Annotator "2... +0.18"]
+
+1. d4 Nf6 2. c3 e6 {+0.18/8 1.5} 3. Bg5 h6 {+0.45/8 12} 4. Bxf6 Qxf6
+{+0.23/8 11} 5. e4 Nc6 {+0.73/7 12} 6. Bd3 b6 {+0.24/8 14} 7. Ne2 Qg5
+{+0.54/7 1.9} 8. g3 Qh5 {+0.25/8 19} 9. O-O Qf3 {+0.25/8 8} 10. Qc2 Qg4
+{+0.20/7 2.5} 11. Nd2 g5 {+0.10/8 9} 12. f3 Qh3 {+0.10/8 16} 13. f4 a5
+{+0.21/7 4} 14. e5 a4 {+0.03/8 10} 15. Rf2 a3 {+0.06/8 8} 16. b4 Kd8
+{+0.09/7 4} 17. Raf1 Bb7 {+0.15/7 4} 18. Be4 Ba6 {+0.16/8 10} 19. Nb3 Bc4
+{+0.74/7 3} 20. fxg5 hxg5 {+0.50/8 7} 21. Rb1 Qh5 {+0.92/7 6} 22. Bf3 Qh7
+{+0.79/8 10} 23. Qxh7 Rxh7 {+0.63/9 12} 24. Re1 Ra4 {+1.06/8 6} 25. Nbc1
+Ke8 {+1.40/7 8} 26. Kg2 Rg7 {+1.43/8 16} 27. Be4 Be7 {+1.27/8 9} 28. Ref1
+Kf8 {+1.31/8 7} 29. g4 b5 {+1.30/8 10} 30. Re1 Ra6 {+1.33/8 9} 31. Ng3 Rg8
+{+1.18/7 2.4} 32. Nh5 d6 {+1.03/7 6} 33. exd6 cxd6 {+0.78/8 17} 34. Re3 Rh8
+{+0.91/8 6} 35. Ref3 f5 {+1.42/8 10} 36. Bxc6 Rxc6 {+1.85/10 5} 37. Rh3 Kg8
+{+1.82/10 5} 38. gxf5 g4 {+2.04/10 7} 39. Rg3 Rxh5 {+2.34/10 7} 40. Rxg4+
+Rg5 {+3.16/11 7} 41. h3 Rxg4+ {+3.92/11 7} 42. hxg4 Bd5+ {+4.00/10 6} 43.
+Kg3 Rxc3+ {+6.69/10 7}
+{Drooler resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "beachsprout"]
+[Result "0-1"]
+[WhiteElo "1995"]
+[BlackElo "2020"]
+[TimeControl "120+6"]
+[Annotator "7. +0.14"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 d5 4. Bf4 Bg7 5. e3 O-O 6. Rc1 c6 7. Bd3
+{+0.14/8 19} Be6 8. c5 {+0.30/8 11} Bf5 9. Nf3 {+0.65/8 16} Bxd3 10. Qxd3
+{+0.73/8 13} Nbd7 11. b4 {+0.85/6 9} a6 12. h3 {+1.08/7 9} Re8 13. O-O
+{+1.15/7 4} Nh5 14. Bg5 {+0.89/8 13} h6 15. g4 {+1.03/8 17} Nhf6 16. Bf4
+{+1.13/8 8} e6 17. Bd6 {+1.23/7 6} Bf8 18. Be5 {+1.12/7 13} Nxe5 19. Nxe5
+{+0.71/8 14} Nd7 20. Nxd7 {+0.65/8 23} Qxd7 21. a4 {+0.58/7 2.9} e5 22.
+dxe5 {+0.64/8 4} Rxe5 23. f4 {+0.70/7 11} Ree8 24. a5 {+0.54/8 9} Bg7 25.
+f5 {+0.44/9 12} Kh7 26. f6 {+1.13/8 5} Bf8 27. Rf4 {+1.08/8 9} Re6 28. Qd4
+{+1.15/7 2.5} Rae8 29. Re1 {+1.06/8 5} Qc7 30. Kg2 {+1.05/8 17} Qe5 31.
+Qxe5 {+0.34/9 4} Rxe5 32. Kf2 {-0.07/9 11} h5 33. gxh5 {-0.30/10 11} Rxh5
+34. Rf3 {-0.17/9 7} Rh4 35. Na2 {-0.15/8 1.6} Bh6 36. Rg1 {-0.99/9 12} Re6
+37. Rg4 {-0.92/10 6} Rxg4 38. hxg4 {-1.50/12 10} Bg5 39. Rh3+ {-1.54/11 5}
+Kg8 40. Rf3 {-2.03/11 9} Rxf6 41. Rxf6 {-1.14/13 3} Bxf6 42. Nc1
+{-1.22/13 11} Kf8 43. Nd3 {-1.20/12 9} Ke7 44. Kf3 {-1.15/11 9} Bc3 45. Kg3
+{-1.17/9 0.9} Ke6 46. Kf3 {-1.20/11 2.9} f6 47. Nf4+ {-1.19/12 3} Kf7 48.
+Nd3 {-1.21/12 11} g5 49. Ke2 {-1.46/13 11} Ke6 50. Kd1 {-1.44/12 2.5} f5
+51. Kc2 {-1.44/13 7} Bf6 52. Nf2 {-1.27/11 2.2} fxg4 53. Nxg4
+{-1.51/13 2.9} Kf5 54. Nxf6 {-1.91/15 11} Kxf6 55. Kd3 {-4.22/18 7} Ke5 56.
+Kd2 {-9.28/21 12} Ke4 57. Ke2 {-9.34/21 7} g4 58. Kf2 {-9.54/20 8} g3+ 59.
+Ke2 {-2.81/14 0.8} g2 60. Kf2 {-10.44/20 9} g1=Q+ 61. Kxg1 {-11.26/20 7}
+Kxe3 62. Kg2 {-11.59/20 11} Kd2 63. Kf3 {-9.71/18 2.7} Kc3 64. Kf4
+{-10.27/17 5} Kxb4 65. Ke5 {-11.51/19 8} Kxc5 66. Kf5 {-11.91/19 9} d4 67.
+Ke4 {-12.97/18 4} Kc4 68. Ke5 {-12.97/16 5} d3 69. Kd6 {-12.97/14 3} d2 70.
+Ke5 {-12.97/12 5} d1=Q 71. Ke6 {-19.86/12 9} Qd5+ 72. Ke7 {-325.11/12 7}
+Kc5 73. Kf6 {-325.11/12 3} Kd6 74. Kg6 {-325.11/12 6} Qf3 75. Kg5
+{-325.11/12 5} Ke6 76. Kg6 {-325.11/12 7} Qg4+ 77. Kh6 {-325.11/12 6} Kf7
+78. Kh7 {-325.11/14 9} Qh3#
+{Pigeon checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "CaptEvans"]
+[Result "1/2-1/2"]
+[WhiteElo "1980"]
+[BlackElo "1549"]
+[TimeControl "120+6"]
+[Annotator "2. -0.12"]
+
+1. c4 d6 2. Nf3 {-0.12/8 1.7} c6 3. Nc3 {+0.25/8 8} f6 4. d4 {+0.59/8 14}
+g6 5. d5 {+0.75/8 27} Nh6 6. h3 {+0.70/8 17} e5 7. e4 {+1.19/7 6} c5 8. Bd3
+{+1.34/8 14} Nf7 9. O-O {+1.46/7 10} Bg7 10. Be3 {+1.29/8 17} a6 11. a3
+{+1.40/7 9} O-O 12. Qb1 {+1.32/7 15} Nd7 13. Qc1 {+1.14/8 12} Nb6 14. b4
+{+1.22/7 2.6} Nd7 15. Rd1 {+1.38/7 7} b6 16. b5 {+1.45/8 12} a5 17. Qd2
+{+1.52/7 14} Nb8 18. g4 {+1.43/6 1.3} Ra7 19. Kh1 {+1.51/7 11} Re8 20. Rg1
+{+1.52/7 7} Nd7 21. h4 {+1.64/6 6} Nf8 22. h5 {+1.77/7 10} g5 23. Rg2
+{+1.70/6 6} h6 24. Qc2 {+1.85/7 10} Bd7 25. Na4 {+1.82/7 13} Rb7 26. Nc3
+{+1.78/7 1.8} Qc8 27. Rag1 {+1.72/8 10} Nh7 28. Nd1 {+1.87/7 2.9} Nf8 29.
+Bd2 {+2.06/7 2.0} Qc7 30. Ne3 {+2.20/7 1.9} Ra8 31. a4 {+2.27/8 11} Qc8 32.
+Bc3 {+2.36/7 3} Nh7 33. Nf5 {+2.42/7 5} Bxf5 34. exf5 {+2.49/8 6} Nf8 35.
+Nd2 {+2.50/8 11} Re7 36. Ne4 {+2.50/8 6} Nd7 37. Rc1 {+2.55/8 9} Qc7 38.
+Kg1 {+2.55/8 9} Ree8 39. Qe2 {+2.59/7 8} Kf8 40. Qe3 {+2.50/7 2.2} Ke7 41.
+Rb1 {+2.48/7 4} Kd8 42. Rc1 {+2.46/8 10} Kc8 43. Rb1 {+2.49/8 7} Kb7 44.
+Rb2 {+2.56/7 2.1} Nf8 45. Rb1 {+2.58/7 8} Qe7 46. Rb2 {+2.58/7 2.0} Nd7 47.
+Rb1 {+2.53/7 7} Nf8 48. Rb2 {+2.58/7 6} Nd7 49. Rb1 {+2.53/7 7} Nf8
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "pilot"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1118"]
+[BlackElo "1966"]
+[TimeControl "120+6"]
+[Annotator "3... -0.03"]
+
+1. e4 e5 2. Nf3 Nc6 3. d3 Nf6 {-0.03/8 5} 4. Be2 d5 5. Nbd2 Be7
+{+0.44/7 20} 6. O-O O-O {+0.19/8 6} 7. c3 a6 {+0.27/8 12} 8. a3 Bg4
+{+0.51/7 10} 9. b4 b5 {+0.32/8 20} 10. h3 dxe4 {+0.25/8 18} 11. Nxe4 Bf5
+{+0.10/8 5} 12. Nh4 Bxe4 {+1.18/9 5} 13. dxe4 Qxd1 {+1.13/8 6} 14. Rxd1
+Nxe4 {+1.07/8 7} 15. Nf5 Nxc3 {+1.78/9 5} 16. Rd7 Nxe2+ {+2.52/9 16} 17.
+Kf1 Bxb4 {+2.19/10 12} 18. Kxe2 Ba5 {+2.47/9 8} 19. Bd2 Rfd8 {+3.18/9 4}
+20. Rxd8+ Rxd8 {+3.37/9 1.9} 21. Rd1 Bxd2 {+3.44/11 18} 22. Rxd2 Nd4+
+{+3.27/10 2.6} 23. Nxd4 exd4 {+3.32/12 14} 24. Kd3 c5 {+3.40/11 6} 25. Ke4
+f5+ {+3.34/10 4} 26. Kxf5 c4 {+6.47/11 5} 27. Ke4 c3 {+6.38/12 9} 28. Rc2
+d3 {+10.52/12 6} 29. Rc1 d2 {+11.55/11 12}
+{pilot resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Tede"]
+[Result "1-0"]
+[WhiteElo "1966"]
+[BlackElo "1316"]
+[TimeControl "120+6"]
+[Annotator "5. +0.22"]
+
+1. e4 d5 2. exd5 Nf6 3. d4 Nxd5 4. c4 Nf6 5. Nc3 {+0.22/8 9} Nc6 6. Nf3
+{+0.45/8 17} Bg4 7. d5 {+0.78/9 23} Ne5 8. Bf4 {+0.82/9 20} Nxf3+ 9. gxf3
+{+1.07/9 8} Bd7 10. Be5 {+0.89/8 18} e6 11. Qd4 {+0.86/8 12} Be7 12. Qf4
+{+1.11/7 5} c6 13. d6 {+1.44/8 11} Nh5 14. dxe7 {+3.31/9 8} Nxf4 15.
+exd8=Q+ {+5.55/9 15} Rxd8 16. Bxf4 {+5.64/9 4}
+{Tede resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Tede"]
+[Black "Pigeon"]
+[Result "1-0"]
+[WhiteElo "1315"]
+[BlackElo "1967"]
+[TimeControl "120+6"]
+[Annotator "5... -0.54"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. O-O Nxe4 5. Re1 f5 {-0.54/7 5} 6. d3 Nf6
+{-0.61/9 22} 7. Nxe5 Be7 {-0.56/9 15} 8. Nc3 Nxe5 {-0.03/9 10} 9. Rxe5 c6
+{+0.29/9 15} 10. Bc4 d5 {+0.56/8 7} 11. Bb3 d4 {+0.45/8 21} 12. Ne2 Ng4
+{+0.85/8 15} 13. Rxe7+ Qxe7 {+0.13/9 3} 14. Nxd4 Nxh2 {+0.37/8 13} 15. Bf4
+Ng4 {+0.19/9 14} 16. Qd2 Qc5 {+0.24/9 9} 17. Re1+ Kd8 {-0.21/9 9} 18. Ne6+
+Bxe6 {+0.05/9 5} 19. Bxe6 g6 {+0.19/8 12} 20. d4 Qb5 {-0.27/8 5} 21. c4 Qa4
+{-1.62/9 13} 22. b3 Qa3 {-1.00/8 11} 23. f3 Nf6 {-0.08/8 3} 24. Bg5 Rf8
+{-2.10/9 10} 25. d5 Qc5+ {-0.59/8 10} 26. Kh1 Rb8 {-1.78/7 2.3} 27. dxc6+
+Kc7 {-7.02/9 12} 28. Bf4+ Kb6 {-7.02/8 4} 29. c7 Rbe8 {-8.03/8 11} 30. c8=Q
+Rxc8 {-8.01/9 7} 31. Be3 Ne4 {-9.61/8 3} 32. Bxc5+ Nxc5 {-8.50/9 8} 33.
+Qd6+ Ka5 {-9.24/9 5} 34. a3 Rfd8 {-7.67/10 4} 35. Qe7 Re8 {-7.21/10 2.8}
+36. Bxc8 Rxe7 {-6.48/12 8} 37. Rxe7 Nxb3 {-6.92/11 4} 38. Rxb7 Nd4
+{-7.02/10 6} 39. Rxa7+ Kb6 {-7.23/12 11} 40. Rxh7 Kc5 {-7.23/11 8} 41. Rd7
+Kxc4 {-7.09/11 3} 42. Rxd4+ Kxd4 {-5.25/15 10} 43. Kh2 Kc5 {-5.23/13 5} 44.
+Kg3 Kc4 {-5.37/13 8} 45. Kf4 Kb3 {-5.63/14 15} 46. Bxf5 Kxa3 {-6.33/13 1.1}
+47. Bxg6 Kb4 {-13.74/15 14} 48. Be4 Kc5 {-13.76/15 8} 49. g4 Kd6
+{-13.84/15 3} 50. Kf5 Ke7 {-13.97/15 6} 51. Kg6 Ke6 {-13.97/16 9} 52. g5
+Ke5 {-13.97/15 5} 53. Kg7 Ke6 {-14.01/15 6} 54. g6 Ke5 {-14.24/14 7} 55.
+Kf7 Kd6 {-14.25/13 7} 56. g7 Ke5 {-14.24/10 0.6} 57. g8=Q Kd4 {-14.25/8 5}
+58. Qg5 Kc3 {-325.11/10 8} 59. Qd5 Kb4 {-325.11/10 4} 60. Qc6 Kb3
+{-325.11/10 6} 61. Qc5 Kb2 {-325.11/10 6} 62. Qc4 Ka3 {-325.11/11 12} 63.
+Qb5 Ka2 {-325.11/10 1.5} 64. Ke6 Ka3 {-325.11/10 5} 65. Kd5 Ka2
+{-325.11/12 13} 66. Kc4 Ka3 {-325.11/12 7} 67. Qb3#
+{Pigeon checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "catshow"]
+[Result "1-0"]
+[WhiteElo "1936"]
+[BlackElo "1736"]
+[TimeControl "120+6"]
+[Annotator "3. +0.19"]
+
+1. d4 d6 2. c4 e6 3. Nc3 {+0.19/8 2.8} Nf6 4. b4 {+0.52/7 18} Be7 5. Qa4+
+{+75.68/5 7} c6 6. Nf3 {+0.35/8 21} O-O 7. Bf4 {+0.43/8 15} Bd7 8. c5
+{+0.45/8 17} b5 9. Qb3 {+0.65/8 10} d5 10. Qb1 {+0.84/6 0.9} a5 11. Ne5
+{+0.54/8 15} Na6 12. a3 {+0.82/8 12} axb4 13. axb4 {+0.88/8 9} Nh5 14. Be3
+{+1.11/6 1.6} Nc7 15. Rxa8 {+1.77/8 7} Nxa8 16. g4 {+1.65/8 8} Nf6 17. g5
+{+1.62/8 14} Ne8 18. h4 {+1.57/8 6} f6 19. Nxd7 {+1.67/9 9} Qxd7 20. Rg1
+{+1.60/7 2.9} f5 21. Qc1 {+1.52/8 10} Nec7 22. Bf4 {+1.56/8 4} Na6 23. Qb2
+{+1.59/8 12} Bd8 24. Bd6 {+1.67/8 4} Be7 25. Be5 {+1.72/8 8} Bd8 26. Qa3
+{+1.67/8 11} Qb7 27. Bd6 {+1.66/8 3} Re8 28. h5 {+1.40/8 6} Bc7 29. Bxc7
+{+1.24/9 13} N8xc7 30. Qb2 {+1.14/8 6} Ra8 31. e3 {+1.18/8 6} Nb8 32. Bd3
+{+1.17/7 4} Qa7 33. Kd2 {+1.07/8 3} Qa3 34. Kc2 {+1.34/9 7} Qxb2+ 35. Kxb2
+{+1.25/9 9} Nd7 36. f4 {+1.23/7 8} Na6 37. Ra1 {+1.38/9 8} Nc7 38. Rxa8+
+{+1.37/9 13} Nxa8 39. Be2 {+1.12/10 4} Kf8 40. Nd1 {+1.12/10 6} Ke7 41. Nf2
+{+1.37/11 10} Nc7 42. Nd3 {+1.26/10 4} Na6 43. Bf3 {+1.38/10 7} Ndb8 44.
+Kb3 {+1.35/10 6} Nd7 45. Kc3 {+1.38/10 7} Kf7 46. Kb3 {+1.35/10 7} Ke7 47.
+Kc3 {+1.38/10 8} Nc7 48. Kc2 {+1.34/10 8} Ne8 49. Ne5 {+1.38/11 11} Nxe5
+50. fxe5 {+1.25/14 5} Nc7 51. Kc3 {+1.20/13 6} Na6 52. Kb3 {+1.21/14 10}
+Kd7 53. Kc3 {+1.20/13 5} Kc7 54. h6 {+1.32/13 6} gxh6 55. gxh6 {+1.22/15 4}
+Nb8 56. Bh5 {+1.36/14 4} Nd7 57. Bf7 {+1.35/14 9} Nf8 58. Be8 {+1.41/15 9}
+Nd7 59. Bf7 {+1.41/17 8} Kd8 60. Bxe6 {+3.81/14 4} Ke7 61. Bxf5
+{+3.81/14 5} Nf8 62. Bc2 {+3.99/13 5} Kf7 63. e4 {+4.61/14 7} Ne6 64. exd5
+{+5.50/14 3} cxd5 65. Bxh7 {+6.11/14 11} Kf8 66. Bf5 {+6.43/12 2.9} Ng5 67.
+c6 {+13.89/13 6}
+{catshow resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1693"]
+[BlackElo "1944"]
+[TimeControl "120+6"]
+[Annotator "4... -0.11"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 f5 4. Nc3 fxe4 {-0.11/9 20} 5. Nxe4 d5
+{-0.21/8 10} 6. Nxe5 dxe4 {-1.36/9 11} 7. Nxc6 Qg5 {-1.04/9 17} 8. Qe2 Nf6
+{-1.11/9 21} 9. Nxa7+ Kd8 {-0.97/9 5} 10. Nxc8 Qxg2 {-1.19/8 5} 11. Rf1
+Qxh2 {-0.82/8 6} 12. Nb6 cxb6 {-0.09/8 5} 13. d3 Qe5 {-0.15/8 12} 14. f4
+Qxb5 {+3.16/9 6}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "as"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1658"]
+[BlackElo "1950"]
+[TimeControl "120+6"]
+[Annotator "4... -0.04"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Qe7 4. O-O Nf6 {-0.04/9 15} 5. Nc3 Nd4
+{+0.16/7 8} 6. Nxd4 exd4 {-0.01/10 21} 7. e5 dxc3 {-0.22/9 6} 8. exf6 Qxf6
+{-0.22/9 17} 9. Re1+ Be7 {-0.49/9 4} 10. dxc3 O-O {-0.62/8 15} 11. Qe2 Bc5
+{-0.61/8 6} 12. Bd3 d6 {-0.11/9 11} 13. Qh5 Qxf2+ {+325.11/11 8}
+{as resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "as"]
+[Result "1-0"]
+[WhiteElo "1955"]
+[BlackElo "1653"]
+[TimeControl "120+6"]
+[Annotator "5. +0.41"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bd3 c5 5. e5 {+0.41/7 7} cxd4 6. Bb5+
+{+0.20/9 14} Nfd7 7. Qxd4 {+0.07/9 23} a6 8. Qa4 {+0.06/8 11} Qc7 9. Nf3
+{+0.22/8 8} Nc6 10. Bxc6 {+0.24/8 13} Qxc6 11. Qxc6 {+0.35/9 15} bxc6 12.
+O-O {+0.28/9 21} Be7 13. a4 {+0.15/8 8} a5 14. Re1 {+0.12/9 14} Ba6 15. Nd4
+{+0.01/8 5} Rc8 16. Bf4 {+0.10/7 8} Bb4 17. Red1 {-0.09/7 12} Bxc3 18. bxc3
+{+0.53/9 10} O-O 19. Nb3 {+0.71/8 8} Ra8 20. Rdb1 {+0.48/9 10} Rfb8 21.
+Nxa5 {+1.22/9 4} Rxb1+ 22. Rxb1 {+1.11/10 16} h6 23. Nxc6 {+2.07/9 4} Nc5
+24. a5 {+2.01/9 3} Ne4 25. Rb3 {+2.08/9 9} Rc8
+{as resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Tede"]
+[Result "1-0"]
+[WhiteElo "1960"]
+[BlackElo "1346"]
+[TimeControl "120+6"]
+[Annotator "5. +0.59"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 Nxd4 5. Qxd4 {+0.59/9 20} e6 6. Nc3
+{+0.35/8 8} a6 7. Bd3 {+0.40/8 11} Be7 8. Qxg7 {+0.94/8 20} Bf6 9. Qg3
+{+1.31/9 13} Bxc3+ 10. bxc3 {+2.10/9 18} Qf6 11. e5 {+5.69/9 7} Qe7 12. Qg7
+{+7.17/8 6} Qf8 13. Qxh8 {+7.68/9 17}
+{Tede forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "JollyJake"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1504"]
+[BlackElo "1961"]
+[TimeControl "120+6"]
+[Annotator "5... -0.71"]
+
+1. f4 e5 2. fxe5 d6 3. exd6 Bxd6 4. Nf3 Nh6 5. e4 Ng4 {-0.71/8 6} 6. g3 Nc6
+{-0.48/8 18} 7. c3 Nxh2 {-0.11/8 14} 8. Rxh2 Bxg3+ {-0.06/8 10} 9. Rf2 g5
+{+0.16/8 14} 10. d4 g4 {+0.59/8 3} 11. Ng5 Qf6 {+1.67/8 8} 12. Qe2 h6
+{+1.52/8 4} 13. e5 Bxf2+ {+2.18/10 18} 14. Qxf2 Qxf2+ {+1.93/10 14} 15.
+Kxf2 hxg5 {+2.01/9 4} 16. Bxg5 Rg8 {+1.71/9 16}
+{JollyJake forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "seventoz"]
+[Result "1-0"]
+[WhiteElo "1963"]
+[BlackElo "1979"]
+[TimeControl "120+6"]
+[Annotator "3. +0.47"]
+
+1. e4 d6 2. d4 Nd7 3. Nc3 {+0.47/8 3} Ngf6 4. Nf3 {+0.67/7 24} e5 5. Be2
+{+0.57/7 4} h6 6. O-O {+0.54/7 15} c6 7. Be3 {+0.56/7 17} Be7 8. h3
+{+0.67/7 15} Qc7 9. a3 {+0.59/7 14} O-O 10. Qd2 {+0.60/7 13} Kh7 11. b4
+{+0.76/8 20} Re8 12. Qd3 {+0.96/7 5} Bf8 13. b5 {+0.85/7 8} Kg8 14. bxc6
+{+0.64/8 10} bxc6 15. Rfb1 {+0.58/7 5} a5 16. d5 {+0.65/7 4} Ba6 17. Qd2
+{+0.78/8 10} cxd5 18. Nxd5 {+0.42/8 9} Nxd5 19. exd5 {+0.37/8 7} Nf6 20.
+Bxa6 {+0.50/8 6} Rxa6 21. Qe2 {+0.52/7 6} Rea8 22. c4 {+0.55/8 8} Ne4 23.
+Qc2 {+0.92/7 2.4} Nc5 24. Bxc5 {+0.93/8 7} Qxc5 25. Rb5 {+0.87/8 9} Qc7 26.
+Rab1 {+0.83/8 10} Rc8 27. c5 {+0.94/8 9} dxc5 28. Rb7 {+0.88/8 8} Qd6 29.
+Qf5 {+0.99/8 6} f6 30. Qxc8 {+5.51/8 5}
+{seventoz resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "turibio"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1259"]
+[BlackElo "1980"]
+[TimeControl "120+6"]
+[Annotator "6... -0.11"]
+
+1. c4 c5 2. Nc3 Nf6 3. g3 d5 4. cxd5 Nxd5 5. Bg2 Nc7 6. e4 Nc6 {-0.11/8 5}
+7. d3 Ne5 {+0.05/8 10} 8. Ke2 Ne6 {+0.28/8 6} 9. Be3 Nd4+ {+0.42/8 17} 10.
+Bxd4 cxd4 {+0.92/9 17} 11. Nd5 e6 {+0.74/8 3} 12. Nf4 g5 {+0.58/8 14} 13.
+Nfh3 g4 {+1.07/8 13} 14. Nf4 Qb6 {+1.04/8 16} 15. Qd2 Bd7 {+1.29/8 9} 16.
+h3 Bb4 {+1.01/8 6} 17. Qd1 Bd6 {+0.91/8 13} 18. hxg4 Qxb2+ {+2.08/8 11} 19.
+Kf1 Nxg4 {+2.08/6 1.1} 20. Ngh3 Rc8 {+2.19/8 14} 21. Bf3 Ne5 {+2.32/7 2.8}
+22. Kg2 b6 {+2.46/7 17} 23. Qb3 Rc2 {+2.33/8 6} 24. Qxb2 Rxb2 {+2.52/8 4}
+25. Rhb1 Rxb1 {+3.56/9 5} 26. Rxb1 Nxf3 {+3.42/9 12} 27. Kxf3 e5
+{+3.06/9 12} 28. Rc1 h5 {+3.73/9 5} 29. Nd5 Bxh3 {+4.32/10 7}
+{turibio forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "turibio"]
+[Result "1-0"]
+[WhiteElo "1980"]
+[BlackElo "1259"]
+[TimeControl "120+6"]
+[Annotator "8. +0.90"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Qc7 6. Be3 a6 7. Be2 Bb4
+8. Nxc6 {+0.90/9 8} bxc6 9. Qd4 {+0.82/9 31} Bxc3+ 10. Qxc3 {+0.76/8 4} e5
+11. O-O-O {+0.87/8 21} Nf6 12. f3 {+0.94/8 21} O-O 13. Bc5 {+1.92/8 11} Re8
+14. Bc4 {+1.95/7 16} a5 15. Bd6 {+1.93/8 12} Qb7 16. g4 {+2.55/8 12} h6 17.
+h4 {+2.55/8 13} Re6 18. Bxe6 {+3.91/8 3} dxe6 19. Bxe5 {+4.16/8 15} Ne8 20.
+g5 {+4.11/8 9} hxg5 21. hxg5 {+4.42/8 9} a4 22. Rd8 {+7.43/8 5} Bd7 23.
+Bxg7 {+325.11/9 5} Rxd8 24. Rh8# {+325.11/10 4}
+{turibio checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "turibio"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1259"]
+[BlackElo "1980"]
+[TimeControl "120+6"]
+[Annotator "3... -0.05"]
+
+1. c4 Nf6 2. Nc3 d5 3. d4 dxc4 {-0.05/8 2.8} 4. e4 c5 {+0.11/7 4} 5. d5 b5
+6. a3 Nbd7 {+0.88/8 6} 7. f3 Qb6 {+1.13/8 8} 8. Be3 Ne5 {+1.11/7 8} 9. h4
+b4 {+1.30/7 5} 10. axb4 Qxb4 {+1.08/8 19} 11. Qa4+ Bd7 {+1.25/8 5} 12. Qxb4
+cxb4 {+0.60/9 23} 13. Na4 Bxa4 {+0.60/9 8} 14. Rxa4 e6 {+0.49/9 13} 15.
+dxe6 fxe6 {+0.52/9 4} 16. Rxa7 Rxa7 {+0.92/10 7} 17. Bxa7 b3 {+0.86/10 17}
+18. f4 Bb4+ {+0.91/10 5} 19. Kd1 Nc6 {+0.87/10 15} 20. Bxc4 Nxa7
+{+1.57/9 13} 21. Bxe6 Nxe4 {+2.44/9 2.6} 22. Kc1 Bd2+ {+2.86/10 8} 23. Kb1
+Nf2 {+2.93/9 6} 24. Nf3 Nxh1 {+3.31/10 7} 25. Nxd2 Rf8 {+3.99/12 17} 26. f5
+Ng3 {+4.15/11 7} 27. Nxb3 Nxf5 {+4.32/11 9} 28. g4 Nxh4 {+4.58/10 3} 29.
+Nd4 Ke7 {+5.44/10 9} 30. Bb3 Rf4 {+5.65/10 8} 31. Nf5+ Nxf5 {+6.20/11 4}
+32. gxf5 h5 {+6.21/10 10} 33. Bc2 h4 {+7.77/10 6}
+{turibio resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "turibio"]
+[Result "1-0"]
+[WhiteElo "1980"]
+[BlackElo "1259"]
+[TimeControl "120+6"]
+[Annotator "8. +0.90"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Qc7 6. Be3 a6 7. Be2 Bb4
+8. Nxc6 {+0.90/9 8} bxc6 9. Qd4 {+0.82/9 31} c5 10. Qxg7 {+5.26/10 16}
+Bxc3+ 11. bxc3 {+5.70/9 20}
+{turibio resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "turibio"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1259"]
+[BlackElo "1980"]
+[TimeControl "120+6"]
+[Annotator "5... +0.21"]
+
+1. c4 e5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7 5. e4 Nf6 {+0.21/7 20} 6. Nge2 O-O
+{+0.09/8 7} 7. O-O Nd4 {+0.08/8 17} 8. Nxd4 exd4 {+0.28/9 9} 9. Nd5 c6
+{+0.33/9 14} 10. Nxf6+ Qxf6 {+0.26/9 9} 11. d3 Qe7 {+0.07/8 15} 12. a3 d6
+{+0.13/8 6} 13. b4 Be6 {+0.17/8 14} 14. f4 Qd7 {+0.18/8 4} 15. Qf3 Bg4
+{+0.23/8 4} 16. Qf2 Rae8 {+0.30/7 9} 17. h3 Bxh3 {+0.96/9 14} 18. Bxh3 Qxh3
+{+1.31/9 11} 19. Qg2 Qxg2+ {+1.39/10 17} 20. Kxg2 f5 {+1.34/10 12} 21. Re1
+fxe4 {+2.05/9 12} 22. Rxe4 d5 {+1.68/9 2.2} 23. Rxe8 Rxe8 {+1.39/12 4} 24.
+Kf2 dxc4 {+2.48/11 14} 25. dxc4 d3 {+2.45/10 5} 26. Ra2 Re4 {+2.49/10 9}
+27. c5 Rc4 {+2.47/10 7} 28. Be3 Rc2+ {+2.34/10 8} 29. Rxc2 dxc2
+{+1.20/11 4} 30. Bc1 Bd4+ {+1.34/11 7} 31. Ke2 h5 {+1.41/11 8} 32. Kd3 Bf2
+{+1.93/14 15} 33. Kxc2 Bxg3 {+1.93/12 4} 34. Kd3 h4 {+1.94/14 14} 35. Ke3
+h3 {+2.00/13 5} 36. Kf3 h2 {+2.28/13 8} 37. Kg2 a6 {+2.23/11 2.6} 38. Be3
+Kf7 {+2.36/13 6} 39. Kh1 Ke6 {+3.01/14 7} 40. Bc1 Kd5 {+3.05/13 3} 41. Kg2
+Kc4 {+3.24/12 5} 42. Be3 Kb3 {+3.42/13 5} 43. Bc1 Kc2 {+3.19/12 3} 44. Be3
+Kb2 {+4.31/13 9} 45. a4 Kc3 {+4.29/12 4} 46. b5 axb5 {+5.57/14 11} 47. axb5
+cxb5 {+5.99/14 8} 48. c6 bxc6 {+7.64/14 5} 49. Bc5 b4 {+7.64/13 7}
+{turibio resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "ChessHouston"]
+[Result "1-0"]
+[WhiteElo "1980"]
+[BlackElo "1832"]
+[TimeControl "120+6"]
+[Annotator "6. +0.46"]
+
+1. e4 d6 2. d4 Nf6 3. Nc3 g6 4. Be2 Bg7 5. h4 h5 6. Nf3 {+0.46/7 5} Nc6 7.
+d5 {+0.56/8 19} Nb8 8. Bg5 {+0.80/7 9} Nbd7 9. Qd4 {+0.61/8 25} c5 10. Qa4
+{+0.64/8 8} O-O 11. O-O {+0.75/7 9} a6 12. b4 {+0.62/6 10} Ng4 13. Qa3
+{+0.52/7 4} b5 14. Rab1 {+0.31/7 9} c4 15. Nxb5 {+1.19/8 13} axb5 16. Qxa8
+{+2.65/9 15} Nb6 17. Qa5 {+2.72/8 12} Bd7 18. Nd2 {+2.37/7 6} f6 19. Bxg4
+{+2.28/8 6} hxg4 20. Be3 {+2.06/9 16} Na4 21. Qxd8 {+1.86/9 15} Rxd8 22.
+Bd4 {+1.89/9 10} Bh6 23. f4 {+1.94/8 2.1} f5 24. Rbe1 {+2.18/9 10} Kf7 25.
+exf5 {+2.16/9 8} gxf5 26. Re3 {+2.20/9 10} Re8 27. Nb1 {+2.10/9 7} Ra8 28.
+h5 {+2.25/8 3} Ra6 29. Rfe1 {+3.78/9 5} Bf8 30. h6 {+4.67/9 11} Nb6 31. h7
+{+8.06/9 11}
+{ChessHouston resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Laz86"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1400"]
+[BlackElo "1990"]
+[TimeControl "120+6"]
+[Annotator "2... +0.03"]
+
+1. e3 e5 2. c3 Nf6 {+0.03/8 4} 3. Nh3 d5 {+0.28/8 7} 4. d4 e4 {+0.37/8 3}
+5. f3 Nc6 {+0.26/6 23} 6. fxe4 Nxe4 {+0.68/8 5} 7. Bb5 Qh4+ {+3.73/10 14}
+8. g3 Qxh3 {+4.00/9 9} 9. Bxc6+ bxc6 {+4.51/10 11} 10. Nd2 Nxg3 {+5.18/8 3}
+11. Rf1 Nxf1 {+7.08/9 10}
+{Laz86 resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Laz86"]
+[Result "1-0"]
+[WhiteElo "1990"]
+[BlackElo "1459"]
+[TimeControl "120+6"]
+[Annotator "4. +0.64"]
+
+1. e4 e6 2. d4 d5 3. e5 Nc6 4. Nf3 {+0.64/7 20} Nh6 5. Nc3 {+0.71/7 17} Nf5
+6. a3 {+0.42/8 10} g5 7. Bxg5 {+1.35/8 6} f6 8. Bxf6 {+5.59/8 3} Be7
+{Laz86 resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1667"]
+[BlackElo "1990"]
+[TimeControl "120+6"]
+[Annotator "6... -0.32"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. O-O Nxe4 5. d4 Be7 6. dxe5 d5
+{-0.32/9 19} 7. exd6 Qxd6 {-0.17/8 20} 8. Be3 Bf5 {+0.17/7 2.0} 9. Nbd2 O-O
+{+0.24/7 14} 10. c3 a6 {+0.24/8 26} 11. Ba4 Nxd2 {+0.46/8 11} 12. Nxd2 Bd3
+{+0.58/7 4} 13. Re1 Rad8 {+0.44/7 11} 14. Bb3 Bf6 {+0.44/7 11} 15. Nc4 Qd5
+{+0.45/8 14} 16. Nb6 Qf5 {+0.98/8 9} 17. Na4 Be4 {+1.03/7 16} 18. Qe2 Bd3
+{+1.10/7 3} 19. Qf3 Qxf3 {+0.83/8 11} 20. gxf3 Ne5 {+0.64/8 11} 21. Kg2 b6
+{+0.67/8 11} 22. Rad1 Ng6 {+0.82/8 9} 23. c4 Nh4+ {+1.17/8 4} 24. Kg3 Nf5+
+{+1.12/8 9} 25. Kg2 Nh4+ {+1.17/8 7} 26. Kg3 Nf5+ {+1.12/8 9} 27. Kg2 Rfe8
+{+0.97/8 8} 28. Nc3 Nh4+ {+1.07/8 7} 29. Kg3 Nf5+ {+1.09/8 8} 30. Kg2 Nh4+
+{+1.07/8 8} 31. Kg3 Nf5+ {+1.09/8 6} 32. Kg2
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "checkmatiste"]
+[Result "1-0"]
+[WhiteElo "1978"]
+[BlackElo "1447"]
+[TimeControl "120+6"]
+[Annotator "6. +0.29"]
+
+1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nf6 5. Nc3 e6 6. c5 {+0.29/8 8} b6 7.
+Be3 {+0.38/8 16} Be7 8. Bb5+ {+0.44/8 22} Bd7 9. Qd3 {+0.27/8 15} O-O 10.
+Nf3 {+0.42/8 19} bxc5 11. dxc5 {+0.31/8 9} Bxb5 12. Qxb5 {+0.30/8 13} a6
+13. Qb7 {+0.84/8 15} Nbd7 14. c6 {+0.71/8 7} Rb8 15. Qxa6 {+1.01/8 5} Nc5
+16. Bxc5 {+0.67/8 9} Bxc5 17. Na4 {+0.62/8 14} Qd6 18. Nxc5 {+0.07/7 1.6}
+Qxc5 19. O-O {-0.09/9 16} Rb6 20. Rac1 {+0.26/9 5} Rxa6 21. Rxc5
+{+0.36/9 7} Rc8 22. Rfc1 {+0.55/9 13} Rxa2 23. Rb5 {+0.87/9 11} Ra6 24. c7
+{+1.03/8 3} Ne8 25. Rb8 {+1.29/8 7} Nd6 26. Nd4 {+1.26/8 5} Ra8 27. Nb5
+{+1.79/10 13} Nxb5 28. Rxa8 {+5.35/11 5} Nd6 29. Rxc8+ {+5.34/10 6} Nxc8
+30. Ra1 {+6.31/12 13} Nd6 31. Ra8+ {+325.11/12 6} Nc8 32. Rxc8#
+{+325.11/12 4}
+{checkmatiste checkmated} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Tibult"]
+[Result "1-0"]
+[WhiteElo "2166"]
+[BlackElo "983"]
+[TimeControl "60"]
+[Annotator "3. +0.90"]
+
+1. e4 e5 2. Nf3 Bc5 3. Nxe5 {+0.90/7 0.6} Bxf2+ 4. Kxf2 {+2.72/7 2.0} Nf6
+5. d3 {+2.87/7 1.4} O-O 6. Nc3 {+3.17/7 0.8} c6 7. Ke2 {+3.19/6 0.4} d6 8.
+Nf3 {+3.11/7 1.1} Qb6 9. a3 {+3.11/5 0.2} Ng4 10. d4 {+3.33/7 0.7}
+{Tibult forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "CaptEvans"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1588"]
+[BlackElo "1979"]
+[TimeControl "120+6"]
+[Annotator "6... +0.21"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 d6 5. c3 Bd7 6. Bc2 Nf6 {+0.21/8 7} 7.
+h3 Qe7 {+0.31/8 28} 8. O-O h6 {+0.31/8 13} 9. Re1 Be6 {+0.45/7 11} 10. d4
+exd4 {-0.24/8 18} 11. cxd4 Nb4 {-0.38/8 18} 12. Nc3 Nxc2 {-0.59/8 7} 13.
+Qxc2 O-O-O {-0.77/8 23} 14. Be3 g5 {-0.21/7 2.4} 15. b4 Rg8 {-0.04/8 13}
+16. b5 g4 {+0.18/8 4} 17. hxg4 Bxg4 {+0.09/8 9} 18. Kf1 Bxf3 {+0.03/8 3}
+19. gxf3 axb5 {-0.18/9 17} 20. Nxb5 c6 {-0.18/7 2.4} 21. d5 Kd7
+{-0.71/9 10} 22. dxc6+ bxc6 {-1.45/9 9} 23. Nd4 Rc8 {-1.24/8 6} 24. Reb1
+Qe5 {-1.05/8 6} 25. Rb7+ Ke8 {-1.10/8 6} 26. Rc1 Qh2 {-1.30/8 8} 27. Ke2
+Nd7 {-1.53/7 4} 28. Qb3 Rg2 {-1.79/7 2.8} 29. Nxc6 Qh3 {-2.46/7 8} 30. Nb8
+Rxc1 {-3.16/9 12} 31. Bxc1 Rg1 {-1.19/10 6} 32. Rxd7 Qf1+ {+3.08/10 4} 33.
+Ke3 Qxc1+ {+4.35/10 4} 34. Kd3 Rd1+ {+6.76/10 7} 35. Ke2 Qd2#
+{+325.11/11 10}
+{CaptEvans checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1982"]
+[BlackElo "1679"]
+[TimeControl "120+6"]
+[Annotator "5. +0.34"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 d6 5. Nc3 {+0.34/8 9} g6 6. Bb5
+{+0.45/8 14} Bd7 7. O-O {+0.40/8 19} Bg7 8. Be3 {+0.39/8 17} Nf6 9. f3
+{+0.47/7 26} O-O 10. Nxc6 {+0.25/8 12} bxc6 11. Bc4 {+0.39/7 3} a5 12. g4
+{+0.47/7 15} e5 13. Qxd6 {+1.55/8 21} Bxg4 14. Qxd8 {+3.19/8 6} Rfxd8 15.
+fxg4 {+3.61/8 8} Nxg4
+{vwq resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "AlexDC"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "2029"]
+[BlackElo "2166"]
+[TimeControl "60"]
+[Annotator "4... -0.66"]
+
+1. d4 d5 2. c4 e6 3. Nc3 c6 4. cxd5 cxd5 {-0.66/4 3} 5. Bf4 Bd6
+{-0.13/5 0.3} 6. Bxd6 Qxd6 {+0.07/7 2.2} 7. Nf3 Nc6 {-0.09/6 0.4} 8. e3 Nf6
+{-0.17/6 1.7} 9. Bb5 Bd7 {+0.02/7 2.1} 10. O-O Ne4 {-0.15/6 2.0} 11. Nxe4
+dxe4 {-0.11/8 1.0} 12. Nd2 f5 {-0.03/5 0.2} 13. Be2 O-O {+0.25/6 1.0} 14.
+f4 Rac8 {+0.47/7 2.4} 15. Rc1 Nxd4 {+0.63/7 1.3} 16. exd4 Qxd4+
+{+0.13/8 1.8} 17. Kh1 Rxc1 {-0.01/7 0.7} 18. Qxc1 Qa4 {-0.25/7 1.6} 19. a3
+Rc8 {-0.09/7 0.8} 20. Qd1 Qxd1 {-0.07/8 1.3} 21. Bxd1 a5 {-0.03/7 0.8} 22.
+Nb3 a4 {-0.19/8 1.0} 23. Nd4 Rc4 {-0.17/7 0.7} 24. Ne2 b5 {-0.34/8 0.7} 25.
+h3 h6 {-0.33/8 1.9} 26. Nc3 Rd4 {-0.30/8 0.8} 27. Be2 e3 {-0.65/8 2.0} 28.
+Nxb5 Rd2 {-0.61/9 0.8} 29. Nc3 Bc6 {-0.58/8 0.5} 30. Rd1 Rxb2 {-1.03/9 1.5}
+31. Bf3 Bxf3 {+0.19/9 0.5} 32. gxf3 Rf2 {+0.17/10 1.5} 33. Re1 Rxf3
+{+0.12/10 0.7} 34. Kg2 Rxf4 {-0.02/10 0.8} 35. Rxe3 Kf7 {+0.01/9 0.7} 36.
+Kg3 Rd4 {+0.34/9 0.9} 37. Ne2 Rd2 {+0.55/8 0.3} 38. Nf4 g5 {+1.26/10 1.3}
+39. Nxe6 Rd6 {+1.18/9 0.4} 40. Nxg5+ hxg5 {+1.39/10 0.5} 41. Rf3 Kf6
+{+1.49/8 0.1} 42. h4 Rb6 {+1.64/10 0.6} 43. hxg5+ Kxg5 {+1.85/10 0.4} 44.
+Rc3 Rb3 {+3.12/11 0.7} 45. Rxb3 axb3 {+10.85/14 0.4} 46. Kf3 b2
+{+10.84/12 1.3} 47. Ke2 b1=Q {+10.85/9 0.2} 48. Kd2 f4 {+17.37/9 0.4} 49.
+Ke2 Qc2+ {+325.11/9 0.4} 50. Kf1 f3 {+325.11/9 0.4} 51. Kg1 Qg2#
+{+325.11/9 0.6}
+{AlexDC checkmated} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "AlexDC"]
+[Result "1/2-1/2"]
+[WhiteElo "2176"]
+[BlackElo "2019"]
+[TimeControl "60"]
+[Annotator "5. +0.56"]
+
+1. e4 g6 2. d4 Bg7 3. Nc3 d6 4. f4 c6 5. Nf3 {+0.56/5 3} e6 6. Bd3
+{+0.73/6 2.0} f5 7. e5 {+1.11/7 1.2} d5 8. O-O {+1.14/6 0.6} h6 9. a3
+{+1.39/6 0.8} Ne7 10. Be3 {+1.46/7 2.2} O-O 11. b4 {+1.39/6 0.5} b6 12. a4
+{+1.53/6 1.3} a5 13. b5 {+1.41/7 1.8} Bd7 14. Ra3 {+1.67/7 1.0} cxb5 15.
+axb5 {+1.65/6 0.3} Qe8 16. Qe1 {+1.67/6 0.5} Bc8 17. h3 {+1.69/6 1.7} Nd7
+18. g4 {+1.65/6 1.1} Rf7 19. g5 {+1.82/6 0.8} h5 20. Qf2 {+1.78/6 1.1} Nb8
+21. Kh2 {+1.84/6 0.6} Ra7 22. Rfa1 {+1.84/6 1.7} Rc7 23. Kg3 {+1.84/6 1.0}
+Bb7 24. Qd2 {+1.74/6 1.7} Nc8 25. Ra4 {+1.70/6 1.3} Na7 26. Nh4
+{+1.65/6 1.4} Bc8 27. Nxg6 {+2.52/6 0.8} Rfd7 28. Nh4 {+2.55/6 0.6} Re7 29.
+Nf3 {+2.72/6 1.3} Bd7 30. Rb1 {+2.79/6 1.1} Kh7 31. Ra3 {+2.89/6 1.1} Qf8
+32. h4 {+2.95/5 1.5} Be8 33. Rba1 {+2.85/6 1.4} Nd7 34. Qe2 {+2.86/5 0.4}
+Qf7 35. Qf2 {+2.82/5 0.8} Nf8 36. Qe2 {+2.79/5 2.1} Ng6 37. Na4
+{+2.73/5 1.5} Rb7 38. Nc3 {+2.63/5 0.5} Rbc7 39. Na4 {+2.73/5 1.0} Rb7 40.
+Nc3 {+2.63/5 0.5} Rbc7
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "AlexDC"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "2026"]
+[BlackElo "2169"]
+[TimeControl "60"]
+[Annotator "5... +0.37"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 exd5 5. e3 c6 {+0.37/5 0.4} 6. Nf3 Ne4
+{-0.26/6 2.5} 7. Be2 Bb4 {+0.02/6 1.4} 8. Bd2 Bd6 {+0.09/6 1.4} 9. O-O Qe7
+{+0.19/6 0.7} 10. Rc1 O-O {+0.38/6 1.5} 11. a3 Bf5 {+0.48/6 1.1} 12. b4 a5
+{+0.97/6 0.7} 13. bxa5 Bxa3 {+0.91/6 0.4} 14. Ra1 Bb2 {+0.74/6 0.4} 15. Ra2
+Bxc3 {+3.44/7 0.9} 16. Qc2 Nxd2 {+4.01/6 0.4}
+{AlexDC resigns} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "AlexDC"]
+[Result "1-0"]
+[WhiteElo "2179"]
+[BlackElo "2016"]
+[TimeControl "60"]
+[Annotator "5. +0.42"]
+
+1. d4 g6 2. c4 Bg7 3. Nc3 d6 4. e4 Nc6 5. d5 {+0.42/7 1.0} Nd4 6. Nf3
+{+0.48/7 2.2} Bg4 7. Be3 {+0.34/6 0.2} Nxf3+ 8. gxf3 {+0.75/7 1.2} Bd7 9.
+Bd3 {+0.59/6 1.3} e5 10. Qb3 {+0.72/6 1.1} b6 11. O-O {+0.61/6 0.6} f5 12.
+exf5 {+0.91/7 1.7} gxf5 13. Rae1 {+0.55/6 2.9} Nf6 14. Qc2 {+0.70/6 0.5}
+O-O 15. Bxf5 {+1.55/7 0.9} Kh8 16. Bxd7 {+1.47/7 1.4} Qxd7 17. Bg5
+{+1.26/6 2.6} Nh5 18. Qe4 {+0.98/6 0.5} Nf4 19. Kh1 {+0.65/7 1.2} Bf6 20.
+Rg1 {+1.25/7 0.8} Bg7 21. Rg4 {+1.31/6 0.5} Rf7 22. Bxf4 {+2.02/6 1.4} exf4
+23. Rxf4 {+1.97/7 0.7} Rxf4 24. Qxf4 {+1.61/7 0.3} Be5 25. Rxe5
+{+1.70/8 1.7} dxe5 26. Qxe5+ {+1.49/8 0.5} Qg7 27. Qxg7+ {+1.82/8 1.1} Kxg7
+28. Nb5 {+1.59/10 2.5} Rc8 29. Nd4 {+1.59/8 2.0} Kf6 30. f4 {+1.46/7 0.3}
+Rg8 31. b4 {+1.47/9 0.7} a5 32. b5 {+1.44/9 0.4} a4 33. a3 {+1.05/11 1.5}
+Rg4 34. Ne6 {+1.15/12 1.0} Rg6 35. Nxc7 {+1.67/12 1.3} Kf5 36. Ne6
+{+1.61/12 1.2} Ke4 37. h3 {+1.61/10 1.5} Kd3 38. f5 {+3.81/11 0.9} Rf6 39.
+d6 {+5.45/11 0.8} Kxc4 40. d7 {+9.50/10 0.8} Kxb5 41. d8=Q {+13.36/10 0.5}
+Kc4 42. Qxf6 {+20.40/8 0.4} Kb3 43. Qe7 {+21.66/8 0.6} b5 44. f6
+{+21.90/7 0.4}
+{AlexDC resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Freeze2"]
+[Black "Pigeon"]
+[Result "1-0"]
+[WhiteElo "1413"]
+[BlackElo "1987"]
+[TimeControl "120+6"]
+[Annotator "3... +0.14"]
+
+1. f4 d5 2. Nf3 Nf6 3. g3 Nc6 {+0.14/8 3} 4. Bg2 a6 {+0.37/8 13} 5. d3 Bh3
+{+2.75/5 10} 6. Bxh3 e6 {-2.84/9 23} 7. c3 Bd6 {-2.95/8 7} 8. Be3 h5
+{-2.91/8 10} 9. Bg2 Qe7 {-2.74/8 15} 10. Nd4 Nxd4 {-2.67/8 4} 11. Bxd4
+O-O-O {-2.64/8 19} 12. Nd2 h4 {-2.71/8 15} 13. Nf3 c5 {-2.58/8 6} 14. Bxf6
+Qxf6 {-2.44/9 11} 15. Qd2 h3 {-2.11/8 5} 16. Bf1 Rh5 {-2.18/7 4} 17. e3
+Rdh8 {-2.29/7 4} 18. Be2 Rd8 {-2.49/8 16} 19. O-O-O Rh7 {-2.37/7 2.7} 20.
+Rhe1 Rh6 {-2.29/7 3} 21. Bf1 Bc7 {-2.63/8 15} 22. Kb1 Rdh8 {-2.46/7 2.8}
+23. Qc2 g6 {-2.46/7 7} 24. Ng5 Kb8 {-2.62/7 2.7} 25. Qb3 Qe7 {-2.64/7 4}
+26. e4 Qd7 {-2.88/8 6} 27. exd5 exd5 {-2.90/8 9} 28. Qc2 Bd6 {-2.70/8 6}
+29. Re2 b5 {-2.57/7 7} 30. Rde1 Ka7 {-2.55/7 11} 31. Re3 b4 {-2.55/7 4} 32.
+c4 d4 {-2.44/8 10} 33. Re4 a5 {-2.38/7 7} 34. b3 Kb7 {-2.45/8 7} 35. R1e2
+Kb6 {-2.38/7 2.4} 36. Qd1 Rg8 {-2.34/7 8} 37. Qe1 Rhh8 {-2.34/7 8} 38. Nf3
+Ra8 {-2.34/7 2.1} 39. Ne5 Qe6 {-2.19/8 8} 40. Nf3 Qd7 {-2.19/7 1.5} 41. Ng5
+Rag8 {-2.34/7 10} 42. Qf2 Ra8 {-2.49/8 7} 43. Qe1 Rad8 {-2.40/7 3} 44. Nxh3
+Rxh3 {-2.44/8 7} 45. Bxh3 Qxh3 {-2.40/9 15} 46. Qf2 Rh8 {-2.41/7 2.1} 47.
+Re8 Qh5 {-2.56/9 7} 48. Rxh8 Qxh8 {-2.65/9 3} 49. Qf3 Qh3 {-2.73/9 9} 50.
+Kc2 Qf5 {-2.79/8 4} 51. Qe4 Qxe4 {-2.88/8 5} 52. Rxe4 Kc6 {-3.12/12 14} 53.
+Kd2 Kd7 {-2.81/12 10} 54. Ke2 f5 {+0.27/13 7} 55. Re5 Bxe5 {+0.14/15 6} 56.
+fxe5 Ke6 {-0.85/19 5} 57. Kf3 Kxe5 {+0.12/19 13} 58. h4 Kd6 {-1.41/19 3}
+59. Kf4 Ke6 {-1.98/20 11} 60. Kg5 Kf7 {-2.10/21 5} 61. h5 gxh5 {-2.94/21 6}
+62. Kxf5 Kg7 {-2.86/21 7} 63. Kg5 Kf7 {-4.23/20 4} 64. Kxh5 Kf6
+{-8.45/19 7} 65. Kg4 Kg6 {-3.74/20 13} 66. Kf4 Kf6 {-3.61/19 6} 67. g4 Kg6
+{-3.89/17 2.1} 68. g5 Kg7 {-7.47/20 11} 69. Kf5 Kf7 {-7.48/21 5} 70. g6+
+Kg7 {-7.40/19 5} 71. Kg5 Kg8 {-8.28/21 11} 72. Kf6 Kf8 {-9.20/21 5} 73. Ke6
+Kg7 {-9.20/20 6} 74. Kd5 Kxg6 {-9.59/19 8} 75. Kxc5 Kf5 {-10.10/17 4} 76.
+Kxd4 Ke6 {-9.17/18 11} 77. Kc5 Ke5 {-10.49/17 5} 78. d4+ Kf6 {-11.65/18 9}
+79. Kb5 a4 {-8.78/13 0.9} 80. Kxa4 Ke6 {-12.61/18 9} 81. Kxb4 Kd6
+{-13.05/18 6} 82. Kb5 Kc7 {-12.71/15 1.7} 83. d5 Kd6 {-14.07/18 8} 84. Kb6
+Ke5 {-13.64/16 2.2} 85. Kc6 Kd4 {-20.88/16 9} 86. d6 Kc3 {-19.90/15 10} 87.
+d7 Kb2 {-19.90/13 8} 88. d8=Q Kxa2 {-325.11/12 3} 89. Qd1 Kb2
+{-325.11/13 8} 90. Kc5 Ka2 {-325.11/13 8} 91. b4 Kb2 {-325.11/14 6} 92. Qd3
+Ka2 {-325.11/14 5} 93. b5 Ka1 {-325.11/14 6} 94. Qe2 Kb1 {-325.11/14 5} 95.
+Kb4 Kc1 {-325.11/14 6} 96. Kc3 Kb1 {-325.11/14 6} 97. Qb2#
+{Pigeon checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "fugetaboutit"]
+[Result "1-0"]
+[WhiteElo "1956"]
+[BlackElo "1144"]
+[TimeControl "120+6"]
+[Annotator "3. +0.35"]
+
+1. e4 c5 2. b4 d6 3. bxc5 {+0.35/9 6} dxc5 4. Nc3 {+0.16/8 5} Nf6 5. Nf3
+{+0.23/8 19} Bg4 6. e5 {+0.34/8 25} Nfd7 7. h3 {+0.24/8 2.5} Bxf3 8. Qxf3
+{+0.20/9 15} Nc6 9. Qe4 {+0.00/8 13} e6 10. Bb5 {+0.77/8 11} Be7 11. Bxc6
+{+1.21/8 14} bxc6 12. Qxc6 {+1.02/8 9} Rc8 13. Qe4 {+0.99/8 19} O-O 14. Rb1
+{+1.08/8 7} Nb6 15. O-O {+1.41/7 3} Nd5 16. Rb7 {+1.69/8 10} Nxc3 17. dxc3
+{+1.76/9 10} Rb8 18. Rxa7 {+2.24/8 3} Rc8 19. Qg4 {+3.30/8 9} g6 20. Rd1
+{+4.15/8 3} Qb6 21. Rxe7 {+5.74/8 8} Qa5 22. Qf3 {+6.14/8 6} Qxa2 23. Bh6
+{+8.54/8 5} Qxc2 24. Qf6 {+325.11/8 4} Qxd1+ 25. Kh2 {+325.11/12 10} Qf3
+26. gxf3 {+325.11/11 6} Rc7 27. Bxf8 {+325.11/11 6} Rxe7 28. Qxe7
+{+325.11/12 4} h5 29. Qxc5 {+325.11/12 10} f5 30. Qe7 {+325.11/11 8} g5 31.
+Qg7# {+325.11/11 9}
+{fugetaboutit checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "fugetaboutit"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1144"]
+[BlackElo "1956"]
+[TimeControl "120+6"]
+[Annotator "4... -0.18"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. Bd2 d6 {-0.18/8 4} 5. Qc1 Bf5 {-0.09/6 19}
+6. Bh6 Bxh6 {+0.31/9 7} 7. Qxh6 Nc6 {+0.29/8 15} 8. Nf3 Nb4 {+0.24/8 14} 9.
+Rc1 c5 {+0.25/7 13} 10. d5 Qb6 {+0.19/8 17} 11. Ng5 Nc2+ {+0.19/8 10} 12.
+Kd2 Ne3 {-0.33/8 6} 13. b3 Neg4 {+0.10/8 5} 14. Qg7 Kd7 {+1.64/8 9} 15.
+Qxf7 Ne5 {+3.16/8 16} 16. Qg7 h6 {+3.10/8 6} 17. Ne6 Nh5 {+4.12/8 8} 18.
+Nxc5+ Qxc5 {+6.20/9 4} 19. Qxe5 dxe5 {+7.22/9 5} 20. f3 Qd4+ {+8.74/8 10}
+21. Ke1 Qh4+ {+8.14/8 10} 22. g3 Nxg3 {+9.89/9 11} 23. e4 Nxe4+
+{+14.78/9 9} 24. Kd1 Nf2+ {+15.07/8 6} 25. Ke2 Nxh1 {+15.88/8 9} 26. Ne4
+Qxh2+ {+16.11/8 10} 27. Ke3 Qf4+ {+20.50/9 12} 28. Ke2
+{fugetaboutit resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "emferg"]
+[Result "1-0"]
+[WhiteElo "1956"]
+[BlackElo "1611"]
+[TimeControl "120+6"]
+[Annotator "4. +0.31"]
+
+1. e4 e5 2. Nc3 Nc6 3. f4 d6 4. fxe5 {+0.31/7 8} dxe5 5. Nf3 {-0.06/8 14}
+Bd6 6. Bd3 {-0.06/8 13} Nf6 7. Nd5 {-0.24/8 17} Nxd5 8. exd5 {-0.33/9 12}
+Ne7 9. Bb5+ {-0.24/8 11} Bd7 10. Qe2 {-0.05/9 14} f6 11. Qc4 {-0.04/8 7}
+O-O 12. O-O {-0.06/8 6} a6 13. Bxd7 {-0.44/9 10} Qxd7 14. Qb3 {-0.42/7 5}
+Qb5 15. c4 {-0.62/9 8} Qxb3 16. axb3 {-0.67/9 7} Bc5+ 17. Kh1 {-0.65/9 5}
+a5 18. d3 {-0.24/8 8} Nf5 19. Bd2 {-0.23/8 10} b6 20. g4 {-0.15/8 19} Nd6
+21. Rfe1 {-0.19/8 7} Rae8 22. Be3 {-0.10/8 6} Bxe3 23. Rxe3 {-0.05/10 10}
+Re7 24. d4 {+0.37/8 3} e4 25. Nh4 {+0.13/9 13} g6 26. Kg1 {-0.04/8 3} Rfe8
+27. Ng2 {+0.02/8 8} f5 28. c5 {-0.09/10 15} Nf7 29. gxf5 {+0.75/10 6} gxf5
+30. Rf1 {+0.70/10 12} Ng5 31. cxb6 {+0.84/10 4} cxb6 32. d6 {+0.56/10 9}
+Rd7 33. Rg3 {+0.83/10 8} Rg7 34. Rxf5 {+0.39/11 5} Nf3+ 35. Kf2
+{+0.49/12 7} Rxg3 36. hxg3 {+0.62/11 4} Nxd4 37. Rd5 {+0.46/10 7} Nxb3 38.
+Rb5 {+0.48/10 6} Nc5 39. Rxb6 {+0.53/10 3} Kf7 40. Nf4 {+0.71/10 4} Rd8 41.
+Ke3 {+1.07/10 8} Ne6 42. Kxe4 {+2.10/10 2.5} Nxf4 43. gxf4 {+2.23/11 8} Rd7
+44. Ke5 {+2.53/11 8} a4 45. Rc6 {+3.39/12 5} Ke8 46. Ke6 {+6.03/12 6} Rd8
+47. f5 {+6.17/12 7}
+{emferg resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "emferg"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1607"]
+[BlackElo "1960"]
+[TimeControl "120+6"]
+[Annotator "5... -0.14"]
+
+1. e4 c5 2. Nc3 Nc6 3. f4 g6 4. Nf3 Bg7 5. d3 Bd4 {-0.14/6 1.0} 6. Nxd4
+cxd4 {+0.14/10 28} 7. Ne2 d5 {+0.21/9 12} 8. Ng3 Nf6 {+0.35/8 9} 9. Be2 h5
+{+0.30/8 10} 10. e5 Ng4 {+0.29/8 6} 11. O-O Ne3 {+0.63/8 7} 12. Bxe3 dxe3
+{+0.89/9 15} 13. d4 h4 {+1.91/8 9} 14. Nh1 Qb6 {+1.14/9 18} 15. c3 Qxb2
+{+1.77/8 4} 16. Qd3 h3 {+1.73/8 10} 17. g3 Bg4 {+2.30/8 3} 18. Rae1 Qd2
+{+2.10/8 6} 19. Qxd2 exd2 {+1.51/10 7} 20. Bxg4 dxe1=Q {+1.09/10 14} 21.
+Rxe1 b5 {+0.99/10 18} 22. Rb1 b4 {+1.27/10 6} 23. cxb4 Rb8 {+1.21/9 4} 24.
+a3 Nxd4 {+1.37/10 17} 25. Rd1 Nc2 {+1.41/10 7} 26. Rxd5 Nxa3 {+1.51/10 7}
+27. b5 e6 {+1.82/10 5} 28. Rc5 Nxb5 {+1.78/10 8} 29. Nf2 Ke7 {+2.00/9 4}
+30. Bxh3 Rhc8 {+2.26/9 7} 31. Rxc8 Rxc8 {+2.27/11 5} 32. Bf1 Nd4
+{+2.28/10 10} 33. Kg2 a5 {+2.70/10 12}
+{emferg resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "jferiad"]
+[Result "1-0"]
+[WhiteElo "1964"]
+[BlackElo "1400"]
+[TimeControl "120+6"]
+[Annotator "7. +0.42"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2 Nc6 7. d5
+{+0.42/8 14} Nb8 8. h3 {+0.50/8 14} e5 9. g4 {+0.70/6 5} a5 10. Be3
+{+0.90/8 30} Na6 11. g5 {+0.99/7 17} Nd7 12. Kf1 {+0.94/7 4} f5 13. exf5
+{+0.58/8 16} gxf5 14. h4 {+0.65/7 10} Ndc5 15. Qb1 {+0.07/8 6} e4 16. Nd2
+{+0.12/8 8} Bd7 17. h5 {+0.21/8 8} f4 18. Bxc5 {+0.31/9 7} Nxc5 19. Ncxe4
+{+0.61/9 8} f3 20. Bxf3 {+1.69/9 11} Qe7 21. Nxc5 {+2.00/9 7} dxc5 22. h6
+{+1.93/8 3} Bd4 23. g6 {+1.69/8 9} Bf5 24. gxh7+ {+0.27/9 9} Bxh7 25. Rg1+
+{-0.79/9 4} Kh8 26. Qe1 {-1.26/9 19} Qf6 27. Rg3 {-0.30/8 5} Rae8 28. Qd1
+{-0.82/9 15} Qh4 29. Kg2 {+0.11/8 6} Rg8 30. Qh1 {+0.89/9 5} Rxg3+ 31. fxg3
+{+0.74/10 6} Qg5 32. Nb3 {+1.15/9 5} Re3 33. Nxd4 {+1.85/9 5} cxd4 34. Re1
+{+1.45/9 10} Qe5 35. Rxe3 {+1.40/10 5} Qxe3 36. Qh4 {+2.22/10 4} Qd2+ 37.
+Kh3 {+4.77/13 4} Qe1 38. Qf6+ {+325.11/11 5} Kg8 39. Qg7# {+325.11/11 10}
+{jferiad checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1655"]
+[BlackElo "1964"]
+[TimeControl "120+6"]
+[Annotator "3... -0.24"]
+
+1. e4 e6 2. Nf3 d5 3. Nc3 d4 {-0.24/8 2.7} 4. Ne2 c5 {-0.21/8 10} 5. c3 Nc6
+{-0.53/8 15} 6. cxd4 cxd4 {-0.26/8 17} 7. Qa4 Bc5 {-0.34/9 19} 8. b4 Bxb4
+{-0.63/9 13} 9. Nexd4 Qa5 {-0.64/9 16} 10. Qxa5 Bxa5 {-0.57/9 4} 11. Bb5
+Bd7 {-0.60/10 17} 12. Ba3 Nxd4 {-0.26/10 6} 13. Bxd7+ Kxd7 {+0.02/10 7} 14.
+Nxd4 Rc8 {+0.04/8 12} 15. Ke2 Nf6 {+0.29/8 8} 16. f3 Rc4 {+0.12/8 14} 17.
+Nb3 Bb6 {+0.21/8 4} 18. Rac1 Ra4 {+0.77/9 9} 19. Nc5+ Bxc5 {+0.31/10 4} 20.
+Bxc5 Rxa2 {+0.44/9 14} 21. Ra1 Rxa1 {+0.47/10 10} 22. Rxa1 a6 {+0.60/9 8}
+23. d4 Rc8 {+0.60/8 6} 24. Rb1 Rc7 {+0.73/9 9} 25. Rb6 Kc8 {+0.82/10 7} 26.
+Kd3 Nd7 {+1.96/10 7}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1969"]
+[BlackElo "1650"]
+[TimeControl "120+6"]
+[Annotator "5. +0.31"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nc6 5. Bb5 {+0.31/8 7} Bd7 6. Nc3
+{+0.35/9 29} Nf6 7. Be3 {+0.23/8 7} e6 8. O-O {+0.45/8 15} Be7 9. f4
+{+0.51/8 21} O-O 10. f5 {+0.36/8 14} Nxd4 11. Qxd4 {+0.43/8 8} a6 12. Bxd7
+{+0.54/8 13} Qxd7 13. h3 {+0.61/5 0.5} b5 14. Rf3 {+0.42/7 11} Qc6 15. a3
+{+0.30/8 19} Rac8 16. Re1 {+0.42/7 4} Qc4 17. Qa7 {+0.99/8 9} Rfe8 18. Qxa6
+{+1.00/8 8} Nxe4 19. fxe6 {+0.78/8 9} fxe6 20. Rf4 {+1.35/8 9} d5 21. Qxe6+
+{+1.02/7 11}
+{vwq resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "newstar"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1655"]
+[BlackElo "2188"]
+[TimeControl "60"]
+[Annotator "2... -0.19"]
+
+1. d4 d5 2. c3 Nc6 {-0.19/8 2.7} 3. Nd2 Nf6 {+0.51/7 0.8} 4. e3 Qd6
+{+0.23/6 0.3} 5. Ngf3 a6 {+0.53/5 0.5} 6. Bd3 g6 {+0.23/5 1.2} 7. Qe2 Be6
+{+0.28/5 1.4} 8. O-O Bh6 {+0.21/5 1.1} 9. b3 g5 {+0.27/6 1.8} 10. Bb2 g4
+{+0.45/6 0.8} 11. Ne1 a5 {+0.32/6 0.9} 12. Nc2 b6 {+0.32/6 1.2} 13. Rad1 a4
+{+0.50/5 0.3} 14. b4 Kf8 {+0.28/6 1.0} 15. a3 Bd7 {+0.57/5 0.6} 16. c4 dxc4
+{+0.29/6 0.3} 17. Nxc4 Qd5 {-0.51/7 1.8} 18. Rc1 Be6 {+0.67/5 0.5} 19. Nd2
+Bf5 {+0.36/6 1.0} 20. Bc4 Qd6 {+0.54/5 0.2} 21. Bd3 Qd7 {+0.56/6 0.7} 22.
+Bxf5 Qxf5 {-0.49/7 0.9} 23. Ne1 Nd8 {-0.60/6 0.8} 24. Qd3 Qxd3 {+0.18/7 3}
+25. Nxd3 Nd5 {+0.06/7 0.7} 26. Ne5 Nxe3 {+0.08/8 1.9} 27. fxe3 Bxe3+
+{-0.35/9 1.0} 28. Kh1 Bxd2 {-0.57/8 1.2} 29. Rxc7 Rg8 {-0.57/7 1.1} 30. d5
+b5 {-0.86/7 1.1} 31. Bc1 Bxc1 {-0.33/8 0.7}
+{newstar forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "barsha"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1648"]
+[BlackElo "1973"]
+[TimeControl "120+6"]
+[Annotator "4... -0.29"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 d6 4. O-O Nf6 {-0.29/9 11} 5. d4 Bd7 6. Nc3 exd4
+7. Nxd4 Nxd4 {-0.33/9 10} 8. Bxd7+ Qxd7 {-0.53/10 24} 9. Qxd4 c5
+{-0.51/8 5} 10. Qc4 O-O-O {-0.46/8 9} 11. Bg5 Qe6 {-0.47/8 26} 12. Nd5 Be7
+{-0.54/8 7} 13. Nxe7+ Qxe7 {-0.26/9 6} 14. Rad1 Rd7 {-0.01/7 8} 15. Rfe1
+Qe5 {-0.26/8 25} 16. Bxf6 gxf6 {-0.38/9 6} 17. c3 Rg8 {-0.42/8 4} 18. Rd5
+Qe6 {-0.38/9 11} 19. Red1 Rg5 {-0.38/8 4} 20. f3 Rxd5 {-0.40/8 19} 21. Rxd5
+f5 {-0.35/9 5} 22. Kf2 fxe4 {-0.25/10 8} 23. Qxe4 Qxe4 {-0.28/10 8} 24.
+fxe4 f6 {-0.20/9 8} 25. Kf3 Kc7 {-0.24/11 14} 26. Kf4 Re7 {-0.25/10 7} 27.
+Kf5 a5 {-0.18/10 9} 28. Kxf6 Rxe4 {+0.01/10 2.9} 29. Rh5 Re2 {+0.37/11 10}
+30. Rxh7+ Kc6 {+0.31/10 1.5} 31. g4 Rxb2 {+0.16/10 9} 32. g5 Rf2+
+{+0.12/11 4} 33. Ke7 Rg2 {+0.20/11 7} 34. h4 d5 {+0.00/11 6} 35. Rh6+ Kb5
+{-0.03/12 4} 36. g6 d4 {-0.04/11 8} 37. cxd4 cxd4 {-0.04/12 11} 38. Rh5+
+Kb4 {-0.39/11 5} 39. Rg5 Re2+ {-0.15/12 6} 40. Kd7 d3 {-0.06/12 6} 41. g7
+d2 {+0.02/11 9} 42. Rd5 Rg2 {+0.07/11 4} 43. Rxd2 Rxd2+ {+1.05/13 10} 44.
+Ke7 Re2+ {+1.06/11 4} 45. Kf7 Rf2+ {+1.06/12 7} 46. Ke7 Rg2 {+1.05/11 7}
+47. Kf7 Rf2+ {+1.06/13 13} 48. Ke7 Rg2 {+1.05/11 2.8} 49. Kf7 Rf2+
+{+1.06/12 12}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "alhedhed"]
+[Result "1/2-1/2"]
+[WhiteElo "1961"]
+[BlackElo "1701"]
+[TimeControl "120+6"]
+[Annotator "4. +0.14"]
+
+1. d4 d5 2. c4 c6 3. Nf3 e6 4. Nc3 {+0.14/6 6} Nf6 5. e3 Bd6 6. c5
+{+0.70/8 6} Bc7 7. Bd3 {+0.55/8 23} Nbd7 8. e4 {+0.67/7 7} dxe4 9. Bxe4
+{+0.14/8 12} O-O 10. O-O {+0.30/8 15} e5 11. Bg5 {+0.47/8 6} exd4 12. Qxd4
+{+0.52/8 12} Ne5 13. Qb4 {+0.32/8 9} Nxf3+ 14. Bxf3 {+0.58/7 1.7} h6 15.
+Rfd1 {+0.34/8 17} Qe7 16. Be3 {+0.27/8 13} Be6 17. Rd2 {+0.28/7 11} a5 18.
+Qa4 {+0.14/7 6} Rfd8 19. Rad1 {+0.26/7 14} Rxd2 20. Rxd2 {+0.20/7 3} Rd8
+21. Rxd8+ {+0.12/8 14} Qxd8 22. a3 {+0.17/7 9} Nd5 23. Bxd5 {+0.17/9 7}
+Bxd5 24. Nxd5 {+0.00/8 6} Qxd5 25. g3 {+0.11/9 12} Be5 26. Qxa5
+{+0.11/10 9} Qd1+ 27. Kg2 {+0.14/11 9} Qd5+ 28. Kg1 {+0.11/10 6} Qd1+ 29.
+Kg2 {+0.14/11 12} Qd5+ 30. Kg1 {+0.11/10 5}
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "avshy5566"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1636"]
+[BlackElo "1951"]
+[TimeControl "120+6"]
+[Annotator "5... -0.60"]
+
+1. e4 Nf6 2. e5 Nd5 3. c4 Nb6 4. c5 Nd5 5. Nc3 Nxc3 {-0.60/8 9} 6. dxc3 Nc6
+{-0.49/8 13} 7. b4 Nxe5 {+0.19/9 21} 8. Nf3 d6 {+0.24/9 5} 9. Nxe5 dxe5
+{+0.18/10 22} 10. Qxd8+ Kxd8 {+0.08/10 8} 11. Bc4 f6 {+0.11/8 13} 12. O-O
+Bd7 {+0.28/7 7} 13. Rd1 Kc8 {-0.02/9 19} 14. b5 h5 {+0.20/9 7} 15. a4 Bg4
+{+0.07/8 2.3} 16. f3 Bf5 {-0.07/8 11} 17. c6 e6 {-0.06/9 13} 18. h3 bxc6
+{+0.47/9 13} 19. bxc6 Bc5+ {-0.02/10 12} 20. Kh2 a5 {-0.02/8 2.6} 21. Rd7
+Rh7 {-0.43/9 9} 22. Ba3 Bxa3 {-1.05/9 12} 23. Rxa3 Ra7 {-1.76/10 6} 24. Ra2
+h4 {-1.60/10 11} 25. Rad2 Rh8 {-1.96/10 11} 26. Rxg7 e4 {-2.28/9 3} 27.
+fxe4 Bxe4 {-2.11/11 10} 28. Bxe6+ Kb8 {-1.91/11 9} 29. Rgd7 Bxc6
+{-1.17/10 10} 30. Rf7 Bxa4 {-0.73/9 9} 31. Rxf6 Ra6 {-0.43/10 5} 32. c4 Re8
+{+0.01/10 7} 33. Re2 Ka7 {+0.15/10 6} 34. Rh6 Bd7 {+1.02/10 7} 35. Rh7
+Rexe6 {+1.78/9 2.0} 36. Rxe6 Bxe6 {+2.38/13 9} 37. Rxh4 a4 {+3.61/11 7} 38.
+c5 a3 {+7.19/11 9} 39. Re4 a2 {+7.28/12 5}
+{avshy5566 resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.03"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1955"]
+[BlackElo "1665"]
+[TimeControl "120+6"]
+[Annotator "4. +1.03"]
+
+1. e4 e6 2. d4 d5 3. Nc3 c5 4. exd5 {+1.03/8 8} exd5 5. Qe2+ {+1.19/7 10}
+Be7 6. dxc5 {+1.06/9 22} Nf6 7. Be3 {+1.23/8 8} O-O 8. O-O-O {+1.27/7 2.7}
+Nc6 9. Nf3 {+1.29/8 18} Bg4 10. Qb5 {+1.53/7 3} Rb8 11. Qa4 {+1.52/8 15} a6
+12. h3 {+1.75/7 8} Be6 13. b3 {+1.53/7 12} h6 14. Bc4 {+1.54/5 1.2} Qd7 15.
+Rd2 {+1.63/7 10} Rfd8 16. Rhd1 {+1.94/6 5} Qc7 17. Nxd5 {+2.72/8 8} Nxd5
+18. Bxd5 {+2.71/8 4} Bxd5 19. Rxd5 {+2.85/9 11} Bf6 20. Bf4 {+4.40/8 6} Qe7
+21. Bxb8 {+4.46/8 3}
+{vwq forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1660"]
+[BlackElo "1960"]
+[TimeControl "120+6"]
+[Annotator "3... +0.12"]
+
+1. d4 d5 2. Nf3 Nf6 3. c4 dxc4 {+0.12/8 2.7} 4. e3 e6 5. Bxc4 c5 6. O-O a6
+7. dxc5 Qxd1 {-0.38/8 2.5} 8. Rxd1 Bxc5 {-0.21/9 32} 9. Nc3 Nc6 {-0.33/8 8}
+10. Bd2 O-O {-0.03/7 10} 11. Be1 b5 {-0.13/8 20} 12. Bd3 Bb7 {-0.12/8 13}
+13. a3 Rac8 {-0.12/8 19} 14. Ne4 Ne5 {-0.08/9 8} 15. Nxf6+ gxf6
+{+0.05/10 11} 16. Nxe5 fxe5 {+0.24/9 11} 17. Bc3 e4 {+0.21/9 13} 18. Bf1
+Bd5 {+0.25/8 4} 19. Bf6 Rc6 {+0.34/8 16} 20. g4 Bd6 {+0.40/8 12} 21. Rac1
+Rfc8 {+0.52/9 3} 22. Rxc6 Rxc6 {+0.56/9 9} 23. h4 Bb3 {+0.47/8 3} 24. Re1
+h6 {+0.48/9 4} 25. Bg2 Bd5 {+0.44/10 11} 26. h5 Rc2 {+0.59/9 5} 27. Rd1 Bf8
+{+0.50/9 4} 28. Bc3 Bxa3 {+1.41/10 8}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1965"]
+[BlackElo "1655"]
+[TimeControl "120+6"]
+[Annotator "6. +0.74"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. e5 {+0.74/8 5} Nd5
+7. Nxd5 {+0.87/9 26} exd5 8. Qf3 {+1.07/9 20} Bb4+ 9. c3 {+2.02/8 1.8} Bc5
+10. Qxd5 {+2.16/9 30} Bxd4 11. cxd4 {+2.01/8 5} O-O 12. b3 {+2.05/8 13} Nc6
+13. Ba3 {+2.17/8 13} Re8 14. Bd6 {+2.14/8 12} Qh4 15. Bc4 {+2.24/8 7} Qf4
+16. g3 {+2.30/8 6} Qf5 17. Rd1 {+2.22/8 14}
+{vwq resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1650"]
+[BlackElo "1970"]
+[TimeControl "120+6"]
+[Annotator "5... +0.16"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nd4 5. Nxd4 exd4 {+0.16/8 3} 6. O-O
+Qh4 {+0.31/9 24} 7. d3 Nf6 {+0.29/9 21} 8. g3 Qh3 {+0.39/9 8} 9. Qf3 Bd6
+{+0.60/8 10} 10. Qg2 Qxg2+ {+0.76/9 12} 11. Kxg2 b5 {+0.66/9 22} 12. Bb3
+Bb7 {+0.56/8 6} 13. f4 c5 {+0.75/8 17} 14. a3 c4 {+1.07/8 3} 15. Ba2 Rc8
+{+1.13/8 13} 16. h3 g6 {+1.17/7 1.7} 17. Kh2 Be7 {+0.85/8 5} 18. Nd2 a5
+{+0.71/7 4} 19. e5 Nd5 {+0.73/9 9} 20. dxc4 Ne3 {+0.87/8 7} 21. Rf2 bxc4
+{+0.88/8 5} 22. Nf3 Bc5 {+1.27/8 5} 23. Bd2 Nxc2 {+1.94/8 5} 24. Rc1 d3
+{+2.03/8 5} 25. Rff1 Bd5 {+2.22/8 14} 26. Bxa5 Ne3 {+2.58/8 8}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1974"]
+[BlackElo "1646"]
+[TimeControl "120+6"]
+[Annotator "3. -0.08"]
+
+1. Nf3 Nf6 2. g3 d5 3. Nc3 {-0.08/8 2.7} d4 4. Nb5 {+0.01/9 17} c5 5. e3
+{+0.10/7 9} a6 6. Na3 {-0.39/9 21} dxe3 7. fxe3 {-0.30/9 11} Nc6 8. Nc4
+{-0.40/8 11} Bg4 9. Be2 {-0.38/8 5} e6 10. h3 {-0.15/7 2.6} Bxf3 11. Bxf3
+{+0.19/9 17} Qc7 12. Rg1 {+0.00/8 12} Be7 13. a4 {+0.19/7 8} O-O 14. a5
+{+0.02/8 12} Rad8 15. Qe2 {+0.11/8 8} Nd7 16. Kf2 {+0.30/7 2.9} Nde5 17.
+Nxe5 {-0.18/8 2.4} Nxe5 18. b3 {-0.31/8 15} Bf6 19. Ra3 {-0.34/8 5} c4 20.
+Be4 {-0.10/8 4} Rd7 21. bxc4 {+0.12/8 7} Nxc4 22. Ra4 {+0.20/8 6} Nxa5 23.
+Qh5 {+2.11/8 9}
+{vwq resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1642"]
+[BlackElo "1978"]
+[TimeControl "120+6"]
+[Annotator "4... -0.38"]
+
+1. e4 d5 2. exd5 Qxd5 3. Nc3 Qd6 4. Nf3 Nf6 {-0.38/8 11} 5. d4 Bg4
+{-0.26/6 9} 6. h3 Be6 {-0.37/8 23} 7. Bb5+ Nc6 {-0.08/8 23} 8. O-O O-O-O
+{+0.14/8 15} 9. Be3 a6 {+0.08/7 4} 10. Ba4 b5 {+0.24/8 15} 11. Bb3 b4
+{-0.02/8 9} 12. Na4 Bxb3 {-0.08/8 9} 13. axb3 e5 {-0.08/8 12} 14. dxe5 Nxe5
+{-0.08/9 10} 15. Nxe5 Qxe5 {+0.38/9 5} 16. Qe2 Qe6 {+0.14/8 9} 17. Qc4 Qxc4
+{+0.28/9 7} 18. bxc4 Ne4 {+0.11/9 15} 19. Rad1 Be7 {+0.23/9 11} 20. Rd3 g6
+{+0.20/8 4} 21. Rfd1 Rxd3 {+0.26/9 8} 22. cxd3 Rd8 {+0.28/9 5} 23. f3 Ng3
+{+0.43/9 7} 24. Kf2 Bh4 {+0.67/10 11} 25. d4 Nf5+ {+3.93/10 8} 26. Ke2 Re8
+{+4.08/9 3} 27. Rd3 Bg5 {+4.01/9 6} 28. g4
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1982"]
+[BlackElo "1638"]
+[TimeControl "120+6"]
+[Annotator "7. +0.43"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e5 7. Nf5
+{+0.43/8 7} Bxf5 8. exf5 {+0.49/8 17} Nc6 9. Bxf6 {+0.46/8 24} Qxf6 10. Nd5
+{+0.56/8 12} Qd8 11. c3 {+0.63/8 18} Be7 12. Bd3 {+0.64/8 19} O-O 13. O-O
+{+0.64/6 1.1} b5 14. a4 {+1.60/8 17} bxa4 15. Qxa4 {+2.61/8 11} Nb8 16. f6
+{+4.27/8 10} Bxf6 17. Qe4 {+4.55/8 14} Ra7 18. Qxh7# {+325.11/8 9}
+{vwq checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1634"]
+[BlackElo "1986"]
+[TimeControl "120+6"]
+[Annotator "6... -0.04"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Nxe4 6. Re1 Ng5 {-0.04/9 9}
+7. d4 Nxf3+ {+0.09/10 24} 8. Qxf3 Nxd4 {+0.50/9 10} 9. Rxe5+ Be7
+{+0.59/9 15} 10. Qe4 Ne6 {+0.54/8 17} 11. Nc3 c6 {+0.64/8 17} 12. Be3 g6
+{+0.64/6 2.5} 13. Rd1 Bf6 {+1.18/8 16} 14. Bh6 Bxe5 {+1.45/8 11} 15. Qxe5
+f6 {+1.70/9 14} 16. Qe4 b5 {+1.96/8 9} 17. Bb3 Qc7 {+1.43/7 8} 18. f4 Qa7+
+{+2.28/8 13} 19. Kh1 f5 {+1.62/8 12} 20. Qe5 Rg8 {+0.76/9 6} 21. Ne2 c5
+{+1.51/7 2.2} 22. Bd5 Rb8 {+1.35/8 17} 23. c4 Rb6 {+1.47/8 4} 24. b3 d6
+{+1.62/7 2.1} 25. Qe3 Kf7 {+1.55/8 5} 26. Nc3 Re8 {+1.77/7 1.7} 27. Qg3 Bb7
+{+2.08/8 9} 28. h4 Bxd5 {+2.88/9 9} 29. Nxd5 Rbb8 {+3.02/9 16} 30. Rd2 bxc4
+{+3.43/8 2.0} 31. bxc4 Nd4 {+3.41/8 9} 32. Qg5 Re6 {+3.45/8 6} 33. h5 Qd7
+{+3.92/8 1.5} 34. Rf2 Qa4 {+4.94/9 11} 35. g4 Qxc4 {+6.14/9 6} 36. Nc7 Rb1+
+{+7.43/9 5} 37. Kh2 Qc1 {+9.81/8 6} 38. Qd8 Qh1+ {+325.11/9 4} 39. Kg3 Rg1+
+{+325.11/10 14}
+{vwq resigns} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Lucretius"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1323"]
+[BlackElo "2189"]
+[TimeControl "60"]
+[Annotator "4... +0.66"]
+
+1. e4 e5 2. f4 exf4 3. Nf3 Nf6 4. Nc3 Nc6 {+0.66/7 1.1} 5. d4 Bb4
+{+0.48/6 0.5} 6. Bd2 Bxc3 {+1.33/7 2.0} 7. Bxc3 Nxe4 {+1.89/8 1.9} 8. Bd3
+d5 {+2.18/7 0.7} 9. Bxe4 dxe4 {+2.62/7 2.0} 10. Ne5 Be6 {+2.37/6 0.3} 11.
+O-O Qg5 {+2.75/7 1.4} 12. Nxc6 f3 {+2.91/6 0.3} 13. g3 bxc6 {+3.01/6 0.3}
+14. Bd2 e3 {+3.17/6 0.3} 15. Rxf3 exd2 {+3.38/7 0.7} 16. Qf1 O-O
+{+5.09/6 0.9} 17. Rd1 Bg4 {+5.46/7 1.2} 18. Rf2 Bxd1 {+5.56/7 0.8} 19. Qxd1
+Qd5 {+5.58/8 1.9}
+{Lucretius forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "olexandro"]
+[Result "1-0"]
+[WhiteElo "1990"]
+[BlackElo "1476"]
+[TimeControl "120+6"]
+[Annotator "5. +0.35"]
+
+1. e4 g6 2. d4 Bg7 3. Nf3 d6 4. c4 Nd7 5. Nc3 {+0.35/6 20} e6 6. Bg5
+{+0.79/7 3} Ne7 7. Bd3 {+0.64/8 29} h6 8. Be3 {+0.90/7 5} O-O 9. O-O
+{+0.93/7 16} b6 10. h3 {+0.89/7 17} Bb7 11. Qd2 {+0.90/7 21} Kh7 12. b4
+{+1.11/5 1.6} f5 13. b5 {+0.73/8 6} Nf6 14. exf5 {+0.80/7 5} Nxf5 15. Rfd1
+{+0.80/5 1.0} Bxf3 16. gxf3 {+0.75/8 12} Nh4 17. Qe2 {+0.84/7 9} d5 18. f4
+{+0.65/8 3} Kh8 19. Rac1 {+0.72/8 5} Nh5 20. Qg4 {+1.24/9 13} Rg8 21. Qxe6
+{+2.45/8 5} Nf3+ 22. Kh1 {+2.73/9 7} Qh4 23. Nxd5 {+2.88/8 7} Rae8 24. Qg4
+{+3.66/8 8} Qd8 25. Qxg6 {+10.77/8 9} Nf6 26. Nxf6 {+20.38/8 9} Bxf6 27.
+Qxh6# {+325.11/10 15}
+{olexandro checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1990"]
+[BlackElo "1640"]
+[TimeControl "120+6"]
+[Annotator "5. +0.32"]
+
+1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. Qd3 d5 5. a3 {+0.32/7 7} Bxc3+ 6. bxc3
+{+0.02/10 23} O-O 7. Nf3 {+0.13/8 9} c5 8. cxd5 {+0.68/9 19} exd5 9. dxc5
+{+0.64/9 14} Nc6 10. Be3 {+0.85/8 17} h6 11. g3 {+1.04/8 12} Ng4 12. Bf4
+{+1.48/8 7} Be6 13. Bd6 {+1.89/7 6} Re8 14. Rb1 {+1.72/7 12} Qd7 15. Nd4
+{+1.75/7 11} Nge5 16. Bxe5 {+1.21/9 12} Nxe5 17. Qb5 {+1.08/8 2.3} Qc7 18.
+e3 {+1.04/7 2.3} Rec8 19. f4 {+1.14/9 13} Nc4 20. Bxc4 {+2.18/8 3} dxc4 21.
+Nxe6 {+1.78/9 14} fxe6 22. Qxc4 {+1.91/9 8} Kh8 23. Qxe6 {+1.71/9 9} Qxc5
+24. Rxb7 {+1.08/9 12} Qxc3+ 25. Kf2 {+1.57/9 6} Re8 26. Re7 {+1.91/9 5}
+Qd2+ 27. Kf3 {+1.61/11 5} Rxe7 28. Qxe7 {+1.55/10 9} a5 29. Qe5 {+1.96/9 5}
+{vwq resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "CaptEvans"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1591"]
+[BlackElo "1994"]
+[TimeControl "120+6"]
+[Annotator "2... -0.31"]
+
+1. e4 c5 2. f4 Nf6 {-0.31/8 2.4} 3. e5 Nd5 {-0.24/9 8} 4. d4 cxd4
+{+0.22/9 9} 5. Qxd4 e6 {-0.02/8 12} 6. c3 Nc6 {+0.31/8 20} 7. Qf2 g5
+{+0.47/7 11} 8. g3 Qc7 {+0.41/8 15} 9. Nf3 g4 {+0.38/8 11} 10. Nd4 Nxd4
+{+0.48/8 11} 11. cxd4
+{CaptEvans resigns} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "demian2007"]
+[Result "1-0"]
+[WhiteElo "2189"]
+[BlackElo "1748"]
+[TimeControl "60"]
+[Annotator "8. +0.32"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. Nf3 d6 5. g3 O-O 6. Bg2 Nbd7 7. O-O c6 8.
+Qd3 {+0.32/6 1.0} Qc7 9. b3 {+0.65/5 0.9} e5 10. Bg5 {+0.34/7 2.3} Re8 11.
+Ne4 {+0.17/6 0.5} Nxe4 12. Qxe4 {-0.05/7 1.6} Nf6 13. Qh4 {+0.19/7 1.0} Nd7
+14. Bh6 {+0.18/6 0.5} a5 15. Bxg7 {+0.27/6 0.4} Kxg7 16. Bh3 {+0.16/6 1.7}
+exd4 17. Bxd7 {+0.31/7 2.0} Qxd7 18. Qxd4+ {+0.34/7 2.0} f6 19. Rfe1
+{+0.06/7 1.5} Qe6 20. Rad1 {+0.56/6 0.4} Bd7 21. Qxd6 {+1.39/6 0.3} Qxd6
+22. Rxd6 {+1.25/8 1.9} Be6 23. Nd4 {+1.43/8 2.9} Bf7 24. Rd7 {+1.65/8 1.7}
+Rab8 25. c5 {+1.65/6 0.3} f5 26. Nf3 {+1.77/6 0.6} Kf6 27. Ng5
+{+1.79/7 1.2} Bg8 28. Nxh7+ {+1.80/8 1.1} Bxh7 29. Rxh7 {+1.97/8 0.7} Red8
+30. a3 {+2.11/8 1.9} Rd2 31. e4 {+2.10/8 1.8} Rb2 32. exf5 {+2.38/8 0.5}
+gxf5 33. Re3 {+2.22/8 0.6} Ra2 34. a4 {+2.30/8 0.9} Rd2 35. Rhe7
+{+2.75/8 1.0} Rd5 36. R3e6+ {+3.21/9 1.4} Kg5 37. Kg2 {+3.21/7 0.2} f4 38.
+Re5+ {+3.06/8 0.5} Rxe5 39. Rxe5+ {+2.99/10 0.6} Kf6 40. gxf4 {+2.79/9 1.0}
+Rd8 41. h4 {+2.72/9 2.2} Rd3 42. Re3 {+2.69/9 0.5} Rxb3 43. Rxb3
+{+13.16/10 1.0}
+{demian2007 forfeits on time} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "verdugo21"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1659"]
+[BlackElo "1997"]
+[TimeControl "120+6"]
+[Annotator "6... -0.14"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. f3 e5 {-0.14/8 6} 7.
+Nb3 Nc6 {-0.09/8 21} 8. Be3 Be6 {-0.06/8 29} 9. Nd5 Rc8 {-0.18/7 5} 10. Bb6
+Qd7 {-0.41/8 15} 11. Nxf6+ gxf6 {+0.06/8 4} 12. Qd2 h5 {+0.09/8 18} 13. Be2
+Bh6 {+0.69/8 10} 14. Be3 Bxe3 {+2.78/9 12} 15. Qxe3 Nb4 {+2.62/8 12} 16.
+Bd3 Rxc2 {+2.50/8 8} 17. a3 Nxd3+ {+3.44/9 8} 18. Qxd3 Rxg2 {+3.15/8 7} 19.
+O-O-O Qc6+ {+3.17/8 7} 20. Kb1 h4 {+3.21/8 11} 21. Na5 Qb6 {+3.24/9 11} 22.
+Qc3 Kd7 {+3.24/7 1.8} 23. b4 Rc8 {+3.94/8 6} 24. Qd3 Qf2 {+6.11/8 5} 25.
+Qxd6+ Ke8 {+6.97/11 15} 26. Rd2 Qxd2 {+7.20/10 7} 27. Qxd2 Rxd2
+{+7.65/10 8} 28. Nxb7 Rc3 {+7.76/10 14} 29. Nc5 Ba2+ {+8.10/10 9} 30. Ka1
+Rxa3 {+8.42/10 10}
+{verdugo21 resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "2001"]
+[BlackElo "1590"]
+[TimeControl "120+6"]
+[Annotator "4. -0.12"]
+
+1. d4 Nf6 2. c4 e6 3. Nc3 d5 4. Nf3 {-0.12/6 5} Bb4 5. Bg5 O-O 6. Qb3
+{+0.21/9 11} c5 7. dxc5 {+0.87/9 13} Bxc5 8. cxd5 {+0.84/8 13} exd5 9. Rd1
+{+0.84/6 11} Nc6 10. Rxd5 {+0.83/8 18} Nxd5 11. Bxd8 {+2.52/9 7} Nxc3 12.
+Bh4 {+2.54/9 23} Ne4 13. a3 {+2.54/7 1.3} a6 14. Qd5 {+2.95/8 18} Re8 15.
+e3 {+2.88/8 9} Bg4 16. Bd3 {+3.39/7 2.4} Nf6 17. Qxc5 {+6.01/8 6}
+{vwq resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Lucretius"]
+[Result "1-0"]
+[WhiteElo "2191"]
+[BlackElo "1323"]
+[TimeControl "60"]
+[Annotator "5. +1.16"]
+
+1. d4 d5 2. c4 dxc4 3. Nf3 Nf6 4. e3 g6 5. Qa4+ {+1.16/5 1.2} Bd7 6. Qxc4
+{+0.30/7 0.7} Bg7 7. Ne5 {+0.59/6 0.5} O-O 8. Qb3 {+0.37/6 0.6} b6 9. Bc4
+{+0.39/6 0.5} Be6 10. Bxe6 {+2.66/7 0.6} fxe6 11. Qxe6+ {+2.32/7 1.8} Kh8
+12. Nf7+ {+2.32/6 1.0} Rxf7 13. Qxf7 {+2.46/7 0.7} Ne4 14. Qe6
+{+2.77/7 1.4} Nxf2 15. Kxf2 {+4.65/7 0.5} Qf8+ 16. Kg1 {+4.79/8 1.5} Na6
+17. Nc3 {+4.87/7 1.0} Nb4 18. Qe4 {+5.19/7 1.0} Rd8 19. a3 {+6.29/7 1.3}
+Na6 20. Qb7 {+5.30/6 0.4} Nc5 21. Qxa7 {+4.87/7 0.5} Bxd4 22. exd4
+{+6.83/8 0.8} Rxd4 23. Qxc7 {+8.03/8 2.0} Qf5 24. Bh6 {+8.80/6 0.3} Qf1+
+25. Rxf1 {+325.11/9 1.1} Rd8 26. Qxd8# {+325.11/6 0.2}
+{Lucretius checkmated} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "checkmatiste"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1377"]
+[BlackElo "2191"]
+[TimeControl "60"]
+[Annotator "2... -0.50"]
+
+1. d4 f5 2. Nf3 e6 {-0.50/8 1.8} 3. Bg5 Be7 {-0.02/7 0.5} 4. Bxe7 Qxe7
+{-0.01/7 2.5} 5. c3 Nf6 {-0.18/6 2.0} 6. e3 Nc6 {+0.19/7 1.6} 7. Bd3 d5
+{+0.03/6 0.9} 8. Nbd2 O-O {+0.03/6 0.5} 9. O-O Qd6 {+0.06/6 0.7} 10. b4 a6
+{+0.20/7 2.0} 11. Nb3 Ne4 {+0.28/6 0.7} 12. Qc2 b6 {+0.29/6 0.7} 13. a4 Bd7
+{+0.00/6 2.0} 14. a5 Rfc8 {+0.16/6 1.1} 15. Bxe4 fxe4 {+0.52/7 0.9} 16.
+Nfd2 Ne7 {+0.54/6 2.0} 17. f3 Nf5 {+0.36/7 1.0} 18. Rae1 Bb5 {+0.66/7 1.0}
+19. Rf2 Bd3 {+0.86/6 0.7} 20. Qb2 h5 {+1.02/5 0.2} 21. fxe4 dxe4
+{+0.75/7 1.3} 22. Nc1 bxa5 {+0.66/7 0.7} 23. Nxd3 exd3 {+0.49/7 0.6} 24.
+Ne4 Qd5 {+0.79/7 0.8} 25. Nc5 axb4 {+0.17/7 1.4} 26. cxb4 Qc4 {+0.23/6 2.0}
+27. Qc1 Qxc1 {+0.61/8 1.3} 28. Rxc1 a5 {+0.60/8 1.3} 29. Nxe6 Nxe3
+{+0.60/7 0.5}
+{checkmatiste forfeits on time} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "Swarnavo"]
+[Result "1-0"]
+[WhiteElo "2191"]
+[BlackElo "1593"]
+[TimeControl "60"]
+[Annotator "8. -0.10"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O b5 6. Bb3 Be7 7. a4 Bb7 8.
+d3 {-0.10/6 0.3} O-O 9. Nc3 {-0.07/6 0.3} d6 10. axb5 {+1.24/7 1.3} axb5
+11. Rxa8 {+1.14/7 0.8} Qxa8 12. Nxb5 {+1.03/6 0.9}
+{Swarnavo resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Swarnavo"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1592"]
+[BlackElo "2192"]
+[TimeControl "60"]
+[Annotator "2... +0.18"]
+
+1. d4 Nf6 2. c3 e6 {+0.18/8 1.5} 3. e3 Nc6 {+0.40/7 1.3} 4. f4 Bd6
+{+0.49/7 1.3} 5. Nf3 b6 {+0.49/5 2.0} 6. Bd3 Nd5 {+0.31/5 0.3} 7. O-O O-O
+{+0.09/6 2.0} 8. Qe2 a5 {+0.13/6 1.9} 9. Nbd2 a4 {+0.02/6 0.6} 10. Ne5 f6
+{-0.02/6 1.1} 11. Nxc6 dxc6 {-0.13/7 0.8} 12. Nf3 c5 {+0.23/5 0.3} 13. Bd2
+Bd7 {+0.17/6 0.8} 14. Qe1 a3 {+0.38/5 0.3} 15. b3 Bc6 {+0.66/5 0.3} 16. Qh4
+h6 {+0.36/6 0.9} 17. Qh5 Be8 {+0.44/6 1.8} 18. Qg4 f5 {+0.47/6 0.5} 19. Qg3
+Nf6 {+0.45/6 0.5} 20. Nh4 cxd4 {+1.07/6 0.5} 21. cxd4 Ne4 {+0.86/6 0.5} 22.
+Bxe4 fxe4 {+1.21/7 1.1} 23. Ng6 Rf6 {+1.12/7 1.2} 24. Ne5 Bb5 {+0.92/6 0.3}
+25. Rfe1 Qe8 {+0.94/6 0.5} 26. Qf2 Bd3 {+1.07/6 1.1} 27. Ng4 Rf8
+{+1.36/7 1.1} 28. Ne5 Qb5 {+1.18/6 1.0} 29. Rac1 c5 {+1.08/6 2.0} 30. dxc5
+Bxe5 {+3.38/7 0.7}
+{Swarnavo forfeits on time} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "StillAlive"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1811"]
+[BlackElo "2004"]
+[TimeControl "120+6"]
+[Annotator "8... +0.07"]
+
+1. d4 Nf6 2. c4 e6 3. Nf3 b6 4. Nc3 Bb7 5. Bg5 h6 6. Bh4 g5 7. Bg3 Nh5 8.
+e3 g4 {+0.07/8 8} 9. Ne5 d6 {+0.11/6 6} 10. Nxg4 f5 {+0.38/8 16} 11. Ne5
+Nxg3 {+0.69/9 18} 12. hxg3 dxe5 {+0.66/8 3} 13. Qh5+ Ke7 {+0.80/9 18} 14.
+dxe5 Nd7 {+0.65/8 15} 15. Rd1 Rg8 {+0.85/7 11} 16. f4 Qe8 {+0.56/8 26} 17.
+Qh4+ Kf7 {-0.88/9 6} 18. Be2 Rg4 {-0.88/7 7} 19. Bxg4 fxg4 {-1.68/9 7} 20.
+Qxg4 Bxg2 {-1.04/8 11} 21. Rh4 Bb7 {-1.13/7 12} 22. Qh5+ Ke7 {-1.06/9 2.5}
+23. Qg4 Qf7 {-1.05/8 9} 24. Kf2 Nxe5 {+0.98/10 17} 25. Qe2 Bf3 {+2.02/8 5}
+{StillAlive resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "2012"]
+[BlackElo "1587"]
+[TimeControl "120+6"]
+[Annotator "7. +0.13"]
+
+1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. Qc2 O-O 5. a3 Bxc3+ 6. Qxc3 b6 7. Nf3
+{+0.13/8 4} Bb7 8. Bf4 {+0.12/8 22} d6 9. b4 {+0.40/7 16} Nbd7 10. b5
+{+0.19/8 17} Ne4 11. Qe3 {+0.12/8 23} Ndf6 12. h3 {+0.21/7 2.2} Rc8 13. Qd3
+{+0.26/7 14} c5 14. dxc5 {+0.08/8 15} bxc5 15. Be3 {-0.11/8 10} d5 16. cxd5
+{-0.31/9 22} exd5 17. a4 {-0.55/8 5} Re8 18. a5 {-0.26/8 3} Ba8 19. a6
+{-0.02/8 13} Qd6 20. Bc1 {+0.12/7 2.6} d4 21. Ra5 {-0.08/7 8} Qb6 22. Ra2
+{-0.29/7 5} Nd5 23. Bd2 {-0.47/7 2.6} Nxd2 24. Rxd2 {-1.19/8 18} Re6 25.
+Ng5 {+0.41/8 3} Rg6 26. Qf5 {-0.14/8 20} Rf8 27. h4 {-0.16/7 2.3} Qxb5 28.
+e3 {-0.68/8 6} Qb4 29. exd4 {-1.38/8 11} cxd4 30. Bd3 {-1.36/7 3} h6 31.
+Qe5 {-1.23/8 5} Nc7 32. Qxc7 {+0.63/8 11} Re8+ 33. Kd1 {+0.57/9 4} Rf6 34.
+Bh7+ {+1.00/8 7} Kf8 35. Bc2 {+1.46/8 5} Kg8 36. Re2 {+1.76/7 2.1} Rf8 37.
+Qxa7 {+1.24/8 7} d3 38. Bxd3 {+1.10/9 10} Rd8 39. Rd2 {+1.87/8 4} Rfd6 40.
+Qxf7+ {+3.78/9 5} Kh8 41. Qe7 {+3.78/8 9} Bd5 42. Rh3 {+3.44/7 3} Bb3+ 43.
+Ke1 {+3.75/9 10} Qc3 44. Ne4 {+5.47/8 11} Qc1+ 45. Ke2 {+5.59/9 3} R6d7 46.
+Qc5 {+5.43/8 2.0}
+{vwq resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1584"]
+[BlackElo "2015"]
+[TimeControl "120+6"]
+[Annotator "6... +0.00"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Bb4 6. e5 Qc7 {+0.00/9 21}
+7. exf6 Bxc3+ {+0.27/10 9} 8. bxc3 Qxc3+ {-0.55/9 12} 9. Qd2 Qxa1
+{-0.74/9 19} 10. Bc4 gxf6 {+1.97/9 17} 11. O-O Nc6 {+1.70/9 19} 12. c3 Qb1
+{+2.53/7 4} 13. Nb5 Ne5 {+1.98/8 17} 14. Nc7+ Kd8 {+2.47/9 3} 15. Qh6 Kxc7
+{+3.91/9 9} 16. Qxf6 Qf5 {+3.89/9 7} 17. Qxh8 Nxc4 {+3.86/9 10} 18. Qd4 b5
+{+3.78/8 10} 19. Bf4+ d6 {+4.19/9 14}
+{vwq resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "2017"]
+[BlackElo "1582"]
+[TimeControl "120+6"]
+[Annotator "2. +0.27"]
+
+1. d4 c6 2. Nf3 {+0.27/8 2.2} d5 3. Nc3 {+0.43/8 14} Nf6 4. a4 {-0.07/6 6}
+Bf5 5. e3 {+0.00/6 18} e6 6. Ne5 {+0.10/8 11} Nbd7 7. g4 {+0.11/8 16} Nxe5
+8. gxf5 {+0.54/9 16} Nc4 9. fxe6 {+0.71/9 13} fxe6 10. Bxc4 {+0.65/8 9}
+dxc4 11. Qe2 {+0.86/9 15} Bb4 12. Qxc4 {+0.81/9 9} Qe7 13. a5 {+0.99/8 6}
+O-O 14. Ra4 {+1.05/8 7} c5 15. dxc5 {+1.06/8 7} Bxc5 16. b4 {+1.11/7 8} Bd6
+17. b5 {+1.08/7 7} Rac8 18. Qb3 {+1.09/8 7} Ng4
+{vwq resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1580"]
+[BlackElo "2019"]
+[TimeControl "120+6"]
+[Annotator "6... -0.04"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Nxe4 6. Re1 Ng5 {-0.04/9 9}
+7. Nxg5 Qxg5 {+0.18/9 18} 8. d4 Qe7 {+0.19/7 13} 9. dxe5 Qh4 {-0.05/7 17}
+10. Bxc6 dxc6 {+0.09/8 14} 11. Nc3 Bf5 {+0.18/8 18} 12. Qf3 Bxc2
+{+0.64/8 15} 13. Bf4 O-O-O {+1.06/8 13} 14. Bg3 Qc4 {+1.06/8 6} 15. Rac1
+Bg6 {+1.27/7 8} 16. e6 fxe6 {+1.19/8 16} 17. Qe3 Bf5 {+2.05/8 10} 18. Qa7
+Qb4 {+2.12/8 10} 19. Qa8+ Kd7 {+2.14/10 12} 20. Rcd1+ Bd6 {+2.20/9 4} 21.
+Qa7 Ke7 {+2.20/7 2.5} 22. a3 Qxb2 {+2.30/9 12} 23. Bh4+ Kf7 {+2.51/9 5} 24.
+Bxd8 Rxd8 {+2.49/8 10} 25. Ne2 Bc2 {+2.65/8 15} 26. Rc1 Bxa3 {+2.80/8 6}
+27. Qe3 Qb4 {+3.12/8 3} 28. Nf4 Bxc1 {+4.32/8 3} 29. Qxe6+ Kf8 {+7.16/9 17}
+{vwq resigns} 0-1
+
+[Event "ICS Rated Blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "asadue"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1081"]
+[BlackElo "2021"]
+[TimeControl "120+6"]
+[Annotator "23... +2.53"]
+
+1. d4 Nf6 2. Nc3 e6 3. Bg5 h6 4. Bh4 Nc6 5. e3 Bb4 6. f4 g5 7. Bg3 h5 8.
+fxg5 Ne4 9. Qd3 Nxg3 10. hxg3 Qxg5 11. Rh3 b6 12. Nf3 Qg4 13. O-O-O Bd6 14.
+Be2 Nb4 15. Qd2 Bxg3 16. d5 Bd6 17. dxe6 Qxe6 18. Nd4 Nxa2+ 19. Kb1 Nxc3+
+20. Qxc3 Qf6 21. Rf3 Qg7 22. Bf1 Bb7 23. e4 Be5 {+2.53/8 9} 24. Rf5 c5
+{+3.36/7 2.2} 25. Rxe5+ Qxe5 {+3.14/10 5} 26. Nf5 Qxc3 {+3.17/10 7} 27.
+bxc3 Bc6 {+3.28/10 17} 28. Bd3 Rg8 {+3.50/9 4} 29. g3 Kf8 {+3.60/9 8} 30.
+Rh1 Rg5 {+3.77/10 13} 31. g4 c4 {+3.98/10 9} 32. Bxc4 Bxe4 {+4.31/9 3} 33.
+Nd6 Bxh1 {+8.66/10 7}
+{asadue resigns} 0-1
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "margulis99"]
+[Result "1/2-1/2"]
+[WhiteElo "2193"]
+[BlackElo "1662"]
+[TimeControl "60"]
+[Annotator "3. +0.26"]
+
+1. e4 e6 2. d4 c5 3. Nf3 {+0.26/7 1.0} a6 4. Nc3 {+0.80/5 4} cxd4 5. Nxd4
+{+0.43/7 1.8} b5 6. e5 {+0.64/7 1.6} Bb7 7. Qd3 {+0.76/5 0.3} Nc6 8. Bf4
+{+0.25/6 1.1} Qc7 9. Nxc6 {+0.34/6 0.4} Bxc6 10. Ne4 {+0.44/6 1.5} Bxe4 11.
+Qxe4 {+1.01/7 0.7} Qc6 12. Qxc6 {+0.99/8 2.1} dxc6 13. a4 {+0.79/8 1.9}
+O-O-O 14. axb5 {+1.61/8 1.0} axb5 15. Ra7 {+1.40/7 0.5} Ne7 16. Bd3
+{+1.19/7 0.5} Nd5 17. Ra8+ {+1.12/8 1.2} Kd7 18. Ra7+ {+0.90/8 0.8} Kc8 19.
+Ra8+ {+1.12/8 1.1} Kd7 20. Ra7+ {+0.90/8 0.9} Kc8
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "2021"]
+[BlackElo "1573"]
+[TimeControl "120+6"]
+[Annotator "7. +0.15"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. f4 Nc6 7. Nxc6
+{+0.15/8 5} bxc6 8. e5 {+0.14/8 21} dxe5 9. Qxd8+ {+0.34/10 19} Kxd8 10.
+fxe5 {+0.52/9 5} Ng4 11. Bf4 {+0.50/9 20} g6 12. Rd1+ {+0.57/8 13} Ke8 13.
+Be2 {+0.71/8 16} Nh6 14. Bf3 {+1.78/8 15} Bd7 15. Na4 {+2.09/8 14} e6 16.
+Nb6 {+4.32/8 2.3} Ra7
+{vwq resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "vwq"]
+[Black "Pigeon"]
+[Result "1-0"]
+[WhiteElo "1571"]
+[BlackElo "2023"]
+[TimeControl "120+6"]
+[Annotator "9... +0.49"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Nxd5 6. Nxf7 Kxf7 7. Qf3+
+Ke6 8. Nc3 Ne7 9. d4 c6 {+0.49/8 23} 10. dxe5 Kxe5 {+1.07/8 21} 11. Qe4+
+Kd6 {+1.25/8 19} 12. O-O Bf5 {+1.64/8 2.5} 13. Bf4+ Kd7 {+1.66/8 17} 14.
+Qe5 Bxc2 {+1.65/8 16} 15. Nxd5 cxd5 {+0.56/8 9} 16. Bb5+ Nc6 {-1.87/9 5}
+17. Qxd5+ Kc8 {-2.36/9 13} 18. Bxc6 Qxd5 {-2.83/9 13} 19. Bxd5 Kd7
+{-3.21/9 14} 20. Bxb7 Rd8 {-3.21/7 7} 21. Rac1 Bd3 {-5.00/9 19} 22. Rfe1
+Bd6 {-3.89/9 6} 23. Bc6+ Kc8 {-3.89/10 10} 24. Bg5 Kb8 {-4.02/9 8} 25. Bxd8
+Rxd8 {-4.01/9 4} 26. Re8 Rxe8 {-3.51/9 1.2} 27. Bxe8 Bf5 {-3.55/9 17} 28.
+Bc6 h5 {-3.62/9 10} 29. g3 g5 {-3.68/9 4} 30. a4 h4 {-3.59/10 5} 31. a5 h3
+{-3.54/10 12} 32. a6 Bc8 {-3.65/10 11} 33. Bb5 Be5 {-3.69/9 2.1} 34. Rc5
+Bf6 {-3.94/10 5} 35. b3 Be7 {-4.01/11 7} 36. Re5 Bf6 {-4.16/11 6} 37. Re8
+Kc7 {-4.13/11 7} 38. Rf8 Bd4 {-3.70/9 2.4} 39. Bc4 Bc3 {-3.75/9 2.3} 40. f4
+gxf4 {-3.71/11 5} 41. Rxf4 Kb6 {-3.77/10 16} 42. Kf2 Bxa6 {-3.79/11 7} 43.
+Bxa6 Kxa6 {-4.03/12 13} 44. Ke3 Kb5 {-3.97/12 10} 45. Kd3 Bb2
+{-3.97/11 2.1} 46. Rh4 Bf6 {-4.11/12 10} 47. Rxh3 Kb4 {-4.17/12 7} 48. Kc2
+a5 {-4.34/12 5} 49. Rh5 a4 {-6.20/13 6} 50. bxa4 Kxa4 {-6.20/13 5} 51. g4
+Kb4 {-6.28/13 4} 52. g5 Ba1 {-6.32/13 6} 53. Kd3 Kc5 {-6.26/13 6} 54. Ke4
+Kd6 {-6.27/13 9} 55. Rh6+ Ke7 {-5.31/13 10} 56. Kf5 Kf8 {-5.29/12 9} 57.
+Rh7 Bd4 {-5.88/13 6} 58. h4 Bc3 {-5.89/12 5} 59. h5 Kg8 {-12.73/13 4} 60.
+Kg6 Kf8 {-11.66/14 5} 61. h6 Bd4 {-13.34/13 6} 62. Rb7 Bc3 {-13.34/11 1.5}
+63. Kh7 Ke8 {-325.11/14 7} 64. g6 Kd8 {-325.11/14 8} 65. g7 Kc8
+{-325.11/13 12} 66. Rf7 Ba5 {-325.11/12 3} 67. g8=Q+ Bd8 {-325.11/11 9} 68.
+Kg6 Kb8 {-325.11/11 9} 69. Qxd8#
+{Pigeon checkmated} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "tom19"]
+[Result "1-0"]
+[WhiteElo "1993"]
+[BlackElo "1194"]
+[TimeControl "120+6"]
+[Annotator "4. -0.71"]
+
+1. d4 f5 2. c4 e6 3. e4 fxe4 4. Nc3 {-0.71/7 5} Nf6 5. Bg5 {-0.76/7 17} Bb4
+6. a3 {-0.75/9 22} Bxc3+ 7. bxc3 {-0.76/9 12} d6 8. Qc2 {-0.60/8 17} O-O 9.
+f3 {-0.54/8 16} exf3 10. Nxf3 {-0.47/8 11} Nbd7 11. Bd3 {-0.17/8 12} b6 12.
+Bxh7+ {+1.22/8 8} Nxh7 13. Bxd8 {+5.03/9 7} Rxd8 14. Qe4 {+4.94/8 6} Rb8
+15. Qxe6+ {+4.61/8 8} Kh8 16. O-O {+4.90/8 6} Ndf6 17. Qf7 {+4.78/9 15} Rf8
+18. Qxc7 {+6.45/9 8} Bb7 19. Nh4 {+6.42/8 8}
+{tom19 resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "vwq"]
+[Result "1-0"]
+[WhiteElo "1993"]
+[BlackElo "1601"]
+[TimeControl "120+6"]
+[Annotator "10. +0.34"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6 7. f4 Be7 8.
+Qf3 h6 9. Bh4 Qc7 10. O-O-O {+0.34/8 16} b5 11. e5 {+0.55/8 17} Bb7 12. Qg3
+{+1.56/8 14} dxe5 13. fxe5 {+1.61/8 10} Nd5 14. Qxg7 {+1.75/8 6} Rf8 15.
+Bxe7 {+2.92/8 15} Qxe7 16. Ne4 {+2.72/8 15} Nc6 17. Nd6+ {+4.01/8 5} Kd8
+{vwq resigns} 1-0
+
+[Event "ICS rated bullet match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "matutina"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1462"]
+[BlackElo "2178"]
+[TimeControl "60"]
+[Annotator "4... +0.16"]
+
+1. e4 Nf6 2. e5 Nd5 3. c4 Nb6 4. d3 Nc6 {+0.16/7 0.5} 5. Nf3 d6
+{+0.04/6 2.8} 6. exd6 Qxd6 {+0.19/7 1.1} 7. Be2 Bf5 {+0.29/6 1.0} 8. Nc3
+O-O-O {+0.60/6 0.9} 9. Nb5 Qf6 {+0.13/6 0.7} 10. Bg5 Qxb2 {+1.50/7 1.0} 11.
+a4 Bxd3 {+2.76/6 0.6} 12. Bxd3 Rxd3 {+2.77/7 2.0} 13. Qxd3 Qxa1+
+{+2.83/8 0.8} 14. Qd1 Qxd1+ {+2.96/8 1.1} 15. Kxd1 Nxc4 {+2.97/8 1.8} 16.
+Ke2 a6 {+3.16/7 2.0} 17. Nbd4 Nxd4+ {+3.20/8 0.8} 18. Nxd4 e5 {+3.25/8 2.4}
+19. Nf5 f6 {+3.31/8 1.5} 20. Bh4 Rg8 {+3.46/7 0.5} 21. f4 g6 {+4.47/8 1.0}
+22. Ne3 Nxe3 {+4.37/8 0.5} 23. Kxe3 exf4+ {+4.38/9 1.5} 24. Kxf4 g5+
+{+5.81/9 1.4} 25. Kf5 gxh4 {+6.13/9 1.4} 26. Kxf6 Rxg2 {+6.80/9 1.9} 27.
+Kf7 Bb4 {+7.14/8 0.6} 28. Rb1 Bc3 {+7.14/8 0.9} 29. Rc1 Bd2 {+7.60/8 0.6}
+30. Rd1 h3 {+7.75/8 1.0} 31. Kf8 Rxh2 {+8.49/8 0.8} 32. a5 Rg2
+{+9.62/8 0.6} 33. Rxd2 Rxd2 {+18.63/10 0.6} 34. Kg7 h2 {+325.11/10 0.9} 35.
+Kh8 h1=Q {+325.11/9 1.0} 36. Kg7 Qf3 {+325.11/7 0.5} 37. Kh8 Qg4
+{+325.11/7 1.0} 38. Kxh7 Rh2# {+325.11/7 0.3}
+{matutina checkmated} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "StillAlive"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1803"]
+[BlackElo "1996"]
+[TimeControl "120+6"]
+[Annotator "7... -0.36"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 d5 4. cxd5 Nxd5 5. e4 Nxc3 6. bxc3 Bg7 7. Nf3 Nc6
+{-0.36/7 4} 8. Be3 f5 {-0.21/7 25} 9. Bc4 fxe4 {-0.26/9 29} 10. Ng5 Na5
+{-0.50/8 9} 11. Bf7+ Kf8 {-0.43/9 13} 12. Be6 h6 {-0.03/7 2.3} 13. Bxc8
+hxg5 {+0.19/9 14} 14. Bg4 Qd6 {+0.59/7 7} 15. h3 c5 {+0.95/7 12} 16. O-O
+cxd4 {+1.05/9 8} 17. cxd4 Nc4 {+0.89/8 13} 18. Qb3 Qd5 {+0.73/8 7} 19. f3
+Bf6 {+0.88/8 2.9} 20. fxe4 Qxe4 {+1.06/9 13} 21. Qxc4 Qxe3+ {+0.93/9 11}
+22. Kh1 Rd8 {+0.93/7 9} 23. Rae1 Qxd4 {+1.08/10 18} 24. Qe6 Kg7 {+1.93/9 8}
+25. Re4 Qb2 {+2.12/8 4} 26. Re2 Qb4 {+2.12/8 3} 27. Ref2 Rd6 {+2.27/8 13}
+28. Qe2 Rd4 {+2.67/8 11} 29. Be6 Re4 {+4.74/8 2.9}
+{StillAlive resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "skripion"]
+[Result "1-0"]
+[WhiteElo "2004"]
+[BlackElo "1735"]
+[TimeControl "120+6"]
+[Annotator "2. +0.27"]
+
+1. d4 Nc6 2. d5 {+0.27/8 2.6} Ne5 3. Nc3 {+0.49/8 7} e6 4. Nf3 {+0.67/7 13}
+Nxf3+ 5. exf3 {+0.29/8 8} Nf6 6. dxe6 {+0.45/9 22} fxe6 7. Qd4 {+0.33/8 11}
+Be7 8. Bg5 {+0.67/7 4} O-O 9. Bb5 {+0.35/8 24} c6 10. Bd3 {+0.21/8 9} Qa5
+11. Be3 {+0.29/7 6} e5 12. Qh4 {+0.15/8 9} d5 13. Bxh7+ {+0.54/8 14} Nxh7
+14. Qxe7 {-0.10/9 9} d4 15. Bd2 {+0.12/8 7} dxc3 16. Bxc3 {+0.09/9 10} Qd8
+17. Qxd8 {-0.21/8 8} Rxd8 18. Bxe5 {-0.23/9 20} Re8 19. f4 {-0.11/10 6} Bf5
+20. O-O-O {+0.26/9 8} Rad8 21. f3 {+0.24/8 2.3} Be6 22. b3 {+0.44/9 6} Nf6
+23. Rhe1 {+0.33/8 12} Bf7 24. Rxd8 {+0.88/10 9} Rxd8 25. Bxf6 {+0.90/9 4}
+gxf6 26. Re7 {+0.77/10 7} Rb8 27. f5 {+0.89/10 8} Kf8 28. Rc7 {+1.01/10 3}
+a5 29. h4 {+1.04/10 6} a4 30. Kb2 {+0.99/10 2.5} axb3 31. axb3 {+1.02/11 9}
+Kg8 32. Kc1 {+0.93/10 3} Bd5 33. h5 {+1.14/10 2.2} Kh8 34. c4 {+1.45/11 6}
+Bg8 35. g4 {+1.14/11 11} b5 36. Rxc6 {+1.27/11 2.8} bxc4 37. bxc4
+{+0.95/12 10} Rb3 38. Rxf6 {+0.59/12 4} Rxf3 39. c5 {+0.73/11 6} Rc3+ 40.
+Kd2 {+0.74/13 12} Rxc5 41. g5 {+0.74/11 7} Rc4 42. Rh6+ {+1.31/12 3} Kg7
+43. f6+ {+1.28/11 5} Kf7 44. Rg6 {+1.42/13 11} Rc5 45. Rg7+ {+1.96/14 7}
+Kf8 46. h6 {+1.96/12 4} Rf5 47. Ke3 {+2.25/13 7} Rf1 48. h7 {+3.01/12 3}
+Bxh7 49. Rxh7 {+3.01/14 7} Rg1 50. Kf4 {+3.37/12 4} Rf1+ 51. Ke5
+{+3.65/12 3} Re1+ 52. Kf5 {+6.51/12 7} Rf1+ 53. Kg6 {+9.02/14 9} Kg8 54.
+Rb7 {+325.11/15 7}
+{skripion resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "skripion"]
+[Black "Pigeon"]
+[Result "1/2-1/2"]
+[WhiteElo "1729"]
+[BlackElo "2010"]
+[TimeControl "120+6"]
+[Annotator "9... -0.27"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 e6 6. Bc4 Nc6 7. Bb3 Be7
+8. Be3 O-O 9. f3 Qa5 {-0.27/8 9} 10. Qd2 e5 {-0.27/8 21} 11. Nf5 Bxf5
+{-0.21/9 8} 12. exf5 Nd4 {-0.37/8 20} 13. Bxd4 exd4 {-0.30/9 8} 14. Qxd4
+Qxf5 {-0.45/8 18} 15. O-O Rfc8 {-0.37/8 8} 16. Rae1 Kf8 {-0.47/8 17} 17.
+Kh1 Rc5 {-0.23/7 8} 18. Ne4 Qf4 {-0.43/8 15} 19. c3 Rh5 {-0.56/8 15} 20. g3
+Qe5 {-0.50/8 4} 21. Nxf6 Qxf6 {-0.60/8 15} 22. Re4 Qxd4 {-0.38/8 2.9} 23.
+Rxd4 Re5 {-0.35/8 11} 24. Kg2 Rd8 {-0.29/8 7} 25. f4 Re2+ {-0.26/9 12} 26.
+Rf2 Re1 {-0.46/9 21} 27. Rd1 Rxd1 {-0.38/10 6} 28. Bxd1 Bf6 {-0.28/9 6} 29.
+Bf3 d5 {-0.15/9 5} 30. Rd2 d4 {-0.29/10 10} 31. Bxb7 Rb8 {-0.69/10 4} 32.
+Bd5 dxc3 {-0.13/10 5} 33. bxc3 Bxc3 {-0.07/10 12} 34. Rc2 Rc8 {-0.02/9 5}
+35. Bb3 g6 {+0.03/9 7} 36. Kf3 Rc5 {-0.23/10 9} 37. Ke2 Bb4 {-0.13/10 7}
+38. Rxc5 Bxc5 {+0.00/11 9} 39. h3 f5 {-0.02/11 11} 40. g4 fxg4
+{-0.07/12 11} 41. hxg4 h5 {-0.06/11 2.1} 42. g5 h4 {-0.16/12 5} 43. Kf3 h3
+{-0.06/13 5} 44. Kg4 h2 {+0.45/14 5} 45. Bd5 Bd4 {+0.44/12 8} 46. f5 gxf5+
+{+0.54/13 9} 47. Kxf5 Ke7 {+0.49/12 7} 48. g6 a5 {+0.49/11 9} 49. a4 Bh8
+{+0.51/11 3} 50. Kg4 Kd6 {+0.50/11 3} 51. Be4 Be5 {+0.52/13 13} 52. Kh3 Ke6
+{+0.49/13 4} 53. Kg2 Ke7 {+0.43/12 9} 54. Bd5 Kf6 {+0.53/13 8} 55. Be4 Kg7
+{+0.44/12 3} 56. Kh1 Bd6 {+0.44/14 9} 57. Kg2 Be5 {+0.52/13 4} 58. Kh1 Bd6
+{+0.44/14 11} 59. Kg2 Kf6 {+0.51/13 4} 60. Kh1 Bb8 {+0.41/14 5} 61. Kg2 Bf4
+{+0.50/13 7} 62. Kh1 Bg3 {+0.44/14 4} 63. Kg2 Bf4 {+0.53/13 7} 64. Kh1 Bg3
+{+0.44/14 11} 65. Kg2 Bb8 {+0.53/13 3} 66. Kh1 Be5 {+0.43/14 7} 67. Kg2 Bc7
+{+0.51/13 8} 68. Kh1 Be5 {+0.43/14 5} 69. Kg2
+{Game drawn by repetition} 1/2-1/2
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "skripion"]
+[Result "1-0"]
+[WhiteElo "1999"]
+[BlackElo "1740"]
+[TimeControl "120+6"]
+[Annotator "3. +0.44"]
+
+1. e4 Nc6 2. d4 e5 3. d5 {+0.44/8 2.3} Nce7 4. Nf3 {+1.02/7 10} Ng6 5. Nc3
+{+0.89/7 18} Nf6 6. h4 {+0.62/8 22} h5 7. Bg5 {+0.56/8 15} Bc5 8. a3
+{+0.78/7 15} a5 9. Bd3 {+0.56/6 2.4} c6 10. Na4 {+0.70/7 26} Ba7 11. d6
+{+0.66/7 4} b5 12. Nc3 {+0.30/8 15} Qb6 13. Be3 {+0.15/8 4} Qb8 14. Be2
+{-0.54/8 8} Bxe3 15. fxe3 {-1.02/8 5} Ng4 16. Qd2 {+0.05/8 18} Qb6 17. Nd1
+{+0.18/7 2.3} Bb7 18. c4 {+0.19/7 7} b4 19. axb4 {-0.11/8 6} axb4 20. Rxa8+
+{-0.13/9 9} Bxa8 21. Qd3 {-0.12/7 6} f6 22. Nd2 {+0.05/8 9} Bb7 23. Bxg4
+{+0.35/8 2.2} hxg4 24. g3 {+0.34/9 18} c5 25. Nf2 {+0.32/9 6} Nf8 26. Ke2
+{+0.68/8 3} Ne6 27. Nxg4 {+0.90/8 7} Qc6 28. Ra1 {+1.35/8 4} Qb6 29. Nb3
+{+1.53/7 2.7} Bc6 30. Na5 {+1.45/8 9} O-O 31. Nxc6 {+1.71/9 8} Qxc6 32. Qd5
+{+2.08/8 5} Rc8 33. Ra7 {+2.37/9 4} Qxd5 34. exd5 {+3.08/11 8} Nf8 35. Nf2
+{+3.17/11 12} Rb8 36. Ne4 {+3.24/10 3} f5 37. Nxc5 {+4.01/11 8} Rb6 38.
+Nxd7 {+3.88/10 8} Rxd6 39. Nxe5 {+4.81/10 9} Ng6 40. Nc6 {+5.15/9 9} b3 41.
+Rb7 {+5.10/8 1.2} Nf8
+{skripion disconnected and forfeits} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "hjosic"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1731"]
+[BlackElo "2005"]
+[TimeControl "120+6"]
+[Annotator "5... +0.03"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. d3 Bc5 5. c3 d6 {+0.03/5 12} 6. O-O a6
+{+0.11/9 24} 7. Ba4 b5 {+0.20/8 5} 8. Bb3 Bg4 {+0.18/8 20} 9. h3 Bxf3
+{+0.03/8 8} 10. Qxf3 h6 {-0.04/8 19} 11. Be3 Qd7 {+0.01/8 4} 12. Nd2 a5
+{-0.07/8 7} 13. a3 a4 {+0.12/8 18} 14. Ba2 Rd8 {+0.16/8 10} 15. Rad1 Kf8
+{+0.13/8 4} 16. Rfe1 Kg8 {-0.02/8 13} 17. Nf1 Bb6 {+0.02/7 6} 18. Bxb6 cxb6
+{-0.31/9 18} 19. Ne3 Rf8 {-0.31/7 3} 20. Nf5 Ne7 {-0.35/8 6} 21. Nxe7+ Qxe7
+{-0.27/9 9} 22. d4 Rb8 {-0.27/7 2.1} 23. dxe5 dxe5 {-0.40/7 1.4} 24. Rd2
+Rd8 {-0.43/8 6} 25. Red1 Rxd2 {-0.52/9 13} 26. Rxd2 Qc7 {-0.79/8 12} 27.
+Qf5 Kf8 {-0.45/8 3} 28. g3 Ke7 {-0.24/9 9} 29. Kg2 g6 {-0.19/8 2.2} 30. Qf3
+Rc8 {-0.20/8 10} 31. Qe3 g5 {-0.16/9 17} 32. Qf3 Rd8 {-0.08/9 4} 33. Rxd8
+Qxd8 {-0.13/9 6} 34. Qf5 Qc7 {-0.16/9 12} 35. Kf3 Qd6 {-0.09/9 2.4} 36. Kg2
+Kf8 {-0.12/9 11} 37. Kh2 Kg7 {+0.78/9 3} 38. Kg2 Qd2 {+0.78/9 8} 39. Qxe5
+Qxb2 {+0.59/10 3} 40. Bd5 Qxa3 {+0.57/10 5} 41. Qd4 Qc5 {+1.22/10 10} 42.
+Qe5 a3 {+2.14/10 4} 43. h4 g4 {+3.38/11 10} 44. h5 a2 {+3.64/11 9}
+{hjosic resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "JollyJake"]
+[Result "1-0"]
+[WhiteElo "2010"]
+[BlackElo "1518"]
+[TimeControl "120+6"]
+[Annotator "4. +0.54"]
+
+1. e4 c5 2. Nf3 Nc6 3. Bb5 Nf6 4. e5 {+0.54/7 3} Nd5 5. Nc3 {+0.39/7 10}
+Nc7 6. Bc4 {+0.40/8 14} e6 7. d3 {+0.45/8 10} d5 8. exd6 {+0.50/8 12} Bxd6
+9. O-O {+0.48/7 13} O-O 10. Bg5 {+0.31/8 19} Be7 11. Bxe7 {+0.20/8 6} Nxe7
+12. Qe2 {+0.62/7 4} a6 13. Qe3 {+0.50/8 20} b5 14. Bb3 {+1.17/8 6} Qd6 15.
+Ne4 {+1.36/8 11} Ncd5 16. Nxd6 {+3.39/8 2.4} Nxe3
+{JollyJake resigns} 1-0
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "RAFALVAR"]
+[Black "Pigeon"]
+[Result "0-1"]
+[WhiteElo "1912"]
+[BlackElo "2012"]
+[TimeControl "120+6"]
+[Annotator "4... -0.23"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. O-O Nf6 {-0.23/8 5} 5. d3 a6 {+0.18/5 14}
+6. a3 d6 {-0.20/8 22} 7. h3 b5 {+0.21/8 19} 8. Ba2 O-O {+0.07/8 18} 9. Nc3
+Nd4 {+0.22/8 12} 10. Bg5 c6 {+0.35/8 7} 11. Nxd4 exd4 {+0.38/8 2.8} 12. Ne2
+h6 {+0.33/7 12} 13. Bh4 g5 {+0.48/7 12} 14. Bg3 Qe7 {+0.30/8 18} 15. f4
+Nxe4 {+0.22/8 5} 16. fxg5 Nxg3 {+1.51/8 2.5} 17. Nxg3 Qe3+ {+1.46/7 9} 18.
+Kh2 Qxg5 {+1.38/7 10} 19. Qf3 d5 {+1.41/8 6} 20. Nf5 Bxf5 {+1.60/8 4} 21.
+Qxf5 Bd6+ {+1.77/9 12} 22. Kg1 Rae8 {+1.54/8 2.3} 23. Qxg5+ hxg5
+{+1.65/10 8} 24. Rae1 Bg3 {+1.93/10 17} 25. Rc1 Re2 {+2.30/9 5} 26. Bb1 Bf4
+{+2.22/9 5} 27. Rce1 Rfe8 {+2.49/10 4} 28. Rxe2 Rxe2 {+2.46/11 5} 29. h4
+Be3+ {+2.56/10 3} 30. Kh2 Bf4+ {+2.20/10 16} 31. Kh3 Re3+ {+2.36/10 5} 32.
+Rf3 gxh4 {+2.45/10 4} 33. Rxe3 dxe3 {+10.68/12 7}
+{RAFALVAR resigns} 0-1
+
+[Event "ICS rated blitz match"]
+[Site "chessclub.com"]
+[Date "2016.11.04"]
+[Round "-"]
+[White "Pigeon"]
+[Black "RAFALVAR"]
+[Result "1-0"]
+[WhiteElo "2024"]
+[BlackElo "1900"]
+[TimeControl "120+6"]
+[Annotator "5. -0.13"]
+
+1. d4 d5 2. c4 e6 3. Nc3 c6 4. e4 dxe4 5. Nxe4 {-0.13/7 20} Nd7 6. Bd3
+{+0.29/8 19} Ngf6 7. Nc3 {+0.13/8 5} b6 8. Nf3 {+0.41/8 24} Bb7 9. O-O
+{+0.54/7 6} Be7 10. Bf4 {+0.68/7 12} O-O 11. Rc1 {+0.63/6 10} c5 12. d5
+{+0.93/8 16} exd5 13. cxd5 {+0.72/8 11} Nxd5 14. Nxd5 {+0.81/8 4} Bxd5 15.
+Bxh7+ {+0.75/8 11} Kxh7 16. Qxd5 {+0.75/8 11} Nf6 17. Qb7 {+0.89/7 6} Qd7
+18. Qxd7 {+0.73/8 2.1} Nxd7 19. Rfe1 {+0.92/8 12} Rfe8 20. Rcd1 {+0.79/8 5}
+Nf6 21. Ne5 {+0.89/8 9} Kg8 22. Nc6 {+0.73/8 11} Bf8 23. Be5 {+0.58/8 5}
+Ng4 24. Bf4 {+0.69/9 8} Rxe1+ 25. Rxe1 {+0.26/11 8} Nf6 26. Bb8 {+0.74/8 6}
+a6 27. Rd1 {+0.76/8 2.1} c4 28. Rd8 {+0.66/8 2.0} g6 29. h3 {+0.52/8 2.1}
+Kg7 30. Rd1 {+0.65/9 15} Bc5 31. Be5 {+0.54/9 6} Rc8 32. Nb8 {+1.21/9 12}
+a5 33. Nd7 {+1.87/9 3} Rc6 34. Nxf6 {+1.86/8 8} Rxf6 35. Kf1 {+2.14/10 14}
+g5 36. Rc1 {+2.59/10 9} b5 37. a4 {+2.65/10 5} Kg6 38. Bxf6 {+4.10/11 11}
+Kxf6 39. axb5 {+4.06/12 6} Bd4 40. Rxc4 {+6.01/12 9} Bxb2 41. b6
+{+6.06/12 10} Be5 42. Ra4 {+6.08/11 5} Ke6 43. Re4 {+7.90/11 9} a4 44.
+Rxe5+ {+10.42/12 7} Kxe5 45. b7 {+11.40/14 7} a3 46. b8=Q+ {+11.50/12 7}
+Kd4 47. Qd6+ {+12.56/11 7} Kc4 48. Qxa3 {+12.57/10 2.8}
+{RAFALVAR resigns} 1-0
+
