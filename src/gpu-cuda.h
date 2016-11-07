@@ -70,9 +70,13 @@ struct PIGEON_ALIGN( 32 ) SearchBatch
         return; \
     }
 
-
+/// Cuda device manager for search jobs
+/// 
 class CudaChessContext
 {
+    typedef std::stack< SearchBatch* > BatchStack;
+    typedef std::queue< SearchBatch* > BatchQueue;
+
     Mutex                       mMutex;             /// Mutex to serialize access
     bool                        mInitialized;       /// True when the CUDA device has been successfully set up
     int                         mDeviceIndex;       /// CUDA device index
@@ -81,9 +85,12 @@ class CudaChessContext
     int                         mBatchCount;        /// Number of batch buffers
     int                         mBatchSlots;        /// Number of jobs per batch
     int                         mBatchCursor;       /// FIXME
+    std::vector< cudaStream_t > mStreamId;          /// A list of available execution streams, used round-robin
+    std::vector< BatchQueue >   mStreamQueue;       /// Parallel to mStreamId, a queue of running batches per stream
     std::vector< SearchBatch >  mBatches;           /// All search batches, regardless of state
-    std::vector< cudaStream_t > mStream;            /// A list of available execution streams, used round-robin
-    int                         mStreamIndex;       /// Index of the next stream to be used
+    BatchQueue                  mDoneBatches;       /// Completed batches ready for post-processing
+    BatchStack                  mFreeBatches;       /// Batches that are available to allocate
+    int                         mStreamIndex;       /// Index of the next stream to be used for submitting a batch
     HashTable                   mHashTableHost;     /// Host-side copy of the device's hash table object
     HashTable*                  mHashTableDev;      /// Device hash table structure
     void*                       mHashMemoryDev;     /// Raw memory used by the hash table
@@ -123,9 +130,16 @@ public:
         mOutputDev      = NULL;
 
         mBatches.clear();
-        mStream.clear();
+        mStreamId.clear();
+        mStreamQueue.clear();
         mHashTableHost.Clear();
         mEvaluatorHost.SetDefaultWeights();
+
+        while( !mFreeBatches.empty() )
+            mFreeBatches.pop();
+
+        while( !mDoneBatches.empty() )
+            mDoneBatches.pop();
 
         PlatClearMemory( &mProp, sizeof( mProp ) );
     }
@@ -144,8 +158,10 @@ public:
             cudaStream_t stream;
             CUDA_REQUIRE(( cudaStreamCreateWithFlags( &stream, cudaStreamNonBlocking ) ));
 
-            mStream.push_back( stream );
+            mStreamId.push_back( stream );
         }
+
+        mStreamQueue.resize( mStreamId.size() );
 
         // Device hash table
 
@@ -178,37 +194,40 @@ public:
         CUDA_REQUIRE(( cudaMalloc( (void**) &mInputDev,  inputBufSize ) ));
         CUDA_REQUIRE(( cudaMalloc( (void**) &mOutputDev, outputBufSize ) ));
 
-        mBatches.resize( mBatchCount );
+        mBatches.reserve( mBatchCount );
         for( int i = 0; i < mBatchCount; i++ )
         {
-            SearchBatch* batch = &mBatches[i];
-            int offset = i * mBatchSlots;
+            SearchBatch batch;
+            int         offset = i * mBatchSlots;
 
-            batch->mState       = BATCH_UNUSED;
-            batch->mCount       = 0;
-            batch->mLimit       = mBatchSlots;
-            batch->mInputHost   = mInputHost  + offset;
-            batch->mInputDev    = mInputDev   + offset;
-            batch->mOutputHost  = mOutputHost + offset;
-            batch->mOutputDev   = mOutputDev  + offset;
-            batch->mHashTable   = mHashTableDev;
-            batch->mEvaluator   = mEvaluatorDev;
+            batch.mState       = BATCH_UNUSED;
+            batch.mCount       = 0;
+            batch.mLimit       = mBatchSlots;
+            batch.mInputHost   = mInputHost  + offset;
+            batch.mInputDev    = mInputDev   + offset;
+            batch.mOutputHost  = mOutputHost + offset;
+            batch.mOutputDev   = mOutputDev  + offset;
+            batch.mHashTable   = mHashTableDev;
+            batch.mEvaluator   = mEvaluatorDev;
 
-            CUDA_REQUIRE(( cudaEventCreate( &batch->mStartEvent ) ));
-            CUDA_REQUIRE(( cudaEventCreate( &batch->mEndEvent ) ));
-            CUDA_REQUIRE(( cudaEventCreateWithFlags( &batch->mReadyEvent, cudaEventDisableTiming ) ));
+            CUDA_REQUIRE(( cudaEventCreate( &batch.mStartEvent ) ));
+            CUDA_REQUIRE(( cudaEventCreate( &batch.mEndEvent ) ));
+            CUDA_REQUIRE(( cudaEventCreateWithFlags( &batch.mReadyEvent, cudaEventDisableTiming ) ));
+
+            mBatches.push_back( batch );
+            mFreeBatches.push( &mBatches.back() );
         }
 
         int coresPerSM = 0;
         switch( mProp.major )
         {
-        case 1:     coresPerSM = 8; break;
-        case 2:     coresPerSM = (mProp.minor > 0)? 48 : 32; break;
-        case 3:     coresPerSM = 192; break;
-        case 5:     coresPerSM = 128; break;
-        case 6:     coresPerSM = 64; break;
-        case 7:     coresPerSM = 128; break;
-        default:    break;
+            case 1:     coresPerSM = 8; break;
+            case 2:     coresPerSM = (mProp.minor > 0)? 48 : 32; break;
+            case 3:     coresPerSM = 192; break;
+            case 5:     coresPerSM = 128; break;
+            case 6:     coresPerSM = 64; break;
+            case 7:     coresPerSM = 128; break;
+            default:    break;
         }
 
         printf( "info string CUDA %d: %s (", mDeviceIndex, mProp.name );
@@ -253,8 +272,8 @@ public:
         if( mOutputDev )
             cudaFree( mOutputDev );
 
-        for( size_t i = 0; i < mStream.size(); i++ )
-            cudaStreamDestroy( mStream[i] );
+        for( size_t i = 0; i < mStreamId.size(); i++ )
+            cudaStreamDestroy( mStreamId[i] );
 
         for( int i = 0; i < mBatches.size(); i++ )
         {
@@ -272,99 +291,78 @@ public:
     {
         Mutex::Scope scope( mMutex );
 
-        assert( mBlockWarps > 0 );
+        assert( blockWarps > 0 );
+        assert( IsPowerOfTwo( blockWarps ) );
+
         mBlockWarps = blockWarps;
     }
 
     SearchBatch* AllocBatch()
     {
         Mutex::Scope scope( mMutex );
-        cudaSetDevice( mDeviceIndex );
 
-        for( size_t i = 0; i < mBatches.size(); i++ )
-        {
-            SearchBatch* batch = this->CycleToNextBatch();
+        if( mFreeBatches.empty() )
+            return( NULL );
 
-            if( batch->mState == BATCH_UNUSED )
-            {
-                //cudaEventCreate( &batch->mStartEvent );
-                //cudaEventCreate( &batch->mEndEvent );
-                //cudaEventCreateWithFlags( &batch->mReadyEvent, cudaEventDisableTiming );
+        SearchBatch* batch = mFreeBatches.top();
+        mFreeBatches.pop();
 
-                batch->mState   = BATCH_HOST_FILL;
-                batch->mStream  = this->CycleToNextStream();
-                batch->mCount   = 0;
+        assert( batch->mState == BATCH_UNUSED );
 
-                return( batch );
-            }
-        }
+        batch->mState   = BATCH_HOST_FILL;
+        batch->mStream  = (cudaStream_t) 0;
+        batch->mCount   = 0;
 
-        return( NULL );
+        return( batch );
     }
+
 
     void SubmitBatch( SearchBatch* batch )
     {
         Mutex::Scope scope( mMutex );
-        cudaSetDevice( mDeviceIndex );
 
         assert( batch->mState == BATCH_HOST_FILL );
         assert( batch->mCount <= batch->mLimit );
 
-        if( batch->mCount > 0 )
+        if( batch->mCount < 1 )
         {
-            extern void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize );
-
-            int blockSize  = mProp.warpSize * mBlockWarps;
-            int blockCount = (batch->mCount + blockSize - 1) / blockSize;
-
-            batch->mTickQueued = Timer::GetTick();
-            QueueSearchBatch( batch, blockCount, blockSize );
-
-            //cudaStreamSynchronize( batch->mStream );
-            batch->mState = BATCH_DEV_RUNNING;
-        }
-        else
-        {
-            batch->mState = BATCH_UNUSED;
+            this->ReleaseBatch( batch );
+            return;
         }
 
+        mStreamIndex = (mStreamIndex + 1) % mStreamId.size();
 
-        //printf( "Syncing!\n\n" );
-        //fflush( stdout );
-        //
-        //cudaDeviceSynchronize();
-        //printf( "Syncing again!\n" );
-        //cudaDeviceSynchronize();
+        batch->mStream = mStreamId[mStreamIndex];
+
+        extern void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize );
+
+        int blockSize  = mProp.warpSize * mBlockWarps;
+        int blockCount = (batch->mCount + blockSize - 1) / blockSize;
+
+        cudaSetDevice( mDeviceIndex );
+        QueueSearchBatch( batch, blockCount, blockSize );
+
+        batch->mTickQueued  = Timer::GetTick();
+        batch->mState       = BATCH_DEV_RUNNING;
+
+        mStreamQueue[mStreamIndex].push( batch );
     }
-
 
     SearchBatch* GetCompletedBatch()
     {
         Mutex::Scope scope( mMutex );
-        cudaSetDevice( mDeviceIndex );
 
-//        for( size_t i = 0; i < mBatches.size(); i++ )
-        {
-            SearchBatch* batch = this->CycleToNextBatch();
+        if( mDoneBatches.empty() )
+            this->GatherCompletedBatches();
 
-            if( batch->mState == BATCH_DEV_RUNNING )
-            {
-                if( cudaEventQuery( batch->mReadyEvent ) == cudaSuccess )
-                {
-                    PlatMemoryFence();
+        if( mDoneBatches.empty() )
+            return( NULL );
 
-                    batch->mTickReturned = Timer::GetTick();
-                    batch->mCpuLatency = (batch->mTickReturned - batch->mTickQueued) * 1000.0f / Timer::GetFrequency();
+        SearchBatch* batch = mDoneBatches.front();
+        mDoneBatches.pop();
 
-                    cudaEventElapsedTime( &batch->mGpuTime, batch->mStartEvent, batch->mEndEvent );
-
-                    batch->mState = BATCH_HOST_POST;
-                    return( batch );
-                }
-            }
-        }
-
-        return( NULL );
+        assert( batch->mState == BATCH_HOST_POST );
+        return( batch );
     }
 
     void ReleaseBatch( SearchBatch* batch )
@@ -378,21 +376,47 @@ public:
 
         batch->mState = BATCH_UNUSED;
         batch->mCount = 0;
+
+        mFreeBatches.push( batch );
     }
 
 
 private:
-    SearchBatch* CycleToNextBatch()
+    int CycleToNextStream()
     {
-        mBatchCursor = (mBatchCursor + 1) % mBatches.size();
-        return( &mBatches[mBatchCursor] );
+        assert( mStreamId.size() > 0 );
+
+        mStreamIndex = (mStreamIndex + 1) % mStreamId.size();
+        return( mStreamIndex );
     }
 
-    cudaStream_t CycleToNextStream()
+    void GatherCompletedBatches()
     {
-        mStreamIndex = (mStreamIndex + 1) % CUDA_STREAM_COUNT;
-        return( mStream[mStreamIndex] );
+        cudaSetDevice( mDeviceIndex ); // Is this required before cudaEventQuery()?
+
+        for( size_t i = 0; i < mStreamQueue.size(); i++ )
+        {
+            while( !mStreamQueue[i].empty() )
+            {
+                SearchBatch* batch = mStreamQueue[i].front();
+                assert( batch->mState == BATCH_DEV_RUNNING );
+
+                if( cudaEventQuery( batch->mReadyEvent ) != cudaSuccess )
+                    break;
+
+                mStreamQueue[i].pop();
+
+                batch->mTickReturned    = Timer::GetTick();
+                batch->mCpuLatency      = (batch->mTickReturned - batch->mTickQueued) * 1000.0f / Timer::GetFrequency();
+                batch->mState           = BATCH_HOST_POST;
+
+                cudaEventElapsedTime( &batch->mGpuTime, batch->mStartEvent, batch->mEndEvent );
+
+                mDoneBatches.push( batch );
+            }
+        }
     }
+
 
 };
 

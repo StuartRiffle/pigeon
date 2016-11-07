@@ -13,15 +13,19 @@
 #include "table.h"
 #include "search.h"
 
+#include <algorithm>
+#include <random>
+#include <string>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <list>
+#include <map>
+
+
 #include <stdio.h>
 #include <ctype.h>
 #include <time.h>
-#include <vector>
-#include <list>
-#include <string>
-#include <map>
-#include <algorithm>
-#include <random>
 
 #include "fen.h"
 #include "token.h"

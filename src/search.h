@@ -2,6 +2,8 @@
 
 #if PIGEON_ENABLE_CUDA
 #include <vector>
+#include <stack>
+#include <queue>
 #endif
 
 namespace Pigeon {
@@ -60,8 +62,7 @@ struct SearchState
         STEP_ITERATE_CHILDREN,
         STEP_ALLOC_BATCH,
         STEP_CHECK_SCORE,
-        STEP_FINALIZE,
-        STEP_DONE
+        STEP_FINALIZE
     };
 
 
@@ -109,6 +110,7 @@ struct SearchState
     SearchBatch*        mCudaBatch;
     int                 mBatchesInFlight;
     int                 mBatchLimit;
+    int                 mStepsUntilPoll;
 #endif
 
 
@@ -129,6 +131,7 @@ struct SearchState
         mCudaBatch          = NULL;
         mBatchesInFlight    = 0;
         mBatchLimit         = 0;
+        mStepsUntilPoll     = 0;
 #endif
 
 #if !PIGEON_CUDA_DEVICE
@@ -544,13 +547,7 @@ struct SearchState
     {
         // Have we popped the last frame off the stack?
 
-        if( mFrameIdx == 0 )
-        {
-            assert( mFrame[mFrameIdx].step == STEP_DONE );
-            return( true );
-        }
-
-        return( false );
+        return( mFrameIdx < 0 );
     }
 
 
@@ -653,7 +650,7 @@ struct SearchState
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
 
-    PDECL void ProcessAllCompletedBatches()
+    PDECL void CheckForCompletedBatches()
     {
         for( ;; )
         {
@@ -672,7 +669,7 @@ struct SearchState
 #endif
 
 
-    /// Advance the state of the search
+    /// Advance the current stack frame
     ///
     /// This is the core of the iterative search. On a single CPU, this is
     /// equivalent to a (tortuously) unwound recursive search. On parallel
@@ -682,11 +679,52 @@ struct SearchState
     ///
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
-
-    PDECL void Advance()
+    ///
+    PDECL INLINE Frame* AdvanceState( Frame* f )
     {
-        mMetrics->mSteps++;
+        if( f->step == STEP_PROCESS )           
+            f = this->HandleLeaf( f );
 
+        if( f->step == STEP_PROCESS )           
+        {
+            f = this->HandleMate( f );
+
+            if( f < mFrames )
+                return( f );
+        }
+
+        if( f->step == STEP_PROCESS )           
+            f = this->Quieten( f );
+
+        if( f->step == STEP_PROCESS )           
+            f = this->CheckHashTable( f );
+
+        if( f->step == STEP_PROCESS )           
+            f = this->PrepareToIterate( f );
+
+        if( f->step == STEP_ITERATE_CHILDREN )  
+            f = this->IterateChildren( f );
+
+        if( f->step == STEP_ALLOC_BATCH )       
+            f = this->AllocBatch( f );
+
+        if( f->step == STEP_CHECK_SCORE )       
+            f = this->CheckScore( f );
+
+        if( f->step == STEP_FINALIZE )          
+            f = this->StoreIntoHashTable( f );
+
+        return( f );
+    }
+
+
+    /// Take a step forward in the search
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+    ///
+    PDECL void Step()
+    {
 #if PIGEON_CUDA_HOST
 
         if( mCudaBatch && this->IsDoneIterating() )
@@ -694,31 +732,26 @@ struct SearchState
 
         if( mBatchesInFlight )
         {
-            this->ProcessAllCompletedBatches();
-
-            if( this->IsDoneIterating() )
+            if( --mStepsUntilPoll < 1 )
             {
-                if( mBatchesInFlight )
-                    PlatSleep( 1 );
+                this->CheckForCompletedBatches();
+                mStepsUntilPoll = GPU_BATCH_POLL_STEPS;
 
-                return;
+                if( this->IsDoneIterating() && mBatchesInFlight )
+                    PlatSleep( 1 );
             }
         }
+
+        if( this->IsDoneIterating() )
+            return;
 #endif
         assert( mFrameIdx >= 0 );
         assert( mFrameIdx < MAX_SEARCH_DEPTH );
 
         Frame* f = mFrames + mFrameIdx;
 
-        if( f->step == STEP_PROCESS )           f = this->HandleLeaf( f );
-        if( f->step == STEP_PROCESS )           f = this->HandleMate( f );
-        if( f->step == STEP_PROCESS )           f = this->Quieten( f );
-        if( f->step == STEP_PROCESS )           f = this->CheckHashTable( f );
-        if( f->step == STEP_PROCESS )           f = this->PrepareToIterate( f );
-        if( f->step == STEP_ITERATE_CHILDREN )  f = this->IterateChildren( f );
-        if( f->step == STEP_ALLOC_BATCH )       f = this->AllocBatch( f );
-        if( f->step == STEP_CHECK_SCORE )       f = this->CheckScore( f );
-        if( f->step == STEP_FINALIZE )          f = this->StoreIntoHashTable( f );
+        f = this->AdvanceState( f );
+        mMetrics->mSteps++;
 
         mFrameIdx = (int) (f - mFrames);
     }
@@ -728,7 +761,7 @@ struct SearchState
     ///
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
-
+    //
     PDECL void ExtractBestLine( MoveList* bestLine )
     {
         assert( this->IsDone() );
@@ -748,10 +781,8 @@ struct SearchState
 
     PDECL void PrepareSearch( const Position* root, const MoveMap* moveMap, int depth, int ply, EvalTerm score, EvalTerm alpha, EvalTerm beta )
     {
-        mFrames[0].step = STEP_DONE;
-
-        Frame* f = mFrames + 1;
-        mFrameIdx = 1;
+        Frame* f = mFrames;
+        mFrameIdx = 0;
 
         float gamePhase = mEvaluator->CalcGamePhase< POPCNT >( *root );
         mEvaluator->GenerateWeights( mWeights, gamePhase );
@@ -776,7 +807,7 @@ struct SearchState
 
         while( !this->IsDone() )
         {
-            this->Advance();
+            this->Step();
 
             if( mExitSearch && *mExitSearch )
                 break;

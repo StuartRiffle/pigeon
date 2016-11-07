@@ -42,7 +42,7 @@ __global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobO
             metrics.Clear();
         }
 
-        ss.Advance();
+        ss.Step();
 
         if( ss.IsDone() )
         {
