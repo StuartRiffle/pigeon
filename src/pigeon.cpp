@@ -3,7 +3,10 @@
 #include "platform.h"
 #include "defs.h"
 #include "bits.h"
-#include "simd.h"
+#include "cpu-sse2.h"
+#include "cpu-sse4.h"
+#include "cpu-avx2.h"
+#include "cpu-avx3.h"
 #include "position.h"
 #include "eval.h"
 #include "movelist.h"
@@ -20,7 +23,6 @@
 #include <algorithm>
 #include <random>
 
-#include "timer.h"
 #include "fen.h"
 #include "token.h"
 #include "book.h"

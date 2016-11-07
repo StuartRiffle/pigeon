@@ -3,6 +3,8 @@
 #ifndef PIGEON_GPU_H__
 #define PIGEON_GPU_H__
 
+// This file is #included from search.h, and we're already inside namespace Pigeon
+
 #if PIGEON_ENABLE_CUDA
 
 enum
@@ -22,30 +24,40 @@ struct PIGEON_ALIGN( 32 ) SearchJobInput
     EvalTerm            mAlpha;
     EvalTerm            mBeta;
     EvalTerm            mScore;
+    MoveSpec            mPath[MAX_SEARCH_DEPTH];
+    u64                 mTick;
 };
 
 struct PIGEON_ALIGN( 32 ) SearchJobOutput
 {
-	MoveList			mBestLine;
     u64                 mNodes;
+    u64                 mSteps;
 	EvalTerm			mScore;
-	//int                 mSearchDepth;
     int                 mDeepestPly;
+    MoveSpec            mPath[MAX_SEARCH_DEPTH];
 };
 
 struct PIGEON_ALIGN( 32 ) SearchBatch
 {
-    int                 mState;
-    int                 mCount;
-    int                 mLimit;
-    cudaEvent_t         mEvent;
-    cudaStream_t        mStream;
-    SearchJobInput*     mInputHost;
-    SearchJobInput*     mInputDev;
-    SearchJobOutput*    mOutputHost;
-    SearchJobOutput*    mOutputDev;
-	HashTable*          mHashTable;
-	Evaluator*          mEvaluator;
+    int                 mState;                     /// Batch state (from BATCH_* enum)
+    int                 mCount;                     /// Jobs in the batch
+    int                 mLimit;                     /// Maximum jobs in the batch (input/output buffer sizes)
+    cudaStream_t        mStream;                    /// Stream this batch was issued into
+    SearchJobInput*     mInputHost;                 /// Job input buffer, host side
+    SearchJobInput*     mInputDev;                  /// Job input buffer, device side
+    SearchJobOutput*    mOutputHost;                /// Job output buffer, host side
+    SearchJobOutput*    mOutputDev;                 /// Job output buffer, device side
+	HashTable*          mHashTable;                 /// Device hash table structure
+	Evaluator*          mEvaluator;                 /// Device evaluator structure (blending weights)
+
+    u64                 mTickQueued;                /// CPU tick when the batch was queued for execution
+    u64                 mTickReturned;              /// CPU tick when the completed batch was found
+    float               mCpuLatency;                /// CPU time elapsed (in ms) between those two ticks, represents batch processing latency
+
+    cudaEvent_t         mStartEvent;                /// GPU timer event to mark the start of kernel execution
+    cudaEvent_t         mEndEvent;                  /// GPU timer event to mark the end of kernel execution
+    cudaEvent_t         mReadyEvent;                /// GPU timer event after the results have been copied back to host memory
+    float               mGpuTime;                   /// GPU time spent executing kernel (in ms)
 };
 
 
@@ -61,26 +73,26 @@ struct PIGEON_ALIGN( 32 ) SearchBatch
 
 class CudaChessContext
 {
-    Mutex                       mMutex;
-    bool                        mInitialized;
-    int                         mDeviceIndex;
-    int                         mJobsPerThread;
-    int                         mBatchCount;
-    int                         mBatchSlots;
-    int                         mBatchCursor;
-    std::vector< SearchBatch >  mBatches;
-    cudaDeviceProp              mProp;
-    std::vector< cudaStream_t > mStream;
-    int                         mStreamIndex;
-    HashTable                   mHashTableHost;
-    HashTable*                  mHashTableDev;
-    void*                       mHashMemoryDev;
-    Evaluator                   mEvaluatorHost;
-    Evaluator*                  mEvaluatorDev;
-    SearchJobInput*             mInputHost;
-    SearchJobOutput*            mOutputHost;
-    SearchJobInput*             mInputDev;
-    SearchJobOutput*            mOutputDev;
+    Mutex                       mMutex;             /// Mutex to serialize access
+    bool                        mInitialized;       /// True when the CUDA device has been successfully set up
+    int                         mDeviceIndex;       /// CUDA device index
+    cudaDeviceProp              mProp;              /// CUDA device properties
+    int                         mBlockWarps;        /// The block size is mBlockWarps * the warp size
+    int                         mBatchCount;        /// Number of batch buffers
+    int                         mBatchSlots;        /// Number of jobs per batch
+    int                         mBatchCursor;       /// FIXME
+    std::vector< SearchBatch >  mBatches;           /// All search batches, regardless of state
+    std::vector< cudaStream_t > mStream;            /// A list of available execution streams, used round-robin
+    int                         mStreamIndex;       /// Index of the next stream to be used
+    HashTable                   mHashTableHost;     /// Host-side copy of the device's hash table object
+    HashTable*                  mHashTableDev;      /// Device hash table structure
+    void*                       mHashMemoryDev;     /// Raw memory used by the hash table
+    Evaluator                   mEvaluatorHost;     /// Host-side copy of the device's evaluator object
+    Evaluator*                  mEvaluatorDev;      /// Device evaluator object
+    SearchJobInput*             mInputHost;         /// Host-side job input buffer (each batch uses a slice)
+    SearchJobOutput*            mOutputHost;        /// Host-side job output buffer (each batch uses a slice)
+    SearchJobInput*             mInputDev;          /// Device-side job input buffer (each batch uses a slice)
+    SearchJobOutput*            mOutputDev;         /// Device-side job output buffer (each batch uses a slice)
 
 public:
     CudaChessContext()
@@ -97,7 +109,7 @@ public:
     {
         mInitialized    = false;
         mDeviceIndex    = 0;
-        mJobsPerThread  = 8;
+        mBlockWarps     = 4;
         mBatchCount     = 0;
         mBatchSlots     = 0;
         mBatchCursor    = 0;
@@ -181,6 +193,10 @@ public:
             batch->mOutputDev   = mOutputDev  + offset;
             batch->mHashTable   = mHashTableDev;
             batch->mEvaluator   = mEvaluatorDev;
+
+            CUDA_REQUIRE(( cudaEventCreate( &batch->mStartEvent ) ));
+            CUDA_REQUIRE(( cudaEventCreate( &batch->mEndEvent ) ));
+            CUDA_REQUIRE(( cudaEventCreateWithFlags( &batch->mReadyEvent, cudaEventDisableTiming ) ));
         }
 
         int coresPerSM = 0;
@@ -240,13 +256,24 @@ public:
         for( size_t i = 0; i < mStream.size(); i++ )
             cudaStreamDestroy( mStream[i] );
 
+        for( int i = 0; i < mBatches.size(); i++ )
+        {
+            SearchBatch* batch = &mBatches[i];
+
+            cudaEventDestroy( batch->mStartEvent );
+            cudaEventDestroy( batch->mEndEvent );
+            cudaEventDestroy( batch->mReadyEvent );
+        }
+
         this->Clear();
     }
 
-    void SetJobsPerThread( int jobsPerThread )
+    void SetBlockWarps( int blockWarps )
     {
-        assert( mJobsPerThread > 0 );
-        mJobsPerThread = jobsPerThread;
+        Mutex::Scope scope( mMutex );
+
+        assert( mBlockWarps > 0 );
+        mBlockWarps = blockWarps;
     }
 
     SearchBatch* AllocBatch()
@@ -260,8 +287,9 @@ public:
 
             if( batch->mState == BATCH_UNUSED )
             {
-                cudaError_t status = cudaEventCreateWithFlags( &batch->mEvent, cudaEventDisableTiming );
-                assert( status == cudaSuccess );
+                //cudaEventCreate( &batch->mStartEvent );
+                //cudaEventCreate( &batch->mEndEvent );
+                //cudaEventCreateWithFlags( &batch->mReadyEvent, cudaEventDisableTiming );
 
                 batch->mState   = BATCH_HOST_FILL;
                 batch->mStream  = this->CycleToNextStream();
@@ -286,17 +314,20 @@ public:
         {
             extern void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize );
 
-            int blockSize  = mProp.warpSize * 4;
-            int blockCount = 1;
+            int blockSize  = mProp.warpSize * mBlockWarps;
+            int blockCount = (batch->mCount + blockSize - 1) / blockSize;
 
-            while( (blockCount * blockSize * mJobsPerThread) < batch->mCount )
-                blockCount++;
-
+            batch->mTickQueued = Timer::GetTick();
             QueueSearchBatch( batch, blockCount, blockSize );
-            printf( "." );
+
+            //cudaStreamSynchronize( batch->mStream );
+            batch->mState = BATCH_DEV_RUNNING;
+        }
+        else
+        {
+            batch->mState = BATCH_UNUSED;
         }
 
-        batch->mState = BATCH_DEV_RUNNING;
 
         //printf( "Syncing!\n\n" );
         //fflush( stdout );
@@ -312,16 +343,20 @@ public:
         Mutex::Scope scope( mMutex );
         cudaSetDevice( mDeviceIndex );
 
-        for( size_t i = 0; i < mBatches.size(); i++ )
+//        for( size_t i = 0; i < mBatches.size(); i++ )
         {
             SearchBatch* batch = this->CycleToNextBatch();
 
             if( batch->mState == BATCH_DEV_RUNNING )
             {
-                if( cudaEventQuery( batch->mEvent ) == cudaSuccess )
+                if( cudaEventQuery( batch->mReadyEvent ) == cudaSuccess )
                 {
-                    cudaEventDestroy( batch->mEvent );
                     PlatMemoryFence();
+
+                    batch->mTickReturned = Timer::GetTick();
+                    batch->mCpuLatency = (batch->mTickReturned - batch->mTickQueued) * 1000.0f / Timer::GetFrequency();
+
+                    cudaEventElapsedTime( &batch->mGpuTime, batch->mStartEvent, batch->mEndEvent );
 
                     batch->mState = BATCH_HOST_POST;
                     return( batch );
@@ -336,7 +371,7 @@ public:
     {
         Mutex::Scope scope( mMutex );
 
-        int idx = batch - &mBatches[0];
+        int idx = (int) (batch - &mBatches[0]);
 
         assert( idx >= 0 );
         assert( idx < (int) mBatches.size() );

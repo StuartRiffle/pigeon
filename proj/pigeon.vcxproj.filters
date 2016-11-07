@@ -31,16 +31,10 @@
     <ClInclude Include="..\src\search.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\simd.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\table.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\terms.inc">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\timer.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\token.h">
@@ -58,7 +52,19 @@
     <ClInclude Include="..\src\tune.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\gpu.h">
+    <ClInclude Include="..\src\gpu-cuda.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu-avx2.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu-avx3.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu-sse2.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu-sse4.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -71,12 +71,12 @@ public:
         mOptions[OPTION_NUM_THREADS]        = PlatDetectCpuCores();
         mOptions[OPTION_ENABLE_SIMD]        = 1;
         mOptions[OPTION_ENABLE_POPCNT]      = 1;
-        mOptions[OPTION_ENABLE_CUDA]        = 0;
+        mOptions[OPTION_ENABLE_CUDA]        = 1;
         mOptions[OPTION_EARLY_MOVE]         = 1;
         mOptions[OPTION_GPU_HASH_SIZE]      = TT_MEGS_DEFAULT;
         mOptions[OPTION_GPU_BATCH_SIZE]     = BATCH_SIZE_DEFAULT;
         mOptions[OPTION_GPU_BATCH_COUNT]    = BATCH_COUNT_DEFAULT;
-        mOptions[OPTION_GPU_JOB_MULTIPLE]   = GPU_JOBMULT_DEFAULT;
+        mOptions[OPTION_GPU_BLOCK_WARPS]    = GPU_BLOCK_WARPS;
         mOptions[OPTION_GPU_PLIES]          = GPU_PLIES_DEFAULT;
 
         mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
@@ -615,10 +615,11 @@ private:
         {
             if( depth >= (MIN_CPU_PLIES + mOptions[OPTION_GPU_PLIES]) )
             {
-                mCudaContext.SetJobsPerThread( mOptions[OPTION_GPU_JOB_MULTIPLE] );
+                mCudaContext.SetBlockWarps( mOptions[OPTION_GPU_BLOCK_WARPS] );
 
                 ss.mCudaContext   = &mCudaContext;
-                ss.mAsyncSpawnPly = MIN_CPU_PLIES;
+                ss.mAsyncSpawnPly = depth - mOptions[OPTION_GPU_PLIES];
+                ss.mBatchLimit    = mOptions[OPTION_GPU_BATCH_COUNT];
             }
         }
 #endif

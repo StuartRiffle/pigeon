@@ -3,7 +3,6 @@
 #include "platform.h"
 #include "defs.h"
 #include "bits.h"
-#include "simd.h"
 #include "position.h"
 #include "movelist.h"
 #include "eval.h"
@@ -18,8 +17,7 @@ using namespace Pigeon;
 /// Individual searches take an unpredictable number of nodes to complete. If every thread
 /// handled only one search, it would be idle until the longest search in the batch was done.
 /// To reduce that effect, every thread processes a number of searches sequentially, in the 
-/// hope of averaging out the total number of nodes per thread. The UCI option "GPU Job Multiple"
-/// sets the number of searches per thread.
+/// hope of averaging out the total number of nodes per thread. 
 
 __global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobOutput* outputBuf, int count, int stride, HashTable* hashTable, Evaluator* evaluator )
 {
@@ -28,11 +26,8 @@ __global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobO
     SearchMetrics           metrics;
     SearchState< 1, u64 >   ss;
 
-    HashTable hashTableLocal = *hashTable;
-    Evaluator evaluatorLocal = *evaluator;
-
-    ss.mHashTable   = &hashTableLocal;
-    ss.mEvaluator   = &evaluatorLocal;
+    ss.mHashTable   = hashTable;
+    ss.mEvaluator   = evaluator;
     ss.mMetrics	    = &metrics;
 
     int idx = (blockIdx.x * blockDim.x) + threadIdx.x;
@@ -53,9 +48,11 @@ __global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobO
         {
             output->mScore          = ss.GetFinalScore();
             output->mNodes          = metrics.mNodesTotal;
+            output->mSteps          = metrics.mSteps;
             output->mDeepestPly     = ss.mDeepestPly;
 
-            ss.ExtractBestLine( &output->mBestLine );
+            for( int i = 0; i < input->mDepth; i++ )
+                output->mPath[i] = ss.mFrames[i].bestMove;
 
             input  = NULL;
             output = NULL;
@@ -83,7 +80,10 @@ void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize )
     cudaFuncSetCacheConfig( SearchPositionsOnGPU, cudaFuncCachePreferL1 );
 
     int stride = blockCount * blockSize;
+
+    cudaEventRecord( batch->mStartEvent, batch->mStream );
     SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount, stride, batch->mHashTable, batch->mEvaluator );
+    cudaEventRecord( batch->mEndEvent, batch->mStream );
 
     // Copy the outputs to host
 
@@ -91,6 +91,6 @@ void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize )
 
     // Record an event we can test for completion
 
-    cudaEventRecord( batch->mEvent, batch->mStream );
+    cudaEventRecord( batch->mReadyEvent, batch->mStream );
 }
 

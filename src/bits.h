@@ -101,5 +101,25 @@ template< typename T > INLINE PDECL   T   SlideIntoExOrtho( const T& val, const 
 template< typename T > INLINE PDECL   T   SlideIntoExDiag(  const T& val, const T& through, const T& into )   { return( SlideIntoExNW( val, through, into ) | SlideIntoExSW( val, through, into ) | SlideIntoExSE( val, through, into ) | SlideIntoExNE( val, through, into ) ); }
 
 
+template< typename SIMD, typename PACKED, typename UNPACKED >
+INLINE PDECL void Unswizzle( const PACKED* srcStruct, UNPACKED* destStruct )
+{
+    const int LANES = SimdWidth< SIMD >::LANES;
+
+    int blockSize    = (int) LANES * sizeof( SIMD );
+    int blockCount   = (int) sizeof( PACKED ) / blockSize;
+
+    const SIMD* RESTRICT    src     = (SIMD*) srcStruct;
+    SIMD* RESTRICT          dest    = (SIMD*) destStruct;
+
+    while( blockCount-- )
+    {
+        Transpose< SIMD >( src, 1, dest, sizeof( UNPACKED ) / sizeof( SIMD ) );
+
+        src  += LANES;
+        dest += 1;
+    }
+}
+
 #endif // PIGEON_BITS_H__
 };

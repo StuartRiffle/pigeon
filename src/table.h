@@ -124,12 +124,27 @@ struct HashTable
 
     INLINE PDECL void Load( const u64& hash, TableEntry& tt ) const
     {
-        tt.Unpack( mTable[hash & mMask] );
+        u64* ptr = mTable + (hash & mMask);
+
+#if PIGEON_CUDA_DEVICE
+        u64 packed = atomicAdd( ptr, 0ULL );    // 64-bit atomic load (is there a better way to do this?)
+#else
+        u64 packed = *ptr;
+#endif
+
+        tt.Unpack( packed );
     }
 
     INLINE PDECL void Store( const u64& hash, const TableEntry& tt )
     {
-        mTable[hash & mMask] = tt.Pack();
+        u64* ptr    = mTable + (hash & mMask);  
+        u64  packed = tt.Pack();
+
+#if PIGEON_CUDA_DEVICE
+        atomicExch( ptr, packed );              // 64-bit atomic store (is there a better way to do this?)
+#else
+        *ptr = packed;
+#endif
     }
 };
 

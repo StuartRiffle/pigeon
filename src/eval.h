@@ -153,8 +153,8 @@ public:
         this->CalcEvalTerms< POPCNT, SIMD >( pos, mmap, eval );
 
         SIMD    evalScore           = this->ApplyWeights( eval, weights );
-        SIMD    materialScore       = (pos.mWhiteMaterial - pos.mBlackMaterial) >> WEIGHT_SHIFT;
-        SIMD    score               = (evalScore + pos.mWhiteMaterial - pos.mBlackMaterial) >> WEIGHT_SHIFT;//materialScore;
+//        SIMD    materialScore       = (pos.mWhiteMaterial - pos.mBlackMaterial) >> WEIGHT_SHIFT;
+        SIMD    score               = evalScore;//(evalScore + pos.mWhiteMaterial - pos.mBlackMaterial) >> WEIGHT_SHIFT;//materialScore;
         SIMD    moveTargets         = mmap.CalcMoveTargets();
         SIMD    inCheck             = mmap.IsInCheck();
         SIMD    mateFlavor          = SelectIfNotZero( inCheck, (SIMD) EVAL_CHECKMATE, (SIMD) EVAL_STALEMATE );
@@ -171,7 +171,7 @@ public:
         for( int i = 1; i < EVAL_TERMS; i++ )
             score += MulLow32( eval[i], weights[i] );
 
-        return( score );//>> WEIGHT_SHIFT );
+        return( score >> WEIGHT_SHIFT );
     }
 
 
@@ -339,8 +339,6 @@ public:
 
         for( int piece = 0; piece < PIECE_TYPES; piece++ )
         {
-            i32* dest = mat->mValue[piece];
-
             // TODO (obviously)
         }
 

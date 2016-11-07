@@ -43,7 +43,7 @@ struct UCI
             printf( "option name GPU Hash"          " type spin min 4 max 8192 default %d\n",   options[OPTION_GPU_HASH_SIZE] );
             printf( "option name GPU Batch Size"    " type spin min 32 max 8192 default %d\n",  options[OPTION_GPU_BATCH_SIZE] );
             printf( "option name GPU Batch Count"   " type spin min 4 max 1024 default %d\n",   options[OPTION_GPU_BATCH_COUNT] );
-            printf( "option name GPU Job Multiple"  " type spin min 1 max 32 default %d\n",     options[OPTION_GPU_JOB_MULTIPLE] );
+            printf( "option name GPU Block Warps"   " type spin min 1 max 32 default %d\n",     options[OPTION_GPU_BLOCK_WARPS] );
             printf( "option name GPU Plies"         " type spin min 0 max 8 default %d\n",      options[OPTION_GPU_PLIES] );
 
             printf( "uciok\n" );
@@ -85,8 +85,8 @@ struct UCI
                 if( tokens.Consume( "gpu batch count" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_GPU_BATCH_COUNT, tokens.ConsumeInt() );
 
-                if( tokens.Consume( "gpu job multiple" ) && tokens.Consume( "value" ) )
-                    engine->SetOption( OPTION_GPU_JOB_MULTIPLE, tokens.ConsumeInt() );
+                if( tokens.Consume( "gpu block warps" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_GPU_BLOCK_WARPS, tokens.ConsumeInt() );
 
                 if( tokens.Consume( "gpu plies" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_GPU_PLIES, tokens.ConsumeInt() );

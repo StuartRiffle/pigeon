@@ -113,7 +113,11 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <Defines>_VARIADIC_MAX=10;</Defines>
       <PtxAsOptionV>true</PtxAsOptionV>
+      <CodeGeneration>compute_30,sm_30;%(CodeGeneration)</CodeGeneration>
+      <AdditionalOptions>-Xcudafe "--diag_suppress=negative_shift_count" %(AdditionalOptions)</AdditionalOptions>
     </CudaCompile>
+    <CudaLink />
+    <CudaLink />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -157,7 +161,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <Defines>_VARIADIC_MAX=10</Defines>
+      <CodeGeneration>%(CodeGeneration)</CodeGeneration>
+      <FastMath>true</FastMath>
+      <MaxRegCount>0</MaxRegCount>
+      <AdditionalOptions>-Xcudafe "--diag_suppress=negative_shift_count" %(AdditionalOptions)</AdditionalOptions>
     </CudaCompile>
+    <CudaLink />
+    <CudaLink />
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

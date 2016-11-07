@@ -27,4 +27,6 @@ proj/*.sln.docstates
 proj/*.VC.opendb
 proj/*.VC.db
 proj/*.pdb
+proj/*.nvact
+
 

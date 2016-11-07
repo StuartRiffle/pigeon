@@ -24,7 +24,7 @@
     #define PIGEON_ALIGN_SIMD   __align__( 32 )    
 
     #define RESTRICT            __restrict
-    #define INLINE              __inline    
+    #define INLINE              __forceinline__    
     #define PDECL               __device__
 
 #elif defined( _MSC_VER )
@@ -40,6 +40,7 @@
     #pragma warning( disable: 4996 )    // CRT security warnings
     #pragma warning( disable: 4293 )    // Shift count negative or too big (due to unused branch in templated function)
     #pragma warning( disable: 4752 )    // Found Intel(R) Advanced Vector Extensions; consider using /arch:AVX
+    #pragma warning( disable: 4554 )    // Check operator precedence for possible error; use parentheses to clarify precedence (false warning caused by nvcc compile)
     #pragma inline_recursion( on )
     #pragma inline_depth( 255 )
     
@@ -47,8 +48,7 @@
     #define PIGEON_MSVC         (1)
     #define PIGEON_ENABLE_SSE2  (1)
     #define PIGEON_ENABLE_SSE4  (1)
-    //#define PIGEON_ENABLE_AVX2  (1)
-    #define PIGEON_USE_HASH     (1)
+    #define PIGEON_ENABLE_AVX2  (1)
     #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  __declspec( align( _N ) )
     #define PIGEON_ALIGN_SIMD   __declspec( align( 32 ) )
@@ -80,7 +80,6 @@
 
     #define PIGEON_CPU          (1)
     #define PIGEON_GCC          (1)
-    #define PIGEON_USE_HASH     (1)
     #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  __attribute__(( aligned( _N ) ))
     #define PIGEON_ALIGN_SIMD   __attribute__(( aligned( 32 ) ))    
@@ -182,9 +181,11 @@ namespace Pigeon
             #if PIGEON_MSVC
                 if( POPCNT ) 
                     return( __popcnt64( val ) );
+                else // SoftCountBits64
             #elif PIGEON_GCC
                 if( POPCNT ) 
                     return( __builtin_popcountll( val ) );
+                else // SoftCountBits64
             #endif
         #endif
 
@@ -284,6 +285,7 @@ namespace Pigeon
     #endif
     }
 
+
     INLINE PDECL void PlatSleep( int ms )
     {
     #if PIGEON_MSVC
@@ -335,7 +337,39 @@ namespace Pigeon
         };
     };
 
+    struct Timer
+    {
+        u64     mStartTime;
 
+        Timer() { this->Reset(); }
+        Timer( const Timer& rhs ) : mStartTime( rhs.mStartTime ) {}
+
+        void    Reset()         { mStartTime = Timer::GetTick(); }
+        i64     GetElapsedMs()  { return( ((i64) (Timer::GetTick() - mStartTime) * 1000) / Timer::GetFrequency() ); }
+
+        static u64 GetTick()
+        { 
+    #if PIGEON_MSVC
+            LARGE_INTEGER tick; 
+            QueryPerformanceCounter( &tick ); 
+            return( tick.QuadPart ); 
+    #elif PIGEON_GCC
+            return( (u64) clock() );
+    #endif
+        }
+
+        static u64 GetFrequency()
+        {
+    #if PIGEON_MSVC
+            static LARGE_INTEGER freq = { 0 };
+            if( !freq.QuadPart )
+                QueryPerformanceFrequency( &freq );
+            return( freq.QuadPart );
+    #elif PIGEON_GCC
+            return( (u64) CLOCKS_PER_SEC );
+    #endif
+        }
+    };
 
 #endif
 

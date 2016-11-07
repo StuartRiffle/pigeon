@@ -36,6 +36,7 @@ struct SearchMetrics
     u64                 mNodesTotal;
     u64                 mNodesTotalSimd;
     u64                 mGpuNodesTotal;
+    u64                 mSteps;                 
     //u64                 mNodesAtPly[METRICS_DEPTH];
     //u64                 mHashLookupsAtPly[METRICS_DEPTH];
     //u64                 mHashHitsAtPly[METRICS_DEPTH];
@@ -45,8 +46,7 @@ struct SearchMetrics
     PDECL void Clear()        { PlatClearMemory( this, sizeof( *this ) ); }
 };
 
-
-#include "gpu.h"
+#include "gpu-cuda.h"
 
 
 template< int POPCNT, typename SIMD >
@@ -61,6 +61,7 @@ struct SearchState
         STEP_ALLOC_BATCH,
         STEP_CHECK_SCORE,
         STEP_FINALIZE,
+        STEP_DONE
     };
 
 
@@ -107,6 +108,7 @@ struct SearchState
     CudaChessContext*   mCudaContext;
     SearchBatch*        mCudaBatch;
     int                 mBatchesInFlight;
+    int                 mBatchLimit;
 #endif
 
 
@@ -115,7 +117,7 @@ struct SearchState
         mFrameIdx           = 0;
         mSearchDepth        = 0;
         mDeepestPly         = 0;
-        mAsyncSpawnPly      = -1;
+        mAsyncSpawnPly      = -10;
         mHashTable          = NULL;
         mEvaluator          = NULL;
         mMetrics            = NULL;
@@ -126,6 +128,7 @@ struct SearchState
         mCudaContext        = NULL;
         mCudaBatch          = NULL;
         mBatchesInFlight    = 0;
+        mBatchLimit         = 0;
 #endif
 
 #if !PIGEON_CUDA_DEVICE
@@ -135,8 +138,18 @@ struct SearchState
     }
 
 
+    /// Select the best move to try from the ones remaining
+    ///
+    /// This works like a selection sort. Each move chosen is swapped
+    /// into position starting from the front of the list. 
+    ///
+    /// \param f    Stack frame
+    /// \return     Move index into f->moves.mMove[]
+
     PDECL INLINE int ChooseNextMove( Frame* f )
     {
+        assert( f->moves.mTried < f->moves.mCount );
+
         int best = f->moves.mTried;
 
         for( int idx = best + 1; idx < f->moves.mCount; idx++ )
@@ -165,6 +178,11 @@ struct SearchState
     }
 
 
+    /// Terminate the search at the leaf nodes if we fail high
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL INLINE Frame* HandleLeaf( Frame* f )
     {
         mMetrics->mNodesTotal++;
@@ -188,6 +206,11 @@ struct SearchState
     }
 
 
+    /// If no moves are available, distinguish between checkmate and stalemate
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL INLINE Frame* HandleMate( Frame* f )
     {
         f->moves.UnpackMoveMap( *f->pos, *f->moveMap );
@@ -203,14 +226,22 @@ struct SearchState
     }
 
 
+    /// Quiescence search
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL INLINE Frame* Quieten( Frame* f )
     {
         if( f->depth < 1 )
         {
+            bool atStackLimit = ((mFrameIdx + 1) >= MAX_SEARCH_DEPTH);
+            bool goingCrazy = false;//(mMetrics->mSteps > 500);
+
             if( !f->inCheck )
                 f->moves.DiscardMovesBelow( CAPTURE_LOSING );
 
-            if( f->moves.mCount == 0 )
+            if( (f->moves.mCount == 0) || atStackLimit || goingCrazy )
             {
                 f->result = f->score;
                 f--;
@@ -221,9 +252,14 @@ struct SearchState
     }
 
 
+    /// Look up the current position in the hash table
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL INLINE Frame* CheckHashTable( Frame* f )
     {
-        if( f->depth > 0 )
+        if( 0 )//f->depth > 0 )
         {
             TableEntry tt;
             mHashTable->Load( f->pos->mHash, tt );
@@ -252,6 +288,11 @@ struct SearchState
     }
 
 
+    /// Initialize the per-child loop
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL INLINE Frame* PrepareToIterate( Frame* f )
     {
         if( f->onPv && (mDeepestPly > f->ply) )
@@ -269,6 +310,23 @@ struct SearchState
     }
 
 
+    /// Perform one iteration of this position's subtrees
+    ///
+    /// This is a bit of a mess. The code for applying a move to a position
+    /// to arrive at a child position is SIMD-friendly, and consequently goofy.
+    /// For scalar types, it will reduce to a simpler chunk of code. If it's
+    /// not perfect, that's ok, because most of the work is inside Position::Step()
+    /// and Position::CalcMoveMap() anyway.
+    ///
+    /// If spawnAsync, we're going to cut off the child subtree for async execution.
+    /// If all the batches are already in use, we'll have to wait in STATE_ALLOC_BATCH 
+    /// until one becomes available. That will involve processing async search results, 
+    /// which may edit the call stack in such a way that we don't need to check these
+    /// subtrees at all!
+    /// 
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL INLINE Frame* IterateChildren( Frame* f )
     {
         if( (f->movesTried >= f->moves.mCount) || (f->bestScore >= f->beta) )
@@ -277,11 +335,13 @@ struct SearchState
         }
         else
         {
-            bool spawnAsync = false;
-
 #if PIGEON_CUDA_HOST
 
-            spawnAsync = (mCudaContext && ((f->ply + 1) == mAsyncSpawnPly));
+            bool spawnAsync = (mCudaContext && ((f->ply + 1) == mAsyncSpawnPly));
+
+            if( mBatchesInFlight >= mBatchLimit )
+                spawnAsync = false;
+
             if( spawnAsync )
             {
                 if( mCudaBatch == NULL )
@@ -354,7 +414,11 @@ struct SearchState
                 input->mAlpha       = -f->beta; 
                 input->mBeta        = -f->bestScore;
 
+                for( int i = 0; i <= f->ply; i++ )
+                    input->mPath[i] = mFrames[i].bestMove;
+
                 mCudaBatch->mCount++;
+
                 if( mCudaBatch->mCount == mCudaBatch->mLimit )
                     this->FlushBatch();
 
@@ -382,6 +446,11 @@ struct SearchState
     }
 
 
+    /// Allocate a new job batch
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL INLINE Frame* AllocBatch( Frame* f )
     {
 #if PIGEON_CUDA_HOST
@@ -397,6 +466,11 @@ struct SearchState
         return( f );
     }
 
+
+    /// After processing a subtree, see if we can (effectively) raise alpha
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
 
     PDECL INLINE Frame* CheckScore( Frame* f )
     {
@@ -424,6 +498,11 @@ struct SearchState
         return( f );
     }
 
+
+    /// Write the current position into the hash table
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
 
     PDECL INLINE Frame* StoreIntoHashTable( Frame* f )
     {
@@ -454,13 +533,31 @@ struct SearchState
     }
 
 
+    /// Check if the main tree search is done
+    ///
+    /// There may still be async searches pending.
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL INLINE bool IsDoneIterating()
     {
         // Have we popped the last frame off the stack?
 
-        return( mFrameIdx < 0 );
+        if( mFrameIdx == 0 )
+        {
+            assert( mFrame[mFrameIdx].step == STEP_DONE );
+            return( true );
+        }
+
+        return( false );
     }
 
+
+    /// Check if the entire search is done, async jobs and all
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
 
     PDECL INLINE bool IsDone()
     {
@@ -470,11 +567,22 @@ struct SearchState
         if( mBatchesInFlight )
             done = false;
 #endif
+
+#if 0//PIGEON_CUDA_DEVICE
+        if( mMetrics->mSteps > 2000 )
+            done = true;
+#endif
+
         return( done );
     }
 
 
 #if PIGEON_CUDA_HOST
+
+    /// Submit a batch of async search jobs
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
 
     PDECL INLINE void FlushBatch()
     {
@@ -486,20 +594,64 @@ struct SearchState
         mBatchesInFlight++;
     }
 
+
+    /// If any of the async searches has found a new best line,
+    /// we modify the call stack accordingly. 
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL void ProcessCompletedBatch( SearchBatch* batch )
     {
         SearchJobInput*  input  = batch->mInputHost;
         SearchJobOutput* output = batch->mOutputHost;
 
+        int nodes = 0;
+        int mostSteps = 0;
         for( int i = 0; i < batch->mCount; i++ )
         {
+            nodes += (int) output->mNodes;
             mMetrics->mGpuNodesTotal += output->mNodes;
 
+            mostSteps = Max( mostSteps, (int) output->mSteps );
+
+            int deepest = input->mPly + output->mDeepestPly;
+            if( deepest > mDeepestPly )
+                mDeepestPly = deepest;
+
+            int ply = input->mPly - 1;
+            while( ply > mFrameIdx )
+                ply -= 2;
+
+            if( ply >= 0 )
+            {
+                Frame* f = mFrames + ply;
+
+                if( output->mScore > f->bestScore )
+                {
+                    //f->bestScore    = output->mScore;
+                    //f->bestMove     = f->childSpec[f->simdIdx];
+
+
+                }
+
+
+            }
 
             input++;
             output++;
         }
+
+        int npms = (int) (nodes / batch->mGpuTime);
+
+        printf( "%d jobs, %d nodes, GPU time %.1fms, CPU latency %.1fms, most steps %d, nps %dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
     }
+
+
+    /// Process any batches of async search jobs that are ready
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
 
     PDECL void ProcessAllCompletedBatches()
     {
@@ -511,7 +663,7 @@ struct SearchState
 
             mBatchesInFlight--;
             assert( mBatchesInFlight >= 0 );
-            printf( "!" );
+            //printf( "!" );
 
             this->ProcessCompletedBatch( batch );
             mCudaContext->ReleaseBatch( batch );
@@ -520,8 +672,21 @@ struct SearchState
 #endif
 
 
+    /// Advance the state of the search
+    ///
+    /// This is the core of the iterative search. On a single CPU, this is
+    /// equivalent to a (tortuously) unwound recursive search. On parallel
+    /// hardware, only some threads in a warp will be in any given state.
+    /// The others will be predicated off. But all the threads will make
+    /// forward progress of some sort in each pass.
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL void Advance()
     {
+        mMetrics->mSteps++;
+
 #if PIGEON_CUDA_HOST
 
         if( mCudaBatch && this->IsDoneIterating() )
@@ -540,7 +705,6 @@ struct SearchState
             }
         }
 #endif
-
         assert( mFrameIdx >= 0 );
         assert( mFrameIdx < MAX_SEARCH_DEPTH );
 
@@ -560,8 +724,15 @@ struct SearchState
     }
 
 
+    /// Extract the best line from the corpses of the stack frames
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
     PDECL void ExtractBestLine( MoveList* bestLine )
     {
+        assert( this->IsDone() );
+
         bestLine->Clear();
         for( int i = 0; i < mSearchDepth; i++ )
             bestLine->Append( mFrames[i].bestMove );
@@ -577,7 +748,10 @@ struct SearchState
 
     PDECL void PrepareSearch( const Position* root, const MoveMap* moveMap, int depth, int ply, EvalTerm score, EvalTerm alpha, EvalTerm beta )
     {
-        Frame* f = mFrames;
+        mFrames[0].step = STEP_DONE;
+
+        Frame* f = mFrames + 1;
+        mFrameIdx = 1;
 
         float gamePhase = mEvaluator->CalcGamePhase< POPCNT >( *root );
         mEvaluator->GenerateWeights( mWeights, gamePhase );
@@ -593,7 +767,6 @@ struct SearchState
         f->step     = STEP_PROCESS;       
 
         mSearchDepth = depth;
-        mFrameIdx = 0;
     }
 
 
