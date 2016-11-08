@@ -71,7 +71,7 @@ public:
         mOptions[OPTION_NUM_THREADS]        = PlatDetectCpuCores();
         mOptions[OPTION_ENABLE_SIMD]        = 1;
         mOptions[OPTION_ENABLE_POPCNT]      = 1;
-        mOptions[OPTION_ENABLE_CUDA]        = 1;
+        mOptions[OPTION_ENABLE_CUDA]        = 0;
         mOptions[OPTION_EARLY_MOVE]         = 1;
         mOptions[OPTION_GPU_HASH_SIZE]      = TT_MEGS_DEFAULT;
         mOptions[OPTION_GPU_BATCH_SIZE]     = BATCH_SIZE_DEFAULT;

@@ -104,6 +104,7 @@ struct SearchState
     volatile bool*      mExitSearch;
     EvalWeight          mWeights[EVAL_TERMS];
     Frame               mFrames[MAX_SEARCH_DEPTH];
+    u8                  mHistoryTable[2][64][64];   ///< Indexed as [whiteToMove][dest][src]
 
 #if PIGEON_CUDA_HOST
     CudaChessContext*   mCudaContext;
@@ -134,8 +135,10 @@ struct SearchState
         mStepsUntilPoll     = 0;
 #endif
 
-#if !PIGEON_CUDA_DEVICE
         PlatClearMemory( mWeights, sizeof( mWeights ) );
+        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
+
+#if !PIGEON_CUDA_DEVICE
         memset( mFrames, 0xAA, sizeof( mFrames ) );
 #endif
     }
@@ -262,7 +265,7 @@ struct SearchState
 
     PDECL INLINE Frame* CheckHashTable( Frame* f )
     {
-        if( 0 )//f->depth > 0 )
+        if( f->depth > 0 )
         {
             TableEntry tt;
             mHashTable->Load( f->pos->mHash, tt );
@@ -345,6 +348,9 @@ struct SearchState
             if( mBatchesInFlight >= mBatchLimit )
                 spawnAsync = false;
 
+            if( (f->movesTried == 0) )//|| f->onPv )
+                spawnAsync = false;
+
             if( spawnAsync )
             {
                 if( mCudaBatch == NULL )
@@ -418,7 +424,7 @@ struct SearchState
                 input->mBeta        = -f->bestScore;
 
                 for( int i = 0; i <= f->ply; i++ )
-                    input->mPath[i] = mFrames[i].bestMove;
+                    input->mPath[i] = mFrames[i].moves.mMove[mFrames[i].movesTried];
 
                 mCudaBatch->mCount++;
 
@@ -489,6 +495,17 @@ struct SearchState
                 //mBestLine.Clear();
                 //for( int i = 0; i <= f->ply; i++ )
                 //    mBestLine.Append( mFrames[i].bestMove );
+            }
+
+            if( f->depth > 1 )
+            {
+                const int maxHistoryPlies = sizeof( mHistoryTable[0][0][0] ) * 8 - 1;
+
+                int sidePlies   = f->ply >> 1;
+                int historyBit  = maxHistoryPlies - sidePlies;
+
+                if( historyBit >= 0 )
+                    mHistoryTable[f->pos->mWhiteToMove][f->bestMove.mDest][f->bestMove.mSrc] |= (1 << historyBit);
             }
 
             // FIXME
@@ -610,38 +627,63 @@ struct SearchState
             nodes += (int) output->mNodes;
             mMetrics->mGpuNodesTotal += output->mNodes;
 
+            // In Pigeon, the player to move is always "white". Positive scores are
+            // better for white, and negative scores are better for black.
+            //
+            // Alpha is the highest score that white is guaranteed: there exists a
+            // line of best play from both sides, down to full search depth, in which
+            // white ends up with alpha. (There may be lines that lead to higher scores,
+            // but we assume the opponent will play optimally, and not allow them).
+            //
+            // Beta is the lowest (best for black) score that black is guaranteed,
+            // in the same way.
+            //
+            // When we search a subtree, and find the line ends with a score greater
+            // than beta, we know that the current line is not optimal: the opponent
+            // would not have played the parent move, because he has already identified
+            // a better line.
+
             mostSteps = Max( mostSteps, (int) output->mSteps );
 
             int deepest = input->mPly + output->mDeepestPly;
             if( deepest > mDeepestPly )
                 mDeepestPly = deepest;
 
-            int ply = input->mPly - 1;
-            while( ply > mFrameIdx )
-                ply -= 2;
+            EvalTerm scoreAsync = -output->mScore;
 
-            if( ply >= 0 )
+            int ply = 0;
+            while( (mFrames[ply].bestMove == input->mPath[ply]) && (ply < input->mPly) )
+                ply++;
+
+            int dist = input->mPly - ply;
+            if( dist & 1 )
+                scoreAsync = -scoreAsync;
+
+            if( scoreAsync > mFrames[ply].bestScore )
             {
-                Frame* f = mFrames + ply;
+                mFrames[ply].bestScore = scoreAsync;
+                mFrames[ply].result = scoreAsync;
 
-                if( output->mScore > f->bestScore )
+                for( int i = ply; i < input->mPly; i++ )
+                    mFrames[i].bestMove = input->mPath[i];
+
+                for( int i = 0; i <= input->mDepth; i++ )
+                    mFrames[i + input->mPly].bestMove = output->mPath[i];
+
+                if( mFrameIdx > ply )
                 {
-                    //f->bestScore    = output->mScore;
-                    //f->bestMove     = f->childSpec[f->simdIdx];
+                    // Lop off the end of the callstack!
 
-
+                    mFrameIdx = ply;
                 }
-
-
             }
 
             input++;
             output++;
         }
 
-        int npms = (int) (nodes / batch->mGpuTime);
-
-        printf( "%d jobs, %d nodes, GPU time %.1fms, CPU latency %.1fms, most steps %d, nps %dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
+        //int npms = (int) (nodes / batch->mGpuTime);
+        //printf( "%d jobs, %d nodes, GPU time %.1fms, CPU latency %.1fms, most steps %d, nps %dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
     }
 
 
@@ -688,7 +730,6 @@ struct SearchState
         if( f->step == STEP_PROCESS )           
         {
             f = this->HandleMate( f );
-
             if( f < mFrames )
                 return( f );
         }

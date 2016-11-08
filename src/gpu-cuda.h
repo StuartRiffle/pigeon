@@ -346,6 +346,9 @@ public:
         batch->mState       = BATCH_DEV_RUNNING;
 
         mStreamQueue[mStreamIndex].push( batch );
+
+
+        //cudaDeviceSynchronize();
     }
 
     SearchBatch* GetCompletedBatch()

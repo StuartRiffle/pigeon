@@ -1169,21 +1169,21 @@ dl.section dd {
 
 #projectname
 {
-	font: 300% Tahoma, Arial,sans-serif;
+	font: 300% Roboto, Tahoma, Arial,sans-serif;
 	margin: 0px;
 	padding: 2px 0px;
 }
     
 #projectbrief
 {
-	font: 120% Tahoma, Arial,sans-serif;
+	font: 120% Roboto, Tahoma, Arial,sans-serif;
 	margin: 0px;
 	padding: 0px;
 }
 
 #projectnumber
 {
-	font: 50% Tahoma, Arial,sans-serif;
+	font: 50% Roboto, Tahoma, Arial,sans-serif;
 	margin: 0px;
 	padding: 0px;
 }
@@ -1194,6 +1194,8 @@ dl.section dd {
 	margin: 0px;
 	width: 100%;
 	border-bottom: 1px solid #5373B4;
+	background-color: #369;
+	color: white;
 }
 
 .image
