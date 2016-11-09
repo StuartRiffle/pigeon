@@ -40,8 +40,8 @@ struct SearchMetrics
     u64                 mGpuNodesTotal;
     u64                 mSteps;                 
     //u64                 mNodesAtPly[METRICS_DEPTH];
-    //u64                 mHashLookupsAtPly[METRICS_DEPTH];
-    //u64                 mHashHitsAtPly[METRICS_DEPTH];
+    u64                 mHashLookupsAtPly[METRICS_DEPTH];
+    u64                 mHashHitsAtPly[METRICS_DEPTH];
     //u64                 mMovesTriedByPly[METRICS_DEPTH][METRICS_MOVES];
 
     PDECL SearchMetrics()     { this->Clear(); }
@@ -267,20 +267,40 @@ struct SearchState
     {
         if( f->depth > 0 )
         {
+            mMetrics->mHashLookupsAtPly[f->ply]++;
+
             TableEntry tt;
             mHashTable->Load( f->pos->mHash, tt );
 
             u32 verify = (u32) (f->pos->mHash >> 40);
             if( tt.mHashVerify == verify )
             {
-                bool        samePlayer          = (f->pos->mWhiteToMove != 0) == tt.mWhiteMove;
-                bool        failedHighBefore    = samePlayer? tt.mFailHigh : tt.mFailLow;
-                EvalTerm    lowerBoundBefore    = samePlayer? tt.mScore    : -tt.mScore;
-                int         depthBefore         = tt.mDepth;
+                mMetrics->mHashHitsAtPly[f->ply]++;
 
-                if( failedHighBefore && (lowerBoundBefore >= f->beta) && (depthBefore >= f->depth) )
+                bool returnTableScore = false;
+
+                if( tt.mDepth >= f->depth )
                 {
-                    f->result = f->beta;
+                    if( tt.mFailHigh )
+                    {
+                        f->alpha = Max( f->alpha, tt.mScore );
+                    }
+                    else if( tt.mFailLow )
+                    {
+                        f->beta = Min( f->beta, tt.mScore );
+                    }
+                    else
+                    {
+                        returnTableScore = true;
+                    }
+                
+                    if( f->alpha >= f->beta )
+                        returnTableScore = true;
+                }
+                
+                if( returnTableScore )
+                {
+                    f->result = tt.mScore;
                     f--;
                 }
                 else
@@ -325,10 +345,6 @@ struct SearchState
     /// and Position::CalcMoveMap() anyway.
     ///
     /// If spawnAsync, we're going to cut off the child subtree for async execution.
-    /// If all the batches are already in use, we'll have to wait in STATE_ALLOC_BATCH 
-    /// until one becomes available. That will involve processing async search results, 
-    /// which may edit the call stack in such a way that we don't need to check these
-    /// subtrees at all!
     /// 
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
@@ -526,8 +542,8 @@ struct SearchState
 
     PDECL INLINE Frame* StoreIntoHashTable( Frame* f )
     {
-        bool        failedHigh  = (f->bestScore >= f->beta);
-        bool        failedLow   = (f->bestScore == f->alpha);
+        u8          failedHigh  = (f->bestScore >= f->beta)?  1 : 0;
+        u8          failedLow   = (f->bestScore == f->alpha)? 1 : 0;
         EvalTerm    result      = failedHigh? f->beta : (failedLow? f->alpha : f->bestScore);
 
         if( f->depth > 0 )
@@ -541,7 +557,6 @@ struct SearchState
             tt.mBestDest    = f->bestMove.mDest;
             tt.mFailLow     = failedLow;
             tt.mFailHigh    = failedHigh;
-            tt.mWhiteMove   = f->pos->mWhiteToMove? true : false;
 
             mHashTable->Store( f->pos->mHash, tt );
         }
@@ -650,6 +665,8 @@ struct SearchState
                 mDeepestPly = deepest;
 
             EvalTerm scoreAsync = -output->mScore;
+            assert( u16( output->mScore ) != 0xAAAA );
+            assert( u16( -output->mScore ) != 0xAAAA );
 
             int ply = 0;
             while( (mFrames[ply].bestMove == input->mPath[ply]) && (ply < input->mPly) )
@@ -659,31 +676,31 @@ struct SearchState
             if( dist & 1 )
                 scoreAsync = -scoreAsync;
 
-            if( scoreAsync > mFrames[ply].bestScore )
-            {
-                mFrames[ply].bestScore = scoreAsync;
-                mFrames[ply].result = scoreAsync;
-
-                for( int i = ply; i < input->mPly; i++ )
-                    mFrames[i].bestMove = input->mPath[i];
-
-                for( int i = 0; i <= input->mDepth; i++ )
-                    mFrames[i + input->mPly].bestMove = output->mPath[i];
-
-                if( mFrameIdx > ply )
-                {
-                    // Lop off the end of the callstack!
-
-                    mFrameIdx = ply;
-                }
-            }
+            //if( scoreAsync > mFrames[ply].bestScore )
+            //{
+            //    mFrames[ply].bestScore = scoreAsync;
+            //    mFrames[ply].result = scoreAsync;
+            //
+            //    for( int i = ply; i < input->mPly; i++ )
+            //        mFrames[i].bestMove = input->mPath[i];
+            //
+            //    for( int i = 0; i <= input->mDepth; i++ )
+            //        mFrames[i + input->mPly].bestMove = output->mPath[i];
+            //
+            //    if( mFrameIdx > ply )
+            //    {
+            //        // Lop off the end of the callstack!
+            //
+            //        mFrameIdx = ply;
+            //    }
+            //}
 
             input++;
             output++;
         }
 
-        //int npms = (int) (nodes / batch->mGpuTime);
-        //printf( "%d jobs, %d nodes, GPU time %.1fms, CPU latency %.1fms, most steps %d, nps %dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
+        int npms = (int) (nodes / batch->mGpuTime);
+        printf( "%4d jobs, %6d nodes, GPU time %6.1fms, CPU latency %6.1fms, most steps %4d, nps %4dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
     }
 
 

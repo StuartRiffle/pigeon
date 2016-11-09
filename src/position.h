@@ -319,7 +319,7 @@ struct PIGEON_ALIGN_SIMD PositionT
         SIMD    blackKing           = SelectWithMask( mBoardFlipped, ByteSwap( mWhiteKing     ), mBlackKing     );
         SIMD    castlingAndEP       = SelectWithMask( mBoardFlipped, ByteSwap( mCastlingAndEP ), mCastlingAndEP );
 
-        SIMD    allPawns            = whitePawns | blackPawns;
+        SIMD    allPawns            = (whitePawns | blackPawns) ^ mWhiteToMove;
         SIMD    hash0               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED0 ^ allPawns )      ^ blackKnights ) ^ whiteRooks  );              
         SIMD    hash1               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED1 ^ castlingAndEP ) ^ whiteBishops ) ^ blackQueens );             
         SIMD    hash2               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED2 ^ whiteKing )     ^ blackBishops ) ^ whiteQueens );             

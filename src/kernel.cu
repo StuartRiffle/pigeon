@@ -11,7 +11,6 @@
 
 using namespace Pigeon;
 
-
 /// Process a batch of search jobs
 ///
 /// Individual searches take an unpredictable number of nodes to complete. If every thread
@@ -19,7 +18,7 @@ using namespace Pigeon;
 /// To reduce that effect, every thread processes a number of searches sequentially, in the 
 /// hope of averaging out the total number of nodes per thread. 
 
-__global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobOutput* outputBuf, int count, int stride, HashTable* hashTable, Evaluator* evaluator )
+__global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobOutput* outputBuf, int count, int stride, HashTable* hashTable, Evaluator* evaluator, i32* exitFlag )
 {
     const SearchJobInput*   input   = NULL;
     SearchJobOutput*	    output  = NULL;
@@ -33,6 +32,23 @@ __global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobO
     int idx = (blockIdx.x * blockDim.x) + threadIdx.x;
     while( idx < count )
     {
+        if( exitFlag )
+        {
+            //__threadfence_system();
+            //
+            //i32 flag = atomicAdd( exitFlag, 0 );
+            //if( flag )
+            //    break;
+
+            //i32 flag = *((volatile i32*) exitFlag);
+            //if( flag )
+            //    break;
+
+            //asm( "ld.global.cg.u32 %0, [%1];" : "=r"( flag ) : "l"( exitFlag ) );
+            //if( flag )
+            //    break;
+        }
+
         if( input == NULL )
         {
             input  = inputBuf  + idx;
@@ -65,7 +81,7 @@ __global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobO
 }
 
 
-void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize )
+void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize, i32* exitFlag )
 {
     // Copy the inputs to device
 
@@ -77,12 +93,10 @@ void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize )
 
     // Run the search kernel
 
-    cudaFuncSetCacheConfig( SearchPositionsOnGPU, cudaFuncCachePreferL1 );
-
     int stride = blockCount * blockSize;
 
     cudaEventRecord( batch->mStartEvent, batch->mStream );
-    SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount, stride, batch->mHashTable, batch->mEvaluator );
+    SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount, stride, batch->mHashTable, batch->mEvaluator, exitFlag );
     cudaEventRecord( batch->mEndEvent, batch->mStream );
 
     // Copy the outputs to host

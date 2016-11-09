@@ -420,6 +420,10 @@ private:
 
     void JoinAllThreads()
     {
+        i64 cpuStallMs = 0;
+        i64 gpuStallMs = 0;
+
+        Timer cpuStallTimer;
         mExitSearch = true;
 
         while( mThreadsRunning > 0 )
@@ -428,7 +432,30 @@ private:
             mThreadsRunning--;
         }
 
+        cpuStallMs = cpuStallTimer.GetElapsedMs();
         mExitSearch = false;
+
+#if PIGEON_CUDA_HOST
+        if( mCudaContext.IsInitialized() )
+        {
+            Timer gpuStallTimer;
+            mCudaContext.CancelAllBatchesSync();
+
+            gpuStallMs = gpuStallTimer.GetElapsedMs();
+        }
+#endif
+
+        if( mDebugMode && (cpuStallMs || gpuStallMs) )
+        {
+            printf( "info string DEBUG: CPU blocked %dms", (int) cpuStallMs );
+
+#if PIGEON_CUDA_HOST
+            if( gpuStallMs )
+                printf( ", GPU blocked %dms", (int) gpuStallMs );
+#endif
+
+            printf( " in JoinAllThreads()\n" );
+        }
     }
 
     void PrintResult()

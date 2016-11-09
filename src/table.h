@@ -14,9 +14,8 @@ struct TableEntry
     u8          mDepth;
     u8          mBestSrc;
     u8          mBestDest;
-    bool        mFailLow;
-    bool        mFailHigh;
-    bool        mWhiteMove;
+    u8          mFailLow;
+    u8          mFailHigh;
 
 
     /// Pack all fields into a 64-bit word
@@ -30,8 +29,7 @@ struct TableEntry
             ((u64) mBestSrc     << 10) |
             ((u64) mBestDest    <<  4) |
             ((u64) mFailLow     <<  3) |
-            ((u64) mFailHigh    <<  2) |
-            ((u64) mWhiteMove   <<  1) );
+            ((u64) mFailHigh    <<  2) );
     }
 
 
@@ -44,9 +42,8 @@ struct TableEntry
         mDepth      = (u8)    (val >> 16);
         mBestSrc    = (u8)   ((val >> 10) & 0x3F);
         mBestDest   = (u8)   ((val >>  4) & 0x3F);
-        mFailLow    = (bool) ((val >>  3) & 1);
-        mFailHigh   = (bool) ((val >>  2) & 1);
-        mWhiteMove  = (bool) ((val >>  1) & 1);
+        mFailLow    = (u8)   ((val >>  3) & 1);
+        mFailHigh   = (u8)   ((val >>  2) & 1);
     }
 };
 

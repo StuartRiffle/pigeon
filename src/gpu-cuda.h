@@ -74,9 +74,6 @@ struct PIGEON_ALIGN( 32 ) SearchBatch
 /// 
 class CudaChessContext
 {
-    typedef std::stack< SearchBatch* > BatchStack;
-    typedef std::queue< SearchBatch* > BatchQueue;
-
     Mutex                       mMutex;             /// Mutex to serialize access
     bool                        mInitialized;       /// True when the CUDA device has been successfully set up
     int                         mDeviceIndex;       /// CUDA device index
@@ -86,16 +83,19 @@ class CudaChessContext
     int                         mBatchSlots;        /// Number of jobs per batch
     int                         mBatchCursor;       /// FIXME
     std::vector< cudaStream_t > mStreamId;          /// A list of available execution streams, used round-robin
-    std::vector< BatchQueue >   mStreamQueue;       /// Parallel to mStreamId, a queue of running batches per stream
-    std::vector< SearchBatch >  mBatches;           /// All search batches, regardless of state
-    BatchQueue                  mDoneBatches;       /// Completed batches ready for post-processing
-    BatchStack                  mFreeBatches;       /// Batches that are available to allocate
+    std::vector< SearchBatch >  mBatches;           /// All the search batch structures; queues etc point into this
+    std::queue< SearchBatch* >  mRunningBatches;    /// Batches that have been submitted
+    std::queue< SearchBatch* >  mDoneBatches;       /// Completed batches ready for post-processing
+    std::stack< SearchBatch* >  mFreeBatches;       /// Batches that are available to allocate
     int                         mStreamIndex;       /// Index of the next stream to be used for submitting a batch
     HashTable                   mHashTableHost;     /// Host-side copy of the device's hash table object
     HashTable*                  mHashTableDev;      /// Device hash table structure
     void*                       mHashMemoryDev;     /// Raw memory used by the hash table
     Evaluator                   mEvaluatorHost;     /// Host-side copy of the device's evaluator object
     Evaluator*                  mEvaluatorDev;      /// Device evaluator object
+    i32*                        mExitFlagHost;      /// Hist-side flag to trigger early exit
+    i32*                        mExitFlagDev;       /// Device-side flag to trigger early exit, set via DMA
+    cudaStream_t                mExitFlagStream;    /// A special stream to allow the exit flag to be updated while kernels are running
     SearchJobInput*             mInputHost;         /// Host-side job input buffer (each batch uses a slice)
     SearchJobOutput*            mOutputHost;        /// Host-side job output buffer (each batch uses a slice)
     SearchJobInput*             mInputDev;          /// Device-side job input buffer (each batch uses a slice)
@@ -124,22 +124,27 @@ public:
         mHashTableDev   = NULL;
         mHashMemoryDev  = NULL;
         mEvaluatorDev   = NULL;
+        mExitFlagHost   = NULL;
+        mExitFlagDev    = NULL;
         mInputHost      = NULL;
         mOutputHost     = NULL;
         mInputDev       = NULL;
         mOutputDev      = NULL;
+        mExitFlagStream = (cudaStream_t) 0;
 
         mBatches.clear();
         mStreamId.clear();
-        mStreamQueue.clear();
         mHashTableHost.Clear();
         mEvaluatorHost.SetDefaultWeights();
 
-        while( !mFreeBatches.empty() )
-            mFreeBatches.pop();
+        while( !mRunningBatches.empty() )
+            mDoneBatches.pop();
 
         while( !mDoneBatches.empty() )
             mDoneBatches.pop();
+
+        while( !mFreeBatches.empty() )
+            mFreeBatches.pop();
 
         PlatClearMemory( &mProp, sizeof( mProp ) );
     }
@@ -153,15 +158,18 @@ public:
         CUDA_REQUIRE(( cudaSetDevice( mDeviceIndex ) ));
         CUDA_REQUIRE(( cudaGetDeviceProperties( &mProp, mDeviceIndex ) ));
 
+        int leastPrio    = 0;
+        int greatestPrio = 0;
+        CUDA_REQUIRE(( cudaDeviceGetStreamPriorityRange( &leastPrio, &greatestPrio ) ));
+
         for( int i = 0; i < CUDA_STREAM_COUNT; i++ )
         {
             cudaStream_t stream;
+            //CUDA_REQUIRE(( cudaStreamCreateWithPriority( &stream, cudaStreamNonBlocking, greatestPrio + 1 ) ));
             CUDA_REQUIRE(( cudaStreamCreateWithFlags( &stream, cudaStreamNonBlocking ) ));
 
             mStreamId.push_back( stream );
         }
-
-        mStreamQueue.resize( mStreamId.size() );
 
         // Device hash table
 
@@ -183,6 +191,17 @@ public:
         CUDA_REQUIRE(( cudaMalloc( (void**) &mEvaluatorDev, sizeof( Evaluator ) ) ));
         CUDA_REQUIRE(( cudaMemcpy( mEvaluatorDev, &mEvaluatorHost, sizeof( mEvaluatorHost ), cudaMemcpyHostToDevice ) ));
 
+        // Early-exit flag
+
+        CUDA_REQUIRE(( cudaMallocHost( (void**) &mExitFlagHost, sizeof( *mExitFlagHost ) ) ));
+        *mExitFlagHost = 0;
+
+        CUDA_REQUIRE(( cudaMalloc( (void**) &mExitFlagDev, sizeof( *mExitFlagDev ) ) ));
+        CUDA_REQUIRE(( cudaMemcpy( mExitFlagDev, mExitFlagHost, sizeof( *mExitFlagHost ), cudaMemcpyHostToDevice ) ));
+
+        //CUDA_REQUIRE(( cudaStreamCreateWithPriority( &mExitFlagStream, cudaStreamNonBlocking, greatestPrio ) ));
+        CUDA_REQUIRE(( cudaStreamCreateWithFlags( &mExitFlagStream, cudaStreamNonBlocking ) ));
+
         // I/O buffers
 
         size_t inputBufSize     = mBatchCount * mBatchSlots * sizeof( SearchJobInput );
@@ -195,6 +214,7 @@ public:
         CUDA_REQUIRE(( cudaMalloc( (void**) &mOutputDev, outputBufSize ) ));
 
         mBatches.reserve( mBatchCount );
+
         for( int i = 0; i < mBatchCount; i++ )
         {
             SearchBatch batch;
@@ -241,6 +261,8 @@ public:
         printf( "%d MHz, ", mProp.clockRate / 1000 );
         printf( "%d MB)\n", mProp.totalGlobalMem / (1024 * 1024) );
 
+        CUDA_REQUIRE(( cudaDeviceSetCacheConfig( cudaFuncCachePreferL1 ) ));
+
         mInitialized = true;
     }
 
@@ -260,6 +282,9 @@ public:
         if( mEvaluatorDev )
             cudaFree( mEvaluatorDev );
 
+        if( mExitFlagDev )
+            cudaFree( mExitFlagDev );
+
         if( mInputHost )
             cudaFreeHost( mInputHost );
 
@@ -271,6 +296,12 @@ public:
 
         if( mOutputDev )
             cudaFree( mOutputDev );
+
+        if( mExitFlagHost )
+            cudaFreeHost( mExitFlagHost );
+
+        if( mExitFlagStream )
+            cudaStreamDestroy( mExitFlagStream );
 
         for( size_t i = 0; i < mStreamId.size(); i++ )
             cudaStreamDestroy( mStreamId[i] );
@@ -334,18 +365,18 @@ public:
 
         batch->mStream = mStreamId[mStreamIndex];
 
-        extern void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize );
+        extern void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize, i32* exitFlag );
 
         int blockSize  = mProp.warpSize * mBlockWarps;
         int blockCount = (batch->mCount + blockSize - 1) / blockSize;
 
         cudaSetDevice( mDeviceIndex );
-        QueueSearchBatch( batch, blockCount, blockSize );
+        QueueSearchBatch( batch, blockCount, blockSize, mExitFlagDev );
 
         batch->mTickQueued  = Timer::GetTick();
         batch->mState       = BATCH_DEV_RUNNING;
 
-        mStreamQueue[mStreamIndex].push( batch );
+        mRunningBatches.push( batch );
 
 
         //cudaDeviceSynchronize();
@@ -383,6 +414,29 @@ public:
         mFreeBatches.push( batch );
     }
 
+    void CancelAllBatchesSync()
+    {
+        Mutex::Scope scope( mMutex );
+        cudaSetDevice( mDeviceIndex );
+
+        this->SetExitFlagSync( 1 );
+
+        this->GatherCompletedBatches();
+        while( !mDoneBatches.empty() )
+        {
+            SearchBatch* batch = mDoneBatches.front();
+            mDoneBatches.pop();
+
+            this->ReleaseBatch( batch );
+        }
+
+        this->SetExitFlagSync( 0 );
+
+        assert( mDoneBatches.empty() );
+        assert( mRunningBatches.empty() );
+        assert( mFreeBatches.size() == mBatches.size() );
+    }
+
 
 private:
     int CycleToNextStream()
@@ -397,30 +451,33 @@ private:
     {
         cudaSetDevice( mDeviceIndex ); // Is this required before cudaEventQuery()?
 
-        for( size_t i = 0; i < mStreamQueue.size(); i++ )
+        while( !mRunningBatches.empty() )
         {
-            while( !mStreamQueue[i].empty() )
-            {
-                SearchBatch* batch = mStreamQueue[i].front();
-                assert( batch->mState == BATCH_DEV_RUNNING );
+            SearchBatch* batch = mRunningBatches.front();
+            assert( batch->mState == BATCH_DEV_RUNNING );
 
-                if( cudaEventQuery( batch->mReadyEvent ) != cudaSuccess )
-                    break;
+            if( cudaEventQuery( batch->mReadyEvent ) != cudaSuccess )
+                break;
 
-                mStreamQueue[i].pop();
+            mRunningBatches.pop();
 
-                batch->mTickReturned    = Timer::GetTick();
-                batch->mCpuLatency      = (batch->mTickReturned - batch->mTickQueued) * 1000.0f / Timer::GetFrequency();
-                batch->mState           = BATCH_HOST_POST;
+            batch->mTickReturned    = Timer::GetTick();
+            batch->mCpuLatency      = (batch->mTickReturned - batch->mTickQueued) * 1000.0f / Timer::GetFrequency();
+            batch->mState           = BATCH_HOST_POST;
 
-                cudaEventElapsedTime( &batch->mGpuTime, batch->mStartEvent, batch->mEndEvent );
+            cudaEventElapsedTime( &batch->mGpuTime, batch->mStartEvent, batch->mEndEvent );
 
-                mDoneBatches.push( batch );
-            }
+            mDoneBatches.push( batch );
         }
     }
 
+    void SetExitFlagSync( i32 val )
+    {
+        *mExitFlagHost = val;
+        cudaMemcpyAsync( mExitFlagDev, mExitFlagHost, sizeof( *mExitFlagHost ), cudaMemcpyHostToDevice, mExitFlagStream );
 
+        cudaDeviceSynchronize();
+    }
 };
 
 class CudaSystem
@@ -439,3 +496,4 @@ public:
 #endif // PIGEON_CUDA_HOST
 #endif // PIGEON_ENABLE_CUDA
 #endif // PIGEON_GPU_H__
+

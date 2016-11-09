@@ -57,7 +57,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 7.5.props" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -117,10 +117,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
-      <Defines>_VARIADIC_MAX=10;</Defines>
+      <Defines>PIGEON_ENABLE_CUDA=1</Defines>
       <PtxAsOptionV>true</PtxAsOptionV>
-      <CodeGeneration>compute_30,sm_30;%(CodeGeneration)</CodeGeneration>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
       <AdditionalOptions>-Xcudafe "--diag_suppress=negative_shift_count" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalCompilerOptions>
+      </AdditionalCompilerOptions>
+      <GenerateLineInfo>true</GenerateLineInfo>
     </CudaCompile>
     <CudaLink />
     <CudaLink />
@@ -166,22 +169,22 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
-      <Defines>_VARIADIC_MAX=10</Defines>
-      <CodeGeneration>%(CodeGeneration)</CodeGeneration>
+      <Defines>PIGEON_ENABLE_CUDA=1</Defines>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
       <FastMath>true</FastMath>
       <MaxRegCount>0</MaxRegCount>
       <AdditionalOptions>-Xcudafe "--diag_suppress=negative_shift_count" %(AdditionalOptions)</AdditionalOptions>
-      <GPUDebugInfo>true</GPUDebugInfo>
-      <GenerateLineInfo>true</GenerateLineInfo>
+      <AdditionalCompilerOptions>
+      </AdditionalCompilerOptions>
     </CudaCompile>
     <CudaLink />
     <CudaLink />
     <CudaLink>
-      <GPUDebugInfo>true</GPUDebugInfo>
+      <GPUDebugInfo>false</GPUDebugInfo>
     </CudaLink>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 7.5.targets" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.targets" />
   </ImportGroup>
 </Project>
