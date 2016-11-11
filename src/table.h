@@ -54,7 +54,7 @@ struct HashTable
 {
     u64*            mTable;
     u64             mMask;
-    int             mEntries;
+    u64             mEntries;
 
     HashTable() :
         mTable( NULL ),
@@ -82,7 +82,7 @@ struct HashTable
         this->Clear();
     }
 
-    int GetSize() const
+    size_t GetSize() const
     {
         return( mEntries * sizeof( u64 ) / (1024 * 1024) ); 
     }
@@ -93,7 +93,7 @@ struct HashTable
         while( ((1ULL << (keyBits + 1)) * sizeof( u64 )) <= bytes )
             keyBits++;
 
-        mEntries = 1 << keyBits;
+        mEntries = 1ULL << keyBits;
         mMask    = mEntries - 1;
     }
 

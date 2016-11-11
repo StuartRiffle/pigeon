@@ -286,6 +286,36 @@ namespace Pigeon
     }
 
 
+    INLINE PDECL void PlatSetThreadName( const char* name )
+    {
+    #if PIGEON_MSVC
+        //#pragma pack( push, 8 )
+        struct THREADNAME_INFO
+        {
+            DWORD   dwType;     
+            LPCSTR  szName;     
+            DWORD   dwThreadID; 
+            DWORD   dwFlags;    
+        };
+        //#pragma pack( pop )
+
+        THREADNAME_INFO info;
+
+        info.dwType     = 0x1000;
+        info.szName     = name;
+        info.dwThreadID = GetCurrentThreadId();
+        info.dwFlags    = 0;
+
+        __try
+        {
+            const DWORD MS_VC_EXCEPTION = 0x406D1388;
+            RaiseException( MS_VC_EXCEPTION, 0, sizeof( info ) / sizeof( ULONG_PTR ), (ULONG_PTR*) &info );
+        }
+        __except( EXCEPTION_EXECUTE_HANDLER ) {}
+    #endif
+    }
+
+
     INLINE PDECL void PlatSleep( int ms )
     {
     #if PIGEON_MSVC

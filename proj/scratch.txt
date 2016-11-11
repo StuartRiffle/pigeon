@@ -461,4 +461,88 @@ CUDA stride 0xa8
 
 
 
+info string CUDA 0: GeForce GTX 660 (CC 3.0, 960 cores, 1084 MHz, 2048 MB)
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 4 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 13 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 20 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 1942 time 30 nps 971000 pv g1f3 g7g6 g1f3 g8f6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 16188 time 53 nps 1245230 pv g1f3 g8f6 g1f3 g7g6 b1c3
+4096 jobs,  33263 nodes, GPU time  185.1ms, CPU latency  142.5ms, most steps  588, nps  179k
+4096 jobs,  21495 nodes, GPU time   70.6ms, CPU latency  213.3ms, most steps  210, nps  304k
+4096 jobs,  16632 nodes, GPU time   63.6ms, CPU latency  278.2ms, most steps  221, nps  261k
+2027 jobs,   8996 nodes, GPU time   35.0ms, CPU latency  314.1ms, most steps  372, nps  257k
+info depth 6 seldepth 22 score cp 32512 hashfull 0 nodes 103916 time 446 nps 271321 pv g1f3 g8f6 b1c3 e7e6 h1g1 b8c6
+4096 jobs,  93009 nodes, GPU time  255.5ms, CPU latency  276.8ms, most steps 1373, nps  364k
+4096 jobs,  87954 nodes, GPU time  121.8ms, CPU latency  352.7ms, most steps  728, nps  722k
+4096 jobs,  73927 nodes, GPU time  245.9ms, CPU latency  565.7ms, most steps  813, nps  300k
+4096 jobs,  60433 nodes, GPU time  282.7ms, CPU latency  842.4ms, most steps 1021, nps  213k
+4096 jobs,  61349 nodes, GPU time  206.0ms, CPU latency 1039.2ms, most steps  685, nps  297k
+4096 jobs, 104031 nodes, GPU time  158.9ms, CPU latency 1158.2ms, most steps  538, nps  654k
+4096 jobs,  61234 nodes, GPU time  228.0ms, CPU latency 1374.4ms, most steps 1710, nps  268k
+4096 jobs,  44402 nodes, GPU time   92.8ms, CPU latency 1458.0ms, most steps  276, nps  478k
+4096 jobs,  89901 nodes, GPU time   72.8ms, CPU latency 1371.0ms, most steps  308, nps 1235k
+info depth 7 seldepth 26 score cp 98 hashfull 0 nodes 1095272 time 2202 nps 627663 pv g1f3 g8f6 a2a3 g7g6 c1a3 b8c6 d3e4
+4096 jobs,  89404 nodes, GPU time   84.7ms, CPU latency   95.5ms, most steps  366, nps 1055k
+4096 jobs,  61922 nodes, GPU time   90.0ms, CPU latency  174.2ms, most steps  243, nps  688k
+4096 jobs,  61072 nodes, GPU time  152.1ms, CPU latency  316.0ms, most steps  827, nps  401k
+4096 jobs,  84326 nodes, GPU time  253.1ms, CPU latency  552.8ms, most steps 2006, nps  333k
+4096 jobs,  71650 nodes, GPU time  185.7ms, CPU latency  721.4ms, most steps  760, nps  385k
+4096 jobs,  61006 nodes, GPU time  143.0ms, CPU latency  853.7ms, most steps  393, nps  426k
+4096 jobs,  53655 nodes, GPU time  161.7ms, CPU latency  995.2ms, most steps  545, nps  331k
+4096 jobs,  47130 nodes, GPU time  131.0ms, CPU latency 1113.7ms, most steps  496, nps  359k
+4096 jobs,  50532 nodes, GPU time  181.9ms, CPU latency 1284.8ms, most steps  517, nps  277k
+4096 jobs,  91523 nodes, GPU time  201.8ms, CPU latency 1395.8ms, most steps  700, nps  453k
+4096 jobs,  54517 nodes, GPU time   94.8ms, CPU latency 1347.4ms, most steps  354, nps  574k
+4096 jobs,  47922 nodes, GPU time  144.3ms, CPU latency 1234.4ms, most steps 1214, nps  332k
+4096 jobs,  53345 nodes, GPU time  120.0ms, CPU latency 1171.7ms, most steps  365, nps  444k
+4096 jobs,  53620 nodes, GPU time   89.5ms, CPU latency 1113.8ms, most steps  332, nps  599k
 
+
+cuda=true
+simd=false
+go depth 11
+info string CUDA 0: GeForce GTX 660 (CC 3.0, 960 cores, 1084 MHz, 2048 MB)
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 4 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 12 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 20 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 1942 time 30 nps 971000 pv g1f3 g7g6 g1f3 g8f6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 16188 time 54 nps 1156285 pv g1f3 g8f6 g1f3 g7g6 b1c3
+info depth 6 seldepth 22 score cp 32512 hashfull 0 nodes 110504 time 758 nps 159457 pv g1f3 g8f6 b1c3 e7e6 h1g1 b8c6
+info depth 7 seldepth 27 score cp 110 hashfull 0 nodes 1547172 time 1877 nps 1396364 pv b1c3 g8f6 e2e3 a7a6 g2g4 f6e4 c3e4
+info depth 8 seldepth 31 score cp -40 hashfull 0 nodes 6802837 time 6157 nps 1594290 pv e2e3 g8f6 g1f3 g7g6 f2f3 b8c6 h1h2 e7d6
+info depth 9 seldepth 37 score cp 56 hashfull 15 nodes 20627148 time 18325 nps 1697009 pv e2e3 g8f6 b1c3 g7g6 b4b5 b8c6 h1h2 f8h6 b1d2
+info depth 10 seldepth 40 score cp -23 hashfull 39 nodes 54626417 time 54217 nps 1522602 pv b1c3 g8f6 d2d4 g7g6 b1c3 b8c6 e1f2 f6d5 g4e4 d5c3
+info depth 11 seldepth 45 score cp 47 hashfull 195 nodes 281641302 time 230110 nps 1601344 pv b1c3 g7g6 d2d4 b8c6 d4d5 d7d5 d2d4 g8f6 a2a5 c6a5 d1d4
+bestmove b1c3
+
+cuda=false
+simd=false
+go depth 11
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 4 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 12 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 20 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 1942 time 30 nps 1942000 pv g1f3 g7g6 g1f3 g8f6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 16188 time 54 nps 1245230 pv g1f3 g8f6 g1f3 g7g6 b1c3
+info depth 6 seldepth 16 score cp 0 hashfull 0 nodes 45095 time 111 nps 980326 pv g1f3 g7g6 e4e5 g8f6 d1g4 h6g5
+info depth 7 seldepth 21 score cp 56 hashfull 0 nodes 254091 time 366 nps 1049962 pv b1c3 g7g6 g1f3 h7h6 f3g5 h6g5 g5f6
+info depth 8 seldepth 22 score cp 0 hashfull 0 nodes 778736 time 1200 nps 949678 pv b1c3 g7g6 g1f3 g8f6 g4g5 g6h5 d1d4 b8c6
+info depth 9 seldepth 25 score cp 56 hashfull 0 nodes 3066048 time 4028 nps 1090344 pv b1c3 g7g6 g1f3 g8f6 e4e5 g6h5 e5f6 b8c6 c3e4
+info depth 10 seldepth 29 score cp 0 hashfull 7 nodes 12223323 time 16646 nps 970028 pv b1c3 g7g6 g1f3 g8f6 e4e5 b8c6 d1d4 b8c6 g2h3 d7d6
+info depth 11 seldepth 31 score cp 35 hashfull 132 nodes 114938514 time 114041 nps 1180345 pv b1c3 g7g6 e2e3 g8f6 h1h3 b8c6 g5f6 d7d6 h3f2 f6g4 h1h2
+bestmove b1c3
+
+cuda=false
+simd=true
+go depth 11
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 5 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 13 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 658 time 21 nps 658000 pv g1f3 g8f6 b1c3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 2169 time 32 nps 1084500 pv g1f3 g7g6 g1f3 h7h6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 16939 time 53 nps 1539909 pv g1f3 g8f6 b1c3 g7g6 g1f3
+info depth 6 seldepth 16 score cp 20 hashfull 0 nodes 65261 time 123 nps 1106118 pv a2a4 g7g6 a4a5 h7h6 a4a5 h6g5
+info depth 7 seldepth 19 score cp 41 hashfull 0 nodes 474489 time 525 nps 1219766 pv e2e3 g7g6 e4e5 b8c6 b1c3 g8f6 d1d4
+info depth 8 seldepth 24 score cp 20 hashfull 0 nodes 1624019 time 2000 nps 1111580 pv e2e3 g7g6 a4a5 g8f6 a4a5 b8c6 d1d4 c6d4
+info depth 9 seldepth 30 score cp 36 hashfull 0 nodes 7147941 time 7361 nps 1337313 pv e2e3 g7g6 e2e3 g8f6 e4e5 b8c6 e5f6 h7h6 h3g4
+info depth 10 seldepth 31 score cp 10 hashfull 15 nodes 27145346 time 30234 nps 1187668 pv e2e3 g7g6 c2c3 g8f6 a4a5 f6g4 a4a5 e4d2 h2h4 d2b1
+info depth 11 seldepth 31 score cp 39 hashfull 203 nodes 177580154 time 161179 nps 1356319 pv g1f3 g7g6 g1f3 h7h6 c2c3 h8h7 d4d5 b8c6 c1d2 g8f6 c1d2
+bestmove g1f3

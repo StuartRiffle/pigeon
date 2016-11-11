@@ -4,6 +4,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <memory>
 #endif
 
 namespace Pigeon {
@@ -39,13 +40,43 @@ struct SearchMetrics
     u64                 mNodesTotalSimd;
     u64                 mGpuNodesTotal;
     u64                 mSteps;                 
-    //u64                 mNodesAtPly[METRICS_DEPTH];
+    u64                 mNodesAtPly[METRICS_DEPTH];
     u64                 mHashLookupsAtPly[METRICS_DEPTH];
     u64                 mHashHitsAtPly[METRICS_DEPTH];
-    //u64                 mMovesTriedByPly[METRICS_DEPTH][METRICS_MOVES];
+    u64                 mPlyMovesTriedByOrder[METRICS_DEPTH][METRICS_MOVES];
 
     PDECL SearchMetrics()     { this->Clear(); }
     PDECL void Clear()        { PlatClearMemory( this, sizeof( *this ) ); }
+};
+
+struct SearchBatch;
+
+struct IAsyncSearcher
+{
+    virtual SearchBatch*    AllocBatch() = 0;
+    virtual void            SubmitBatch( SearchBatch* batch ) = 0;
+    virtual SearchBatch*    GetCompletedBatch() = 0;
+    virtual void            ReleaseBatch( SearchBatch* batch ) = 0;
+    virtual void            CancelAllBatchesSync() = 0;
+};
+
+
+struct HistoryTable
+{
+    HistoryTerm     mTerm[2][64][64];   /// Indexed as [whiteToMove][dest][src]
+
+    PDECL void Clear()    
+    { 
+        PlatClearMemory( this, sizeof( *this ) ); 
+    }
+
+    void Decay()
+    {
+        size_t count = sizeof( mTerm ) / sizeof( mTerm[0] );
+
+        for( int i = 0; i < count; i++ )
+            ((HistoryTerm*) mTerm)[i] >>= 1;
+    }
 };
 
 #include "gpu-cuda.h"
@@ -97,17 +128,16 @@ struct SearchState
     int                 mSearchDepth;
     int                 mDeepestPly;
     int                 mAsyncSpawnPly;
-    MoveList            mBestLine;
     HashTable*          mHashTable;
     Evaluator*          mEvaluator;
     SearchMetrics*      mMetrics;
     volatile bool*      mExitSearch;
     EvalWeight          mWeights[EVAL_TERMS];
     Frame               mFrames[MAX_SEARCH_DEPTH];
-    u8                  mHistoryTable[2][64][64];   ///< Indexed as [whiteToMove][dest][src]
+    HistoryTable*       mHistoryTable;  
 
 #if PIGEON_CUDA_HOST
-    CudaChessContext*   mCudaContext;
+    IAsyncSearcher*     mCudaSearcher;
     SearchBatch*        mCudaBatch;
     int                 mBatchesInFlight;
     int                 mBatchLimit;
@@ -125,10 +155,9 @@ struct SearchState
         mEvaluator          = NULL;
         mMetrics            = NULL;
         mExitSearch         = NULL;
-        mBestLine.Clear();
 
 #if PIGEON_CUDA_HOST
-        mCudaContext        = NULL;
+        mCudaSearcher       = NULL;
         mCudaBatch          = NULL;
         mBatchesInFlight    = 0;
         mBatchLimit         = 0;
@@ -136,7 +165,7 @@ struct SearchState
 #endif
 
         PlatClearMemory( mWeights, sizeof( mWeights ) );
-        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
+        //PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
 
 #if !PIGEON_CUDA_DEVICE
         memset( mFrames, 0xAA, sizeof( mFrames ) );
@@ -144,6 +173,38 @@ struct SearchState
     }
 
 
+
+    //--------------------------------------------------------------------------
+    /// Compare two moves and decide which should be tried first
+    ///
+    /// Effective order is:
+    ///     - Principal variation [identified by a flag]
+    ///     - Transition table move [identified by a flag]
+    ///     - Promotions (queen, rook, bishop, knight) [based on the type index]
+    ///     - Captures (winning, even, losing) [based on the type index]
+    ///     - Regular moves ordered by the history table
+    ///
+    /// \param curr         The move being considered
+    /// \param best         The best move found so far
+    /// \param whiteToMove  Used to index the history table
+    /// \return             True if move curr looks better 
+
+    PDECL INLINE bool IsBetterMove( const MoveSpec& curr, const MoveSpec& best, int whiteToMove ) const
+    {
+        if( curr.mFlags != best.mFlags )
+            return( curr.mFlags > best.mFlags );
+
+        if( curr.mType != best.mType )
+            return( curr.mType > best.mType );
+
+        HistoryTerm& currHist = mHistoryTable->mTerm[whiteToMove][curr.mDest][curr.mSrc];
+        HistoryTerm& bestHist = mHistoryTable->mTerm[whiteToMove][best.mDest][best.mSrc];
+        
+        return( currHist > bestHist );
+    }
+
+
+    //--------------------------------------------------------------------------
     /// Select the best move to try from the ones remaining
     ///
     /// This works like a selection sort. Each move chosen is swapped
@@ -151,39 +212,25 @@ struct SearchState
     ///
     /// \param f    Stack frame
     /// \return     Move index into f->moves.mMove[]
-
+    
     PDECL INLINE int ChooseNextMove( Frame* f )
     {
         assert( f->moves.mTried < f->moves.mCount );
 
-        int best = f->moves.mTried;
+        int best        = f->moves.mTried;
+        int whiteToMove = (int) f->pos->mWhiteToMove;
 
         for( int idx = best + 1; idx < f->moves.mCount; idx++ )
-        {
-            MoveSpec& bestMove = f->moves.mMove[best];
-            MoveSpec& currMove = f->moves.mMove[idx];
-
-            if( currMove.mFlags < bestMove.mFlags )
-                continue;
-
-            if( currMove.mType < bestMove.mType )
-                continue;
-
-            // FIXME: I disabled the history table to simplify things while converting from
-            // recursive to iterative search. That's done now, so this needs hooking up again.
-
-            //if( (currMove.mType == bestMove.mType) && (currMove.mFlags == bestMove.mFlags) )
-            //    if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
-            //        continue;   
-
-            best = idx;
-        }
+            if( this->IsBetterMove( f->moves.mMove[idx], f->moves.mMove[best], whiteToMove ) )
+                best = idx;
 
         Exchange( f->moves.mMove[f->moves.mTried], f->moves.mMove[best] );
+
         return( f->moves.mTried++ );        
     }
 
 
+    //--------------------------------------------------------------------------
     /// Terminate the search at the leaf nodes if we fail high
     ///
     /// \param f    Current stack frame
@@ -192,7 +239,7 @@ struct SearchState
     PDECL INLINE Frame* HandleLeaf( Frame* f )
     {
         mMetrics->mNodesTotal++;
-        //mMetrics->mNodesAtPly[f->ply]++;
+        mMetrics->mNodesAtPly[f->ply]++;
 
         if( f->ply > mDeepestPly )
             mDeepestPly = f->ply;
@@ -212,6 +259,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// If no moves are available, distinguish between checkmate and stalemate
     ///
     /// \param f    Current stack frame
@@ -232,6 +280,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Quiescence search
     ///
     /// \param f    Current stack frame
@@ -242,12 +291,11 @@ struct SearchState
         if( f->depth < 1 )
         {
             bool atStackLimit = ((mFrameIdx + 1) >= MAX_SEARCH_DEPTH);
-            bool goingCrazy = false;//(mMetrics->mSteps > 500);
 
             if( !f->inCheck )
                 f->moves.DiscardMovesBelow( CAPTURE_LOSING );
 
-            if( (f->moves.mCount == 0) || atStackLimit || goingCrazy )
+            if( (f->moves.mCount == 0) || atStackLimit )
             {
                 f->result = f->score;
                 f--;
@@ -258,6 +306,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Look up the current position in the hash table
     ///
     /// \param f    Current stack frame
@@ -277,7 +326,7 @@ struct SearchState
             {
                 mMetrics->mHashHitsAtPly[f->ply]++;
 
-                bool returnTableScore = false;
+                bool returnScore = false;
 
                 if( tt.mDepth >= f->depth )
                 {
@@ -291,21 +340,21 @@ struct SearchState
                     }
                     else
                     {
-                        returnTableScore = true;
+                        returnScore = true;
                     }
                 
                     if( f->alpha >= f->beta )
-                        returnTableScore = true;
+                        returnScore = true;
                 }
                 
-                if( returnTableScore )
+                if( returnScore )
                 {
                     f->result = tt.mScore;
                     f--;
                 }
                 else
                 {
-                    f->moves.MarkSpecialMoves( tt.mBestSrc, tt.mBestDest, FLAG_TT_BEST_MOVE );
+                    f->moves.FlagSpecialMove( tt.mBestSrc, tt.mBestDest, FLAG_TT_BEST_MOVE );
                 }
             }
         }
@@ -314,6 +363,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Initialize the per-child loop
     ///
     /// \param f    Current stack frame
@@ -321,10 +371,9 @@ struct SearchState
 
     PDECL INLINE Frame* PrepareToIterate( Frame* f )
     {
-        if( f->onPv && (mDeepestPly > f->ply) )
+        if( f->onPv && (mDeepestPly >= f->ply) )
         {
-            MoveSpec& pvMove = mBestLine.mMove[f->ply];
-            f->moves.MarkSpecialMoves( pvMove.mSrc, pvMove.mDest, FLAG_PRINCIPAL_VARIATION );
+            f->moves.FlagSpecialMove( f->bestMove.mSrc, f->bestMove.mDest, FLAG_PRINCIPAL_VARIATION );
         }
 
         f->movesTried   = 0;
@@ -336,13 +385,63 @@ struct SearchState
     }
 
 
-    /// Perform one iteration of this position's subtrees
+    //--------------------------------------------------------------------------
+    /// Step forward a group of positions in SIMD
     ///
-    /// This is a bit of a mess. The code for applying a move to a position
-    /// to arrive at a child position is SIMD-friendly, and consequently goofy.
-    /// For scalar types, it will reduce to a simpler chunk of code. If it's
-    /// not perfect, that's ok, because most of the work is inside Position::Step()
-    /// and Position::CalcMoveMap() anyway.
+    /// LANES is the SIMD width. Make that many moves in parallel, calculate
+    /// valid moves for the resulting positions, and evaluate them.
+    ///
+    /// For scalar types (including CUDA device code!) all the SIMD stuff
+    /// will mostly optimize away. The last part (from Unswizzle() on)
+    /// has a couple of copies that could be avoided.
+
+    PDECL INLINE void StepPositions( Frame* f )
+    {
+        const MaterialTable* whiteMat = NULL;
+        const MaterialTable* blackMat = NULL;
+
+        MoveSpecT< SIMD >   simdSpec;
+        PositionT< SIMD >   simdPos;
+        MoveMapT< SIMD >    simdMoveMap;
+        SIMD                simdScore;
+
+        simdSpec.mSrc  = 0;
+        simdSpec.mDest = 0;
+        simdSpec.mType = 0;
+
+        for( int idxLane = 0; idxLane < LANES; idxLane++ )
+        {
+            if( f->moves.mTried >= f->moves.mCount )
+                break;
+
+            int idxMove = this->ChooseNextMove( f );
+            f->childSpec[idxLane] = f->moves.mMove[idxMove];
+
+            SimdInsert( simdSpec.mSrc,  f->childSpec[idxLane].mSrc,  idxLane );
+            SimdInsert( simdSpec.mDest, f->childSpec[idxLane].mDest, idxLane );
+            SimdInsert( simdSpec.mType, f->childSpec[idxLane].mType, idxLane );
+        }
+
+        simdPos.Broadcast( *f->pos );
+        simdPos.Step( simdSpec, whiteMat, blackMat );
+        simdPos.CalcMoveMap( &simdMoveMap );
+        simdScore = mEvaluator->Evaluate< POPCNT, SIMD >( simdPos, simdMoveMap, mWeights );
+
+        Unswizzle< SIMD >( &simdPos,     f->childPos );
+        Unswizzle< SIMD >( &simdMoveMap, f->childMoveMap );
+
+        u64 PIGEON_ALIGN_SIMD unpackScore[LANES];
+        *((SIMD*) unpackScore) = simdScore;
+
+        for( int idxLane = 0; idxLane < LANES; idxLane++ )
+            f->childScore[idxLane] = (EvalTerm) unpackScore[idxLane];
+
+        mMetrics->mNodesTotalSimd += LANES;
+    }
+
+
+    //--------------------------------------------------------------------------
+    /// Perform one iteration of this position's subtrees
     ///
     /// If spawnAsync, we're going to cut off the child subtree for async execution.
     /// 
@@ -358,13 +457,12 @@ struct SearchState
         else
         {
 #if PIGEON_CUDA_HOST
-
-            bool spawnAsync = (mCudaContext && ((f->ply + 1) == mAsyncSpawnPly));
+            bool spawnAsync = (mCudaSearcher && ((f->ply + 1) == mAsyncSpawnPly));
 
             if( mBatchesInFlight >= mBatchLimit )
                 spawnAsync = false;
 
-            if( (f->movesTried == 0) )//|| f->onPv )
+            if( (f->movesTried < 1) || f->onPv )
                 spawnAsync = false;
 
             if( spawnAsync )
@@ -376,55 +474,15 @@ struct SearchState
                 }
             }
 #endif
-            const MaterialTable* whiteMat = NULL;
-            const MaterialTable* blackMat = NULL;
 
             f->simdIdx++;
             if( f->simdIdx >= LANES )
             {
-                MoveSpecT< SIMD >   simdSpec;
-                PositionT< SIMD >   simdPos;
-                MoveMapT< SIMD >    simdMoveMap;
-                SIMD                simdScore;
-
-                simdSpec.mSrc  = 0;
-                simdSpec.mDest = 0;
-                simdSpec.mType = 0;
-
-                for( int idxLane = 0; idxLane < LANES; idxLane++ )
-                {
-                    if( f->moves.mTried >= f->moves.mCount )
-                        break;
-
-                    int idxMove = this->ChooseNextMove( f );
-                    f->childSpec[idxLane] = f->moves.mMove[idxMove];
-
-                    SimdInsert( simdSpec.mSrc,  f->childSpec[idxLane].mSrc,  idxLane );
-                    SimdInsert( simdSpec.mDest, f->childSpec[idxLane].mDest, idxLane );
-                    SimdInsert( simdSpec.mType, f->childSpec[idxLane].mType, idxLane );
-                }
-
-                simdPos.Broadcast( *f->pos );
-                simdPos.Step( simdSpec, whiteMat, blackMat );
-                simdPos.CalcMoveMap( &simdMoveMap );
-                simdScore = mEvaluator->Evaluate< POPCNT, SIMD >( simdPos, simdMoveMap, mWeights );
-
-                Unswizzle< SIMD >( &simdPos,     f->childPos );
-                Unswizzle< SIMD >( &simdMoveMap, f->childMoveMap );
-
-                u64 PIGEON_ALIGN_SIMD unpackScore[LANES];
-                *((SIMD*) unpackScore) = simdScore;
-
-                for( int idxLane = 0; idxLane < LANES; idxLane++ )
-                    f->childScore[idxLane] = (EvalTerm) unpackScore[idxLane];
-
-                mMetrics->mNodesTotalSimd += LANES;
-
+                this->StepPositions( f );
                 f->simdIdx = 0;
             }
 
 #if PIGEON_CUDA_HOST
-
             if( spawnAsync )
             {
                 assert( mCudaBatch != NULL );
@@ -451,19 +509,23 @@ struct SearchState
                 return( f );
             }
 #endif
+
+            if( f->movesTried < METRICS_MOVES )
+                mMetrics->mPlyMovesTriedByOrder[f->ply][f->movesTried]++;
+
             Frame* n = f + 1;
 
-            n->pos      = &f->childPos[f->simdIdx];
-            n->moveMap  = &f->childMoveMap[f->simdIdx];
-            n->score    = f->childScore[f->simdIdx];
-            n->ply      = f->ply + 1; 
-            n->depth    = f->depth - 1; 
-            n->alpha    = -f->beta; 
-            n->beta     = -f->bestScore;
-            n->onPv     = (f->childSpec[f->simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false;
-            n->step     = STEP_PROCESS;
+            n->pos          = &f->childPos[f->simdIdx];
+            n->moveMap      = &f->childMoveMap[f->simdIdx];
+            n->score        = f->childScore[f->simdIdx];
+            n->ply          = f->ply + 1; 
+            n->depth        = f->depth - 1; 
+            n->alpha        = -f->beta; 
+            n->beta         = -f->bestScore;
+            n->onPv         = (f->childSpec[f->simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false;
+            n->step         = STEP_PROCESS;
 
-            f->step     = STEP_CHECK_SCORE;
+            f->step = STEP_CHECK_SCORE;
             f++;
         }
 
@@ -471,6 +533,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Allocate a new job batch
     ///
     /// \param f    Current stack frame
@@ -481,7 +544,7 @@ struct SearchState
 #if PIGEON_CUDA_HOST
         assert( mCudaBatch == NULL );
 
-        mCudaBatch = mCudaContext->AllocBatch();
+        mCudaBatch = mCudaSearcher->AllocBatch();
         if( mCudaBatch )
         {
             f->step = STEP_ITERATE_CHILDREN;
@@ -492,6 +555,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// After processing a subtree, see if we can (effectively) raise alpha
     ///
     /// \param f    Current stack frame
@@ -501,31 +565,20 @@ struct SearchState
     {
         EvalTerm subScore = -f[1].result;
 
+        bool failedHigh = (subScore >= f->beta);
+        bool failedLow  = (subScore == f->bestScore);
+
         if( subScore > f->bestScore )
         {
             f->bestScore    = subScore;
             f->bestMove     = f->childSpec[f->simdIdx];
 
-            if( subScore < f->beta )
+            if( (f->bestMove.mType == MOVE) && (f->depth > 1) )
             {
-                //mBestLine.Clear();
-                //for( int i = 0; i <= f->ply; i++ )
-                //    mBestLine.Append( mFrames[i].bestMove );
+                HistoryTerm& term = mHistoryTable->mTerm[f->pos->mWhiteToMove][f->bestMove.mDest][f->bestMove.mSrc];
+            
+                term += (1 << f->depth);
             }
-
-            if( f->depth > 1 )
-            {
-                const int maxHistoryPlies = sizeof( mHistoryTable[0][0][0] ) * 8 - 1;
-
-                int sidePlies   = f->ply >> 1;
-                int historyBit  = maxHistoryPlies - sidePlies;
-
-                if( historyBit >= 0 )
-                    mHistoryTable[f->pos->mWhiteToMove][f->bestMove.mDest][f->bestMove.mSrc] |= (1 << historyBit);
-            }
-
-            // FIXME
-            //this->RegisterBestLine( mBestLine, f->alpha, f->beta );
         }
 
         f->step = STEP_ITERATE_CHILDREN;
@@ -535,6 +588,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Write the current position into the hash table
     ///
     /// \param f    Current stack frame
@@ -568,6 +622,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Check if the main tree search is done
     ///
     /// There may still be async searches pending.
@@ -583,6 +638,7 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Check if the entire search is done, async jobs and all
     ///
     /// \param f    Current stack frame
@@ -596,18 +652,12 @@ struct SearchState
         if( mBatchesInFlight )
             done = false;
 #endif
-
-#if 0//PIGEON_CUDA_DEVICE
-        if( mMetrics->mSteps > 2000 )
-            done = true;
-#endif
-
         return( done );
     }
 
 
 #if PIGEON_CUDA_HOST
-
+    //--------------------------------------------------------------------------
     /// Submit a batch of async search jobs
     ///
     /// \param f    Current stack frame
@@ -617,13 +667,14 @@ struct SearchState
     {
         assert( mCudaBatch != NULL );
 
-        mCudaContext->SubmitBatch( mCudaBatch );
+        mCudaSearcher->SubmitBatch( mCudaBatch );
         mCudaBatch = NULL;
 
         mBatchesInFlight++;
     }
 
 
+    //--------------------------------------------------------------------------
     /// If any of the async searches has found a new best line,
     /// we modify the call stack accordingly. 
     ///
@@ -640,70 +691,55 @@ struct SearchState
         for( int i = 0; i < batch->mCount; i++ )
         {
             nodes += (int) output->mNodes;
-            mMetrics->mGpuNodesTotal += output->mNodes;
-
-            // In Pigeon, the player to move is always "white". Positive scores are
-            // better for white, and negative scores are better for black.
-            //
-            // Alpha is the highest score that white is guaranteed: there exists a
-            // line of best play from both sides, down to full search depth, in which
-            // white ends up with alpha. (There may be lines that lead to higher scores,
-            // but we assume the opponent will play optimally, and not allow them).
-            //
-            // Beta is the lowest (best for black) score that black is guaranteed,
-            // in the same way.
-            //
-            // When we search a subtree, and find the line ends with a score greater
-            // than beta, we know that the current line is not optimal: the opponent
-            // would not have played the parent move, because he has already identified
-            // a better line.
-
             mostSteps = Max( mostSteps, (int) output->mSteps );
 
-            int deepest = input->mPly + output->mDeepestPly;
-            if( deepest > mDeepestPly )
-                mDeepestPly = deepest;
+            mMetrics->mGpuNodesTotal += output->mNodes;
+
+            //int ply = input->mPly;
+            mDeepestPly = Max( mDeepestPly, input->mPly + output->mDeepestPly );
 
             EvalTerm scoreAsync = -output->mScore;
-            assert( u16( output->mScore ) != 0xAAAA );
-            assert( u16( -output->mScore ) != 0xAAAA );
 
-            int ply = 0;
-            while( (mFrames[ply].bestMove == input->mPath[ply]) && (ply < input->mPly) )
-                ply++;
+            int sharedMoves = 0;
+            while( (mFrames[sharedMoves].bestMove == input->mPath[sharedMoves]) && (sharedMoves <= input->mPly) )
+                sharedMoves++;
 
-            int dist = input->mPly - ply;
-            if( dist & 1 )
-                scoreAsync = -scoreAsync;
 
-            //if( scoreAsync > mFrames[ply].bestScore )
-            //{
-            //    mFrames[ply].bestScore = scoreAsync;
-            //    mFrames[ply].result = scoreAsync;
-            //
-            //    for( int i = ply; i < input->mPly; i++ )
-            //        mFrames[i].bestMove = input->mPath[i];
-            //
-            //    for( int i = 0; i <= input->mDepth; i++ )
-            //        mFrames[i + input->mPly].bestMove = output->mPath[i];
-            //
-            //    if( mFrameIdx > ply )
-            //    {
-            //        // Lop off the end of the callstack!
-            //
-            //        mFrameIdx = ply;
-            //    }
-            //}
+            int ply = input->mPly;
+            while( (ply > mFrameIdx) && (ply >= sharedMoves) )
+            {
+                ply--;
+                scoreAsync *= -1;
+            }
+
+            if( ply >= 0 )
+            {
+                if( scoreAsync > mFrames[ply].bestScore )
+                {
+                    //printf( "Ply %d, replacing bestScore %d with async %d\n", ply, mFrames[ply].bestScore, scoreAsync );
+
+                    mFrames[ply].bestScore = Max( scoreAsync, mFrames[ply].beta );
+                    mFrameIdx = ply;
+
+                    for( int i = ply; i < input->mPly; i++ )
+                        mFrames[i].bestMove = input->mPath[i];
+                
+                    for( int i = 0; i <= input->mDepth; i++ )
+                        mFrames[i + input->mPly].bestMove = output->mPath[i];
+
+                }
+            }
 
             input++;
             output++;
         }
 
-        int npms = (int) (nodes / batch->mGpuTime);
-        printf( "%4d jobs, %6d nodes, GPU time %6.1fms, CPU latency %6.1fms, most steps %4d, nps %4dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
+        //int npms = (int) (nodes / batch->mGpuTime);
+        //printf( "%4d jobs, %6d nodes, GPU time %6.1fms, CPU latency %6.1fms, most steps %4d, nps %4dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
     }
 
 
+    //--------------------------------------------------------------------------
     /// Process any batches of async search jobs that are ready
     ///
     /// \param f    Current stack frame
@@ -713,7 +749,7 @@ struct SearchState
     {
         for( ;; )
         {
-            SearchBatch* batch = mCudaContext->GetCompletedBatch();
+            SearchBatch* batch = mCudaSearcher->GetCompletedBatch();
             if( batch == NULL )
                 break;
 
@@ -722,12 +758,13 @@ struct SearchState
             //printf( "!" );
 
             this->ProcessCompletedBatch( batch );
-            mCudaContext->ReleaseBatch( batch );
+            mCudaSearcher->ReleaseBatch( batch );
         }
     }
 #endif
 
 
+    //--------------------------------------------------------------------------
     /// Advance the current stack frame
     ///
     /// This is the core of the iterative search. On a single CPU, this is
@@ -738,18 +775,17 @@ struct SearchState
     ///
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
-    ///
+    
     PDECL INLINE Frame* AdvanceState( Frame* f )
     {
         if( f->step == STEP_PROCESS )           
             f = this->HandleLeaf( f );
 
         if( f->step == STEP_PROCESS )           
-        {
             f = this->HandleMate( f );
-            if( f < mFrames )
-                return( f );
-        }
+
+        if( f < mFrames )
+            return( f );
 
         if( f->step == STEP_PROCESS )           
             f = this->Quieten( f );
@@ -776,11 +812,12 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Take a step forward in the search
     ///
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
-    ///
+    
     PDECL void Step()
     {
 #if PIGEON_CUDA_HOST
@@ -815,11 +852,12 @@ struct SearchState
     }
 
 
+    //--------------------------------------------------------------------------
     /// Extract the best line from the corpses of the stack frames
     ///
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
-    //
+    
     PDECL void ExtractBestLine( MoveList* bestLine )
     {
         assert( this->IsDone() );
@@ -828,6 +866,14 @@ struct SearchState
         for( int i = 0; i < mSearchDepth; i++ )
             bestLine->Append( mFrames[i].bestMove );
 
+    }
+
+    PDECL void InsertBestLine( MoveList* bestLine )
+    {
+        //assert( this->IsDone() );
+
+        for( int i = 0; i < bestLine->mCount; i++ )
+            mFrames[i].bestMove = bestLine->mMove[i];
     }
 
 
@@ -845,20 +891,26 @@ struct SearchState
         float gamePhase = mEvaluator->CalcGamePhase< POPCNT >( *root );
         mEvaluator->GenerateWeights( mWeights, gamePhase );
 
-        f->pos      = root;
-        f->moveMap  = moveMap;
-        f->score    = score;
-        f->ply      = ply;
-        f->depth    = depth;
-        f->alpha    = alpha; 
-        f->beta     = beta;
-        f->onPv     = true;
-        f->step     = STEP_PROCESS;       
+        f->pos          = root;
+        f->moveMap      = moveMap;
+        f->score        = score;
+        f->ply          = ply;
+        f->depth        = depth;
+        f->alpha        = alpha; 
+        f->beta         = beta;
+        f->onPv         = true;
+        f->step         = STEP_PROCESS;       
 
         mSearchDepth = depth;
     }
 
 
+    //--------------------------------------------------------------------------
+    /// Perform a search to a given depth
+    ///
+    /// The CPU code uses this function to set up a search, then step it until
+    /// done. The GPU code in kernel has its own loop to step the search.
+    ///
     PDECL EvalTerm RunToDepth( const Position* root, const MoveMap* moveMap, int depth, int ply, EvalTerm score, EvalTerm alpha, EvalTerm beta )
     {
         this->PrepareSearch( root, moveMap, depth, ply, score, alpha, beta );

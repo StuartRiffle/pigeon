@@ -89,6 +89,7 @@ enum
 };
 
 
+typedef i32     HistoryTerm;
 typedef i16     EvalTerm;
 typedef i32     EvalWeight;
 
@@ -116,7 +117,7 @@ const PDECL int         BATCH_SIZE_DEFAULT      = 4096;
 const PDECL int         BATCH_COUNT_DEFAULT     = 8;
 const PDECL int         GPU_PLIES_DEFAULT       = 1;
 const PDECL int         GPU_BLOCK_WARPS         = 4;
-const PDECL int         GPU_BATCH_POLL_STEPS    = 200;
+const PDECL int         GPU_BATCH_POLL_STEPS    = 20000;
 const PDECL int         MIN_CPU_PLIES           = 5;
 const PDECL int         WEIGHT_SHIFT            = 16;
 const PDECL float       WEIGHT_SCALE            = (1 << WEIGHT_SHIFT);

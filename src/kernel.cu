@@ -23,11 +23,15 @@ __global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobO
     const SearchJobInput*   input   = NULL;
     SearchJobOutput*	    output  = NULL;
     SearchMetrics           metrics;
+    HistoryTable            historyTable;
     SearchState< 1, u64 >   ss;
 
-    ss.mHashTable   = hashTable;
-    ss.mEvaluator   = evaluator;
-    ss.mMetrics	    = &metrics;
+    historyTable.Clear();
+
+    ss.mHashTable       = hashTable;
+    ss.mEvaluator       = evaluator;
+    ss.mMetrics	        = &metrics;
+    ss.mHistoryTable    = &historyTable;
 
     int idx = (blockIdx.x * blockDim.x) + threadIdx.x;
     while( idx < count )

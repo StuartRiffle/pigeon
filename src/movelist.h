@@ -104,15 +104,16 @@ struct MoveList
         this->DiscardMovesBelow( CAPTURE_EQUAL );
     }
 
-    PDECL int MarkSpecialMoves( int src, int dest, int flag )
+    PDECL void FlagSpecialMove( int src, int dest, int flag )
     {
-        int marked = 0;
-
-        for( int idx = 0; idx < mCount; idx++ )
+        for( int idx = mTried; idx < mCount; idx++ )
+        {
             if( (mMove[idx].mSrc == src) && (mMove[idx].mDest == dest) )
-                mMove[idx].mFlags |= (marked++, flag);
-
-        return( marked );
+            {
+                mMove[idx].mFlags |= flag;
+                return;
+            }
+        }
     }
 
     PDECL void PrioritizeDest( u64 mask )
@@ -196,6 +197,8 @@ private:
             int idx = (int) ConsumeLowestBitIndex( dest );
 
             this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_QUEEN  );
+            this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_ROOK   );
+            this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_BISHOP );
             this->ClassifyAndStoreMove( pos, idx - ofs, idx, PROMOTE_KNIGHT );
         }
     }

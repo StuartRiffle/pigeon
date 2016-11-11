@@ -4,45 +4,48 @@ namespace Pigeon {
 #ifndef PIGEON_ENGINE_H__
 #define PIGEON_ENGINE_H__
 
-PDECL class EngineBase                                        
-{
-protected:
-    HashTable               mHashTable;                 ///< Transposition table
-    Position                mRoot;                      ///< The root of the search tree (the "current position")
-    SearchConfig            mConfig;                    ///< Search parameters
-    SearchMetrics           mMetrics;                   ///< Runtime metrics
-    Evaluator               mEvaluator;                 ///< Evaluation weight calculator
-    EvalWeight              mRootWeights[EVAL_TERMS];   ///< Evaluation weights for position mRoot
-    MaterialTable           mMaterialTable[2];          ///< Material value for each piece/square combination, indexed by pos.mWhiteToMove
-    OpeningBook             mOpeningBook;               ///< Placeholder opening book implementation
-    MoveList                mBestLine;                  ///< Best line found in the search
-    MoveList                mPvDepth[METRICS_DEPTH];    ///< Best line found at 
-    MoveList*               mStorePv;                   ///< Target for PV in active search
-    EvalTerm                mValuePv;                   ///< The evaluation of *mStorePv
-};
 
-PDECL class Engine : EngineBase
+//==============================================================================
+///
+
+PDECL class Engine
 {
-    int                     mTargetTime;                ///< Time to stop current search
-    int                     mDepthLimit;                ///< Depth limit for current search (not counting quiesence)
-    Timer                   mSearchElapsed;             ///< Time elapsed since the "go" command
-    volatile bool           mExitSearch;                ///< Flag to terminate search threads immediately
-    int                     mThreadsRunning;            ///< Number of worker threads currently running
-    Semaphore               mThreadsDone;               ///< Semaphore to help gather up completed threads                                                
-    bool                    mPrintBestMove;             ///< Output best move while searching
-    bool                    mPrintedMove;               ///< Make sure only one "bestmove" is output per "go" 
-    bool                    mDebugMode;                 ///< This currently does nothing
-    int                     mCpuLevel;                  ///< A CPU_* enum value that reflects the hardware capabilities
-    bool                    mPopcntSupported;           ///< True if the CPU can do POPCNT
-    u8                      mHistoryTable[2][64][64];   ///< Indexed as [whiteToMove][dest][src]
-    std::map< u64, int >    mPositionReps;              ///< Indexed by hash, detects repetitions to avoid (unwanted) draw
-    int                     mOptions[OPTION_COUNT];     ///< Runtime options exposed via UCI
+    HashTable               mHashTable;                 /// Transposition table
+    Position                mRoot;                      /// The root of the search tree (the "current position")
+    SearchConfig            mConfig;                    /// Search parameters
+    SearchMetrics           mMetrics;                   /// Runtime metrics
+    Evaluator               mEvaluator;                 /// Evaluation weight calculator
+    EvalWeight              mRootWeights[EVAL_TERMS];   /// Evaluation weights for position mRoot
+    OpeningBook             mOpeningBook;               /// Placeholder opening book implementation
+    MoveList                mBestLine;                  /// Best line found in the search
+    MoveList                mPvDepth[METRICS_DEPTH];    /// Best line found at 
+    MoveList*               mStorePv;                   /// Target for PV in active search
+    EvalTerm                mValuePv;                   /// The evaluation of *mStorePv
+    int                     mTargetTime;                /// Time to stop current search
+    int                     mDepthLimit;                /// Depth limit for current search (not counting quiesence)
+    Timer                   mSearchElapsed;             /// Time elapsed since the "go" command
+    volatile bool           mExitSearch;                /// Flag to terminate search threads immediately
+    int                     mThreadsRunning;            /// Number of worker threads currently running
+    Semaphore               mThreadsDone;               /// Semaphore to help gather up completed threads                                                
+    bool                    mPrintBestMove;             /// Output best move while searching
+    bool                    mPrintedMove;               /// Make sure only one "bestmove" is output per "go" 
+    bool                    mDebugMode;                 /// This currently does nothing
+    int                     mCpuLevel;                  /// A CPU_* enum value that reflects the hardware capabilities
+    bool                    mPopcntSupported;           /// True if the CPU can do POPCNT
+    std::map< u64, int >    mPositionReps;              /// Indexed by hash, detects repetitions to avoid (unwanted) draw
+    int                     mOptions[OPTION_COUNT];     /// Runtime options exposed via UCI
+    HistoryTable            mHistoryTable;
+//  MaterialTable           mMaterialTable[2];          /// Material value for each piece/square combination, indexed by pos.mWhiteToMove
 
 #if PIGEON_CUDA_HOST
-    CudaChessContext        mCudaContext;
+    CudaChessManager        mCudaSearcher;
 #endif
 
 public:
+
+    //--------------------------------------------------------------------------
+    ///
+
     Engine()
     {
         mConfig.Clear();
@@ -62,7 +65,6 @@ public:
         mCpuLevel           = PlatDetectCpuLevel();
 
         mOpeningBook.Init();               
-        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
         PlatClearMemory( mOptions, sizeof( mOptions ) );
 
         mOptions[OPTION_HASH_SIZE]          = TT_MEGS_DEFAULT;
@@ -82,10 +84,18 @@ public:
         mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     ~Engine()
     {
         this->Stop();
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     void Reset()
     {
@@ -94,8 +104,6 @@ public:
         mEvaluator.EnableOpening( true );
         mHashTable.Clear();
         mPositionReps.clear();
-
-        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
     }
 
     void SetPosition( const Position& pos )
@@ -108,15 +116,27 @@ public:
         mPositionReps[mRoot.mHash]++;
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     Position GetPosition() const
     {
         return( mRoot );    
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     void OverrideCpuLevel( int level )
     {
         mCpuLevel = level;
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     void SetOption( int idx, int value )
     {
@@ -124,29 +144,39 @@ public:
             mOptions[idx] = value;
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     const int* GetOptions() const
     {
         return( &mOptions[0] );
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     void LazyInitCuda()
     {
 #if PIGEON_CUDA_HOST
         if( mOptions[OPTION_ENABLE_CUDA] && (CudaSystem::GetDeviceCount() > 0) )
         {
-            if( !mCudaContext.IsInitialized() )
+            if( !mCudaSearcher.IsInitialized() )
             {
-                int deviceIndex = 0;
-
-                mCudaContext.Initialize( 
-                    deviceIndex, 
-                    mOptions[OPTION_GPU_BATCH_COUNT],
-                    mOptions[OPTION_GPU_BATCH_SIZE],
-                    mOptions[OPTION_GPU_HASH_SIZE] );
+                mCudaSearcher.Initialize();
+                    //deviceIndex, 
+                    //mOptions[OPTION_GPU_BATCH_COUNT],
+                    //mOptions[OPTION_GPU_BATCH_SIZE],
+                    //mOptions[OPTION_GPU_HASH_SIZE] );
             }
         }
 #endif
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     void Init()
     {
@@ -156,10 +186,18 @@ public:
         this->LazyInitCuda();
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     void SetDebug( bool debug )
     {
         mDebugMode = debug;
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     void LoadWeightParam( const char* name, float openingVal, float midgameVal, float endgameVal ) 
     {
@@ -169,6 +207,9 @@ public:
             mEvaluator.SetWeight( idx, openingVal, midgameVal, endgameVal );
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
 
     void Move( const char* movetext )
     {
@@ -202,11 +243,17 @@ public:
     }
 
 
+    //--------------------------------------------------------------------------
+    ///
+
     void PonderHit()
     {
         printf( "info string WARNING: ponderhit not implemented\n" );
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
 
     void Go( SearchConfig* conf )
     {
@@ -250,8 +297,7 @@ public:
 
         mBestLine.Clear();
         mMetrics.Clear();
-
-        PlatClearMemory( mHistoryTable, sizeof( mHistoryTable ) );
+        mHistoryTable.Clear();
 
         mStorePv        = &mBestLine;
         mValuePv        = 0;
@@ -274,6 +320,9 @@ public:
     }
 
 
+    //--------------------------------------------------------------------------
+    ///
+
     void Stop( bool printResult = false )
     {
         this->JoinAllThreads();
@@ -282,12 +331,20 @@ public:
             this->PrintResult();
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     void PrintPosition()
     {
 		printf( "info string position " );
         FEN::PrintPosition( mRoot );
         printf( "\n" );
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     void PrintValidMoves()
     {
@@ -309,21 +366,37 @@ public:
 
 private:
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     static void* SearchThreadProc( void* param )
     {
+        PlatSetThreadName( "Search Thread" );
+
         Engine* engine = reinterpret_cast< Engine* >( param );
         engine->SearchThread();
         engine->mThreadsDone.Post();
         return( NULL );
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
 	static void* TimerThreadProc( void* param )
     {
+        PlatSetThreadName( "Timer Thread" );
+
         Engine* engine = reinterpret_cast< Engine* >( param );
         engine->TimerThread();
         engine->mThreadsDone.Post();
         return( NULL );
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     void SearchThread()
     {
@@ -400,6 +473,10 @@ private:
         }
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     void TimerThread()
     {
         for( ;; )
@@ -417,6 +494,10 @@ private:
 
         mExitSearch = true;
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     void JoinAllThreads()
     {
@@ -436,10 +517,10 @@ private:
         mExitSearch = false;
 
 #if PIGEON_CUDA_HOST
-        if( mCudaContext.IsInitialized() )
+        if( mCudaSearcher.IsInitialized() )
         {
             Timer gpuStallTimer;
-            mCudaContext.CancelAllBatchesSync();
+            mCudaSearcher.CancelAllBatchesSync();
 
             gpuStallMs = gpuStallTimer.GetElapsedMs();
         }
@@ -458,6 +539,10 @@ private:
         }
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     void PrintResult()
     {
         if( !mPrintedMove )
@@ -472,6 +557,10 @@ private:
             mPrintedMove = true;
         }
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     int CalcTargetTime()
     {
@@ -536,6 +625,10 @@ private:
         return( targetTime );
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     int ChooseNextMove( MoveList& moves, int whiteToMove )
     {
         int best = moves.mTried;
@@ -564,6 +657,9 @@ private:
     }
 
 
+    //--------------------------------------------------------------------------
+    ///
+
     void RunToDepthForCpu( int depth, bool printPv = false )
     {
         int level = mCpuLevel;
@@ -586,6 +682,10 @@ private:
         }
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     template< typename SIMD >
     void RunToDepth( int depth, bool printPv )
     {
@@ -599,6 +699,10 @@ private:
         else
             this->RunToDepth< DISABLE_POPCNT, SIMD >( depth, printPv );
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     template< int POPCNT, typename SIMD >
     void RunToDepth( int depth, bool printPv )
@@ -632,24 +736,32 @@ private:
 
         SearchState< POPCNT, SIMD > ss;
 
-        ss.mHashTable   = &mHashTable;
-        ss.mEvaluator   = &mEvaluator;
-        ss.mExitSearch  = &mExitSearch;
-        ss.mMetrics     = &mMetrics;
+        ss.mHashTable       = &mHashTable;
+        ss.mEvaluator       = &mEvaluator;
+        ss.mExitSearch      = &mExitSearch;
+        ss.mMetrics         = &mMetrics;
+        ss.mHistoryTable    = &mHistoryTable;
+
+        mHistoryTable.Decay();
+
+        mMetrics.Clear();
 
 #if PIGEON_ENABLE_CUDA
-        if( mOptions[OPTION_ENABLE_CUDA] && mCudaContext.IsInitialized() )
+        if( mOptions[OPTION_ENABLE_CUDA] && mCudaSearcher.IsInitialized() )
         {
             if( depth >= (MIN_CPU_PLIES + mOptions[OPTION_GPU_PLIES]) )
             {
-                mCudaContext.SetBlockWarps( mOptions[OPTION_GPU_BLOCK_WARPS] );
+                mCudaSearcher.SetBlockWarps( mOptions[OPTION_GPU_BLOCK_WARPS] );
 
-                ss.mCudaContext   = &mCudaContext;
-                ss.mAsyncSpawnPly = depth - mOptions[OPTION_GPU_PLIES];
-                ss.mBatchLimit    = mOptions[OPTION_GPU_BATCH_COUNT];
+                ss.mCudaSearcher   = &mCudaSearcher;
+                ss.mAsyncSpawnPly  = depth - mOptions[OPTION_GPU_PLIES];
+                ss.mBatchLimit     = mOptions[OPTION_GPU_BATCH_COUNT];
             }
         }
 #endif
+
+        if( mStorePv )
+            ss.InsertBestLine( mStorePv );
 
         EvalTerm score = ss.RunToDepth( &mRoot, &moveMap, depth, 0, rootScore, -EVAL_MAX, EVAL_MAX );
         ss.ExtractBestLine( &pv  );
@@ -692,9 +804,6 @@ private:
         }
     }
 };
-
-
-
 
 #endif // PIGEON_ENGINE_H__
 };

@@ -59,9 +59,9 @@ struct PIGEON_ALIGN_SIMD MoveMapT
 
 struct MaterialTable
 {
-    i32     mValue[6][64];              ///< Piece-square value in centipawns, as 16.16 fixed point
-    i64     mCastlingQueenside;         ///< Account for the rook when castling queenside
-    i64     mCastlingKingside;          ///< Account for the rook when castling kingside
+    i32     mValue[6][64];              /// Piece-square value in centipawns, as 16.16 fixed point
+    i64     mCastlingQueenside;         /// Account for the rook when castling queenside
+    i64     mCastlingKingside;          /// Account for the rook when castling kingside
 
     void CalcCastlingFixup()
     {
@@ -76,28 +76,28 @@ struct MaterialTable
 template< typename SIMD >
 struct PIGEON_ALIGN_SIMD PositionT
 {
-    SIMD        mWhitePawns;        ///< Bitmask of the white pawns 
-    SIMD        mWhiteKnights;      ///< Bitmask of the white knights    
-    SIMD        mWhiteBishops;      ///< Bitmask of the white bishops    
-    SIMD        mWhiteRooks;        ///< Bitmask of the white rooks 
-    SIMD        mWhiteQueens;       ///< Bitmask of the white queens    
-    SIMD        mWhiteKing;         ///< Bitmask of the white king 
+    SIMD        mWhitePawns;        /// Bitmask of the white pawns 
+    SIMD        mWhiteKnights;      /// Bitmask of the white knights    
+    SIMD        mWhiteBishops;      /// Bitmask of the white bishops    
+    SIMD        mWhiteRooks;        /// Bitmask of the white rooks 
+    SIMD        mWhiteQueens;       /// Bitmask of the white queens    
+    SIMD        mWhiteKing;         /// Bitmask of the white king 
                                       
-    SIMD        mBlackPawns;        ///< Bitmask of the black pawns     
-    SIMD        mBlackKnights;      ///< Bitmask of the black knights
-    SIMD        mBlackBishops;      ///< Bitmask of the black bishops    
-    SIMD        mBlackRooks;        ///< Bitmask of the black rooks     
-    SIMD        mBlackQueens;       ///< Bitmask of the black queens    
-    SIMD        mBlackKing;         ///< Bitmask of the black king 
+    SIMD        mBlackPawns;        /// Bitmask of the black pawns     
+    SIMD        mBlackKnights;      /// Bitmask of the black knights
+    SIMD        mBlackBishops;      /// Bitmask of the black bishops    
+    SIMD        mBlackRooks;        /// Bitmask of the black rooks     
+    SIMD        mBlackQueens;       /// Bitmask of the black queens    
+    SIMD        mBlackKing;         /// Bitmask of the black king 
                                      
-    SIMD        mCastlingAndEP;     ///< Bitmask of EP capture targets and castling targets
-    SIMD        mHash;              ///< Board position hash calculated from all the fields preceding this one     
-    SIMD        mBoardFlipped;      ///< A mask which is ~0 when this structure is white/black flipped from the actual position
-    SIMD        mWhiteToMove;       ///< 1 if it's white to play, 0 if black
-    SIMD        mHalfmoveClock;     ///< Number of halfmoves since the last capture or pawn move
-    SIMD        mFullmoveNum;       ///< Starts at 1, increments after black moves
-    SIMD        mWhiteMaterial;     ///< Total white material, updated incrementally from piece-square tables
-    SIMD        mBlackMaterial;     ///< Total black material, updated incrementally from piece-square tables
+    SIMD        mCastlingAndEP;     /// Bitmask of EP capture targets and castling targets
+    SIMD        mHash;              /// Board position hash calculated from all the fields preceding this one     
+    SIMD        mBoardFlipped;      /// A mask which is ~0 when this structure is white/black flipped from the actual position
+    SIMD        mWhiteToMove;       /// 1 if it's white to play, 0 if black
+    SIMD        mHalfmoveClock;     /// Number of halfmoves since the last capture or pawn move
+    SIMD        mFullmoveNum;       /// Starts at 1, increments after black moves
+    SIMD        mWhiteMaterial;     /// Total white material, updated incrementally from piece-square tables
+    SIMD        mBlackMaterial;     /// Total black material, updated incrementally from piece-square tables
 
 
     /// Reset the fields to the start-of-game position.
@@ -129,6 +129,7 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
+    //--------------------------------------------------------------------------
     /// Duplicate member values across SIMD lanes.
     ///
     /// \param  src     Scalar instance to broadcast
@@ -161,6 +162,7 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
+    //--------------------------------------------------------------------------
     /// Update the game state by applying a valid move.
     ///
     /// \param  move        Move to apply
@@ -189,6 +191,7 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
+    //--------------------------------------------------------------------------
     /// Update the piece positions and white/black material values.
     ///
     /// \param  srcIdx      Source square index
@@ -301,6 +304,7 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
+    //--------------------------------------------------------------------------
     /// Calculate the "position hash".
     
     PDECL SIMD CalcHash() const
@@ -319,8 +323,8 @@ struct PIGEON_ALIGN_SIMD PositionT
         SIMD    blackKing           = SelectWithMask( mBoardFlipped, ByteSwap( mWhiteKing     ), mBlackKing     );
         SIMD    castlingAndEP       = SelectWithMask( mBoardFlipped, ByteSwap( mCastlingAndEP ), mCastlingAndEP );
 
-        SIMD    allPawns            = (whitePawns | blackPawns) ^ mWhiteToMove;
-        SIMD    hash0               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED0 ^ allPawns )      ^ blackKnights ) ^ whiteRooks  );              
+        SIMD    allPawnsEtc         = (whitePawns | blackPawns) ^ mWhiteToMove;
+        SIMD    hash0               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED0 ^ allPawnsEtc )   ^ blackKnights ) ^ whiteRooks  );              
         SIMD    hash1               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED1 ^ castlingAndEP ) ^ whiteBishops ) ^ blackQueens );             
         SIMD    hash2               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED2 ^ whiteKing )     ^ blackBishops ) ^ whiteQueens );             
         SIMD    hash3               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED3 ^ blackKing )     ^ whiteKnights ) ^ blackRooks  );        
@@ -330,6 +334,7 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
+    //--------------------------------------------------------------------------
     /// Generate a map of valid moves from the current position.
     ///
     /// \param  dest    Target move map for storing result
@@ -497,6 +502,7 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
+    //--------------------------------------------------------------------------
     /// Flip the white/black pieces to view the board "from the other side".
     ///
     /// Note that this doesn't change the side to move, or any other game state.
@@ -545,30 +551,6 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
-    /// Calculate the material category
-    ///
-    /// The material category is a code which represents a combination of 
-    /// non-pawn pieces. It is used to select material tables.
-    ///
-    /// \return     Category code (0-53)
-    
-    PDECL int CalcMaterialCategory() const
-    {
-        int cat = Max( (int) CountBits< 0 >( mWhiteQueens ), 1 );
-
-        cat *= 3; 
-        cat += Max( (int) CountBits< 0 >( mWhiteRooks ), 2 );
-
-        cat *= 3; 
-        cat += Max( (int) CountBits< 0 >( mWhiteBishops ), 2 );
-
-        cat *= 3; 
-        cat += Max( (int) CountBits< 0 >( mWhiteKnights ), 2 );
-
-        return( cat );
-    }
-
-
     PDECL void  CalcMaterial( const MaterialTable* matWhite, const MaterialTable* matBlack ) {}
 
     PDECL void  FlipInPlace()           { this->FlipFrom( *this ); }
@@ -576,29 +558,29 @@ struct PIGEON_ALIGN_SIMD PositionT
 };
 
 
-//template<> 
-//PDECL void PositionT< u64 >::CalcMaterial( const MaterialTable* matWhite, const MaterialTable* matBlack )
-//{
-//    mWhiteMaterial = 0;
-//    mBlackMaterial = 0;
-//
-//    const int tableStride = 64 * 6;
-//
-//    for( u64 i = mWhitePawns;               i != 0; mWhiteMaterial += matWhite->mValue[PAWN  ][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = mWhiteKnights;             i != 0; mWhiteMaterial += matWhite->mValue[KNIGHT][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = mWhiteBishops;             i != 0; mWhiteMaterial += matWhite->mValue[BISHOP][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = mWhiteRooks;               i != 0; mWhiteMaterial += matWhite->mValue[ROOK  ][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = mWhiteQueens;              i != 0; mWhiteMaterial += matWhite->mValue[QUEEN ][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = mWhiteKing;                i != 0; mWhiteMaterial += matWhite->mValue[KING  ][ConsumeLowestBitIndex( i )] ) {}
-//                                                                                            
-//    for( u64 i = ByteSwap( mBlackPawns );   i != 0; mBlackMaterial += matBlack->mValue[PAWN  ][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = ByteSwap( mBlackKnights ); i != 0; mBlackMaterial += matBlack->mValue[KNIGHT][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = ByteSwap( mBlackBishops ); i != 0; mBlackMaterial += matBlack->mValue[BISHOP][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = ByteSwap( mBlackRooks );   i != 0; mBlackMaterial += matBlack->mValue[ROOK  ][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = ByteSwap( mBlackQueens );  i != 0; mBlackMaterial += matBlack->mValue[QUEEN ][ConsumeLowestBitIndex( i )] ) {}
-//    for( u64 i = ByteSwap( mBlackKing );    i != 0; mBlackMaterial += matBlack->mValue[KING  ][ConsumeLowestBitIndex( i )] ) {}
-//}
-//
+// Material tables 
+
+template<> 
+PDECL void PositionT< u64 >::CalcMaterial( const MaterialTable* matWhite, const MaterialTable* matBlack )
+{
+    mWhiteMaterial = 0;
+    mBlackMaterial = 0;
+
+    for( u64 i = mWhitePawns;               i != 0; mWhiteMaterial += matWhite->mValue[PAWN  ][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = mWhiteKnights;             i != 0; mWhiteMaterial += matWhite->mValue[KNIGHT][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = mWhiteBishops;             i != 0; mWhiteMaterial += matWhite->mValue[BISHOP][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = mWhiteRooks;               i != 0; mWhiteMaterial += matWhite->mValue[ROOK  ][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = mWhiteQueens;              i != 0; mWhiteMaterial += matWhite->mValue[QUEEN ][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = mWhiteKing;                i != 0; mWhiteMaterial += matWhite->mValue[KING  ][ConsumeLowestBitIndex( i )] ) {}
+                                                                                            
+    for( u64 i = ByteSwap( mBlackPawns );   i != 0; mBlackMaterial += matBlack->mValue[PAWN  ][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = ByteSwap( mBlackKnights ); i != 0; mBlackMaterial += matBlack->mValue[KNIGHT][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = ByteSwap( mBlackBishops ); i != 0; mBlackMaterial += matBlack->mValue[BISHOP][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = ByteSwap( mBlackRooks );   i != 0; mBlackMaterial += matBlack->mValue[ROOK  ][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = ByteSwap( mBlackQueens );  i != 0; mBlackMaterial += matBlack->mValue[QUEEN ][ConsumeLowestBitIndex( i )] ) {}
+    for( u64 i = ByteSwap( mBlackKing );    i != 0; mBlackMaterial += matBlack->mValue[KING  ][ConsumeLowestBitIndex( i )] ) {}
+}
+
 
 
 #endif // PIGEON_POSITION_H__

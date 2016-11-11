@@ -13,7 +13,8 @@ enum
 };
 
 
-
+//==============================================================================
+///
 
 class Evaluator
 {
@@ -23,6 +24,10 @@ class Evaluator
     bool        mEnableOpening;
 
 public:
+
+    //--------------------------------------------------------------------------
+    ///
+
     Evaluator()
     {
         PlatClearMemory( mWeightsOpening, sizeof( mWeightsOpening ) );
@@ -36,6 +41,10 @@ public:
 
         this->SetDefaultWeights();
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     PDECL void SetDefaultWeights()
     {
@@ -75,10 +84,18 @@ public:
         this->SetWeight( EVAL_CENTER_CONTROL,         5.00,      1.69,      0.00 );   //     30,      1.69
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     void EnableOpening( bool enable ) 
     {
         mEnableOpening = enable;
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     static const char* GetWeightName( int idx ) 
     {
@@ -94,6 +111,10 @@ public:
         return( NULL );
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     static int GetWeightIdx( const char* name )  
     {
         for( int idx = 0; idx < EVAL_TERMS; idx++ )
@@ -107,12 +128,20 @@ public:
         return( -1 );
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
+
     void SetWeight( int idx, double openingVal, double midgameVal, double endgameVal )
     {
         mWeightsOpening[idx] = (float) openingVal;
         mWeightsMidgame[idx] = (float) midgameVal;
         mWeightsEndgame[idx] = (float) endgameVal;
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     template< int POPCNT >
     PDECL float CalcGamePhase( const Position& pos ) const
@@ -143,7 +172,8 @@ public:
     }
 
 
-
+    //--------------------------------------------------------------------------
+    ///
 
     template< int POPCNT, typename SIMD >
     PDECL SIMD Evaluate( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, const EvalWeight* weights ) const
@@ -164,6 +194,9 @@ public:
     }
 
 
+    //--------------------------------------------------------------------------
+    ///
+
     template< typename SIMD >
     PDECL SIMD ApplyWeights( const SIMD* eval, const EvalWeight* weights ) const
     {
@@ -175,6 +208,9 @@ public:
     }
 
 
+    //--------------------------------------------------------------------------
+    ///
+
     PDECL void GenerateWeights( EvalWeight* weights, float gamePhase ) const
     {
         float   openingPct  = 1 - Max( 0.0f, Min( 1.0f, gamePhase ) );
@@ -184,6 +220,10 @@ public:
         for( int i = 0; i < EVAL_TERMS; i++ )
             weights[i] = (EvalWeight) (((mWeightsOpening[i] * openingPct) + (mWeightsMidgame[i] * midgamePct) + (mWeightsEndgame[i] * endgamePct)) * WEIGHT_SCALE);
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     template< int POPCNT, typename SIMD >
     PDECL void CalcEvalTerms( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, SIMD* eval ) const
@@ -201,6 +241,9 @@ public:
             eval[i] = evalWhite[i] - evalBlack[i];
     }
 
+
+    //--------------------------------------------------------------------------
+    ///
 
     template< int POPCNT, typename SIMD >
     PDECL void CalcSideEval( const PositionT< SIMD >& pos, const MoveMapT< SIMD >& mmap, SIMD* eval ) const
@@ -277,61 +320,11 @@ public:
         eval[EVAL_ENEMY_TERRITORY]  = CountBits< POPCNT >( inEnemyTerritory );                          
         eval[EVAL_CENTER_PIECES]    = CountBits< POPCNT >( whitePieces  & CENTER_SQUARES );             
         eval[EVAL_CENTER_CONTROL]   = CountBits< POPCNT >( whiteControl & CENTER_SQUARES );   
-
-
-        //eval[EVAL_PAWN]             = CountBits< POPCNT >( whitePawns );                                
-        //eval[EVAL_PAWN_CHAINED]     = CountBits< POPCNT >( pawnsChained );                              
-        //eval[EVAL_PAWN_PASSED]      = CountBits< POPCNT >( PropN( whitePawns, ~blackPawns ) & RANK_8 ); 
-        //eval[EVAL_PAWN_CLEAR]       = CountBits< POPCNT >( PropN( whitePawns, empty ) & RANK_8 ); 
-        //eval[EVAL_PAWN_GUARD_KING]  = CountBits< POPCNT >( whitePawns & (StepNW( whiteKing ) | StepN( whiteKing ) | StepNE( whiteKing )) );
-        //eval[EVAL_PAWN_RANK_4]      = CountBits< POPCNT >( whitePawns & RANK_4 );
-        //eval[EVAL_PAWN_RANK_5]      = CountBits< POPCNT >( whitePawns & RANK_5 );
-        //eval[EVAL_PAWN_RANK_6]      = CountBits< POPCNT >( whitePawns & RANK_6 );
-        //eval[EVAL_PAWN_RANK_7]      = CountBits< POPCNT >( whitePawns & RANK_7 );
-        //eval[EVAL_KNIGHT_DEVEL]     = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );    
-        //eval[EVAL_KNIGHT_EDGE]      = CountBits< POPCNT >( whiteKnights & EDGE_SQUARES );
-        //eval[EVAL_KNIGHT_CORNER]    = CountBits< POPCNT >( whiteKnights & CORNER_SQUARES );
-        //eval[EVAL_KNIGHT_BACK_RANK] = CountBits< POPCNT >( whiteKnights & (RANK_5 | RANK_6 | RANK_7 | RANK_7) );
-        //eval[EVAL_KNIGHT_RING_0]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_0 );
-        //eval[EVAL_KNIGHT_RING_1]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_1 );
-        //eval[EVAL_KNIGHT_RING_2]    = CountBits< POPCNT >( whiteKnights & CENTER_RING_2 );
-        //eval[EVAL_BISHOP_DEVEL]     = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) ); 
-        //eval[EVAL_BISHOP_PAIR]      = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 ); 
-        //eval[EVAL_BISHOP_EDGE]      = CountBits< POPCNT >( whiteBishops & EDGE_SQUARES );
-        //eval[EVAL_BISHOP_CORNER]    = CountBits< POPCNT >( whiteBishops & CORNER_SQUARES );
-        //eval[EVAL_BISHOP_RING_0]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_0 );
-        //eval[EVAL_BISHOP_RING_1]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_1 );
-        //eval[EVAL_BISHOP_RING_2]    = CountBits< POPCNT >( whiteBishops & CENTER_RING_2 );
-        //eval[EVAL_ROOK_DEVEL]       = CountBits< POPCNT >( whiteRooks & ~(SQUARE_A1 | SQUARE_H1) );   
-        //eval[EVAL_ROOK_CONNECTED]   = CountBits< POPCNT >( PropExOrtho( whiteRooks, empty ) & whiteRooks ); 
-        //eval[EVAL_ROOK_OPEN_FILE]   = CountBits< POPCNT >( PropN( whiteRooks, empty ) & RANK_8 );       
-        //eval[EVAL_ROOK_RING_0]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_0 );
-        //eval[EVAL_ROOK_RING_1]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_1 );
-        //eval[EVAL_ROOK_RING_2]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_2 );
-        //eval[EVAL_ROOK_RING_3]      = CountBits< POPCNT >( whiteRooks & CENTER_RING_3 );
-        //eval[EVAL_ROOK_BACK_RANK]   = CountBits< POPCNT >( whiteRooks & (RANK_5 | RANK_6 | RANK_7 | RANK_7) );
-        //eval[EVAL_QUEEN]            = CountBits< POPCNT >( whiteQueens );
-        //eval[EVAL_QUEEN_DEVEL]      = CountBits< POPCNT >( whiteQueens & ~(SQUARE_D1) );
-        //eval[EVAL_KING]             = CountBits< POPCNT >( whiteKing );                      
-        //eval[EVAL_KING_CASTLED]     = CountBits< POPCNT >( whiteKing & RANK_1 & ~SQUARE_E1 );
-        //eval[EVAL_KING_EDGE]        = CountBits< POPCNT >( whiteKing & EDGE_SQUARES );
-        //eval[EVAL_KING_CORNER]      = CountBits< POPCNT >( whiteKing & CORNER_SQUARES );
-        //eval[EVAL_KING_RING_0]      = CountBits< POPCNT >( whiteKing & CENTER_RING_0 );
-        //eval[EVAL_KING_RING_1]      = CountBits< POPCNT >( whiteKing & CENTER_RING_1 );
-        //eval[EVAL_KING_RING_2]      = CountBits< POPCNT >( whiteKing & CENTER_RING_2 );
-        //eval[EVAL_MOBILITY]         = CountBits< POPCNT >( whiteMobility ); 
-        //eval[EVAL_ATTACKING]        = CountBits< POPCNT >( whiteAttacking );
-        //eval[EVAL_DEFENDING]        = CountBits< POPCNT >( whiteDefending );
-        //eval[EVAL_CONTROL_RANK_5]   = CountBits< POPCNT >( whiteControl & RANK_5 );
-        //eval[EVAL_CONTROL_RANK_6]   = CountBits< POPCNT >( whiteControl & RANK_6 );
-        //eval[EVAL_CONTROL_RANK_7]   = CountBits< POPCNT >( whiteControl & RANK_7 );
-        //eval[EVAL_CONTROL_RANK_8]   = CountBits< POPCNT >( whiteControl & RANK_8 );
-        //eval[EVAL_CONTROL_FILE_AH]  = CountBits< POPCNT >( whiteControl & (FILE_A | FILE_H) );
-        //eval[EVAL_CONTROL_FILE_BG]  = CountBits< POPCNT >( whiteControl & (FILE_B | FILE_G) );
-        //eval[EVAL_CONTROL_FILE_CF]  = CountBits< POPCNT >( whiteControl & (FILE_C | FILE_F) );
-        //eval[EVAL_CONTROL_FILE_DE]  = CountBits< POPCNT >( whiteControl & (FILE_D | FILE_E) );
-        //eval[EVAL_KNIGHT_FIRST]     = SubClampZero( eval[EVAL_KNIGHT_DEVEL], eval[EVAL_BISHOP_DEVEL] );
     }
+
+
+    //--------------------------------------------------------------------------
+    ///
 
     PDECL void CalcMaterialTable( const Position& pos, MaterialTable* mat ) const
     {
@@ -344,7 +337,6 @@ public:
 
         mat->CalcCastlingFixup();
     }
-
 };
 
 #endif // PIGEON_EVAL_H__

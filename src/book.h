@@ -1849,10 +1849,10 @@ public:
             BookNode& node = iterNode->second;
             int idx = rand() % node.mTotalLines;
 
-            for( BookMoveCount::iterator iterMove = node.mMoves.begin(); iterMove != node.mMoves.end(); ++iterMove )
+            for( auto& iterMove : node.mMoves )
             {
-                const char* movetext    = iterMove->first.c_str();
-                int         count       = iterMove->second;
+                const char* movetext    = iterMove.first.c_str();
+                int         count       = iterMove.second;
 
                 if( idx < count )
                     return( movetext );
