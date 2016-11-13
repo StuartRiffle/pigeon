@@ -546,3 +546,146 @@ info depth 9 seldepth 30 score cp 36 hashfull 0 nodes 7147941 time 7361 nps 1337
 info depth 10 seldepth 31 score cp 10 hashfull 15 nodes 27145346 time 30234 nps 1187668 pv e2e3 g7g6 c2c3 g8f6 a4a5 f6g4 a4a5 e4d2 h2h4 d2b1
 info depth 11 seldepth 31 score cp 39 hashfull 203 nodes 177580154 time 161179 nps 1356319 pv g1f3 g7g6 g1f3 h7h6 c2c3 h8h7 d4d5 b8c6 c1d2 g8f6 c1d2
 bestmove g1f3
+
+
+
+
+cuda=false
+simd=false
+go depth 10
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 4 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 12 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 21 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 1942 time 31 nps 971000 pv g1f3 g7g6 g1f3 g8f6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 16188 time 54 nps 1245230 pv g1f3 g8f6 g1f3 g7g6 b1c3
+info depth 6 seldepth 16 score cp 0 hashfull 0 nodes 45095 time 111 nps 980326 pv g1f3 g7g6 e4e5 g8f6 d1g4 h6g5
+info depth 7 seldepth 21 score cp 56 hashfull 0 nodes 254091 time 364 nps 1049962 pv b1c3 g7g6 g1f3 h7h6 f3g5 h6g5 g5f6
+info depth 8 seldepth 22 score cp 0 hashfull 0 nodes 778736 time 1194 nps 950837 pv b1c3 g7g6 g1f3 g8f6 g4g5 g6h5 d1d4 b8c6
+info depth 9 seldepth 25 score cp 56 hashfull 0 nodes 3066048 time 4027 nps 1086865 pv b1c3 g7g6 g1f3 g8f6 e4e5 g6h5 e5f6 b8c6 c3e4
+info depth 10 seldepth 29 score cp 0 hashfull 7 nodes 12223323 time 15629 nps 1054643 pv b1c3 g7g6 g1f3 g8f6 e4e5 b8c6 d1d4 b8c6 g2h3 d7d6
+bestmove b1c3
+
+        Position            PIGEON_ALIGN_SIMD checkPos[LANES];
+        MoveMap             PIGEON_ALIGN_SIMD checkMoveMap[LANES];
+        u64                 PIGEON_ALIGN_SIMD checkScore[LANES];
+
+        int lanesUsed = 0;
+
+            checkPos[idxLane] = *f->pos;
+            checkPos[idxLane].Step( f->childSpec[idxLane] );
+            checkPos[idxLane].CalcMoveMap( &checkMoveMap[idxLane] );
+            checkScore[idxLane] = mEvaluator->Evaluate< POPCNT, u64 >( checkPos[idxLane], checkMoveMap[idxLane], mWeights );
+            lanesUsed++;
+
+        for( int idxLane = 0; idxLane < lanesUsed; idxLane++ )
+        {
+            assert( !memcmp( &checkPos[idxLane], &f->childPos[idxLane], sizeof( Position ) ) );
+            assert( !memcmp( &checkMoveMap[idxLane], &f->childMoveMap[idxLane], sizeof( MoveMap ) ) );
+
+            if( ((EvalTerm) checkScore[idxLane]) != ((EvalTerm) unpackScore[idxLane]) )
+            {
+                u64  scalarEval[EVAL_TERMS] = { 0 };
+                SIMD simdEval[EVAL_TERMS] = { 0 };
+
+                mEvaluator->CalcEvalTerms< POPCNT, u64 >( f->childPos[idxLane], f->childMoveMap[idxLane], scalarEval );
+                mEvaluator->CalcEvalTerms< POPCNT, SIMD >( simdPos, simdMoveMap, simdEval );
+
+                for( int i = 0; i < EVAL_TERMS; i++ )
+                {
+                    EvalTerm val0 = (EvalTerm) scalarEval[i];
+                    EvalTerm val1 = (EvalTerm) ((u64*) &simdEval[i])[idxLane];
+
+                    if( val0 != val1 )
+                        printf( "%2d: %08x %08x !!!!! %d %08x %08x\n", i, val0, val1, sizeof( SIMD ), (scalarEval[EVAL_KNIGHTS_DEVEL] ) & 0xFFFFFFFF, (EvalTerm) scalarEval[EVAL_BISHOPS_DEVEL]  );
+                }
+
+                u64 scalarScoreCheck = mEvaluator->ApplyWeights( scalarEval, mWeights );
+                SIMD simdScoreCheck =  mEvaluator->ApplyWeights( simdEval, mWeights );
+
+
+                //printf( "%08x %08x\n", (EvalTerm) checkScore[idxLane], (EvalTerm) unpackScore[idxLane] );
+                printf( "%08x %08x %08x %08x\n", ((EvalTerm) checkScore[idxLane]), ((EvalTerm) unpackScore[idxLane]), (EvalTerm) scalarScoreCheck, (EvalTerm) ((u64*) &simdScoreCheck)[idxLane] );
+
+            }
+        }
+
+
+After fixing score
+
+simd=false
+go depth 10
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 4 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 12 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 19 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 2138 time 29 nps 1069000 pv g1f3 g7g6 g1f3 g8f6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 16079 time 51 nps 1339916 pv g1f3 g8f6 g1f3 g7g6 b1c3
+info depth 6 seldepth 16 score cp 0 hashfull 0 nodes 45064 time 105 nps 1024181 pv g1f3 g7g6 e4e5 g8f6 d1g4 h6g5
+info depth 7 seldepth 20 score cp 46 hashfull 0 nodes 223199 time 312 nps 1132989 pv g1f3 g7g6 b1c3 g8f6 g4g5 b8c6 d1d4
+info depth 8 seldepth 22 score cp 0 hashfull 0 nodes 710749 time 1020 nps 1022660 pv g1f3 g7g6 b1c3 g8f6 b4b5 b8c6 b1c3 f6d5
+info depth 9 seldepth 27 score cp 56 hashfull 0 nodes 3583137 time 4191 nps 1135701 pv g1f3 g7g6 f3g5 g8f6 e4e5 b8c6 a3b4 f6g4 c1d2
+info depth 10 seldepth 28 score cp 0 hashfull 23 nodes 21373348 time 23008 nps 1137001 pv g1f3 g7g6 d2d4 g8f6 g4g5 b8c6 b1d2 d7d6 e1f2 d6e5
+bestmove g1f3
+
+simd=true
+go depth 10
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 7 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 16 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 25 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 2152 time 36 nps 2152000 pv g1f3 g8f6 b1c3 g7g6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 15575 time 59 nps 1557500 pv g1f3 g8f6 b1c3 g7g6 b1c3
+info depth 6 seldepth 16 score cp 0 hashfull 0 nodes 45034 time 114 nps 1072238 pv g1f3 g7g6 e4e5 g8f6 d1g4 b8c6
+info depth 7 seldepth 20 score cp 46 hashfull 0 nodes 228084 time 313 nps 1239586 pv g1f3 g7g6 h1g1 g8f6 g4g5 b8c6 b5c6
+info depth 8 seldepth 22 score cp 0 hashfull 0 nodes 742486 time 1010 nps 1088689 pv g1f3 g7g6 b1c3 g8f6 b4b5 b8c6 b1c3 f6d5
+info depth 9 seldepth 27 score cp 56 hashfull 0 nodes 3660367 time 4035 nps 1216472 pv g1f3 g7g6 f3g5 g8f6 e4e5 b8c6 a3b4 d7d6 c1d2
+info depth 10 seldepth 29 score cp 0 hashfull 23 nodes 21758283 time 22730 nps 1164852 pv g1f3 g7g6 d2d4 g8f6 g4g5 b8c6 b1d2 d7d6 e1f2 d6e5
+bestmove g1f3
+
+pigeon-cuda:
+
+cuda=false
+simd=false
+go depth 10
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 4 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 14 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 23 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 2138 time 34 nps 1069000 pv g1f3 g7g6 g1f3 g8f6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 16079 time 60 nps 1236846 pv g1f3 g8f6 g1f3 g7g6 b1c3
+info depth 6 seldepth 16 score cp 0 hashfull 0 nodes 45064 time 116 nps 1024181 pv g1f3 g7g6 e4e5 g8f6 d1g4 h6g5
+info depth 7 seldepth 20 score cp 46 hashfull 0 nodes 223199 time 335 nps 1088775 pv g1f3 g7g6 b1c3 g8f6 g4g5 b8c6 d1d4
+info depth 8 seldepth 22 score cp 0 hashfull 0 nodes 710749 time 1061 nps 999646 pv g1f3 g7g6 b1c3 g8f6 b4b5 b8c6 b1c3 f6d5
+info depth 9 seldepth 27 score cp 56 hashfull 0 nodes 3583137 time 4133 nps 1172108 pv g1f3 g7g6 f3g5 g8f6 e4e5 b8c6 a3b4 f6g4 c1d2
+info depth 10 seldepth 28 score cp 0 hashfull 23 nodes 21373348 time 23145 nps 1125149 pv g1f3 g7g6 d2d4 g8f6 g4g5 b8c6 b1d2 d7d6 e1f2 d6e5
+bestmove g1f3
+
+[sse4]
+cuda=false
+simd=true
+go depth 10
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 4 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 12 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 19 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 2152 time 29 nps 2152000 pv g1f3 g8f6 b1c3 g7g6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 15575 time 49 nps 1557500 pv g1f3 g8f6 b1c3 g7g6 b1c3
+info depth 6 seldepth 16 score cp 0 hashfull 0 nodes 45034 time 106 nps 1000755 pv g1f3 g7g6 e4e5 g8f6 d1g4 b8c6
+info depth 7 seldepth 20 score cp 46 hashfull 0 nodes 228084 time 310 nps 1194157 pv g1f3 g7g6 h1g1 g8f6 g4g5 b8c6 b5c6
+info depth 8 seldepth 22 score cp 0 hashfull 0 nodes 742486 time 1014 nps 1076066 pv g1f3 g7g6 b1c3 g8f6 b4b5 b8c6 b1c3 f6d5
+info depth 9 seldepth 27 score cp 56 hashfull 0 nodes 3660367 time 4063 nps 1206847 pv g1f3 g7g6 f3g5 g8f6 e4e5 b8c6 a3b4 d7d6 c1d2
+info depth 10 seldepth 29 score cp 0 hashfull 23 nodes 21758283 time 22592 nps 1175361 pv g1f3 g7g6 d2d4 g8f6 g4g5 b8c6 b1d2 d7d6 e1f2 d6e5
+bestmove g1f3
+
+cuda=false
+simd=true
+cpu sse2
+info string instruction set override to SSE2
+go depth 10
+info depth 1 seldepth 1 score cp 84 hashfull 0 nodes 21 time 4 nps 21000 pv g1f3
+info depth 2 seldepth 4 score cp 0 hashfull 0 nodes 94 time 14 nps 94000 pv g1f3 g8f6
+info depth 3 seldepth 4 score cp 84 hashfull 0 nodes 696 time 23 nps 696000 pv g1f3 g8f6 g1f3
+info depth 4 seldepth 8 score cp 0 hashfull 0 nodes 2152 time 35 nps 1076000 pv g1f3 g8f6 b1c3 g7g6
+info depth 5 seldepth 14 score cp 57 hashfull 0 nodes 15575 time 57 nps 1415909 pv g1f3 g8f6 b1c3 g7g6 b1c3
+info depth 6 seldepth 16 score cp 0 hashfull 0 nodes 45034 time 116 nps 958170 pv g1f3 g7g6 e4e5 g8f6 d1g4 b8c6
+info depth 7 seldepth 20 score cp 46 hashfull 0 nodes 228084 time 334 nps 1112604 pv g1f3 g7g6 h1g1 g8f6 g4g5 b8c6 b5c6
+info depth 8 seldepth 22 score cp 0 hashfull 0 nodes 742486 time 1106 nps 979532 pv g1f3 g7g6 b1c3 g8f6 b4b5 b8c6 b1c3 f6d5
+info depth 9 seldepth 27 score cp 56 hashfull 0 nodes 3660367 time 4443 nps 1102188 pv g1f3 g7g6 f3g5 g8f6 e4e5 b8c6 a3b4 d7d6 c1d2
+info depth 10 seldepth 29 score cp 0 hashfull 23 nodes 21758283 time 24740 nps 1072840 pv g1f3 g7g6 d2d4 g8f6 g4g5 b8c6 b1d2 d7d6 e1f2 d6e5
+bestmove g1f3

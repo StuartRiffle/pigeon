@@ -12,6 +12,15 @@ namespace Pigeon {
 #define PIGEON_SEARCH_H__
 
 
+
+
+
+
+
+
+
+
+
 /// Parameters for a best-move search (mirrors UCI move options)
 
 struct SearchConfig
@@ -231,7 +240,7 @@ struct SearchState
 
 
     //--------------------------------------------------------------------------
-    /// Terminate the search at the leaf nodes if we fail high
+    /// Terminate the search at the leaf nodes
     ///
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
@@ -314,7 +323,7 @@ struct SearchState
 
     PDECL INLINE Frame* CheckHashTable( Frame* f )
     {
-        if( f->depth > 0 )
+        if( (f->depth > 0) && !f->onPv )
         {
             mMetrics->mHashLookupsAtPly[f->ply]++;
 
@@ -395,7 +404,6 @@ struct SearchState
     /// will mostly optimize away. The last part (from Unswizzle() on)
     /// has a couple of copies that could be avoided.
 
-    PDECL INLINE void StepPositions( Frame* f )
     {
         const MaterialTable* whiteMat = NULL;
         const MaterialTable* blackMat = NULL;
@@ -433,10 +441,16 @@ struct SearchState
         u64 PIGEON_ALIGN_SIMD unpackScore[LANES];
         *((SIMD*) unpackScore) = simdScore;
 
+        // IMPORTANT: only the low 32 bits of the raw score are valid,
+        // and they contain a signed value
+
         for( int idxLane = 0; idxLane < LANES; idxLane++ )
             f->childScore[idxLane] = (EvalTerm) unpackScore[idxLane];
 
         mMetrics->mNodesTotalSimd += LANES;
+
+        // TODO: peek at the hash table entries for these new positions, and
+        // re-order them if it looks like it would help!
     }
 
 
@@ -478,7 +492,7 @@ struct SearchState
             f->simdIdx++;
             if( f->simdIdx >= LANES )
             {
-                this->StepPositions( f );
+                this->StepPositionsSIMD( f );
                 f->simdIdx = 0;
             }
 

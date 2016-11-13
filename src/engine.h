@@ -1,8 +1,49 @@
 // engine.h - PIGEON CHESS ENGINE (c) 2012-2016 Stuart Riffle
-        
+
+#include <functional>
+#include <memory>
+
+
+
 namespace Pigeon {
 #ifndef PIGEON_ENGINE_H__
 #define PIGEON_ENGINE_H__
+
+
+
+template< typename T >
+class ThreadSafeQueue
+{
+    Mutex           mMutex;
+    Semaphore       mAvail;
+    std::queue< T > mQueue;
+
+public:
+    void Push( const T& obj )
+    {
+        {
+            Mutex::Scope lock( mMutex );
+            mQueue.push( obj );
+        }
+
+        mAvail.Post();
+    }   
+
+    T Pop()
+    {
+        mAvail.Wait();
+
+        Mutex::Scope lock( mMutex );
+
+        T result = mQueue.front();
+        mQueue.pop();
+
+        return( result );
+    }
+};
+
+
+
 
 
 //==============================================================================
@@ -15,7 +56,6 @@ PDECL class Engine
     SearchConfig            mConfig;                    /// Search parameters
     SearchMetrics           mMetrics;                   /// Runtime metrics
     Evaluator               mEvaluator;                 /// Evaluation weight calculator
-    EvalWeight              mRootWeights[EVAL_TERMS];   /// Evaluation weights for position mRoot
     OpeningBook             mOpeningBook;               /// Placeholder opening book implementation
     MoveList                mBestLine;                  /// Best line found in the search
     MoveList                mPvDepth[METRICS_DEPTH];    /// Best line found at 
@@ -712,6 +752,7 @@ private:
         MoveMap     moveMap;
         MoveList    moves;
         EvalTerm    rootScore;
+        EvalWeight  rootWeights[EVAL_TERMS];
 
         mRoot.CalcMoveMap( &moveMap );
         moves.UnpackMoveMap( mRoot, moveMap );
@@ -719,18 +760,12 @@ private:
         Position rootFlipped;
         rootFlipped.FlipFrom( mRoot );
 
+
+
         float gamePhase = mEvaluator.CalcGamePhase< POPCNT >( mRoot );
-        mEvaluator.GenerateWeights( mRootWeights, gamePhase );
+        mEvaluator.GenerateWeights( rootWeights, gamePhase );
 
-        //mMaterialTable[mRoot.mWhiteToMove    ].CalcTableOld( gamePhase );
-        //mMaterialTable[mRoot.mWhiteToMove ^ 1].CalcTableOld( gamePhase );
-
-        //mMaterialTable[mRoot.mWhiteToMove    ].CalcTable( mRoot.CalcMaterialCategory() );
-        //mMaterialTable[mRoot.mWhiteToMove ^ 1].CalcTable( rootFlipped.CalcMaterialCategory() );
-
-        //mRoot.CalcMaterial( &mMaterialTable[mRoot.mWhiteToMove], &mMaterialTable[mRoot.mWhiteToMove ^ 1] );
-
-        rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, mRootWeights );
+        rootScore = (EvalTerm) mEvaluator.Evaluate< POPCNT >( mRoot, moveMap, rootWeights );
 
 		searchTime.Reset();
 
@@ -743,7 +778,6 @@ private:
         ss.mHistoryTable    = &mHistoryTable;
 
         mHistoryTable.Decay();
-
         mMetrics.Clear();
 
 #if PIGEON_ENABLE_CUDA
@@ -760,14 +794,14 @@ private:
         }
 #endif
 
-        if( mStorePv )
+        if( mStorePv && (depth > 1) )
             ss.InsertBestLine( mStorePv );
 
         EvalTerm score = ss.RunToDepth( &mRoot, &moveMap, depth, 0, rootScore, -EVAL_MAX, EVAL_MAX );
-        ss.ExtractBestLine( &pv  );
-
         if( mExitSearch )
             return;
+
+        ss.ExtractBestLine( &pv  );
 
         if( printPv )
         {

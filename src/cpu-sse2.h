@@ -119,7 +119,7 @@ template<> INLINE simd2_sse2    CountBits< 1, simd2_sse2 >( const simd2_sse2& va
 template<> INLINE simd2_sse2    MaskAllClear<    simd2_sse2 >()                                                                     { return( _mm_setzero_si128() ); } 
 template<> INLINE simd2_sse2    MaskAllSet<      simd2_sse2 >()                                                                     { return( _mm_set1_epi8( ~0 ) ); } 
 template<> INLINE simd2_sse2    ByteSwap<        simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_bswap_epi64_sse2( val.vec ) ); }
-template<> INLINE simd2_sse2    MulLow32<        simd2_sse2 >( const simd2_sse2& val,  u32 scale )                                  { return( _mm_mul_epu32( val.vec, _mm_set1_epi64x( scale ) ) ); }
+template<> INLINE simd2_sse2    MulSigned32<     simd2_sse2 >( const simd2_sse2& val,  i32 scale )                                  { return( _mm_mul_epi32( val.vec, _mm_set1_epi64x( scale ) ) ); }
 template<> INLINE simd2_sse2    MaskOut<         simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& bitsToClear )              { return( _mm_andnot_si128( bitsToClear.vec, val.vec ) ); }
 template<> INLINE simd2_sse2    CmpEqual<        simd2_sse2 >( const simd2_sse2& a,    const simd2_sse2& b )                        { return( _mm_cmpeq_epi64_sse2( a.vec, b.vec ) ); }
 template<> INLINE simd2_sse2    SelectIfZero<    simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a )                        { return( _mm_and_si128( a.vec, _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ) ) ); }
@@ -127,7 +127,6 @@ template<> INLINE simd2_sse2    SelectIfZero<    simd2_sse2 >( const simd2_sse2&
 template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a )                        { return( _mm_andnot_si128( _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ), a.vec ) ); }
 template<> INLINE simd2_sse2    SelectIfNotZero< simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( a.vec, b.vec, _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ) ) ); }
 template<> INLINE simd2_sse2    SelectWithMask<  simd2_sse2 >( const simd2_sse2& mask, const simd2_sse2& a, const simd2_sse2& b )   { return( _mm_select( b.vec, a.vec, mask.vec ) ); }
-template<> INLINE simd2_sse2    SubClampZero<    simd2_sse2 >( const simd2_sse2& a,    const simd2_sse2& b )                        { return( _mm_select( _mm_setzero_si128(), _mm_sub_epi64( a.vec, b.vec ), _mm_cmplt_epi32( b.vec, a.vec ) ) ); }
 
 template<>
 struct SimdWidth< simd2_sse2 >
@@ -143,6 +142,15 @@ void SimdInsert< simd2_sse2 >( simd2_sse2& dest, u64 val, int lane )
     *((simd2_sse2*) qword) = dest;
     qword[lane] = val;
     dest = *((simd2_sse2*) qword);
+}
+
+template<> 
+INLINE simd2_sse2 SubClampZero< simd2_sse2 >( const simd2_sse2& a, const simd2_sse2& b )                        
+{ 
+    simd2_sse2 diff = a - b;
+    simd2_sse2 sign = diff & (1ULL << 63);
+
+    return( SelectIfZero( sign, diff ) );
 }
 
 template<> 

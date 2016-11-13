@@ -112,7 +112,7 @@ const PDECL int         LAG_SAFETY_BUFFER       = 200;
 const PDECL int         NO_TIME_LIMIT           = -1;
 const PDECL int         PERFT_PARALLEL_MAX      = 5;
 const PDECL int         LAST_QUIET_LEVEL        = -4;
-const PDECL int         CUDA_STREAM_COUNT       = 4;
+const PDECL int         CUDA_STREAM_COUNT       = 8;
 const PDECL int         BATCH_SIZE_DEFAULT      = 4096;
 const PDECL int         BATCH_COUNT_DEFAULT     = 8;
 const PDECL int         GPU_PLIES_DEFAULT       = 1;
@@ -218,7 +218,7 @@ template< typename T > INLINE PDECL T       SelectIfZero(    const T& val, const
 template< typename T > INLINE PDECL T       SelectWithMask(  const T& mask, const T& a, const T& b )            { return( b ^ (mask & (a ^ b)) ); } 
 template< typename T > INLINE PDECL T       CmpEqual( const T& a, const T& b )                                  { return( (a == b)? MaskAllSet< T >() : MaskAllClear< T >() ); }
 template< typename T > INLINE PDECL T       ByteSwap( const T& val )                                            { return PlatByteSwap64( val ); }
-template< typename T > INLINE PDECL T       MulLow32( const T& val, u32 scale )                                 { return( val * scale ); }
+template< typename T > INLINE PDECL T       MulSigned32( const T& val, i32 scale )                              { return( val * scale ); }
 template< typename T > INLINE PDECL T       SubClampZero( const T& a, const T& b )                              { return( (a > b)? (a - b) : 0 ); }
 template< typename T > INLINE PDECL T       LoadIndirect32( const i32* ptr, const T& ofs )                      { return( ((i64) ptr[ofs]) ); }
 template< typename T > INLINE PDECL T       LoadIndirectMasked32( const i32* ptr, const T& ofs, const T& mask ) { return( mask? (((i64) ptr[ofs]) & mask) : 0); }

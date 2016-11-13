@@ -73,7 +73,7 @@ template<> INLINE simd4_avx2     MaskAllSet<      simd4_avx2 >()                
 template<> INLINE simd4_avx2     CountBits< DISABLE_POPCNT, simd4_avx2 >( const simd4_avx2& val )                                   { return( _mm256_popcnt_epi64_avx2( val.vec ) ); }
 template<> INLINE simd4_avx2     CountBits< ENABLE_POPCNT,  simd4_avx2 >( const simd4_avx2& val )                                   { return( _mm256_popcnt_epi64_avx2( val.vec ) ); }
 template<> INLINE simd4_avx2     ByteSwap<        simd4_avx2 >( const simd4_avx2& val )                                             { return( _mm256_bswap_epi64_avx2( val.vec ) ); }
-template<> INLINE simd4_avx2     MulLow32<        simd4_avx2 >( const simd4_avx2& val,  u32 scale )                                 { return( _mm256_mul_epu32( val.vec, _mm256_set1_epi64x( scale ) ) ); }
+template<> INLINE simd4_avx2     MulSigned32<     simd4_avx2 >( const simd4_avx2& val,  i32 scale )                                 { return( _mm256_mul_epi32( val.vec, _mm256_set1_epi64x( scale ) ) ); }
 template<> INLINE simd4_avx2     MaskOut<         simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& bitsToClear )             { return( _mm256_andnot_si256( bitsToClear.vec, val.vec ) ); }
 template<> INLINE simd4_avx2     CmpEqual<        simd4_avx2 >( const simd4_avx2& a,    const simd4_avx2& b )                       { return( _mm256_cmpeq_epi64( a.vec, b.vec ) ); }
 template<> INLINE simd4_avx2     SelectIfZero<    simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a )                       { return( _mm256_and_si256( a.vec, _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ) ) ); }
@@ -81,7 +81,6 @@ template<> INLINE simd4_avx2     SelectIfZero<    simd4_avx2 >( const simd4_avx2
 template<> INLINE simd4_avx2     SelectIfNotZero< simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a )                       { return( _mm256_andnot_si256( _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ), a.vec ) ); }
 template<> INLINE simd4_avx2     SelectIfNotZero< simd4_avx2 >( const simd4_avx2& val,  const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( a.vec, b.vec, _mm256_cmpeq_epi64( val.vec, _mm256_setzero_si256() ) ) ); }
 template<> INLINE simd4_avx2     SelectWithMask<  simd4_avx2 >( const simd4_avx2& mask, const simd4_avx2& a, const simd4_avx2& b )  { return( _mm256_select( b.vec, a.vec, mask.vec ) ); }
-template<> INLINE simd4_avx2     SubClampZero<    simd4_avx2 >( const simd4_avx2& a,    const simd4_avx2& b )                       { return( _mm256_select( _mm256_setzero_si256(), _mm256_sub_epi64( a.vec, b.vec ), _mm256_cmpgt_epi64( a.vec, b.vec ) ) ); }
 
 template<>
 struct SimdWidth< simd4_avx2 >
@@ -100,6 +99,16 @@ void SimdInsert< simd4_avx2 >( simd4_avx2& dest, u64 val, int lane )
     qword[lane] = val;
     dest = *((simd4_avx2*) qword);
 }
+
+template<> 
+INLINE simd4_avx2 SubClampZero< simd4_avx2 >( const simd4_avx2& a, const simd4_avx2& b )                        
+{ 
+    simd4_avx2 diff = a - b;
+    simd4_avx2 sign = diff & (1ULL << 63);
+
+    return( SelectIfZero( sign, diff ) );
+}
+
 
 template<> 
 INLINE void Transpose< simd4_avx2 >( const simd4_avx2* src, int srcStep, simd4_avx2* dest, int destStep )

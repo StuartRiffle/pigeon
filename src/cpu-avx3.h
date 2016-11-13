@@ -37,7 +37,7 @@ template<> INLINE simd8_avx3     MaskAllClear<    simd8_avx3 >()                
 template<> INLINE simd8_avx3     MaskAllSet<      simd8_avx3 >()                                                                    { return( _mm512_set1_epi8( ~0 ) ); } 
 template<> INLINE simd8_avx3     CountBits<       simd8_avx3 >( const simd8_avx3& val )                                             { return( _mm512_popcnt_epi64_avx3( val.vec ) ); }
 template<> INLINE simd8_avx3     ByteSwap<        simd8_avx3 >( const simd8_avx3& val )                                             { return( _mm512_bswap_epi64_avx3( val.vec ) ); }
-template<> INLINE simd8_avx3     MulLow32<        simd8_avx3 >( const simd8_avx3& val,  u32 scale )                                 { return( _mm512_mul_epu32( val, _mm512_set1_epi64x( scale ) ) ); }
+template<> INLINE simd8_avx3     MulSigned32<     simd8_avx3 >( const simd8_avx3& val,  i32 scale )                                 { return( _mm512_mul_epi32( val, _mm512_set1_epi64x( scale ) ) ); }
 template<> INLINE simd8_avx3     MaskOut<         simd8_avx3 >( const simd8_avx3& val,  const simd8_avx3& bitsToClear )             { return( _mm512_andnot_si512( bitsToClear.vec, val.vec ) ); }
 template<> INLINE simd8_avx3     CmpEqual<        simd8_avx3 >( const simd8_avx3& a,    const simd8_avx3& b )                       { return( _mm512_cmpeq_epi64( a.vec, b.vec ) ); }
 template<> INLINE simd8_avx3     SelectIfZero<    simd8_avx3 >( const simd8_avx3& val,  const simd8_avx3& a )                       { return( _mm512_and_si512( a.vec, _mm512_cmpeq_epi64( val.vec, _mm512_setzero_si512() ) ) ); }

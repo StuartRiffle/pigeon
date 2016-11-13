@@ -200,9 +200,16 @@ public:
     template< typename SIMD >
     PDECL SIMD ApplyWeights( const SIMD* eval, const EvalWeight* weights ) const
     {
-        SIMD score = MulLow32( eval[0], weights[0] );
-        for( int i = 1; i < EVAL_TERMS; i++ )
-            score += MulLow32( eval[i], weights[i] );
+        // 
+
+        //SIMD score = MulSigned32( eval[0], weights[0] );
+        //for( int i = 1; i < EVAL_TERMS; i++ )
+        //    score += MulSigned32( eval[i], weights[i] );
+        
+
+        SIMD score = 0;
+        for( int i = 0; i < EVAL_TERMS; i++ )
+            score = score + MulSigned32( eval[i], weights[i] );
 
         return( score >> WEIGHT_SHIFT );
     }
@@ -277,7 +284,9 @@ public:
         SIMD    whiteMobility       = whiteControl & empty;
         SIMD    whiteAttacking      = whiteControl & blackPieces;
         SIMD    whiteDefending      = whiteControl & whitePieces;
-        SIMD    inEnemyTerritory    = whitePieces & (RANK_5 | RANK_6 | RANK_7 | RANK_8);        
+        SIMD    inEnemyTerritory    = whitePieces & (RANK_5 | RANK_6 | RANK_7 | RANK_8);
+        SIMD    knightsDevel        = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );
+        SIMD    bishopsDevel        = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) );    
 
 
         eval[EVAL_PAWNS]            = CountBits< POPCNT >( whitePawns );                                
@@ -289,13 +298,12 @@ public:
         eval[EVAL_PROMOTING_IMMED]  = CountBits< POPCNT >( whitePawns & RANK_7 );                     
 
         eval[EVAL_KNIGHTS]          = CountBits< POPCNT >( whiteKnights );                              
-        eval[EVAL_KNIGHTS_DEVEL]    = CountBits< POPCNT >( whiteKnights & ~(SQUARE_B1 | SQUARE_G1) );                                                 
-        eval[EVAL_KNIGHTS_FIRST]    = SubClampZero( eval[EVAL_KNIGHTS_DEVEL], eval[EVAL_BISHOPS_DEVEL] );                                                 
+        eval[EVAL_KNIGHTS_DEVEL]    = knightsDevel;                                                 
         eval[EVAL_KNIGHTS_INTERIOR] = CountBits< POPCNT >( whiteKnights & ~EDGE_SQUARES );              
         eval[EVAL_KNIGHTS_CENTRAL]  = CountBits< POPCNT >( whiteKnights & CENTER_SQUARES );              
 
         eval[EVAL_BISHOPS]          = CountBits< POPCNT >( whiteBishops );                              
-        eval[EVAL_BISHOPS_DEVEL]    = CountBits< POPCNT >( whiteBishops & ~(SQUARE_C1 | SQUARE_F1) );    
+        eval[EVAL_BISHOPS_DEVEL]    = bishopsDevel;
         eval[EVAL_BISHOPS_INTERIOR] = CountBits< POPCNT >( whiteBishops & ~EDGE_SQUARES );              
         eval[EVAL_BISHOPS_CENTRAL]  = CountBits< POPCNT >( whiteBishops & CENTER_SQUARES );              
         eval[EVAL_BOTH_BISHOPS]     = SelectIfNotZero( whiteBishops & LIGHT_SQUARES, (SIMD) 1 ) & SelectIfNotZero( whiteBishops & DARK_SQUARES, (SIMD) 1 );                                                  
@@ -314,6 +322,7 @@ public:
         eval[EVAL_KINGS]            = CountBits< POPCNT >( whiteKing );                                 
         eval[EVAL_KING_CASTLED]     = CountBits< POPCNT >( whiteKing & RANK_1 & ~SQUARE_E1 );           
 
+        eval[EVAL_KNIGHTS_FIRST]    = SubClampZero( knightsDevel, bishopsDevel );
         eval[EVAL_MOBILITY]         = CountBits< POPCNT >( whiteMobility );                             
         eval[EVAL_ATTACKING]        = CountBits< POPCNT >( whiteAttacking );                            
         eval[EVAL_DEFENDING]        = CountBits< POPCNT >( whiteDefending );                            
