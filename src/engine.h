@@ -142,7 +142,6 @@ public:
         this->Stop();
         mRoot.Reset();
         mEvaluator.EnableOpening( true );
-        mHashTable.Clear();
         mPositionReps.clear();
     }
 
@@ -527,6 +526,9 @@ private:
             if( remaining < MIN_TIME_SLICE )
                 break;
 
+            if( mExitSearch )
+                break;
+
             i64 sleepTime = (remaining < MAX_TIME_SLICE)? remaining : MAX_TIME_SLICE;
 
             PlatSleep( (int) sleepTime );
@@ -604,63 +606,28 @@ private:
 
     int CalcTargetTime()
     {
+        int moveNumber      = (int) mRoot.mFullmoveNum;
+        int movesToGo       = mConfig.mTimeControlMoves;
         int moveTimeLimit   = mConfig.mTimeLimit;   
         int totalTimeLeft   = mRoot.mWhiteToMove? mConfig.mWhiteTimeLeft : mConfig.mBlackTimeLeft;
         int timeBonus       = mRoot.mWhiteToMove? mConfig.mWhiteTimeInc  : mConfig.mBlackTimeInc;
 
+        totalTimeLeft -= LAG_SAFETY_BUFFER;
+        if( totalTimeLeft < 0 )
+            totalTimeLeft = 0;
+
         if( !moveTimeLimit && !totalTimeLeft && !timeBonus )
             return( NO_TIME_LIMIT );
 
-        int targetTime = 0;
+        int targetTime = (int) (totalTimeLeft * 0.05f); // TODO: make tunable
 
-        if( totalTimeLeft )
-        {
-            if( timeBonus )
-            {
-                targetTime = timeBonus;
+        if( movesToGo )
+            targetTime = totalTimeLeft / movesToGo;
 
-                if( mRoot.mFullmoveNum < 4 )     
-                    targetTime += (int) mRoot.mFullmoveNum * 1000;
-                else
-                    targetTime += totalTimeLeft / 10;
-            }
-            else
-            {
-                struct TimePolicy
-                {
-                    int     remaining;
-                    int     time;
-                    int     depth;
-                };
-            
-                TimePolicy policyTable[] =
-                {
-                    {   60000,  3000,   0   },  
-                    {   30000,  2000,   0   },  
-                    {   20000,  1500,   0   },  
-                    {   10000,  1000,   8   },  
-                    {    5000,   800,   7   },  
-                    {    3000,   500,   7   },  
-                    {    2000,   400,   7   },  
-                    {    1000,   300,   5   },  
-                    {       0,   200,   3   },  
-                };
-
-                TimePolicy* policy = policyTable;
-                while( policy->remaining > totalTimeLeft )
-                    policy++;
-
-                targetTime = policy->time;
-                if( policy->depth )
-                    mDepthLimit = Min( mDepthLimit, policy->depth );
-            }
-        }
+        targetTime += timeBonus;
 
         if( moveTimeLimit )
-            targetTime = targetTime? Min( targetTime, moveTimeLimit ) : moveTimeLimit;
-
-        if( totalTimeLeft )
-            targetTime = Min( targetTime, totalTimeLeft - LAG_SAFETY_BUFFER );
+            targetTime = Min( targetTime, moveTimeLimit );
 
         return( targetTime );
     }

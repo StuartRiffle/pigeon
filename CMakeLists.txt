@@ -1,7 +1,7 @@
 cmake_minimum_required( VERSION 3.0 )
 
 project( pigeon )
-set( PIGEON_VERSION 1.5.0 )
+set( PIGEON_VERSION 1.5.1 )
 
 set( CMAKE_VERBOSE_MAKEFILE false )
 

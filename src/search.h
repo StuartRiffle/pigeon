@@ -580,8 +580,8 @@ struct SearchState
     {
         EvalTerm subScore = -f[1].result;
 
-        bool failedHigh = (subScore >= f->beta);
-        bool failedLow  = (subScore == f->bestScore);
+        //bool failedHigh = (subScore >= f->beta);
+        //bool failedLow  = (subScore == f->bestScore);
 
         if( subScore > f->bestScore )
         {
