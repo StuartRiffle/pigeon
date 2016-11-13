@@ -404,6 +404,7 @@ struct SearchState
     /// will mostly optimize away. The last part (from Unswizzle() on)
     /// has a couple of copies that could be avoided.
 
+    PDECL INLINE void StepPositionsSIMD( Frame* f )
     {
         const MaterialTable* whiteMat = NULL;
         const MaterialTable* blackMat = NULL;
