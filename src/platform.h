@@ -3,6 +3,8 @@
 #ifndef PIGEON_PLATFORM_H__
 #define PIGEON_PLATFORM_H__
 
+// This file has gotten a bit hairy, and could do with some cleanup!
+
 #ifndef _HAS_EXCEPTIONS    
 #define _HAS_EXCEPTIONS   0
 #endif
@@ -355,7 +357,12 @@ namespace Pigeon
         void Enter() { EnterCriticalSection( &mCritSec ); }
         void Leave() { LeaveCriticalSection( &mCritSec ); }
     #elif PIGEON_GCC
-        #error Not implemented yet
+        pthread_mutexattr_t mAttrib;
+        pthread_mutex_t     mMutex;
+        Mutex()      { pthread_mutexattr_init( &mAttrib ); pthread_mutexattr_settype( &mAttrib, PTHREAD_MUTEX_RECURSIVE ); pthread_mutex_init( &mMutex, &mAttrib ); }
+       ~Mutex()      { pthread_mutex_destroy( &mMutex ); pthread_mutexattr_destroy( &mAttrib ); }
+        void Enter() { pthread_mutex_lock( &mMutex ); }
+        void Leave() { pthread_mutex_unlock( &mMutex ); }
     #endif
 
         class Scope

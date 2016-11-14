@@ -391,6 +391,9 @@ public:
 
     void Deserialize( const char* filename )
     {
+#if PIGEON_MSVC
+        // Yuck- I had to switch this to the native Windows API for large files to work properly.
+
         HANDLE fin = CreateFileA( filename, GENERIC_READ, 0, NULL, OPEN_ALWAYS, 0, NULL );
         DWORD llo, lhi;
         llo = GetFileSize( fin, &lhi );
@@ -424,6 +427,9 @@ public:
         this->IndexCategories();
 
         //std::random_shuffle( mTestPos.begin(), mTestPos.end() );
+#else
+        fprintf( stderr, "ERROR: Deserialize() not implemented!\n" );
+#endif
     }
 
     void Dump( bool logToFile = false )
