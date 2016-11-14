@@ -18,7 +18,15 @@ using namespace Pigeon;
 /// To reduce that effect, every thread processes a number of searches sequentially, in the 
 /// hope of averaging out the total number of nodes per thread. 
 
-__global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobOutput* outputBuf, int count, int stride, HashTable* hashTable, Evaluator* evaluator, i32* exitFlag )
+__global__ void SearchPositionsOnGPU( 
+    const SearchJobInput*   inputBuf, 
+    SearchJobOutput*        outputBuf, 
+    int                     count, 
+    int                     stride, 
+    HashTable*              hashTable, 
+    Evaluator*              evaluator, 
+    i32*                    options,
+    i32*                    exitFlag )
 {
     const SearchJobInput*   input   = NULL;
     SearchJobOutput*	    output  = NULL;
@@ -30,6 +38,7 @@ __global__ void SearchPositionsOnGPU( const SearchJobInput* inputBuf, SearchJobO
 
     ss.mHashTable       = hashTable;
     ss.mEvaluator       = evaluator;
+    ss.mOptions         = options;
     ss.mMetrics	        = &metrics;
     ss.mHistoryTable    = &historyTable;
 
@@ -100,7 +109,15 @@ void QueueSearchBatch( SearchBatch* batch, int blockCount, int blockSize, i32* e
     int stride = blockCount * blockSize;
 
     cudaEventRecord( batch->mStartEvent, batch->mStream );
-    SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( batch->mInputDev, batch->mOutputDev, batch->mCount, stride, batch->mHashTable, batch->mEvaluator, exitFlag );
+    SearchPositionsOnGPU<<< blockCount, blockSize, 0, batch->mStream >>>( 
+        batch->mInputDev, 
+        batch->mOutputDev, 
+        batch->mCount, 
+        stride, 
+        batch->mHashTableDev, 
+        batch->mEvaluatorDev,
+        batch->mOptionsDev,
+        exitFlag );
     cudaEventRecord( batch->mEndEvent, batch->mStream );
 
     // Copy the outputs to host

@@ -12,15 +12,6 @@ namespace Pigeon {
 #define PIGEON_SEARCH_H__
 
 
-
-
-
-
-
-
-
-
-
 /// Parameters for a best-move search (mirrors UCI move options)
 
 struct SearchConfig
@@ -52,6 +43,7 @@ struct SearchMetrics
     u64                 mNodesAtPly[METRICS_DEPTH];
     u64                 mHashLookupsAtPly[METRICS_DEPTH];
     u64                 mHashHitsAtPly[METRICS_DEPTH];
+    u64                 mZeroWindowSearchesAtPly[METRICS_DEPTH];
     u64                 mPlyMovesTriedByOrder[METRICS_DEPTH][METRICS_MOVES];
 
     PDECL SearchMetrics()     { this->Clear(); }
@@ -121,7 +113,11 @@ struct SearchState
         EvalTerm        result;
         bool            onPv;
         bool            inCheck;
+        bool            doingPVS;
+        bool            useFullWindow;
         int             movesTried;
+        int             improved;
+        int             betaCutoffs;
         EvalTerm        bestScore;
         MoveSpec        bestMove;
         MoveList        moves;
@@ -143,7 +139,8 @@ struct SearchState
     volatile bool*      mExitSearch;
     EvalWeight          mWeights[EVAL_TERMS];
     Frame               mFrames[MAX_SEARCH_DEPTH];
-    HistoryTable*       mHistoryTable;  
+    HistoryTable*       mHistoryTable; 
+    i32*                mOptions;
 
 #if PIGEON_CUDA_HOST
     IAsyncSearcher*     mCudaSearcher;
@@ -164,6 +161,8 @@ struct SearchState
         mEvaluator          = NULL;
         mMetrics            = NULL;
         mExitSearch         = NULL;
+        mHistoryTable       = NULL;
+        mOptions            = NULL;
 
 #if PIGEON_CUDA_HOST
         mCudaSearcher       = NULL;
@@ -385,10 +384,14 @@ struct SearchState
             f->moves.FlagSpecialMove( f->bestMove.mSrc, f->bestMove.mDest, FLAG_PRINCIPAL_VARIATION );
         }
 
-        f->movesTried   = 0;
-        f->bestScore    = f->alpha;
-        f->simdIdx      = LANES - 1;
-        f->step         = STEP_ITERATE_CHILDREN;        
+        f->movesTried       = 0;
+        f->bestScore        = f->alpha;
+        f->improved         = 0;
+        f->betaCutoffs      = 0;
+        f->doingPVS         = false;
+        f->useFullWindow    = true;
+        f->simdIdx          = LANES - 1;
+        f->step             = STEP_ITERATE_CHILDREN;        
 
         return( f );
     }
@@ -480,6 +483,9 @@ struct SearchState
             if( (f->movesTried < 1) || f->onPv )
                 spawnAsync = false;
 
+            if( f->doingPVS )
+                spawnAsync = false;
+
             if( spawnAsync )
             {
                 if( mCudaBatch == NULL )
@@ -490,11 +496,33 @@ struct SearchState
             }
 #endif
 
-            f->simdIdx++;
-            if( f->simdIdx >= LANES )
+            bool calcNextMove = true;
+            bool zeroWindow   = false;
+            int  depthReduction = 0;
+
+            if( f->doingPVS )
             {
-                this->StepPositionsSIMD( f );
-                f->simdIdx = 0;
+                if( f->useFullWindow )
+                {
+                    // This is a repeated search, so we'll re-use the last position
+
+                    calcNextMove = false;
+                }
+                else
+                {
+                    zeroWindow = true;
+                    //depthReduction = 1;
+                }
+            }
+
+            if( calcNextMove )
+            {
+                f->simdIdx++;
+                if( f->simdIdx >= LANES )
+                {
+                    this->StepPositionsSIMD( f );
+                    f->simdIdx = 0;
+                }
             }
 
 #if PIGEON_CUDA_HOST
@@ -525,6 +553,9 @@ struct SearchState
             }
 #endif
 
+            if( zeroWindow )
+                mMetrics->mZeroWindowSearchesAtPly[f->ply]++;
+
             if( f->movesTried < METRICS_MOVES )
                 mMetrics->mPlyMovesTriedByOrder[f->ply][f->movesTried]++;
 
@@ -534,8 +565,8 @@ struct SearchState
             n->moveMap      = &f->childMoveMap[f->simdIdx];
             n->score        = f->childScore[f->simdIdx];
             n->ply          = f->ply + 1; 
-            n->depth        = f->depth - 1; 
-            n->alpha        = -f->beta; 
+            n->depth        = f->depth - 1 - depthReduction; 
+            n->alpha        = zeroWindow? -(f->bestScore + 1) : -f->beta; 
             n->beta         = -f->bestScore;
             n->onPv         = (f->childSpec[f->simdIdx].mFlags & FLAG_PRINCIPAL_VARIATION)? true : false;
             n->step         = STEP_PROCESS;
@@ -580,11 +611,40 @@ struct SearchState
     {
         EvalTerm subScore = -f[1].result;
 
-        //bool failedHigh = (subScore >= f->beta);
-        //bool failedLow  = (subScore == f->bestScore);
+        bool failedHigh     = (subScore >= f->beta);
+        bool alphaImproved  = (subScore > f->bestScore);
 
-        if( subScore > f->bestScore )
+        if( f->doingPVS )
         {
+            bool usedZeroWindow = !f->useFullWindow;
+
+            if( usedZeroWindow && alphaImproved )
+            {                    
+                // We just did a zero window search, which improved alpha.
+                // Redo the search with the full window (f->movesTried has not been incremented!)
+
+                f->useFullWindow = true;
+                f->step = STEP_ITERATE_CHILDREN;
+
+                return( f );
+            }
+
+            f->useFullWindow = false;
+        }
+
+        if( alphaImproved )
+        {
+            f->improved++;
+
+            if( mOptions[OPTION_USE_PVS] )
+            {
+                f->doingPVS = true;
+                f->useFullWindow = false;
+            }
+
+            if( failedHigh )
+                f->betaCutoffs++;
+
             f->bestScore    = subScore;
             f->bestMove     = f->childSpec[f->simdIdx];
 
@@ -749,8 +809,8 @@ struct SearchState
             output++;
         }
 
-        //int npms = (int) (nodes / batch->mGpuTime);
-        //printf( "%4d jobs, %6d nodes, GPU time %6.1fms, CPU latency %6.1fms, most steps %4d, nps %4dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
+        int npms = (int) (nodes / batch->mGpuTime);
+        printf( "%4d jobs, %6d nodes, GPU time %6.1fms, CPU latency %6.1fms, most steps %4d, nps %4dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
     }
 
 

@@ -200,17 +200,10 @@ public:
     template< typename SIMD >
     PDECL SIMD ApplyWeights( const SIMD* eval, const EvalWeight* weights ) const
     {
-        // 
-
-        //SIMD score = MulSigned32( eval[0], weights[0] );
-        //for( int i = 1; i < EVAL_TERMS; i++ )
-        //    score += MulSigned32( eval[i], weights[i] );
+        SIMD score = MulSigned32( eval[0], weights[0] );
+        for( int i = 1; i < EVAL_TERMS; i++ )
+            score += MulSigned32( eval[i], weights[i] );
         
-
-        SIMD score = 0;
-        for( int i = 0; i < EVAL_TERMS; i++ )
-            score = score + MulSigned32( eval[i], weights[i] );
-
         return( score >> WEIGHT_SHIFT );
     }
 

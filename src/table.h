@@ -47,6 +47,35 @@ struct TableEntry
     }
 };
 
+template< int SLOTS = 8 >
+struct TableBucket
+{
+    u64*        mSource;
+    TableEntry  mEntry[SLOTS];
+
+    TableEntry* Load( u64 hash, u64* src )
+    {
+        mSource = src;
+
+        TableEntry* found = NULL;
+        u32 hashVerify = (u32) (hash >> 40);
+
+        for( int i = 0; i < SLOTS; i++ )
+        {
+            TableEntry* dest = mEntry + i;
+
+            dest->Unpack( mSource[i] );
+
+            if( dest->mHashVerify == hashVerify )
+                found = dest;
+        }
+
+        return( found );
+    }
+
+
+};
+
 
 /// Transposition table
 

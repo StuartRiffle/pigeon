@@ -73,7 +73,7 @@ PDECL class Engine
     int                     mCpuLevel;                  /// A CPU_* enum value that reflects the hardware capabilities
     bool                    mPopcntSupported;           /// True if the CPU can do POPCNT
     std::map< u64, int >    mPositionReps;              /// Indexed by hash, detects repetitions to avoid (unwanted) draw
-    int                     mOptions[OPTION_COUNT];     /// Runtime options exposed via UCI
+    i32                     mOptions[OPTION_COUNT];     /// Runtime options exposed via UCI
     HistoryTable            mHistoryTable;
 //  MaterialTable           mMaterialTable[2];          /// Material value for each piece/square combination, indexed by pos.mWhiteToMove
 
@@ -107,6 +107,8 @@ public:
         mOpeningBook.Init();               
         PlatClearMemory( mOptions, sizeof( mOptions ) );
 
+        // #OPTIONS
+
         mOptions[OPTION_HASH_SIZE]          = TT_MEGS_DEFAULT;
         mOptions[OPTION_CLEAR_HASH]         = 0;
         mOptions[OPTION_OWN_BOOK]           = OWNBOOK_DEFAULT? 1 : 0;
@@ -115,11 +117,15 @@ public:
         mOptions[OPTION_ENABLE_POPCNT]      = 1;
         mOptions[OPTION_ENABLE_CUDA]        = 0;
         mOptions[OPTION_EARLY_MOVE]         = 1;
+        mOptions[OPTION_USE_PVS]            = 1;
+        mOptions[OPTION_ALLOW_LMR]          = 1;
+        mOptions[OPTION_ASPIRATION_WINDOW]  = 1;
         mOptions[OPTION_GPU_HASH_SIZE]      = TT_MEGS_DEFAULT;
         mOptions[OPTION_GPU_BATCH_SIZE]     = BATCH_SIZE_DEFAULT;
         mOptions[OPTION_GPU_BATCH_COUNT]    = BATCH_COUNT_DEFAULT;
         mOptions[OPTION_GPU_BLOCK_WARPS]    = GPU_BLOCK_WARPS;
         mOptions[OPTION_GPU_PLIES]          = GPU_PLIES_DEFAULT;
+        mOptions[OPTION_GPU_SPIN_TO_ALLOC]  = 0;
 
         mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
     }
@@ -142,6 +148,7 @@ public:
         this->Stop();
         mRoot.Reset();
         mEvaluator.EnableOpening( true );
+        mHashTable.Clear();
         mPositionReps.clear();
     }
 
@@ -187,7 +194,7 @@ public:
     //--------------------------------------------------------------------------
     ///
 
-    const int* GetOptions() const
+    const i32* GetOptions() const
     {
         return( &mOptions[0] );
     }
@@ -200,16 +207,8 @@ public:
     {
 #if PIGEON_CUDA_HOST
         if( mOptions[OPTION_ENABLE_CUDA] && (CudaSystem::GetDeviceCount() > 0) )
-        {
             if( !mCudaSearcher.IsInitialized() )
-            {
-                mCudaSearcher.Initialize();
-                    //deviceIndex, 
-                    //mOptions[OPTION_GPU_BATCH_COUNT],
-                    //mOptions[OPTION_GPU_BATCH_SIZE],
-                    //mOptions[OPTION_GPU_HASH_SIZE] );
-            }
-        }
+                mCudaSearcher.Initialize( mOptions );
 #endif
     }
 
@@ -633,36 +632,6 @@ private:
     }
 
 
-    //--------------------------------------------------------------------------
-    ///
-
-    int ChooseNextMove( MoveList& moves, int whiteToMove )
-    {
-        int best = moves.mTried;
-
-        for( int idx = best + 1; idx < moves.mCount; idx++ )
-        {
-            MoveSpec& bestMove = moves.mMove[best];
-            MoveSpec& currMove = moves.mMove[idx];
-
-            if( currMove.mFlags < bestMove.mFlags )
-                continue;
-
-            if( currMove.mType < bestMove.mType )
-                continue;
-
-            //if( (currMove.mType == bestMove.mType) && (currMove.mFlags == bestMove.mFlags) )
-//            if( currMove.mFlags == bestMove.mFlags )
-            //    if( mHistoryTable[whiteToMove][currMove.mDest][currMove.mSrc] < mHistoryTable[whiteToMove][bestMove.mDest][bestMove.mSrc] )
-            //        continue;   
-
-            best = idx;
-        }
-
-        Exchange( moves.mMove[moves.mTried], moves.mMove[best] );
-        return( moves.mTried++ );
-    }
-
 
     //--------------------------------------------------------------------------
     ///
@@ -743,6 +712,7 @@ private:
         ss.mExitSearch      = &mExitSearch;
         ss.mMetrics         = &mMetrics;
         ss.mHistoryTable    = &mHistoryTable;
+        ss.mOptions         = mOptions;
 
         mHistoryTable.Decay();
         mMetrics.Clear();
@@ -761,12 +731,59 @@ private:
         }
 #endif
 
-        if( mStorePv && (depth > 1) )
-            ss.InsertBestLine( mStorePv );
+        int         alphaWindow = 50;
+        int         betaWindow  = 50;
+        EvalTerm    score       = 0;
+        bool        aspiration  = (mOptions[OPTION_ASPIRATION_WINDOW] != 0);
 
-        EvalTerm score = ss.RunToDepth( &mRoot, &moveMap, depth, 0, rootScore, -EVAL_MAX, EVAL_MAX );
-        if( mExitSearch )
-            return;
+        if( depth < 4 )
+            aspiration = false;
+
+        for( ;; )
+        {
+            int alpha  = -EVAL_MAX;
+            int beta   = EVAL_MAX;
+
+            if( aspiration )
+            {
+                alpha = mValuePv - alphaWindow;
+                beta  = mValuePv + betaWindow;
+
+                if( (alpha < -EVAL_MAX) || (beta > EVAL_MAX) )
+                    aspiration = false;
+            }
+
+            if( !aspiration )
+            {
+                alpha  = -EVAL_MAX;
+                beta   = EVAL_MAX;
+            }
+
+            if( mDebugMode )
+            {
+                if( aspiration )
+                    printf( "info string DEBUG: aspiration search [%d, %d]\n", alpha, beta );
+                else
+                    printf( "info string DEBUG: full window search\n" );
+            }
+
+            if( mStorePv && (depth > 1) )
+                ss.InsertBestLine( mStorePv );
+
+            score = ss.RunToDepth( &mRoot, &moveMap, depth, 0, rootScore, (EvalTerm) alpha, (EvalTerm) beta );
+            if( mExitSearch )
+                return;
+
+            if( !aspiration )
+                break;
+
+            if( score <= alpha )
+                alphaWindow *= 4;
+            else if( score >= beta )
+                betaWindow *= 4;
+            else
+                break;
+        }
 
         ss.ExtractBestLine( &pv  );
 

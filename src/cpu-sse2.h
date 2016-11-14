@@ -31,8 +31,6 @@ INLINE __m128i _mm_cmpeq_epi64_sse2( const __m128i& a, const __m128i& b )
 
 INLINE __m128i _mm_popcnt_epi64_sse2( __m128i v )
 {
-    // BROKEN?
-
     __m128i mask    = _mm_set1_epi8( 0x77 );
     __m128i n1      = _mm_and_si128( mask, _mm_srli_epi64( v,  1 ) );
     __m128i n2      = _mm_and_si128( mask, _mm_srli_epi64( n1, 1 ) );

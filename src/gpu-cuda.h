@@ -66,8 +66,9 @@ struct PIGEON_ALIGN( 32 ) SearchBatch
     SearchJobInput*     mInputDev;                  /// Job input buffer, device side
     SearchJobOutput*    mOutputHost;                /// Job output buffer, host side
     SearchJobOutput*    mOutputDev;                 /// Job output buffer, device side
-	HashTable*          mHashTable;                 /// Device hash table structure
-	Evaluator*          mEvaluator;                 /// Device evaluator structure (blending weights)
+	HashTable*          mHashTableDev;              /// Device hash table structure
+	Evaluator*          mEvaluatorDev;              /// Device evaluator structure (blending weights)
+    int*                mOptionsDev;                /// Device option settings
     u64                 mTickQueued;                /// CPU tick when the batch was queued for execution
     u64                 mTickReturned;              /// CPU tick when the completed batch was found
     float               mCpuLatency;                /// CPU time elapsed (in ms) between those two ticks, represents batch processing latency
@@ -122,9 +123,12 @@ class CudaChessDevice : public IAsyncSearcher
     Evaluator                   mEvaluatorHost;     /// Host-side copy of the device's evaluator object
     Evaluator*                  mEvaluatorDev;      /// Device evaluator object
 
-    i32*                        mExitFlagHost;      /// Hist-side flag to trigger early exit
+    i32*                        mExitFlagHost;      /// Host-side flag to trigger early exit
     i32*                        mExitFlagDev;       /// Device-side flag to trigger early exit, set via DMA
     cudaStream_t                mExitFlagStream;    /// A special stream to allow the exit flag to be updated while kernels are running
+
+    i32*                        mOptionsHost;       /// Host-side option array
+    i32*                        mOptionsDev;        /// Device-side copy of the options
 
     SearchJobInput*             mInputHost;         /// Host-side job input buffer (each batch uses a slice)
     SearchJobOutput*            mOutputHost;        /// Host-side job output buffer (each batch uses a slice)
@@ -175,6 +179,8 @@ public:
         mInputDev       = NULL;
         mOutputDev      = NULL;
         mExitFlagStream = (cudaStream_t) 0;
+        mOptionsHost    = NULL;
+        mOptionsDev     = NULL;
 
         mBatches.clear();
         mStreamId.clear();
@@ -197,11 +203,12 @@ public:
     //--------------------------------------------------------------------------
     ///
 
-    void Initialize( int index, int batchCount, int batchSlots, size_t hashBytes )
+    void Initialize( int index, int batchCount, int batchSlots, size_t hashBytes, i32* options )
     {
         mDeviceIndex    = index;
         mBatchCount     = batchCount;
         mBatchSlots     = batchSlots;
+        mOptionsHost    = options;
 
         mHashTableHost.CalcTableEntries( hashBytes );
 
@@ -244,6 +251,11 @@ public:
         CUDA_REQUIRE(( cudaMalloc( (void**) &mEvaluatorDev, sizeof( Evaluator ) ) ));
         CUDA_REQUIRE(( cudaMemcpy( mEvaluatorDev, &mEvaluatorHost, sizeof( mEvaluatorHost ), cudaMemcpyHostToDevice ) ));
 
+        // Options
+
+        CUDA_REQUIRE(( cudaMalloc( (void**) &mOptionsDev, sizeof( i32 ) * OPTION_COUNT ) ));
+        CUDA_REQUIRE(( cudaMemcpy( mOptionsDev, mOptionsHost, sizeof( i32 ) * OPTION_COUNT, cudaMemcpyHostToDevice ) ));
+
         // Early-exit flag
 
         CUDA_REQUIRE(( cudaMallocHost( (void**) &mExitFlagHost, sizeof( *mExitFlagHost ) ) ));
@@ -281,8 +293,9 @@ public:
             batch.mInputDev     = mInputDev   + offset;
             batch.mOutputHost   = mOutputHost + offset;
             batch.mOutputDev    = mOutputDev  + offset;
-            batch.mHashTable    = mHashTableDev;
-            batch.mEvaluator    = mEvaluatorDev;
+            batch.mHashTableDev = mHashTableDev;
+            batch.mEvaluatorDev = mEvaluatorDev;
+            batch.mOptionsDev   = mOptionsDev;
             batch.mTickQueued   = 0;
             batch.mTickReturned = 0;
             batch.mCpuLatency   = 0;
@@ -369,6 +382,9 @@ public:
 
         if( mOutputDev )
             cudaFree( mOutputDev );
+
+        if( mOptionsDev )
+            cudaFree( mOptionsDev );
 
         if( mExitFlagHost )
             cudaFreeHost( mExitFlagHost );
@@ -696,7 +712,7 @@ public:
     {
     }
 
-    void Initialize()
+    void Initialize( int* options )
     {
         int deviceCount = CudaSystem::GetDeviceCount();
 
@@ -722,7 +738,7 @@ public:
 
             CudaChessDevicePtr device( new CudaChessDevice() );
 
-            device->Initialize( deviceIndex, batchCount, batchSize, hashBytes );
+            device->Initialize( deviceIndex, batchCount, batchSize, hashBytes, options );
             if( !device->IsInitialized() )
                 continue;
 
