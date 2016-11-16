@@ -117,7 +117,6 @@ template<> INLINE simd2_sse2    CountBits< 1, simd2_sse2 >( const simd2_sse2& va
 template<> INLINE simd2_sse2    MaskAllClear<    simd2_sse2 >()                                                                     { return( _mm_setzero_si128() ); } 
 template<> INLINE simd2_sse2    MaskAllSet<      simd2_sse2 >()                                                                     { return( _mm_set1_epi8( ~0 ) ); } 
 template<> INLINE simd2_sse2    ByteSwap<        simd2_sse2 >( const simd2_sse2& val )                                              { return( _mm_bswap_epi64_sse2( val.vec ) ); }
-template<> INLINE simd2_sse2    MulSigned32<     simd2_sse2 >( const simd2_sse2& val,  i32 scale )                                  { return( _mm_mul_epi32( val.vec, _mm_set1_epi64x( scale ) ) ); }
 template<> INLINE simd2_sse2    MaskOut<         simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& bitsToClear )              { return( _mm_andnot_si128( bitsToClear.vec, val.vec ) ); }
 template<> INLINE simd2_sse2    CmpEqual<        simd2_sse2 >( const simd2_sse2& a,    const simd2_sse2& b )                        { return( _mm_cmpeq_epi64_sse2( a.vec, b.vec ) ); }
 template<> INLINE simd2_sse2    SelectIfZero<    simd2_sse2 >( const simd2_sse2& val,  const simd2_sse2& a )                        { return( _mm_and_si128( a.vec, _mm_cmpeq_epi64_sse2( val.vec, _mm_setzero_si128() ) ) ); }
@@ -133,7 +132,7 @@ struct SimdWidth< simd2_sse2 >
 };
 
 template<>
-void SimdInsert< simd2_sse2 >( simd2_sse2& dest, u64 val, int lane )
+INLINE void SimdInsert< simd2_sse2 >( simd2_sse2& dest, u64 val, int lane )
 {
     u64 PIGEON_ALIGN_SIMD qword[2];
 
@@ -141,6 +140,22 @@ void SimdInsert< simd2_sse2 >( simd2_sse2& dest, u64 val, int lane )
     qword[lane] = val;
     dest = *((simd2_sse2*) qword);
 }
+
+template<> 
+INLINE simd2_sse2 MulSigned32< simd2_sse2 >( const simd2_sse2& val, i32 scale )
+{ 
+    // HACK: doing this the brutish way for now
+
+    i64 PIGEON_ALIGN_SIMD qword[2];
+
+    *((simd2_sse2*) qword) = val;
+    qword[0] *= scale;
+    qword[1] *= scale;
+
+    simd2_sse2 result = *((simd2_sse2*) qword);
+    return( result ); 
+}
+
 
 template<> 
 INLINE simd2_sse2 SubClampZero< simd2_sse2 >( const simd2_sse2& a, const simd2_sse2& b )                        
