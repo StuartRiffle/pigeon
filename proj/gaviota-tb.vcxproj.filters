@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\sysport">
+      <UniqueIdentifier>{94dca56c-a06d-402c-a9f2-5b606fb28b14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compression">
+      <UniqueIdentifier>{e5c4720a-7584-4738-8606-ecbdb2e1d4dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compression\huffman">
+      <UniqueIdentifier>{4b44887c-7ce0-4698-90d8-1d254e95bc26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compression\liblzf">
+      <UniqueIdentifier>{42d283d7-46af-4eb9-aa79-b34694050f07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compression\zlib">
+      <UniqueIdentifier>{3e9ca3a1-3fd6-463b-b44e-4726fe63387b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compression\lzma">
+      <UniqueIdentifier>{51f568a0-7f53-4987-8bc5-aea0a1cb1454}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\gtb-att.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\gtb-dec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\gtb-probe.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\sysport\sysport.c">
+      <Filter>Source Files\sysport</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\wrap.c">
+      <Filter>Source Files\compression</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\huffman\hzip.c">
+      <Filter>Source Files\compression\huffman</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\liblzf\lzf_c.c">
+      <Filter>Source Files\compression\liblzf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\liblzf\lzf_d.c">
+      <Filter>Source Files\compression\liblzf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Alloc.c">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Bra86.c">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\LzFind.c">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Lzma86Dec.c">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Lzma86Enc.c">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\LzmaDec.c">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\LzmaEnc.c">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\adler32.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\crc32.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\deflate.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\infback.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\inffast.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\inflate.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\inftrees.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\trees.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\uncompr.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\zcompress.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\zutil.c">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\gtb-att.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\gtb-dec.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\gtb-probe.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\gtb-types.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\wrap.h">
+      <Filter>Source Files\compression</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\sysport\sysport.h">
+      <Filter>Source Files\sysport</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\huffman\hzip.h">
+      <Filter>Source Files\compression\huffman</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\liblzf\lzf.h">
+      <Filter>Source Files\compression\liblzf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\liblzf\lzfP.h">
+      <Filter>Source Files\compression\liblzf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Alloc.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Bra.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\LzFind.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\LzFindMt.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\LzHash.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Lzma86Dec.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Lzma86Enc.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\LzmaDec.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\LzmaEnc.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\lzma\Types.h">
+      <Filter>Source Files\compression\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\crc32.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\deflate.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\inffast.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\inffixed.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\inflate.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\inftrees.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\trees.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\zconf.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\zconf.in.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\zlib.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\contrib\gaviota-tb-0.4.5\compression\zlib\zutil.h">
+      <Filter>Source Files\compression\zlib</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

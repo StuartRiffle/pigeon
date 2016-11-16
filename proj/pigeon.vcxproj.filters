@@ -67,6 +67,12 @@
     <ClInclude Include="..\src\cpu-sse4.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\thread.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tb-gaviota.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

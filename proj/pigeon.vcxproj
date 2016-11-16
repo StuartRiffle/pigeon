@@ -103,8 +103,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(CUDA_PATH)\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\build\gaviota-tb\$(Configuration)\$(PlatformTarget);$(CUDA_PATH)\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>gaviota-tb.lib;cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -163,8 +164,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map.txt</MapFileName>
-      <AdditionalLibraryDirectories>$(CUDA_PATH)\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\build\gaviota-tb\$(Configuration)\$(PlatformTarget);$(CUDA_PATH)\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>gaviota-tb.lib;cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -237,7 +239,9 @@
     <ClInclude Include="..\src\position.h" />
     <ClInclude Include="..\src\search.h" />
     <ClInclude Include="..\src\table.h" />
+    <ClInclude Include="..\src\tb-gaviota.h" />
     <ClInclude Include="..\src\terms.inc" />
+    <ClInclude Include="..\src\thread.h" />
     <ClInclude Include="..\src\token.h" />
     <ClInclude Include="..\src\tune.h" />
     <ClInclude Include="..\src\uci.h" />
