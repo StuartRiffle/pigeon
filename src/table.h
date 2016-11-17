@@ -16,6 +16,7 @@ struct TableEntry
     u8          mBestDest;
     u8          mFailLow;
     u8          mFailHigh;
+    u8          mProbe;
 
 
     /// Pack all fields into a 64-bit word
@@ -29,7 +30,8 @@ struct TableEntry
             ((u64) mBestSrc     << 10) |
             ((u64) mBestDest    <<  4) |
             ((u64) mFailLow     <<  3) |
-            ((u64) mFailHigh    <<  2) );
+            ((u64) mFailHigh    <<  2) |
+            ((u64) mProbe       <<  0) );
     }
 
 
@@ -44,6 +46,7 @@ struct TableEntry
         mBestDest   = (u8)   ((val >>  4) & 0x3F);
         mFailLow    = (u8)   ((val >>  3) & 1);
         mFailHigh   = (u8)   ((val >>  2) & 1);
+        mProbe      = (u8)   ((val >>  0) & 3);
     }
 };
 

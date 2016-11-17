@@ -361,6 +361,14 @@ struct SearchState
 
                     bool returnScore = false;
 
+                    switch( tt.mProbe )
+                    {
+                    case TB_DRAW:       break;
+                    case TB_WHITE_MATE: break;
+                    case TB_BLACK_MATE: break;
+                    case TB_UNKNOWN:    break;
+                    }
+
                     if( tt.mDepth >= f->depth )
                     {
                         if( tt.mFailHigh )
@@ -714,6 +722,17 @@ struct SearchState
             tt.mBestDest    = f->bestMove.mDest;
             tt.mFailLow     = failedLow;
             tt.mFailHigh    = failedHigh;
+            tt.mProbe       = TB_UNKNOWN;
+
+            if( mTablebase )
+            {
+                TablebaseProbe probe;
+
+                if( mTablebase->Probe< POPCNT >( *f->pos, probe ) )
+                {
+                    tt.mProbe = probe.mResult;
+                }
+            }
 
             mHashTable->StoreBucket( f->bucket, tt );
         }
@@ -759,13 +778,13 @@ struct SearchState
     }
 
 
-#if PIGEON_CUDA_HOST
     //--------------------------------------------------------------------------
     /// Submit a batch of async search jobs
     ///
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
 
+#if PIGEON_CUDA_HOST
     PDECL INLINE void FlushBatch()
     {
         assert( mCudaBatch != NULL );
@@ -775,6 +794,7 @@ struct SearchState
 
         mBatchesInFlight++;
     }
+#endif
 
 
     //--------------------------------------------------------------------------
@@ -784,6 +804,7 @@ struct SearchState
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
 
+#if PIGEON_CUDA_HOST
     PDECL void ProcessCompletedBatch( SearchBatch* batch )
     {
         SearchJobInput*  input  = batch->mInputHost;
@@ -840,6 +861,7 @@ struct SearchState
         int npms = (int) (nodes / batch->mGpuTime);
         printf( "%4d jobs, %6d nodes, GPU time %6.1fms, CPU latency %6.1fms, most steps %4d, nps %4dk\n", batch->mCount, nodes, batch->mGpuTime, batch->mCpuLatency, mostSteps, npms );
     }
+#endif
 
 
     //--------------------------------------------------------------------------
@@ -848,6 +870,7 @@ struct SearchState
     /// \param f    Current stack frame
     /// \return     Stack frame after processing 
 
+#if PIGEON_CUDA_HOST
     PDECL void CheckForCompletedBatches()
     {
         for( ;; )

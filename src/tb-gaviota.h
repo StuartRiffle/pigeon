@@ -26,8 +26,16 @@ struct TablebaseProbe
         FLAG_BLACK_MATE = (1 << 2)
     };
 
-    u16     mFlags;
-    i16     mPliesToMate;
+    u16     mResult;
+    u16     mPliesToMate;
+};
+
+enum
+{
+    TB_UNKNOWN = 0,
+    TB_DRAW,
+    TB_WHITE_MATE,
+    TB_BLACK_MATE
 };
 
 inline int SquarePigeonToGaviota( int idx )
@@ -40,6 +48,12 @@ inline int SquarePigeonToGaviota( int idx )
 
 class GaviotaTablebase
 {
+    enum
+    {
+        GAVIOTA_TB_VERBOSE  = 1,
+        GAVIOTA_TB_WDL_FRAC = 96,
+    };
+
     struct ProbeSpec
     {
         u32     stm;        /* side to move */
@@ -106,20 +120,14 @@ class GaviotaTablebase
         }
     };
 
-public:
-
-    enum
-    {
-        GAVIOTA_TB_VERBOSE  = 1,
-        GAVIOTA_TB_WDL_FRAC = 96,
-    };
-
     const char**    mPaths;
     char*           mInitInfo;
     size_t          mCacheSize;
     bool            mPieceDataAvail[32];
     bool            mInitialized;
 
+
+public:
 
     GaviotaTablebase()
     {
@@ -175,8 +183,8 @@ public:
     template< int POPCNT >
     bool Probe( const Position& pos, TablebaseProbe& result, bool dtmCheck = false )
     {
-        if( pos.mFullmoveNum < TABLEBASE_MIN_MOVES )
-            return( false );
+        //if( pos.mFullmoveNum < TABLEBASE_MIN_MOVES )
+        //    return( false );
 
         int nonKingPieces = (int) CountBits< POPCNT >(
             pos.mWhitePawns   |
@@ -194,9 +202,6 @@ public:
         if( !mPieceDataAvail[totalPieces] )
             return( false );
 
-        if( this->LookupByHash( pos.mHash, result ) )
-            return( true );
-
         ProbeSpec spec;
         spec.SetPosition( pos );
 
@@ -205,23 +210,22 @@ public:
         int tbAvail     = 0;
 
         if( dtmCheck )
-            tbAvail = tb_probe_hard( spec.stm, spec.epsquare, spec.castling, spec.ws, spec.bs, spec.wp, spec.bp, &info, &pliesToMate );
+            tbAvail = tb_probe_hard(     spec.stm, spec.epsquare, spec.castling, spec.ws, spec.bs, spec.wp, spec.bp, &info, &pliesToMate );
         else
             tbAvail = tb_probe_WDL_hard( spec.stm, spec.epsquare, spec.castling, spec.ws, spec.bs, spec.wp, spec.bp, &info );
 
         if( tbAvail )
         {
             result.mPliesToMate = pliesToMate;
-            result.mFlags       = 0;
 
             switch( info )
             {
-            case tb_DRAW:   result.mFlags |= TablebaseProbe::FLAG_DRAW;       break;
-            case tb_WMATE:  result.mFlags |= TablebaseProbe::FLAG_WHITE_MATE; break;
-            case tb_BMATE:  result.mFlags |= TablebaseProbe::FLAG_BLACK_MATE; break;
+            case tb_DRAW:   result.mResult = TB_DRAW;       break;
+            case tb_WMATE:  result.mResult = TB_WHITE_MATE; break;
+            case tb_BMATE:  result.mResult = TB_BLACK_MATE; break;
+            default:        result.mResult = TB_UNKNOWN;    break;
             }
 
-            this->CacheResult( pos.mHash, result );
             return( true );
         }
 
@@ -240,14 +244,6 @@ private:
         PlatClearMemory( mPieceDataAvail, sizeof( mPieceDataAvail ) );
     }
 
-    bool LookupByHash( u64 hash, TablebaseProbe& result )
-    {
-        return( false );
-    }
-
-    void CacheResult( u64 hash, const TablebaseProbe& result )
-    {
-    }
 };
 
 };
