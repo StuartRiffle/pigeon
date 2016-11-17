@@ -122,6 +122,7 @@ struct SearchState
         MoveSpec        bestMove;
         MoveList        moves;
         int             simdIdx;
+        TableBucket     bucket;
 
         MoveSpec PIGEON_ALIGN_SIMD  childSpec[LANES];
         Position PIGEON_ALIGN_SIMD  childPos[LANES];
@@ -141,6 +142,7 @@ struct SearchState
     Frame               mFrames[MAX_SEARCH_DEPTH];
     HistoryTable*       mHistoryTable; 
     i32*                mOptions;
+    GaviotaTablebase*   mTablebase;
 
 #if PIGEON_CUDA_HOST
     IAsyncSearcher*     mCudaSearcher;
@@ -163,6 +165,7 @@ struct SearchState
         mExitSearch         = NULL;
         mHistoryTable       = NULL;
         mOptions            = NULL;
+        mTablebase          = NULL;
 
 #if PIGEON_CUDA_HOST
         mCudaSearcher       = NULL;
@@ -289,6 +292,28 @@ struct SearchState
 
 
     //--------------------------------------------------------------------------
+    /// Look up this position in the endgame tablebase
+    ///
+    /// \param f    Current stack frame
+    /// \return     Stack frame after processing 
+
+    PDECL INLINE Frame* CheckTablebase( Frame* f )
+    {
+        if( mTablebase )
+        {
+            TablebaseProbe probe;
+
+            if( mTablebase->Probe< POPCNT >( *f->pos, probe ) )
+            {
+
+            }
+        }
+
+        return( f );
+    }
+
+
+    //--------------------------------------------------------------------------
     /// Quiescence search
     ///
     /// \param f    Current stack frame
@@ -322,50 +347,53 @@ struct SearchState
 
     PDECL INLINE Frame* CheckHashTable( Frame* f )
     {
-        if( (f->depth > 0) && !f->onPv )
+        if( f->depth > 0 )
         {
+            mHashTable->LoadBucket( f->pos->mHash, f->bucket );
             mMetrics->mHashLookupsAtPly[f->ply]++;
 
-            TableEntry tt;
-            mHashTable->Load( f->pos->mHash, tt );
-
-            u32 verify = (u32) (f->pos->mHash >> 40);
-            if( tt.mHashVerify == verify )
+            if( !f->onPv )
             {
-                mMetrics->mHashHitsAtPly[f->ply]++;
-
-                bool returnScore = false;
-
-                if( tt.mDepth >= f->depth )
+                if( f->bucket.mIdxFound >= 0 )
                 {
-                    if( tt.mFailHigh )
+                    TableEntry& tt = f->bucket.mEntry[f->bucket.mIdxFound];
+                    mMetrics->mHashHitsAtPly[f->ply]++;
+
+                    bool returnScore = false;
+
+                    if( tt.mDepth >= f->depth )
                     {
-                        f->alpha = Max( f->alpha, tt.mScore );
+                        if( tt.mFailHigh )
+                        {
+                            f->alpha = Max( f->alpha, tt.mScore );
+                        }
+                        else if( tt.mFailLow )
+                        {
+                            f->beta = Min( f->beta, tt.mScore );
+                        }
+                        else
+                        {
+                            returnScore = true;
+                        }
+                
+                        if( f->alpha >= f->beta )
+                            returnScore = true;
                     }
-                    else if( tt.mFailLow )
+                
+                    if( returnScore )
                     {
-                        f->beta = Min( f->beta, tt.mScore );
+                        f->result = tt.mScore;
+                        f--;
                     }
                     else
                     {
-                        returnScore = true;
+                        f->moves.FlagSpecialMove( tt.mBestSrc, tt.mBestDest, FLAG_TT_BEST_MOVE );
                     }
-                
-                    if( f->alpha >= f->beta )
-                        returnScore = true;
-                }
-                
-                if( returnScore )
-                {
-                    f->result = tt.mScore;
-                    f--;
-                }
-                else
-                {
-                    f->moves.FlagSpecialMove( tt.mBestSrc, tt.mBestDest, FLAG_TT_BEST_MOVE );
                 }
             }
+
         }
+
 
         return( f );
     }
@@ -480,7 +508,7 @@ struct SearchState
             if( mBatchesInFlight >= mBatchLimit )
                 spawnAsync = false;
 
-            if( (f->movesTried < 1) || f->onPv )
+            if( (f->movesTried < 3) || f->onPv )
                 spawnAsync = false;
 
             if( f->doingPVS )
@@ -687,7 +715,7 @@ struct SearchState
             tt.mFailLow     = failedLow;
             tt.mFailHigh    = failedHigh;
 
-            mHashTable->Store( f->pos->mHash, tt );
+            mHashTable->StoreBucket( f->bucket, tt );
         }
 
         f->result = result;
@@ -861,6 +889,9 @@ struct SearchState
 
         if( f < mFrames )
             return( f );
+
+        if( f->step == STEP_PROCESS )           
+            f = this->CheckTablebase( f );
 
         if( f->step == STEP_PROCESS )           
             f = this->Quieten( f );

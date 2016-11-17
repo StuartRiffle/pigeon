@@ -328,7 +328,7 @@ struct PIGEON_ALIGN_SIMD PositionT
         SIMD    hash1               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED1 ^ castlingAndEP ) ^ whiteBishops ) ^ blackQueens );             
         SIMD    hash2               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED2 ^ whiteKing )     ^ blackBishops ) ^ whiteQueens );             
         SIMD    hash3               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED3 ^ blackKing )     ^ whiteKnights ) ^ blackRooks  );        
-        SIMD    hash                = XorShiftC( hash0 - hash2 ) ^ XorShiftC( hash1 - hash3 );
+        SIMD    hash                = XorShiftB( hash0 - hash2 ) ^ XorShiftC( hash1 - hash3 );
 
         return( hash );
     }

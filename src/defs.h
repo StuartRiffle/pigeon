@@ -82,6 +82,7 @@ enum
     OPTION_USE_PVS,
     OPTION_ALLOW_LMR,
     OPTION_ASPIRATION_WINDOW,
+    OPTION_GAVIOTA_CACHE_SIZE,
     OPTION_GPU_HASH_SIZE,
     OPTION_GPU_BATCH_SIZE,
     OPTION_GPU_BATCH_COUNT,
@@ -119,6 +120,8 @@ const PDECL int         LAST_QUIET_LEVEL        = -4;
 const PDECL int         CUDA_STREAM_COUNT       = 8;
 const PDECL int         BATCH_SIZE_DEFAULT      = 4096;
 const PDECL int         BATCH_COUNT_DEFAULT     = 8;
+const PDECL int         GAVIOTA_CACHE_DEFAULT   = 32;
+const PDECL int         TABLEBASE_MIN_MOVES     = 14;
 const PDECL int         GPU_PLIES_DEFAULT       = 1;
 const PDECL int         GPU_BLOCK_WARPS         = 4;
 const PDECL int         GPU_BATCH_POLL_STEPS    = 20000;

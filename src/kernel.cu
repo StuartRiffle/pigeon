@@ -80,8 +80,11 @@ __global__ void SearchPositionsOnGPU(
             output->mSteps          = metrics.mSteps;
             output->mDeepestPly     = ss.mDeepestPly;
 
+            for( int i = 0; i < input->mPly; i++ )
+                output->mPath[i] = input->mPath[i];
+
             for( int i = 0; i < input->mDepth; i++ )
-                output->mPath[i] = ss.mFrames[i].bestMove;
+                output->mPath[input->mPly + i] = ss.mFrames[i].bestMove;
 
             input  = NULL;
             output = NULL;

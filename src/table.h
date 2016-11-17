@@ -47,32 +47,18 @@ struct TableEntry
     }
 };
 
-template< int SLOTS = 8 >
 struct TableBucket
 {
-    u64*        mSource;
-    TableEntry  mEntry[SLOTS];
-
-    TableEntry* Load( u64 hash, u64* src )
+    enum
     {
-        mSource = src;
+        SHIFT = 3,
+        SLOTS = (1 << SHIFT),
+        MASK  = (SLOTS - 1)
+    };
 
-        TableEntry* found = NULL;
-        u32 hashVerify = (u32) (hash >> 40);
-
-        for( int i = 0; i < SLOTS; i++ )
-        {
-            TableEntry* dest = mEntry + i;
-
-            dest->Unpack( mSource[i] );
-
-            if( dest->mHashVerify == hashVerify )
-                found = dest;
-        }
-
-        return( found );
-    }
-
+    u64*        mSource;
+    int         mIdxFound;
+    TableEntry  mEntry[SLOTS];
 
 };
 
@@ -172,6 +158,64 @@ struct HashTable
         *ptr = packed;
 #endif
     }
+
+    INLINE PDECL bool IsBetterEntry( const TableEntry& curr, const TableEntry& prev ) const
+    {
+        if( curr.mDepth > prev.mDepth )
+            return( true );
+
+        bool currExact = !(curr.mFailHigh || curr.mFailLow);
+        bool prevExact = !(prev.mFailHigh || prev.mFailLow);
+
+        if( currExact && !prevExact )
+            return( true );
+
+        return( false );
+    }
+
+    PDECL void LoadBucket( const u64& hash, TableBucket& bucket ) const
+    {
+        uintptr_t   bucketIndex = (hash & mMask) >> TableBucket::SHIFT;
+        u64*        bucketSlots = mTable + (bucketIndex << TableBucket::SHIFT);
+        u32         hashVerify  = (u32) (hash >> 40);
+
+        bucket.mSource = bucketSlots;
+        bucket.mIdxFound  = -1;
+
+        for( int i = 0; i < TableBucket::SLOTS; i++ )
+        {
+            TableEntry* entry = bucket.mEntry + i;
+
+            entry->Unpack( bucketSlots[i] );
+            if( entry->mHashVerify == hashVerify )
+                bucket.mIdxFound = i;
+        }
+
+        //printf( "%c", (bucket.mIdxFound >= 0)? 'f' : ('A' + poss) );
+    }
+
+    PDECL void StoreBucket( const TableBucket& bucket, const TableEntry& tt )
+    {
+        int prevIdx = bucket.mIdxFound;
+        if( prevIdx >= 0 )
+        {
+            const TableEntry& prev = bucket.mEntry[prevIdx];
+
+            if( !this->IsBetterEntry( prev, tt ) )
+                bucket.mSource[prevIdx] = tt.Pack();
+        }
+        else
+        {
+            int worst = 0;
+
+            for( int i = 1; i < TableBucket::SLOTS; i++ )
+                if( this->IsBetterEntry( bucket.mEntry[worst], bucket.mEntry[i] ) )
+                    worst = i;
+
+            bucket.mSource[worst] = tt.Pack();
+        }
+    }
+
 };
 
 

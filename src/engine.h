@@ -1,46 +1,11 @@
 // engine.h - PIGEON CHESS ENGINE (c) 2012-2016 Stuart Riffle
 
-#include <functional>
-#include <memory>
-
 
 
 namespace Pigeon {
 #ifndef PIGEON_ENGINE_H__
 #define PIGEON_ENGINE_H__
 
-
-
-template< typename T >
-class ThreadSafeQueue
-{
-    Mutex           mMutex;
-    Semaphore       mAvail;
-    std::queue< T > mQueue;
-
-public:
-    void Push( const T& obj )
-    {
-        {
-            Mutex::Scope lock( mMutex );
-            mQueue.push( obj );
-        }
-
-        mAvail.Post();
-    }   
-
-    T Pop()
-    {
-        mAvail.Wait();
-
-        Mutex::Scope lock( mMutex );
-
-        T result = mQueue.front();
-        mQueue.pop();
-
-        return( result );
-    }
-};
 
 
 
@@ -74,7 +39,9 @@ PDECL class Engine
     bool                    mPopcntSupported;           /// True if the CPU can do POPCNT
     std::map< u64, int >    mPositionReps;              /// Indexed by hash, detects repetitions to avoid (unwanted) draw
     i32                     mOptions[OPTION_COUNT];     /// Runtime options exposed via UCI
-    HistoryTable            mHistoryTable;
+    HistoryTable            mHistoryTable;              /// History table for move ordering
+    GaviotaTablebase        mTablebase;                 /// Endgame tablebase interface
+    std::string             mGaviotaPath;               /// Gaviota tablebase path
 //  MaterialTable           mMaterialTable[2];          /// Material value for each piece/square combination, indexed by pos.mWhiteToMove
 
 #if PIGEON_CUDA_HOST
@@ -120,6 +87,7 @@ public:
         mOptions[OPTION_USE_PVS]            = 1;
         mOptions[OPTION_ALLOW_LMR]          = 1;
         mOptions[OPTION_ASPIRATION_WINDOW]  = 1;
+        mOptions[OPTION_GAVIOTA_CACHE_SIZE] = GAVIOTA_CACHE_DEFAULT;
         mOptions[OPTION_GPU_HASH_SIZE]      = TT_MEGS_DEFAULT;
         mOptions[OPTION_GPU_BATCH_SIZE]     = BATCH_SIZE_DEFAULT;
         mOptions[OPTION_GPU_BATCH_COUNT]    = BATCH_COUNT_DEFAULT;
@@ -191,6 +159,12 @@ public:
     }
 
 
+    void SetGaviotaPath( const char* path )
+    {
+        mGaviotaPath = path;
+    }
+
+
     //--------------------------------------------------------------------------
     ///
 
@@ -212,6 +186,20 @@ public:
 #endif
     }
 
+    void LazyInitGaviota()
+    {
+        if( (mOptions[OPTION_GAVIOTA_CACHE_SIZE] > 0) && !mGaviotaPath.empty() )
+        {
+            if( !mTablebase.IsInitialized() )
+                mTablebase.Init( mGaviotaPath.c_str(), mOptions[OPTION_GAVIOTA_CACHE_SIZE] );
+        }
+        else
+        {
+            if( mTablebase.IsInitialized() )
+                mTablebase.Shutdown();
+        }
+    }
+
 
     //--------------------------------------------------------------------------
     ///
@@ -222,6 +210,7 @@ public:
             mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
 
         this->LazyInitCuda();
+        this->LazyInitGaviota();
     }
 
 
@@ -299,6 +288,7 @@ public:
         mConfig = *conf;
 
         this->LazyInitCuda();
+        this->LazyInitGaviota();
 
         mSearchElapsed.Reset();
 
@@ -722,14 +712,15 @@ private:
         {
             if( depth >= (MIN_CPU_PLIES + mOptions[OPTION_GPU_PLIES]) )
             {
-                mCudaSearcher.SetBlockWarps( mOptions[OPTION_GPU_BLOCK_WARPS] );
-
                 ss.mCudaSearcher   = &mCudaSearcher;
                 ss.mAsyncSpawnPly  = depth - mOptions[OPTION_GPU_PLIES];
                 ss.mBatchLimit     = mOptions[OPTION_GPU_BATCH_COUNT];
             }
         }
 #endif
+        if( mTablebase.IsInitialized() )
+            ss.mTablebase = &mTablebase;
+
 
         int         alphaWindow = 50;
         int         betaWindow  = 50;

@@ -11,6 +11,7 @@
 #include "eval.h"
 #include "movelist.h"
 #include "table.h"
+#include "tb-gaviota.h"
 #include "search.h"
 
 #include <algorithm>
@@ -21,7 +22,8 @@
 #include <queue>
 #include <list>
 #include <map>
-
+#include <functional>
+#include <memory>
 
 #include <stdio.h>
 #include <ctype.h>
@@ -31,10 +33,13 @@
 #include "token.h"
 #include "book.h"
 #include "perft.h"
+#include "thread.h"
 #include "engine.h"
 #include "amoeba.h"
 #include "tune.h"
 #include "uci.h"
+
+//#include "tb-gaviota.h" 
 
         
 int main( int argc, char** argv )

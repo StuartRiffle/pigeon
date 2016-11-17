@@ -33,22 +33,24 @@ struct UCI
             const i32* options = engine->GetOptions();
 
             printf( "option name Hash"              " type spin min 4 max 8192 default %d\n",   options[OPTION_HASH_SIZE] );
-            printf( "option name Clear Hash"        " type button\n" );
+            printf( "option name ClearHash"         " type button\n" );
             printf( "option name OwnBook"           " type check default %s\n",                 options[OPTION_OWN_BOOK]? "true" : "false" );
             printf( "option name Threads"           " type spin default 1 min 1 max %d\n",      options[OPTION_NUM_THREADS] );
-            printf( "option name Early Move"        " type check default %s\n",                 options[OPTION_EARLY_MOVE]? "true" : "false" );
+            printf( "option name EarlyMove"         " type check default %s\n",                 options[OPTION_EARLY_MOVE]? "true" : "false" );
             printf( "option name Aspiration"        " type check default %s\n",                 options[OPTION_ASPIRATION_WINDOW]? "true" : "false" );
             printf( "option name PVS"               " type check default %s\n",                 options[OPTION_USE_PVS]? "true" : "false" );
             printf( "option name SIMD"              " type check default %s\n",                 options[OPTION_ENABLE_SIMD]? "true" : "false" );
             printf( "option name POPCNT"            " type check default %s\n",                 options[OPTION_ENABLE_POPCNT]? "true" : "false" );
+            printf( "option name GaviotaTbCache"    " type spin min 4 max 512 default %d\n",    options[OPTION_GAVIOTA_CACHE_SIZE] );
+            printf( "option name GaviotaTbPath"     " type string\n" );
 
 #if PIGEON_ENABLE_CUDA
             printf( "option name CUDA"              " type check default %s\n",                 options[OPTION_ENABLE_CUDA]? "true" : "false" );
-            printf( "option name GPU Hash"          " type spin min 4 max 8192 default %d\n",   options[OPTION_GPU_HASH_SIZE] );
-            printf( "option name GPU Batch Size"    " type spin min 32 max 8192 default %d\n",  options[OPTION_GPU_BATCH_SIZE] );
-            printf( "option name GPU Batch Count"   " type spin min 4 max 1024 default %d\n",   options[OPTION_GPU_BATCH_COUNT] );
-            printf( "option name GPU Block Warps"   " type spin min 1 max 32 default %d\n",     options[OPTION_GPU_BLOCK_WARPS] );
-            printf( "option name GPU Plies"         " type spin min 0 max 8 default %d\n",      options[OPTION_GPU_PLIES] );
+            printf( "option name GpuHash"           " type spin min 4 max 8192 default %d\n",   options[OPTION_GPU_HASH_SIZE] );
+            printf( "option name GpuBatchSize"      " type spin min 32 max 8192 default %d\n",  options[OPTION_GPU_BATCH_SIZE] );
+            printf( "option name GpuBatchCount"     " type spin min 4 max 1024 default %d\n",   options[OPTION_GPU_BATCH_COUNT] );
+            printf( "option name GpuBlockWarps"     " type spin min 1 max 32 default %d\n",     options[OPTION_GPU_BLOCK_WARPS] );
+            printf( "option name GpuPlies"          " type spin min 0 max 8 default %d\n",      options[OPTION_GPU_PLIES] );
 #endif
 
             printf( "uciok\n" );
@@ -60,7 +62,7 @@ struct UCI
                 if( tokens.Consume( "hash" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_HASH_SIZE, tokens.ConsumeInt() );
 
-                if( tokens.Consume( "clear" ) && tokens.Consume( "hash" ) )
+                if( tokens.Consume( "clearhash" ) )
                     engine->SetOption( OPTION_CLEAR_HASH, 1 );
 
                 if( tokens.Consume( "ownbook" ) && tokens.Consume( "value" ) )
@@ -69,7 +71,7 @@ struct UCI
                 if( tokens.Consume( "threads" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_NUM_THREADS, tokens.Consume( "true" )? 1 : 0 );
 
-                if( tokens.Consume( "early move" ) && tokens.Consume( "value" ) )
+                if( tokens.Consume( "earlymove" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_EARLY_MOVE, tokens.Consume( "true" )? 1 : 0 );
 
                 if( tokens.Consume( "pvs" ) && tokens.Consume( "value" ) )
@@ -84,24 +86,30 @@ struct UCI
                 if( tokens.Consume( "popcnt" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_ENABLE_POPCNT, tokens.Consume( "true" )? 1 : 0 );
 
+                if( tokens.Consume( "gaviotatbcache" ) && tokens.Consume( "value" ) )
+                    engine->SetOption( OPTION_GAVIOTA_CACHE_SIZE, tokens.ConsumeInt() );
+
+                if( tokens.Consume( "gaviotatbpath" ) && tokens.Consume( "value" ) )
+                    engine->SetGaviotaPath( tokens.ConsumeAll() );
+
 #if PIGEON_ENABLE_CUDA
 
                 if( tokens.Consume( "cuda" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_ENABLE_CUDA, tokens.Consume( "true" )? 1 : 0 );
 
-                if( tokens.Consume( "gpu hash" ) && tokens.Consume( "value" ) )
+                if( tokens.Consume( "gpuhash" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_GPU_HASH_SIZE, tokens.ConsumeInt() );
 
-                if( tokens.Consume( "gpu batch size" ) && tokens.Consume( "value" ) )
+                if( tokens.Consume( "gpubatchsize" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_GPU_BATCH_SIZE, tokens.ConsumeInt() );
 
-                if( tokens.Consume( "gpu batch count" ) && tokens.Consume( "value" ) )
+                if( tokens.Consume( "gpubatchcount" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_GPU_BATCH_COUNT, tokens.ConsumeInt() );
 
-                if( tokens.Consume( "gpu block warps" ) && tokens.Consume( "value" ) )
+                if( tokens.Consume( "gpublockwarps" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_GPU_BLOCK_WARPS, tokens.ConsumeInt() );
 
-                if( tokens.Consume( "gpu plies" ) && tokens.Consume( "value" ) )
+                if( tokens.Consume( "gpuplies" ) && tokens.Consume( "value" ) )
                     engine->SetOption( OPTION_GPU_PLIES, tokens.ConsumeInt() );
 #endif
 

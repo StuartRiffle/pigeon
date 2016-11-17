@@ -209,6 +209,7 @@ public:
         mBatchCount     = batchCount;
         mBatchSlots     = batchSlots;
         mOptionsHost    = options;
+        mBlockWarps     = options[OPTION_GPU_BLOCK_WARPS];
 
         mHashTableHost.CalcTableEntries( hashBytes );
 
@@ -411,20 +412,6 @@ public:
     //--------------------------------------------------------------------------
     ///
 
-    void SetBlockWarps( int blockWarps )
-    {
-        Mutex::Scope scope( mMutex );
-
-        assert( blockWarps > 0 );
-        assert( IsPowerOfTwo( blockWarps ) );
-
-        mBlockWarps = blockWarps;
-    }
-
-
-    //--------------------------------------------------------------------------
-    ///
-
     virtual SearchBatch* AllocBatch()
     {
         Mutex::Scope scope( mMutex );
@@ -541,18 +528,6 @@ public:
 
 
 private:
-
-    //--------------------------------------------------------------------------
-    ///
-
-    int CycleToNextStream()
-    {
-        assert( mStreamId.size() > 0 );
-
-        mStreamIndex = (mStreamIndex + 1) % mStreamId.size();
-        return( mStreamIndex );
-    }
-
 
     //--------------------------------------------------------------------------
     ///
@@ -725,14 +700,14 @@ public:
             if( cudaGetDeviceProperties( &deviceProp, deviceIndex ) != cudaSuccess )
                 continue;
 
-            int     batchCount  = BATCH_COUNT_DEFAULT;
-            int     batchSize   = BATCH_SIZE_DEFAULT;
-            size_t  hashBytes   = 1 * 1024 * 1024;
+            int     batchCount  = options[OPTION_GPU_BATCH_COUNT];
+            int     batchSize   = options[OPTION_GPU_BATCH_SIZE];
+            size_t  hashBytes   = options[OPTION_GPU_HASH_SIZE] * 1024 * 1024;
 
-            // By default use half of the device memory for hash table
+            // Limit the size of the hash table to 1/4 total GPU memory for now
 
-            while( 4 * hashBytes < deviceProp.totalGlobalMem )
-                hashBytes *= 2;
+            while( 4 * hashBytes > deviceProp.totalGlobalMem )
+                hashBytes >>= 1;
 
             // TODO: use the device properties to tweak these settings 
 
@@ -752,15 +727,6 @@ public:
     {
         return( mInitialized );
     }
-
-    void SetBlockWarps( int blockWarps )
-    {
-        Mutex::Scope scope( mMutex );
-
-        for( size_t i = 0; i < mDevices.size(); i++ )
-            mDevices[i]->SetBlockWarps( blockWarps );
-    }
-
 
     virtual SearchBatch* AllocBatch()
     {
