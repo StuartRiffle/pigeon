@@ -208,8 +208,8 @@ struct SearchState
         if( curr.mType != best.mType )
             return( curr.mType > best.mType );
 
-        HistoryTerm& currHist = mHistoryTable->mTerm[whiteToMove][curr.mDest][curr.mSrc];
-        HistoryTerm& bestHist = mHistoryTable->mTerm[whiteToMove][best.mDest][best.mSrc];
+        const HistoryTerm& currHist = mHistoryTable->mTerm[whiteToMove][curr.mDest][curr.mSrc];
+        const HistoryTerm& bestHist = mHistoryTable->mTerm[whiteToMove][best.mDest][best.mSrc];
         
         return( currHist > bestHist );
     }
@@ -730,7 +730,7 @@ struct SearchState
 
                 if( mTablebase->Probe< POPCNT >( *f->pos, probe ) )
                 {
-                    tt.mProbe = probe.mResult;
+                    tt.mProbe = (u8) probe.mResult;
                 }
             }
 

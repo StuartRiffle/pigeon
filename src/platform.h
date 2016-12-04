@@ -384,7 +384,7 @@ namespace Pigeon
         void    Reset()         { mStartTime = Timer::GetTick(); }
         i64     GetElapsedMs()  { return( ((i64) (Timer::GetTick() - mStartTime) * 1000) / Timer::GetFrequency() ); }
 
-        static u64 GetTick()
+        static INLINE u64 GetTick()
         { 
     #if PIGEON_MSVC
             LARGE_INTEGER tick; 

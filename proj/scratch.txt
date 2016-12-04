@@ -689,3 +689,86 @@ info depth 8 seldepth 22 score cp 0 hashfull 0 nodes 742486 time 1106 nps 979532
 info depth 9 seldepth 27 score cp 56 hashfull 0 nodes 3660367 time 4443 nps 1102188 pv g1f3 g7g6 f3g5 g8f6 e4e5 b8c6 a3b4 d7d6 c1d2
 info depth 10 seldepth 29 score cp 0 hashfull 23 nodes 21758283 time 24740 nps 1072840 pv g1f3 g7g6 d2d4 g8f6 g4g5 b8c6 b1d2 d7d6 e1f2 d6e5
 bestmove g1f3
+
+
+
+class str_t : public std::string
+{
+public:
+    enum
+    {
+        NPOS = std::string::npos
+    };
+
+    std::vector< str_t > split( const str_t& sep ) const
+    {
+        std::vector< str_t > result;
+
+        const char* str = this->c_str();
+        for( ;; )
+        {
+            const char* next = strstr( str, sep );
+            if( !next )
+                break;
+
+            result.emplace_back( str, next );
+            str = next + seplen;
+        }
+
+        result.emplace_back( str );
+        return( result );
+    }
+
+    static str_t join( const std::vector< str_t >& parts, const str_t& glue )
+    {
+        size_t len = 0;
+
+        for( const str_t& str : parts )
+            len += str.length();
+
+        if( parts.size() > 0 )
+            len += glue.length() * (parts.size() - 1);
+
+        std::string result( len );
+
+        for( const str_t& str : parts )
+        {
+            if( result.length() > 0 )
+                result.append( glue )
+
+            result.append( str );
+        }
+
+        assert( result.length() == len );
+        return( result );
+    }
+
+    str_t replace( const str_t& before, const str_t& after )
+    {
+        str_t result;
+        result.reserve( this->length() );
+
+        size_t pos = 0;
+
+        for( ;; )
+        {
+            size_t ofs = this->find_first_of( before, pos );
+            if( ofs == NPOS )
+                break;
+
+            result.append( this->substr( pos, pos + ofs ) );
+            pos += ofs;
+            pos += before.length();
+
+            result.append( after );
+        }
+
+        result.append( this->substr( pos ) );
+        return( result );
+    }
+
+
+
+
+};
+

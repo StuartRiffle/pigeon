@@ -42,7 +42,7 @@ PDECL class Engine
     HistoryTable            mHistoryTable;              /// History table for move ordering
     GaviotaTablebase        mTablebase;                 /// Endgame tablebase interface
     std::string             mGaviotaPath;               /// Gaviota tablebase path
-//  MaterialTable           mMaterialTable[2];          /// Material value for each piece/square combination, indexed by pos.mWhiteToMove
+    MaterialTable           mMaterialTable[2];          /// Material value for each piece/square combination, indexed by pos.mWhiteToMove
 
 #if PIGEON_CUDA_HOST
     CudaChessManager        mCudaSearcher;
@@ -76,24 +76,26 @@ public:
 
         // #OPTIONS
 
-        mOptions[OPTION_HASH_SIZE]          = TT_MEGS_DEFAULT;
-        mOptions[OPTION_CLEAR_HASH]         = 0;
-        mOptions[OPTION_OWN_BOOK]           = OWNBOOK_DEFAULT? 1 : 0;
-        mOptions[OPTION_NUM_THREADS]        = PlatDetectCpuCores();
-        mOptions[OPTION_ENABLE_SIMD]        = 1;
-        mOptions[OPTION_ENABLE_POPCNT]      = 1;
-        mOptions[OPTION_ENABLE_CUDA]        = 0;
-        mOptions[OPTION_EARLY_MOVE]         = 1;
-        mOptions[OPTION_USE_PVS]            = 1;
-        mOptions[OPTION_ALLOW_LMR]          = 1;
-        mOptions[OPTION_ASPIRATION_WINDOW]  = 1;
-        mOptions[OPTION_GAVIOTA_CACHE_SIZE] = GAVIOTA_CACHE_DEFAULT;
-        mOptions[OPTION_GPU_HASH_SIZE]      = TT_MEGS_DEFAULT;
-        mOptions[OPTION_GPU_BATCH_SIZE]     = BATCH_SIZE_DEFAULT;
-        mOptions[OPTION_GPU_BATCH_COUNT]    = BATCH_COUNT_DEFAULT;
-        mOptions[OPTION_GPU_BLOCK_WARPS]    = GPU_BLOCK_WARPS;
-        mOptions[OPTION_GPU_PLIES]          = GPU_PLIES_DEFAULT;
-        mOptions[OPTION_GPU_SPIN_TO_ALLOC]  = 0;
+        mOptions[OPTION_HASH_SIZE]                  = TT_MEGS_DEFAULT;
+        mOptions[OPTION_CLEAR_HASH]                 = 0;
+        mOptions[OPTION_OWN_BOOK]                   = OWNBOOK_DEFAULT? 1 : 0;
+        mOptions[OPTION_NUM_THREADS]                = PlatDetectCpuCores();
+        mOptions[OPTION_ENABLE_SIMD]                = 1;
+        mOptions[OPTION_ENABLE_POPCNT]              = 1;
+        mOptions[OPTION_ENABLE_CUDA]                = 0;
+        mOptions[OPTION_EARLY_MOVE]                 = 1;
+        mOptions[OPTION_USE_PVS]                    = 1;
+        mOptions[OPTION_ALLOW_LMR]                  = 1;
+        mOptions[OPTION_USE_ASPIRATION]             = 1;
+        mOptions[OPTION_ASPIRATION_WINDOW_SIZE]     = 50;
+        mOptions[OPTION_ASPIRATION_WINDOW_SCALE]    = 4;
+        mOptions[OPTION_GAVIOTA_CACHE_SIZE]         = GAVIOTA_CACHE_DEFAULT;
+        mOptions[OPTION_GPU_HASH_SIZE]              = TT_MEGS_DEFAULT;
+        mOptions[OPTION_GPU_BATCH_SIZE]             = BATCH_SIZE_DEFAULT;
+        mOptions[OPTION_GPU_BATCH_COUNT]            = BATCH_COUNT_DEFAULT;
+        mOptions[OPTION_GPU_BLOCK_WARPS]            = GPU_BLOCK_WARPS;
+        mOptions[OPTION_GPU_PLIES]                  = GPU_PLIES_DEFAULT;
+        mOptions[OPTION_GPU_SPIN_TO_ALLOC]          = 0;
 
         mHashTable.SetSize( mOptions[OPTION_HASH_SIZE] );
     }
@@ -644,6 +646,7 @@ private:
 #if PIGEON_ENABLE_AVX2
         case  CPU_AVX2: this->RunToDepth< simd4_avx2 >( depth, printPv ); break;
 #endif
+
         default:        this->RunToDepth< u64 >(        depth, printPv ); break;
         }
     }
@@ -722,10 +725,10 @@ private:
             ss.mTablebase = &mTablebase;
 
 
-        int         alphaWindow = 50;
-        int         betaWindow  = 50;
+        int         alphaWindow = mOptions[OPTION_ASPIRATION_WINDOW_SIZE];
+        int         betaWindow  = mOptions[OPTION_ASPIRATION_WINDOW_SIZE];
         EvalTerm    score       = 0;
-        bool        aspiration  = (mOptions[OPTION_ASPIRATION_WINDOW] != 0);
+        bool        aspiration  = (mOptions[OPTION_USE_ASPIRATION] != 0);
 
         if( depth < 4 )
             aspiration = false;
@@ -769,9 +772,9 @@ private:
                 break;
 
             if( score <= alpha )
-                alphaWindow *= 4;
+                alphaWindow *= mOptions[OPTION_ASPIRATION_WINDOW_SCALE];
             else if( score >= beta )
-                betaWindow *= 4;
+                betaWindow  *= mOptions[OPTION_ASPIRATION_WINDOW_SCALE];
             else
                 break;
         }
