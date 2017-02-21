@@ -15,7 +15,11 @@ extern "C"
     #include "gaviota-tb-0.4.5/gtb-types.h"
 };
 
+#include <string>
+#include <vector>
+
 namespace Pigeon {
+
 
 struct TablebaseProbe
 {
@@ -156,14 +160,30 @@ public:
         tbcache_init( mCacheSize, GAVIOTA_TB_WDL_FRAC );
         tbstats_reset();
 
-        if( mInitInfo )
-            printf( "info string GAVIOTA: %s\n", mInitInfo );
-
         unsigned av = tb_availability();
 
         if( av & (0x01 | 0x02) )  mPieceDataAvail[3] = true;
         if( av & (0x04 | 0x08) )  mPieceDataAvail[4] = true;
-        if( av & (0x0F | 0x10) )  mPieceDataAvail[5] = true;
+        if( av & (0x10 | 0x20) )  mPieceDataAvail[5] = true;
+        if( av & (0x40 | 0x80) )  mPieceDataAvail[6] = true;
+
+        if( av )
+        {
+            printf( "info string GAVIOTA: found %s%s%s%spiece database at \"%s\"\n",
+                mPieceDataAvail[3]? "3-" : "",
+                mPieceDataAvail[4]? "4-" : "",
+                mPieceDataAvail[5]? "5-" : "",
+                mPieceDataAvail[6]? "6-" : "",
+                path );
+
+            printf( "info string GAVIOTA: %d MB WDL cache, %d MB DTM cache\n", 
+                cacheMegs * GAVIOTA_TB_WDL_FRAC / 128, 
+                cacheMegs * (128 - GAVIOTA_TB_WDL_FRAC) / 128 );
+        }
+        else
+        {
+            printf( "info string GAVIOTA: no database at \"%s\"\n", path );
+        }
 
         mInitialized = true;
     }

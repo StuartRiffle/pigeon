@@ -191,6 +191,19 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
+    PDECL static INLINE SIMD CalcPieceType( const SIMD& knights, const SIMD& bishops, const SIMD& rooks, const SIMD& queens, const SIMD& king )
+    {
+        SIMD result =
+            SelectIfNotZero( knights,   (SIMD) KNIGHT ) |
+            SelectIfNotZero( bishops,   (SIMD) BISHOP ) |
+            SelectIfNotZero( rooks,     (SIMD) ROOK   ) |
+            SelectIfNotZero( queens,    (SIMD) QUEEN  ) |
+            SelectIfNotZero( king,      (SIMD) KING   );
+
+        return( result );
+    }
+
+
     //--------------------------------------------------------------------------
     /// Update the piece positions and white/black material values.
     ///
@@ -269,28 +282,15 @@ struct PIGEON_ALIGN_SIMD PositionT
 
         if( matWhite && matBlack )
         {
-            SIMD    moveSrcKnight   = SelectIfNotZero( srcKnight,  (SIMD) KNIGHT );
-            SIMD    moveSrcBishop   = SelectIfNotZero( srcBishop,  (SIMD) BISHOP );
-            SIMD    moveSrcRook     = SelectIfNotZero( srcRook,    (SIMD) ROOK   );
-            SIMD    moveSrcQueen    = SelectIfNotZero( srcQueen,   (SIMD) QUEEN  );
-            SIMD    moveSrcKing     = SelectIfNotZero( srcKing,    (SIMD) KING   );
-            SIMD    moveSrcType     = moveSrcKnight | moveSrcBishop | moveSrcRook | moveSrcQueen | moveSrcKing;
-            SIMD    moveSrcValue    = LoadIndirect32( (const i32*) matWhite->mValue, Shift< 6 >( moveSrcType ) + moveSrc );
+            // Incremental update of mWhiteMaterial and mBlackMaterial using tables
 
-            SIMD    moveDestKnight  = SelectIfNotZero( destKnight, (SIMD) KNIGHT );
-            SIMD    moveDestBishop  = SelectIfNotZero( destBishop, (SIMD) BISHOP );
-            SIMD    moveDestRook    = SelectIfNotZero( destRook,   (SIMD) ROOK   );
-            SIMD    moveDestQueen   = SelectIfNotZero( destQueen,  (SIMD) QUEEN  );
-            SIMD    moveDestKing    = SelectIfNotZero( destKing,   (SIMD) KING   );
-            SIMD    moveDestType    = moveDestKnight | moveDestBishop | moveDestRook | moveDestQueen | moveDestKing;
+            SIMD    moveSrcType     = CalcPieceType( srcKnight, srcBishop,  srcRook, srcQueen, srcKing );
+            SIMD    moveSrcValue    = LoadIndirect32( (const i32*) matWhite->mValue, Shift< 6 >( moveSrcType )  + moveSrc );
+
+            SIMD    moveDestType    = CalcPieceType( destKnight, destBishop,  destRook, destQueen, destKing );
             SIMD    moveDestValue   = LoadIndirect32( (const i32*) matWhite->mValue, Shift< 6 >( moveDestType ) + moveDest );
 
-            SIMD    captTypeKnight  = SelectIfNotZero( blackKnights & destBit, (SIMD) KNIGHT );
-            SIMD    captTypeBishop  = SelectIfNotZero( blackBishops & destBit, (SIMD) BISHOP );
-            SIMD    captTypeRook    = SelectIfNotZero( blackRooks   & destBit, (SIMD) ROOK   );
-            SIMD    captTypeQueen   = SelectIfNotZero( blackQueens  & destBit, (SIMD) QUEEN  );
-            SIMD    captTypeKing    = SelectIfNotZero( blackKing    & destBit, (SIMD) KING   );
-            SIMD    captType        = captTypeKnight | captTypeBishop | captTypeRook | captTypeQueen | captTypeKing;
+            SIMD    captType        = CalcPieceType( blackKnights & destBit, blackBishops & destBit, blackRooks & destBit, blackQueens & destBit, blackKing & destBit );
             SIMD    captTypeMask    = SelectIfNotZero( (blackPawns & destBit) | epVictimNow | captType, MaskAllSet< SIMD >() );
             SIMD    captSquareIndex = moveDest - SelectIfNotZero( epVictimNow, (SIMD) 8 );
             SIMD    captValue       = LoadIndirectMasked32( (const i32*) matBlack->mValue, Shift< 6 >( captType ) + FlipSquareIndex( captSquareIndex ), captTypeMask );
@@ -325,8 +325,8 @@ struct PIGEON_ALIGN_SIMD PositionT
 
         SIMD    allPawnsEtc         = (whitePawns | blackPawns) ^ mWhiteToMove;
         SIMD    hash0               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED0 ^ allPawnsEtc )   ^ blackKnights ) ^ whiteRooks  );              
-        SIMD    hash1               = XorShiftA( XorShiftB( XorShiftC( (SIMD) HASH_SEED1 ^ castlingAndEP ) ^ whiteBishops ) ^ blackQueens );             
-        SIMD    hash2               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED2 ^ whiteKing )     ^ blackBishops ) ^ whiteQueens );             
+        SIMD    hash1               = XorShiftA( XorShiftC( XorShiftB( (SIMD) HASH_SEED1 ^ castlingAndEP ) ^ whiteBishops ) ^ blackQueens );             
+        SIMD    hash2               = XorShiftD( XorShiftC( XorShiftB( (SIMD) HASH_SEED2 ^ whiteKing )     ^ blackBishops ) ^ whiteQueens );             
         SIMD    hash3               = XorShiftD( XorShiftB( XorShiftC( (SIMD) HASH_SEED3 ^ blackKing )     ^ whiteKnights ) ^ blackRooks  );        
         SIMD    hash                = XorShiftB( hash0 - hash2 ) ^ XorShiftC( hash1 - hash3 );
 
