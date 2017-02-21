@@ -1,16 +1,20 @@
 language: cpp
 compiler:
   - gcc
+addons:
+  apt:
+    packages:
+    - cmake
 script:
   - mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
-install:
-  # The following is intended to upgrade CMake, because as of now Travis still runs 2.8
-  # TODO: remove this when Travis updates their toolchain
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz"
-      mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-    else
-      if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
-    fi  
+#install:
+#  # The following is intended to upgrade CMake, because as of now Travis still runs 2.8
+#  # TODO: remove this when Travis updates their toolchain
+#  - |
+#    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+#      CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz"
+#      mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+#      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+#    else
+#      if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
+#    fi  
