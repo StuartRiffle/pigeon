@@ -3,6 +3,7 @@ sudo: required
 dist: trusty
 compiler:
   - gcc
+  - clang
 script:
   - mkdir build && cd build
   - cmake -DCMAKE_BUILD_TYPE=Release .. 
