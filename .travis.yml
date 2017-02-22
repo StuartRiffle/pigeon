@@ -20,8 +20,8 @@ matrix:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.6']
           packages: ['clang-3.6']
       env: 
-	   - COMPILER_CXX=clang++-3.6 
-	   - COMPILER_CC=clang-3.6
+	    - COMPILER_CXX=clang++-3.6 
+	    - COMPILER_CC=clang-3.6
 
     - os: linux
       compiler: clang
