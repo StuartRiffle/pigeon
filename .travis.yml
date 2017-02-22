@@ -1,4 +1,7 @@
 language: cpp
+dist: trusty
+sudo: required
+
 
 matrix:
   include:
@@ -15,8 +18,8 @@ matrix:
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-6.0']
-      env: COMPILER=g++-6.0
+          packages: ['g++-5.0']
+      env: COMPILER=g++-5.0
 
     - os: linux
       compiler: clang
@@ -27,7 +30,7 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.6']
           packages: ['clang-3.6']
       env: CXX=clang++-3.6
 
@@ -35,7 +38,7 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.9']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.9']
           packages: ['clang-3.9']
       env: CXX=clang++-3.9
 
