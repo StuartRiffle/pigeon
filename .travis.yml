@@ -7,10 +7,14 @@ matrix:
   include:
     - os: linux
       compiler: gcc
+      env: COMPILER_CXX=g++-4.8 COMPILER_CC=gcc-4.8
+
+    - os: linux
+      compiler: gcc
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-4.9']
+          packages: ['g++-4.9 cmake-3.5']
       env: COMPILER_CXX=g++-4.9 COMPILER_CC=gcc-4.9
 
     - os: linux
@@ -33,8 +37,6 @@ matrix:
 script:
   - mkdir build && cd build
   - export CXX=$COMPILER_CXX
-  - echo $CXX
   - export CC=$COMPILER_CC
-  - echo $CC
   - cmake -DCMAKE_BUILD_TYPE=Release .. 
   - cmake --build .
