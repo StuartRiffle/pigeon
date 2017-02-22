@@ -242,11 +242,7 @@ namespace Pigeon
 
     INLINE PDECL bool PlatDetectPopcnt()
     {
-    #if PIGEON_MSVC
         return( PlatCheckCpuFlag( 1, 2, 23 ) );
-    #elif PIGEON_GCC
-        return( __builtin_cpu_supports( "popcnt" ) );
-    #endif
     }
 
     INLINE PDECL int PlatDetectCpuLevel()
