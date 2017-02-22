@@ -11,8 +11,8 @@ if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
 elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATCHES Clang) )
 
-	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC" )
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11 -fPIE -fPIC" )
+	#set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11" )
 	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )
 
 endif()
