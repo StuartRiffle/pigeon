@@ -14,8 +14,16 @@ matrix:
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-4.9 cmake-3.x']
+          packages: ['g++-4.9']
       env: COMPILER_CXX=g++-4.9 COMPILER_CC=gcc-4.9
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7.0']
+      env: COMPILER_CXX=g++-7.0 COMPILER_CC=gcc-7.0
 
     - os: linux
       compiler: clang
