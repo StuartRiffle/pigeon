@@ -11,8 +11,7 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-4.9']
-      env: COMPILER_CXX=g++-4.9
-      env: COMPILER_CC=gcc-4.9
+      env: COMPILER_CXX=g++-4.9 COMPILER_CC=gcc-4.9
 
     - os: linux
       compiler: clang
@@ -20,8 +19,9 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.6']
           packages: ['clang-3.6']
-      env: COMPILER_CXX=clang++-3.6
-      env: COMPILER_CC=clang-3.6
+      env: 
+	   - COMPILER_CXX=clang++-3.6 
+	   - COMPILER_CC=clang-3.6
 
     - os: linux
       compiler: clang
@@ -29,8 +29,7 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.9']
           packages: ['clang-3.9']
-      env: COMPILER_CXX=clang++-3.9
-      env: COMPILER_CC=clang-3.9
+      env: COMPILER_CXX=clang++-3.9 COMPILER_CC=clang-3.9
 
 
 script:
