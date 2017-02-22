@@ -2,6 +2,7 @@
 project( pigeon )
 
 cmake_minimum_required( VERSION 2.8 )
+set (CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
@@ -11,7 +12,7 @@ if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATCHES Clang) )
 
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC" )
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11 -fPIC" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11 -fPIE -fPIC" )
 	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )
 
 endif()
@@ -20,6 +21,7 @@ add_subdirectory( contrib/gaviota-tb-0.4.5 )
 include_directories( contrib )
 
 add_executable( pigeon src/pigeon.cpp )
+set_property( TARGET pigeon PROPERTY POSITION_INDEPENDENT_CODE ON )
 target_link_libraries( pigeon gaviota-tb )
 
 
