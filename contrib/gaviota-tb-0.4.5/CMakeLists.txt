@@ -43,3 +43,4 @@ add_library( ${PROJECT_NAME} STATIC
 )
 
 set_property( TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON )
+target_compile_options( ${PROJECT_NAME} PRIVATE -fPIC )

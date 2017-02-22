@@ -23,7 +23,7 @@ include_directories( contrib )
 add_executable( pigeon src/pigeon.cpp )
 set_property( TARGET pigeon PROPERTY POSITION_INDEPENDENT_CODE ON )
 target_link_libraries( pigeon gaviota-tb )
-
+target_compile_options( pigeon PRIVATE -fPIC )
 
 ### find_package( CUDA QUIET REQUIRED )
 ### set( CUDA_NVCC_FLAGS ${} -Xcudafe "--diag_suppress=negative_shift_count" -cudart static -use_fast_math -DPIGEON_ENABLE_CUDA=1 )
