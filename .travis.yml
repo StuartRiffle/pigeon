@@ -1,10 +1,50 @@
 language: cpp
-sudo: required
-dist: trusty
 
-os:
-  - linux
-#  - osx
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-4.9']
+      env: COMPILER=g++-4.9
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-6.3']
+      env: COMPILER=g++-6.3
+
+    - os: linux
+      compiler: clang
+      env: COMPILER=clang++
+
+
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6']
+          packages: ['clang-3.6']
+      env: COMPILER=clang++-3.6
+
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.9']
+          packages: ['clang-3.9']
+      env: COMPILER=clang++-3.9
+
+# Activate when we are allowed to use MacOS X
+#    - os: osx
+#      compiler: clang
+#      env: COMPILER=clang++
+
+
 
 compiler:
   - gcc
