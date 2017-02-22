@@ -112,6 +112,9 @@
     <None Include="doxygen\Doxyfile">
       <Filter>misc</Filter>
     </None>
+    <None Include="..\.travis.yml">
+      <Filter>misc</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\CMakeLists.txt">

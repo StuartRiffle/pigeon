@@ -248,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
+    <None Include="..\.travis.yml" />
     <None Include="..\README.md" />
     <None Include="..\script\testing.coo">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>

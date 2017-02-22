@@ -10,7 +10,7 @@ if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
 elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATCHES Clang) )
 
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11 -fPIE" )
 
 endif()
 

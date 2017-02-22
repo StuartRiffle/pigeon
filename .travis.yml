@@ -1,9 +1,15 @@
 language: cpp
 sudo: required
 dist: trusty
+
+os:
+  - linux
+  - osx
+
 compiler:
   - gcc
   - clang
+
 script:
   - mkdir build && cd build
   - cmake -DCMAKE_BUILD_TYPE=Release .. 
