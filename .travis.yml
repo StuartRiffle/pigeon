@@ -14,7 +14,7 @@ matrix:
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-4.9 cmake-3.5']
+          packages: ['g++-4.9 cmake-3.x']
       env: COMPILER_CXX=g++-4.9 COMPILER_CC=gcc-4.9
 
     - os: linux
