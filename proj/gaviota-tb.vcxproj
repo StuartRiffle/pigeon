@@ -78,6 +78,9 @@
     <ClInclude Include="..\contrib\gaviota-tb-0.4.5\gtb-types.h" />
     <ClInclude Include="..\contrib\gaviota-tb-0.4.5\sysport\sysport.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\contrib\gaviota-tb-0.4.5\CMakeLists.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3DA1BDCA-1065-4508-80B3-912977F547C1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

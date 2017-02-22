@@ -15,6 +15,7 @@ elseif( ${CMAKE_CXX_COMPILER_ID} MATCHES GNU )
 endif()
 
 add_subdirectory( contrib/gaviota-tb-0.4.5 )
+include_directories( contrib )
 
 add_executable( pigeon src/pigeon.cpp )
 target_link_libraries( pigeon gaviota-tb )

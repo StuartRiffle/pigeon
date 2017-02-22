@@ -196,4 +196,9 @@
       <Filter>Source Files\compression\zlib</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\contrib\gaviota-tb-0.4.5\CMakeLists.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
