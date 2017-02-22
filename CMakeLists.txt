@@ -13,7 +13,7 @@ elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATC
 
 	#set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC" )
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11" )
-	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )
+	#set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )
 
 endif()
 
@@ -21,9 +21,9 @@ add_subdirectory( contrib/gaviota-tb-0.4.5 )
 include_directories( contrib )
 
 add_executable( pigeon src/pigeon.cpp )
-set_property( TARGET pigeon PROPERTY POSITION_INDEPENDENT_CODE ON )
+#set_property( TARGET pigeon PROPERTY POSITION_INDEPENDENT_CODE ON )
 target_link_libraries( pigeon gaviota-tb )
-target_compile_options( pigeon PRIVATE -fPIC )
+#target_compile_options( pigeon PRIVATE -fPIC )
 
 ### find_package( CUDA QUIET REQUIRED )
 ### set( CUDA_NVCC_FLAGS ${} -Xcudafe "--diag_suppress=negative_shift_count" -cudart static -use_fast_math -DPIGEON_ENABLE_CUDA=1 )
