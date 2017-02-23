@@ -1,7 +1,7 @@
 
 project( pigeon )
 
-cmake_minimum_required( VERSION 3.0 )
+cmake_minimum_required( VERSION 3.2 )
 
 
 if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )

@@ -1,5 +1,5 @@
 project( gaviota-tb )
-cmake_minimum_required( VERSION 3.0 )
+cmake_minimum_required( VERSION 3.2 )
 
 add_definitions( -DNDEBUG )
 add_definitions( -DZ_PREFIX )
