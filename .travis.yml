@@ -10,7 +10,7 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'george-edison55-precise-backports']
           packages: ['g++-6', 'cmake', 'cmake-data']
-      #env: COMPILER_CXX=g++-6 COMPILER_CC=gcc-6
+      env: COMPILER_CXX=g++-6.2 COMPILER_CC=gcc-6.2
 
     - os: linux
       compiler: clang
@@ -18,11 +18,11 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.9', 'george-edison55-precise-backports']
           packages: ['clang-3.9', 'cmake', 'cmake-data']
-      #env: COMPILER_CXX=clang++-3.9 COMPILER_CC=clang-3.9
+      env: COMPILER_CXX=clang++-3.9 COMPILER_CC=clang-3.9
 
 script:
   - mkdir build && cd build
-  #- export CXX=$COMPILER_CXX
-  #- export CC=$COMPILER_CC
+  - export CXX=$COMPILER_CXX
+  - export CC=$COMPILER_CC
   - cmake -DCMAKE_BUILD_TYPE=Release .. 
   - cmake --build .
