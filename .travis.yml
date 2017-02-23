@@ -29,8 +29,14 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.9']
-          packages: ['clang-3.9']
+          sources: 
+		    - ubuntu-toolchain-r-test
+			- llvm-toolchain-trusty-3.9
+		    - george-edison55
+          packages: 
+		    - clang-3.9
+			- cmake
+			- cmake-data
       env: COMPILER_CXX=clang++-3.9 COMPILER_CC=clang-3.9
 
 
