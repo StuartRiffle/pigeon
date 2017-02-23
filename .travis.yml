@@ -1,5 +1,5 @@
 language: cpp
-dist: zesty
+dist: trusty
 sudo: required
 
 
@@ -21,7 +21,7 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-zesty-3.6']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.6']
           packages: ['clang-3.6']
       env: COMPILER_CXX=clang++-3.6 COMPILER_CC=clang-3.6
 
@@ -29,7 +29,7 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-zesty-3.9', 'george-edison55-zesty-backports']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.9', 'george-edison55-trusty-backports']
           packages: ['clang-3.9', 'cmake', 'cmake-data']
       env: COMPILER_CXX=clang++-3.9 COMPILER_CC=clang-3.9
 
