@@ -2,7 +2,7 @@
 project( pigeon )
 
 cmake_minimum_required( VERSION 2.8 )
-set (CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
 
 if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
@@ -17,13 +17,22 @@ elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATC
 
 endif()
 
+
+
 add_subdirectory( contrib/gaviota-tb-0.4.5 )
 include_directories( contrib )
 
 add_executable( pigeon src/pigeon.cpp )
-#set_property( TARGET pigeon PROPERTY POSITION_INDEPENDENT_CODE ON )
 target_link_libraries( pigeon gaviota-tb )
-#target_compile_options( pigeon PRIVATE -fPIC )
+
+if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
+
+	set_property( TARGET pigeon PROPERTY POSITION_INDEPENDENT_CODE ON )
+	target_compile_options( pigeon PRIVATE -fPIC )
+	set( CMAKE_POSITION_INDEPENDENT_CODE TRUE )
+
+endif()
+`
 
 ### find_package( CUDA QUIET REQUIRED )
 ### set( CUDA_NVCC_FLAGS ${} -Xcudafe "--diag_suppress=negative_shift_count" -cudart static -use_fast_math -DPIGEON_ENABLE_CUDA=1 )
