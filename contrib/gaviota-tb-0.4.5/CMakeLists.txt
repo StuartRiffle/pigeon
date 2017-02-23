@@ -42,11 +42,8 @@ add_library( ${PROJECT_NAME} STATIC
     compression/lzma/Bra86.c
 )
 
-if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
+set_property( TARGET gaviota-tb PROPERTY POSITION_INDEPENDENT_CODE ON )
+target_compile_options( gaviota-tb PRIVATE -fPIC )
 
-	set_property( TARGET gaviota-tb PROPERTY POSITION_INDEPENDENT_CODE ON )
-	#target_compile_options( gaviota-tb PRIVATE -fPIC )
-
-endif()
 
 
