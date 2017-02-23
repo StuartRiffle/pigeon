@@ -80,9 +80,9 @@
  */
 #ifndef STRICT_ALIGN
 # if defined(__i386) || defined (__amd64)
-#  define STRICT_ALIGN 1
-# else
 #  define STRICT_ALIGN 0
+# else
+#  define STRICT_ALIGN 1
 # endif
 #endif
 
