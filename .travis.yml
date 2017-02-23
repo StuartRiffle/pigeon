@@ -1,5 +1,5 @@
 language: cpp
-dist: trusty
+dist: precise
 sudo: required
 
 
@@ -14,14 +14,14 @@ matrix:
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-4.9']
-      env: COMPILER_CXX=g++-4.9 COMPILER_CC=gcc-4.9
+          packages: ['g++-6.3']
+      env: COMPILER_CXX=g++-6.3 COMPILER_CC=gcc-6.3
 
     - os: linux
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.6']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6']
           packages: ['clang-3.6']
       env: COMPILER_CXX=clang++-3.6 COMPILER_CC=clang-3.6
 
@@ -29,10 +29,9 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.9', 'george-edison55']
-          packages: ['clang-3.9', 'cmake', 'cmake-data']
-      env: COMPILER_CXX=clang++-3.9 COMPILER_CC=clang-3.9
-
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-4.0', 'george-edison55-precise-backports']
+          packages: ['clang-4.0', 'cmake', 'cmake-data']
+      env: COMPILER_CXX=clang++-4.0 COMPILER_CC=clang-4.0
 
 script:
   - mkdir build && cd build

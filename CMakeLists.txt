@@ -32,7 +32,7 @@ if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
 	set( CMAKE_POSITION_INDEPENDENT_CODE TRUE )
 
 endif()
-`
+
 
 ### find_package( CUDA QUIET REQUIRED )
 ### set( CUDA_NVCC_FLAGS ${} -Xcudafe "--diag_suppress=negative_shift_count" -cudart static -use_fast_math -DPIGEON_ENABLE_CUDA=1 )
