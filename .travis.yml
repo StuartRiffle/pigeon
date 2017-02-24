@@ -8,7 +8,7 @@ matrix:
       compiler: gcc
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'george-edison55-precise-backports']
+          sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-6']
       env: COMPILER_CC=gcc-6 COMPILER_CXX=g++-6
 
