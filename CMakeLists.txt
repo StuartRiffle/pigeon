@@ -22,9 +22,9 @@ if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
 
 	set( CMAKE_POSITION_INDEPENDENT_CODE TRUE )
 
-	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE" )
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIE -Wl,--no-export-dynamic" )
-	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -v -static -Wl,--no-export-dynamic" )
+	#set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--no-export-dynamic" )
+	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -static" )
 
 	set( CMAKE_STATIC_LINKER_FLAGS, "${CMAKE_STATIC_LINKER_FLAGS} -pie -v" )
 
@@ -39,12 +39,12 @@ add_executable( pigeon src/pigeon.cpp )
 target_link_libraries( pigeon gaviota-tb )
 
 
-if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
-
-	set_property( TARGET pigeon PROPERTY POSITION_INDEPENDENT_CODE ON )
-	target_compile_options( pigeon PRIVATE -fPIE )
-
-endif()
+#if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
+#
+#	set_property( TARGET pigeon PROPERTY POSITION_INDEPENDENT_CODE ON )
+#	target_compile_options( pigeon PRIVATE -fPIE )
+#
+#endif()
 
 
 
