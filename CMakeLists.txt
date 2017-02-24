@@ -10,8 +10,8 @@ elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATC
 
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -w -std=c++11 -Wl,--no-export-dynamic" )
 
-	if( NOT ${CMAKE_CXX_COMPILER_ID} MATCHES Apple )
-		set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -Wno-deprecated-declarations" )
+	if( NOT (${CMAKE_CXX_COMPILER_ID} MATCHES Apple) )
+		set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations" )
 	endif()
 
 	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -v" )
