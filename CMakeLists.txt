@@ -12,7 +12,7 @@ if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATCHES Clang) )
 
 	#set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE" )
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11 -Wl,--no-export-dynamic" )
 	#set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )
 
 
@@ -23,7 +23,7 @@ elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATC
 
 	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE" )
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIE" )
-	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -v -static-libgcc -Bstatic" )
+	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -v -static -Wl,--no-export-dynamic" )
 
 	set( CMAKE_STATIC_LINKER_FLAGS, "${CMAKE_STATIC_LINKER_FLAGS} -pie -v" )
 

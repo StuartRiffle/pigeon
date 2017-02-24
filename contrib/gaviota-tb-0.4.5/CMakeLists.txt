@@ -13,6 +13,11 @@ include_directories( "compression/liblzf" )
 include_directories( "compression/zlib" )
 include_directories( "compression/lzma" )
 
+set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC" )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
+set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -v -static-libgcc -Bstatic" )
+set( CMAKE_STATIC_LINKER_FLAGS, "${CMAKE_STATIC_LINKER_FLAGS} -pie -v" )
+
 add_library( ${PROJECT_NAME} STATIC
     gtb-probe.c
     gtb-dec.c
