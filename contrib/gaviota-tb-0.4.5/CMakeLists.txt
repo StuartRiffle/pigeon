@@ -13,10 +13,14 @@ include_directories( "compression/liblzf" )
 include_directories( "compression/zlib" )
 include_directories( "compression/lzma" )
 
-set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC" )
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
-set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -v -static-libgcc -Bstatic" )
-set( CMAKE_STATIC_LINKER_FLAGS, "${CMAKE_STATIC_LINKER_FLAGS} -pie -v" )
+if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
+
+	set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
+	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -v -static-libgcc -Bstatic" )
+	set( CMAKE_STATIC_LINKER_FLAGS, "${CMAKE_STATIC_LINKER_FLAGS} -pie -v" )
+
+endif()
 
 add_library( ${PROJECT_NAME} STATIC
     gtb-probe.c
@@ -47,8 +51,11 @@ add_library( ${PROJECT_NAME} STATIC
     compression/lzma/Bra86.c
 )
 
-set_property( TARGET gaviota-tb PROPERTY POSITION_INDEPENDENT_CODE ON )
-target_compile_options( gaviota-tb PRIVATE -fPIC )
 
+if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
 
+	set_property( TARGET gaviota-tb PROPERTY POSITION_INDEPENDENT_CODE ON )
+	target_compile_options( gaviota-tb PRIVATE -fPIC )
+
+endif()
 
