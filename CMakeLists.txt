@@ -1,8 +1,5 @@
-
 project( pigeon )
-
-cmake_minimum_required( VERSION 3.2 )
-
+cmake_minimum_required( VERSION 3.0 )
 
 if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
@@ -11,23 +8,9 @@ if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
 elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATCHES Clang) )
 
-
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11 -Wl,--no-export-dynamic" )
 
-
 endif()
-
-
-if( ${CMAKE_CXX_COMPILER_ID} MATCHES Clang )
-
-	#set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--no-export-dynamic" )
-	#set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -static" )
-
-	#set( CMAKE_STATIC_LINKER_FLAGS, "${CMAKE_STATIC_LINKER_FLAGS} -pie -v" )
-
-endif()
-
-
 
 add_subdirectory( contrib/gaviota-tb-0.4.5 )
 include_directories( contrib )
