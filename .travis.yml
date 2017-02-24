@@ -21,14 +21,6 @@ matrix:
       env: COMPILER_CC=clang-3.9 COMPILER_CXX=clang++-3.9
 
     - os: osx
-      compiler: gcc
-      addons:
-        apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-6']
-      env: COMPILER_CC=gcc-6 COMPILER_CXX=g++-6
-
-    - os: osx
       compiler: clang
       env: COMPILER_CC=clang COMPILER_CXX=clang++
 
