@@ -9,15 +9,15 @@ matrix:
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'george-edison55-precise-backports']
-          packages: ['g++-6', 'cmake', 'cmake-data']
+          packages: ['g++-6']
       env: COMPILER_CC=gcc-6 COMPILER_CXX=g++-6
 
     - os: linux
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.9', 'george-edison55-precise-backports']
-          packages: ['clang-3.9', 'cmake', 'cmake-data']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.9']
+          packages: ['clang-3.9']
       env: COMPILER_CC=clang-3.9 COMPILER_CXX=clang++-3.9
 
 script:
