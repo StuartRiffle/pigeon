@@ -20,6 +20,22 @@ matrix:
           packages: ['clang-3.9']
       env: COMPILER_CC=clang-3.9 COMPILER_CXX=clang++-3.9
 
+    - os: osx
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-6']
+      env: COMPILER_CC=gcc-6 COMPILER_CXX=g++-6
+
+    - os: osx
+      compiler: clang
+      env: COMPILER_CC=clang COMPILER_CXX=clang++
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install llvm --with-clang --with-clang-extra-tools ; fi
+
 script:
   - mkdir build && cd build
   - export CC=$COMPILER_CC
