@@ -8,7 +8,14 @@ if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
 elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATCHES Clang) )
 
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -pthread -w -std=c++11 -Wl,--no-export-dynamic" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -w -std=c++11 -Wl,--no-export-dynamic" )
+	add_compile_options( -Wno-deprecated-declarations )
+
+	if( NOT ${CMAKE_CXX_COMPILER_ID} MATCHES Apple )
+		set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static" )
+	endif()
+
+	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -v" )
 
 endif()
 

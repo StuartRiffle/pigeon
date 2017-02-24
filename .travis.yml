@@ -10,7 +10,7 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-6']
-      env: COMPILER_CC=gcc-6 COMPILER_CXX=g++-6
+      env: _CC=gcc-6 _CXX=g++-6
 
     - os: linux
       compiler: clang
@@ -18,19 +18,19 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.9']
           packages: ['clang-3.9']
-      env: COMPILER_CC=clang-3.9 COMPILER_CXX=clang++-3.9
+      env: _CC=clang-3.9 _CXX=clang++-3.9
 
     - os: osx
       compiler: clang
-      env: COMPILER_CC=clang COMPILER_CXX=clang++
+      env: _CC=clang _CXX=clang++
 
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install llvm --with-clang --with-clang-extra-tools ; fi
+#before_install:
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install llvm --with-clang --with-clang-extra-tools ; fi
 
 script:
   - mkdir build && cd build
-  - export CC=$COMPILER_CC
-  - export CXX=$COMPILER_CXX
+  - export CC=$_CC
+  - export CXX=$_CXX
   - cmake -DCMAKE_BUILD_TYPE=Release .. 
   - cmake --build .
