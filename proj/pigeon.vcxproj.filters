@@ -58,9 +58,6 @@
     <ClInclude Include="..\src\cpu-avx2.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\cpu-avx3.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\cpu-sse2.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -71,6 +68,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\tb-gaviota.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu-avx512.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,7 +6,7 @@
 #include "cpu-sse2.h"
 #include "cpu-sse4.h"
 #include "cpu-avx2.h"
-#include "cpu-avx3.h"
+#include "cpu-avx512.h"
 #include "position.h"
 #include "eval.h"
 #include "movelist.h"
