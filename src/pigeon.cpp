@@ -57,7 +57,7 @@ int main( int argc, char** argv )
     cudaCount = Pigeon::CudaSystem::GetDeviceCount();
 #endif
 
-    const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
+    const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX512" };
 
     std::string hardwareDesc = cpuDesc[Pigeon::PlatDetectCpuLevel()];
     hardwareDesc += Pigeon::PlatDetectPopcnt()? "/POPCNT" : "";

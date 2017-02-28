@@ -10,7 +10,7 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-6']
-      env: _CC=gcc-6 _CXX=g++-6
+      env: _CC=gcc-6 _CXX=g++-6 _DESC=// GCC 6.2
 
     - os: linux
       compiler: clang
@@ -18,11 +18,11 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.9']
           packages: ['clang-3.9']
-      env: _CC=clang-3.9 _CXX=clang++-3.9
+      env: _CC=clang-3.9 _CXX=clang++-3.9 _DESC=// Clang 3.9
 
     - os: osx
       compiler: clang
-      env: _CC=clang _CXX=clang++
+      env: _CC=clang _CXX=clang++ _DESC=// LLVM 7.3
 
 script:
   - mkdir build && cd build

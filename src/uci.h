@@ -333,7 +333,7 @@ struct UCI
             }
             else if( tokens.Consume( "cpu" ) )
             {
-                const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX3" };
+                const char* cpuDesc[] = { "x64", "SSE2", "SSE4", "AVX2", "AVX512" };
 
                 int detected = PlatDetectCpuLevel();
 

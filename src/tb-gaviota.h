@@ -54,8 +54,9 @@ class GaviotaTablebase
 {
     enum
     {
-        GAVIOTA_TB_VERBOSE  = 1,
-        GAVIOTA_TB_WDL_FRAC = 96,
+        GAVIOTA_TB_VERBOSE      = 1,
+        GAVIOTA_TB_WDL_FRAC     = 96,
+        GAVIOTA_TB_MAX_PIECES   = 6,
     };
 
     struct ProbeSpec
@@ -127,7 +128,7 @@ class GaviotaTablebase
     const char**    mPaths;
     char*           mInitInfo;
     size_t          mCacheSize;
-    bool            mPieceDataAvail[32];
+    bool            mPieceDataAvail[GAVIOTA_TB_MAX_PIECES + 1];
     bool            mInitialized;
 
 
@@ -219,7 +220,7 @@ public:
             pos.mBlackQueens  );
 
         int totalPieces = nonKingPieces + 2;
-        if( !mPieceDataAvail[totalPieces] )
+        if( (totalPieces > GAVIOTA_TB_MAX_PIECES) || !mPieceDataAvail[totalPieces] )
             return( false );
 
         ProbeSpec spec;
