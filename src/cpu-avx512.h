@@ -8,6 +8,38 @@ namespace Pigeon {
 
 #if PIGEON_ENABLE_AVX512
 
+struct simd8_avx512
+{
+    __m512i vec;
+
+    INLINE simd8_avx512() {}
+    INLINE simd8_avx512( u64 s )                                    : vec( _mm512_set1_epi64x( s ) ) {}
+    INLINE simd8_avx512( const __m512i& v )                         : vec( v ) {}
+    INLINE simd8_avx512( const simd8_avx512& v )                    : vec( v.vec ) {}
+
+    INLINE explicit      operator   __m512i()                 const { return( vec ); }
+    INLINE simd8_avx512  operator~  ()                        const { return( _mm512_xor_si512(  vec, _mm512_set1_epi8(  ~0 ) ) ); }
+    INLINE simd8_avx512  operator-  ( u64 s )                 const { return( _mm512_sub_epi64(  vec, _mm512_set1_epi64x( s ) ) ); }
+    INLINE simd8_avx512  operator+  ( u64 s )                 const { return( _mm512_add_epi64(  vec, _mm512_set1_epi64x( s ) ) ); }
+    INLINE simd8_avx512  operator&  ( u64 s )                 const { return( _mm512_and_si512(  vec, _mm512_set1_epi64x( s ) ) ); }
+    INLINE simd8_avx512  operator|  ( u64 s )                 const { return( _mm512_or_si512(   vec, _mm512_set1_epi64x( s ) ) ); }
+    INLINE simd8_avx512  operator^  ( u64 s )                 const { return( _mm512_xor_si512(  vec, _mm512_set1_epi64x( s ) ) ); }
+    INLINE simd8_avx512  operator<< ( int c )                 const { return( _mm512_slli_epi64( vec, c ) ); }
+    INLINE simd8_avx512  operator>> ( int c )                 const { return( _mm512_srli_epi64( vec, c ) ); }
+    INLINE simd8_avx512  operator<< ( const simd8_avx512& v ) const { return( _mm512_sllv_epi64( vec, v.vec ) ); }
+    INLINE simd8_avx512  operator>> ( const simd8_avx512& v ) const { return( _mm512_srlv_epi64( vec, v.vec ) ); }
+    INLINE simd8_avx512  operator-  ( const simd8_avx512& v ) const { return( _mm512_sub_epi64(  vec, v.vec ) ); }
+    INLINE simd8_avx512  operator+  ( const simd8_avx512& v ) const { return( _mm512_add_epi64(  vec, v.vec ) ); }
+    INLINE simd8_avx512  operator&  ( const simd8_avx512& v ) const { return( _mm512_and_si512(  vec, v.vec ) ); }
+    INLINE simd8_avx512  operator|  ( const simd8_avx512& v ) const { return( _mm512_or_si512(   vec, v.vec ) ); }
+    INLINE simd8_avx512  operator^  ( const simd8_avx512& v ) const { return( _mm512_xor_si512(  vec, v.vec ) ); }
+    INLINE simd8_avx512& operator+= ( const simd8_avx512& v )       { return( vec = _mm512_add_epi64( vec, v.vec ), *this ); }
+    INLINE simd8_avx512& operator&= ( const simd8_avx512& v )       { return( vec = _mm512_and_si512( vec, v.vec ), *this ); }
+    INLINE simd8_avx512& operator|= ( const simd8_avx512& v )       { return( vec = _mm512_or_si512(  vec, v.vec ), *this ); }
+    INLINE simd8_avx512& operator^= ( const simd8_avx512& v )       { return( vec = _mm512_xor_si512( vec, v.vec ), *this ); }
+};       
+
+
 INLINE __m512i _mm512_popcnt_epi64_avx512( const __m512i& v )
 {
     static const __m512i nibbleBits = _mm512_setr_epi8( 
@@ -16,8 +48,9 @@ INLINE __m512i _mm512_popcnt_epi64_avx512( const __m512i& v )
         0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
         0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4 );
 
-    __m512i loNib = _mm512_shuffle_epi8( nibbleBits, _mm512_and_si512( v,                         _mm512_set1_epi8( 0x0F ) ) );
-    __m512i hiNib = _mm512_shuffle_epi8( nibbleBits, _mm512_and_si512( _mm512_srli_epi16( v, 4 ), _mm512_set1_epi8( 0x0F ) ) );
+    __m512i mask  = _mm512_set1_epi8( 0x0F );
+    __m512i loNib = _mm512_shuffle_epi8( nibbleBits, _mm512_and_si512( mask, v ) );
+    __m512i hiNib = _mm512_shuffle_epi8( nibbleBits, _mm512_and_si512( mask, _mm512_srli_epi16( v, 4 ) ) );
     __m512i pop8  = _mm512_add_epi8( loNib, hiNib );
     __m512i pop64 = _mm512_sad_epu8( pop8, _mm512_setzero_si512() );
 
@@ -44,35 +77,6 @@ INLINE __m512i _mm512_select( const __m512i& a, const __m512i& b, const __m512i&
     return _mm512_blendv_epi8( a, b, mask ); // mask? b : a
 }
 
-struct simd8_avx512
-{
-    __m512i vec;
-
-    INLINE simd8_avx512() {}
-    INLINE simd8_avx512( u64 s )                                    : vec( _mm512_set1_epi64x( s ) ) {}
-    INLINE simd8_avx512( const __m512i& v )                         : vec( v ) {}
-    INLINE simd8_avx512( const simd8_avx512& v )                    : vec( v.vec ) {}
-
-    INLINE explicit      operator   __m512i()                 const { return( vec ); }
-    INLINE simd8_avx512  operator~  ()                        const { return( _mm512_xor_si512(  vec, _mm512_set1_epi8(  ~0 ) ) ); }
-    INLINE simd8_avx512  operator-  ( u64 s )                 const { return( _mm512_sub_epi64(  vec, _mm512_set1_epi64x( s ) ) ); }
-    INLINE simd8_avx512  operator+  ( u64 s )                 const { return( _mm512_add_epi64(  vec, _mm512_set1_epi64x( s ) ) ); }
-    INLINE simd8_avx512  operator&  ( u64 s )                 const { return( _mm512_and_si512(  vec, _mm512_set1_epi64x( s ) ) ); }
-    INLINE simd8_avx512  operator|  ( u64 s )                 const { return( _mm512_or_si512(   vec, _mm512_set1_epi64x( s ) ) ); }
-    INLINE simd8_avx512  operator^  ( u64 s )                 const { return( _mm512_xor_si512(  vec, _mm512_set1_epi64x( s ) ) ); }
-    INLINE simd8_avx512  operator<< ( int c )                 const { return( _mm512_slli_epi64( vec, c ) ); }
-    INLINE simd8_avx512  operator>> ( int c )                 const { return( _mm512_srli_epi64( vec, c ) ); }
-    INLINE simd8_avx512  operator-  ( const simd8_avx512& v ) const { return( _mm512_sub_epi64(  vec, v.vec ) ); }
-    INLINE simd8_avx512  operator+  ( const simd8_avx512& v ) const { return( _mm512_add_epi64(  vec, v.vec ) ); }
-    INLINE simd8_avx512  operator&  ( const simd8_avx512& v ) const { return( _mm512_and_si512(  vec, v.vec ) ); }
-    INLINE simd8_avx512  operator|  ( const simd8_avx512& v ) const { return( _mm512_or_si512(   vec, v.vec ) ); }
-    INLINE simd8_avx512  operator^  ( const simd8_avx512& v ) const { return( _mm512_xor_si512(  vec, v.vec ) ); }
-    INLINE simd8_avx512& operator+= ( const simd8_avx512& v )       { return( vec = _mm512_add_epi64( vec, v.vec ), *this ); }
-    INLINE simd8_avx512& operator&= ( const simd8_avx512& v )       { return( vec = _mm512_and_si512( vec, v.vec ), *this ); }
-    INLINE simd8_avx512& operator|= ( const simd8_avx512& v )       { return( vec = _mm512_or_si512(  vec, v.vec ), *this ); }
-    INLINE simd8_avx512& operator^= ( const simd8_avx512& v )       { return( vec = _mm512_xor_si512( vec, v.vec ), *this ); }
-};                                                                                                  
-
 template<> INLINE simd8_avx512  MaskAllClear<    simd8_avx512 >()                                                                           { return( _mm512_setzero_si512() ); } 
 template<> INLINE simd8_avx512  MaskAllSet<      simd8_avx512 >()                                                                           { return( _mm512_set1_epi8( ~0 ) ); } 
 template<> INLINE simd8_avx512  ByteSwap<        simd8_avx512 >( const simd8_avx512& val )                                                  { return( _mm512_bswap_epi64_avx512( val.vec ) ); }
@@ -86,6 +90,7 @@ template<> INLINE simd8_avx512  SelectIfNotZero< simd8_avx512 >( const simd8_avx
 template<> INLINE simd8_avx512  SelectWithMask<  simd8_avx512 >( const simd8_avx512& mask, const simd8_avx512& a, const simd8_avx512& b )   { return( _mm512_select( b, a, mask ) ); }
 template<> INLINE simd8_avx512  CountBits<       DISABLE_POPCNT, simd8_avx512 >( const simd8_avx512& val )                                  { return( _mm512_popcnt_epi64_avx512( val.vec ) ); }
 template<> INLINE simd8_avx512  CountBits<       ENABLE_POPCNT,  simd8_avx512 >( const simd8_avx512& val )                                  { return( _mm512_popcnt_epi64_avx512( val.vec ) ); }
+
 
 template<>
 struct SimdWidth< simd8_avx512 >
@@ -156,9 +161,6 @@ INLINE simd8_avx512 LoadIndirectMasked32< simd8_avx512 >( const i32* ptr, const 
     __m512i qwords = _mm512_cvtepi32_epi64( dwords );
     return( qwords );
 }
-
-
-
 
 
 #endif // PIGEON_ENABLE_AVX512
