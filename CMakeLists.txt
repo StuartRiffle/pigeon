@@ -1,5 +1,6 @@
 project( pigeon )
 cmake_minimum_required( VERSION 2.8 )
+cmake_policy( SET CMP0042 NEW ) # Enable compiler ID "AppleClang"
 
 if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
