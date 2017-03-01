@@ -4,13 +4,13 @@ namespace Pigeon {
 #ifndef PIGEON_CPU_SSE2_H__
 #define PIGEON_CPU_SSE2_H__
 
-
 #if PIGEON_ENABLE_SSE2
 
 INLINE __m128i _mm_select( const __m128i& a, const __m128i& b, const __m128i& mask )
 {          
     return _mm_xor_si128( a, _mm_and_si128( mask, _mm_xor_si128( b, a ) ) ); // mask? b : a
 }
+
 
 inline __m128i _mm_sllv_epi64x( const __m128i& v, const __m128i& n )
 {
@@ -20,6 +20,37 @@ inline __m128i _mm_sllv_epi64x( const __m128i& v, const __m128i& n )
 
     return( result );
 }
+
+struct simd2_sse2
+{
+    __m128i vec;
+
+    INLINE simd2_sse2() {}
+    INLINE simd2_sse2( u64 s )                              : vec( _mm_set1_epi64x( s ) ) {}
+    INLINE simd2_sse2( const __m128i& v )                   : vec( v ) {}
+    INLINE simd2_sse2( const simd2_sse2& v )                : vec( v.vec ) {}
+
+    INLINE              operator __m128i()                  const { return( vec ); }
+    INLINE simd2_sse2   operator~  ()                       const { return( _mm_xor_si128(   vec, _mm_set1_epi8(  ~0 ) ) ); }
+    INLINE simd2_sse2   operator-  ( u64 s )                const { return( _mm_sub_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator+  ( u64 s )                const { return( _mm_add_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator&  ( u64 s )                const { return( _mm_and_si128(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator|  ( u64 s )                const { return( _mm_or_si128(    vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator^  ( u64 s )                const { return( _mm_xor_si128(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse2   operator<< ( int c )                const { return( _mm_slli_epi64(  vec, c ) ); }
+    INLINE simd2_sse2   operator>> ( int c )                const { return( _mm_srli_epi64(  vec, c ) ); }
+    INLINE simd2_sse2   operator<< ( const simd2_sse2& v )  const { return( _mm_sllv_epi64x( vec, v.vec ) ); }
+    INLINE simd2_sse2   operator-  ( const simd2_sse2& v )  const { return( _mm_sub_epi64(   vec, v.vec ) ); }
+    INLINE simd2_sse2   operator+  ( const simd2_sse2& v )  const { return( _mm_add_epi64(   vec, v.vec ) ); }
+    INLINE simd2_sse2   operator&  ( const simd2_sse2& v )  const { return( _mm_and_si128(   vec, v.vec ) ); }
+    INLINE simd2_sse2   operator|  ( const simd2_sse2& v )  const { return( _mm_or_si128(    vec, v.vec ) ); }
+    INLINE simd2_sse2   operator^  ( const simd2_sse2& v )  const { return( _mm_xor_si128(   vec, v.vec ) ); }
+    INLINE simd2_sse2&  operator+= ( const simd2_sse2& v )        { return( vec = _mm_add_epi64( vec, v.vec ), *this ); }
+    INLINE simd2_sse2&  operator&= ( const simd2_sse2& v )        { return( vec = _mm_and_si128( vec, v.vec ), *this ); }
+    INLINE simd2_sse2&  operator|= ( const simd2_sse2& v )        { return( vec = _mm_or_si128(  vec, v.vec ), *this ); }
+    INLINE simd2_sse2&  operator^= ( const simd2_sse2& v )        { return( vec = _mm_xor_si128( vec, v.vec ), *this ); }
+}; 
+
 
 INLINE __m128i _mm_cmpeq_epi64_sse2( const __m128i& a, const __m128i& b )
 {
@@ -81,35 +112,7 @@ INLINE __m128i _mm_mask_i64gather_epi32_sse2( const i32* ptr, const __m128i& ofs
     return( *((__m128i*) qword) );
 }
                                     
-struct simd2_sse2
-{
-    __m128i vec;
-
-    INLINE simd2_sse2() {}
-    INLINE simd2_sse2( u64 s )                              : vec( _mm_set1_epi64x( s ) ) {}
-    INLINE simd2_sse2( const __m128i& v )                   : vec( v ) {}
-    INLINE simd2_sse2( const simd2_sse2& v )                : vec( v.vec ) {}
-
-    INLINE              operator __m128i()                  const { return( vec ); }
-    INLINE simd2_sse2   operator~  ()                       const { return( _mm_xor_si128(   vec, _mm_set1_epi8(  ~0 ) ) ); }
-    INLINE simd2_sse2   operator-  ( u64 s )                const { return( _mm_sub_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator+  ( u64 s )                const { return( _mm_add_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator&  ( u64 s )                const { return( _mm_and_si128(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator|  ( u64 s )                const { return( _mm_or_si128(    vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator^  ( u64 s )                const { return( _mm_xor_si128(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse2   operator<< ( int c )                const { return( _mm_slli_epi64(  vec, c ) ); }
-    INLINE simd2_sse2   operator>> ( int c )                const { return( _mm_srli_epi64(  vec, c ) ); }
-    INLINE simd2_sse2   operator<< ( const simd2_sse2& v )  const { return( _mm_sllv_epi64x( vec, v.vec ) ); }
-    INLINE simd2_sse2   operator-  ( const simd2_sse2& v )  const { return( _mm_sub_epi64(   vec, v.vec ) ); }
-    INLINE simd2_sse2   operator+  ( const simd2_sse2& v )  const { return( _mm_add_epi64(   vec, v.vec ) ); }
-    INLINE simd2_sse2   operator&  ( const simd2_sse2& v )  const { return( _mm_and_si128(   vec, v.vec ) ); }
-    INLINE simd2_sse2   operator|  ( const simd2_sse2& v )  const { return( _mm_or_si128(    vec, v.vec ) ); }
-    INLINE simd2_sse2   operator^  ( const simd2_sse2& v )  const { return( _mm_xor_si128(   vec, v.vec ) ); }
-    INLINE simd2_sse2&  operator+= ( const simd2_sse2& v )        { return( vec = _mm_add_epi64( vec, v.vec ), *this ); }
-    INLINE simd2_sse2&  operator&= ( const simd2_sse2& v )        { return( vec = _mm_and_si128( vec, v.vec ), *this ); }
-    INLINE simd2_sse2&  operator|= ( const simd2_sse2& v )        { return( vec = _mm_or_si128(  vec, v.vec ), *this ); }
-    INLINE simd2_sse2&  operator^= ( const simd2_sse2& v )        { return( vec = _mm_xor_si128( vec, v.vec ), *this ); }
-};             
+            
 
 template<> INLINE simd2_sse2    CountBits< 0, simd2_sse2 >( const simd2_sse2& val )                                                 { return( _mm_popcnt_epi64_sse2( val.vec ) ); }
 template<> INLINE simd2_sse2    CountBits< 1, simd2_sse2 >( const simd2_sse2& val )                                                 { return( _mm_popcnt_epi64_sse2( val.vec ) ); }

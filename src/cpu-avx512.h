@@ -4,9 +4,7 @@ namespace Pigeon {
 #ifndef PIGEON_CPU_AVX512_H__
 #define PIGEON_CPU_AVX512_H__
 
-// UNTESTED!
-
-#if PIGEON_ENABLE_AVX512
+#if PIGEON_ENABLE_AVX512   // UNTESTESTED!
 
 struct simd8_avx512
 {

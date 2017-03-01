@@ -6,6 +6,36 @@ namespace Pigeon {
 
 #if PIGEON_ENABLE_SSE4
 
+struct simd2_sse4
+{
+    __m128i vec;
+
+    INLINE simd2_sse4() {}
+    INLINE simd2_sse4( u64 s )                              : vec( _mm_set1_epi64x( s ) ) {}
+    INLINE simd2_sse4( const __m128i& v )                   : vec( v ) {}
+    INLINE simd2_sse4( const simd2_sse4& v )                : vec( v.vec ) {}
+
+    INLINE              operator __m128i()                  const { return( vec ); }
+    INLINE simd2_sse4   operator~  ()                       const { return( _mm_xor_si128(   vec, _mm_set1_epi8(  ~0 ) ) ); }
+    INLINE simd2_sse4   operator-  ( u64 s )                const { return( _mm_sub_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator+  ( u64 s )                const { return( _mm_add_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator&  ( u64 s )                const { return( _mm_and_si128(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator|  ( u64 s )                const { return( _mm_or_si128(    vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator^  ( u64 s )                const { return( _mm_xor_si128(   vec, _mm_set1_epi64x( s ) ) ); }
+    INLINE simd2_sse4   operator<< ( int c )                const { return( _mm_slli_epi64(  vec, c ) ); }
+    INLINE simd2_sse4   operator>> ( int c )                const { return( _mm_srli_epi64(  vec, c ) ); }
+    INLINE simd2_sse4   operator<< ( const simd2_sse4& v )  const { return( _mm_sllv_epi64x( vec, v.vec ) ); }
+    INLINE simd2_sse4   operator-  ( const simd2_sse4& v )  const { return( _mm_sub_epi64(   vec, v.vec ) ); }
+    INLINE simd2_sse4   operator+  ( const simd2_sse4& v )  const { return( _mm_add_epi64(   vec, v.vec ) ); }
+    INLINE simd2_sse4   operator&  ( const simd2_sse4& v )  const { return( _mm_and_si128(   vec, v.vec ) ); }
+    INLINE simd2_sse4   operator|  ( const simd2_sse4& v )  const { return( _mm_or_si128(    vec, v.vec ) ); }
+    INLINE simd2_sse4   operator^  ( const simd2_sse4& v )  const { return( _mm_xor_si128(   vec, v.vec ) ); }
+    INLINE simd2_sse4&  operator+= ( const simd2_sse4& v )        { return( vec = _mm_add_epi64( vec, v.vec ), *this ); }
+    INLINE simd2_sse4&  operator&= ( const simd2_sse4& v )        { return( vec = _mm_and_si128( vec, v.vec ), *this ); }
+    INLINE simd2_sse4&  operator|= ( const simd2_sse4& v )        { return( vec = _mm_or_si128(  vec, v.vec ), *this ); }
+    INLINE simd2_sse4&  operator^= ( const simd2_sse4& v )        { return( vec = _mm_xor_si128( vec, v.vec ), *this ); }
+}; 
+
 INLINE __m128i _mm_popcnt_epi64_sse4( const __m128i& v )
 {
     static const __m128i nibbleBits = _mm_setr_epi8( 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4 );
@@ -27,35 +57,7 @@ INLINE __m128i _mm_bswap_epi64_sse4( const __m128i& v )
     return( _mm_shuffle_epi8( v, perm ) );
 }
 
-struct simd2_sse4
-{
-    __m128i vec;
-
-    INLINE simd2_sse4()                         {}
-    INLINE simd2_sse4( u64 s )                  { vec = _mm_set1_epi64x( s ); }
-    INLINE simd2_sse4( const __m128i& v )       { vec = v; }
-    INLINE simd2_sse4( const simd2_sse4& v )    { vec = v.vec; }
-
-    INLINE              operator __m128i()                  const { return( vec ); }
-    INLINE simd2_sse4   operator~  ()                       const { return( _mm_xor_si128(   vec, _mm_set1_epi8(  ~0 ) ) ); }
-    INLINE simd2_sse4   operator-  ( u64 s )                const { return( _mm_sub_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse4   operator+  ( u64 s )                const { return( _mm_add_epi64(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse4   operator&  ( u64 s )                const { return( _mm_and_si128(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse4   operator|  ( u64 s )                const { return( _mm_or_si128(    vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse4   operator^  ( u64 s )                const { return( _mm_xor_si128(   vec, _mm_set1_epi64x( s ) ) ); }
-    INLINE simd2_sse4   operator<< ( int c )                const { return( _mm_slli_epi64(  vec, c ) ); }
-    INLINE simd2_sse4   operator>> ( int c )                const { return( _mm_srli_epi64(  vec, c ) ); }
-    INLINE simd2_sse4   operator<< ( const simd2_sse4& v )  const { return( _mm_sllv_epi64x( vec, v.vec ) ); }
-    INLINE simd2_sse4   operator-  ( const simd2_sse4& v )  const { return( _mm_sub_epi64(   vec, v.vec ) ); }
-    INLINE simd2_sse4   operator+  ( const simd2_sse4& v )  const { return( _mm_add_epi64(   vec, v.vec ) ); }
-    INLINE simd2_sse4   operator&  ( const simd2_sse4& v )  const { return( _mm_and_si128(   vec, v.vec ) ); }
-    INLINE simd2_sse4   operator|  ( const simd2_sse4& v )  const { return( _mm_or_si128(    vec, v.vec ) ); }
-    INLINE simd2_sse4   operator^  ( const simd2_sse4& v )  const { return( _mm_xor_si128(   vec, v.vec ) ); }
-    INLINE simd2_sse4&  operator+= ( const simd2_sse4& v )        { return( vec = _mm_add_epi64( vec, v.vec ), *this ); }
-    INLINE simd2_sse4&  operator&= ( const simd2_sse4& v )        { return( vec = _mm_and_si128( vec, v.vec ), *this ); }
-    INLINE simd2_sse4&  operator|= ( const simd2_sse4& v )        { return( vec = _mm_or_si128(  vec, v.vec ), *this ); }
-    INLINE simd2_sse4&  operator^= ( const simd2_sse4& v )        { return( vec = _mm_xor_si128( vec, v.vec ), *this ); }
-};             
+            
 
 template<> INLINE simd2_sse4    CountBits< DISABLE_POPCNT, simd2_sse4 >( const simd2_sse4& val )                                    { return( _mm_popcnt_epi64_sse4( val.vec ) ); }
 template<> INLINE simd2_sse4    CountBits< ENABLE_POPCNT,  simd2_sse4 >( const simd2_sse4& val )                                    { return( _mm_popcnt_epi64_sse4( val.vec ) ); }
