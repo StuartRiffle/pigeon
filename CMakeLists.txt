@@ -1,10 +1,12 @@
-project( pigeon )
 cmake_minimum_required( VERSION 2.8 )
-
-if( POLICY CMP0042 )
+if( POLICY CMP0025 )
 	# Enable compiler ID "AppleClang"
-	cmake_policy( SET CMP0042 NEW )
+	cmake_policy( SET CMP0025 NEW )
 endif()
+
+#################
+project( pigeon )
+#################
 
 if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
 
@@ -15,7 +17,7 @@ elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATC
 
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -w -std=c++11" )
 
-	if( ${CMAKE_CXX_COMPILER_ID} MATCHES Apple )
+	if( ${CMAKE_CXX_COMPILER_ID} MATCHES AppleClang )
 		set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations" )
 		set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -v" )
 	else()
