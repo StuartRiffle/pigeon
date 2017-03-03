@@ -242,23 +242,47 @@ namespace Pigeon
 
     INLINE PDECL bool PlatDetectPopcnt()
     {
-    #if PIGEON_MSVC
+    #if PIGEON_GCC
+        #if defined( __APPLE__ )
+            return( false ); // FIXME: LLVM 8.0 does not support __builtin_cpu_supports()
+        #else
+            return( __builtin_cpu_supports( "popcnt" ) );
+        #endif
+    #else
         return( PlatCheckCpuFlag( 1, 2, 23 ) );
-    #elif PIGEON_GCC
-        return( __builtin_cpu_supports( "popcnt" ) );
     #endif
     }
 
     INLINE PDECL int PlatDetectCpuLevel()
     {
     #if PIGEON_ENABLE_AVX2
-        if( PlatCheckCpuFlag( 7, 1, 5 ) )   return( CPU_AVX2 );
+        #if PIGEON_GCC
+            if( __builtin_cpu_supports( "avx2" ) )
+                return( CPU_AVX2 );
+        #else
+            if( PlatCheckCpuFlag( 7, 1, 5 ) )   
+                return( CPU_AVX2 );
+        #endif
     #endif
+
     #if PIGEON_ENABLE_SSE4
-        if( PlatCheckCpuFlag( 1, 2, 20 ) )  return( CPU_SSE4 );
+        #if PIGEON_GCC
+            if( __builtin_cpu_supports( "sse4.2" ) )
+                return( CPU_SSE4 );
+        #else            
+            if( PlatCheckCpuFlag( 1, 2, 20 ) )  
+                return( CPU_SSE4 );
+        #endif
     #endif
+
     #if PIGEON_ENABLE_SSE2
-        if( PlatCheckCpuFlag( 1, 3, 26 ) )  return( CPU_SSE2 );
+        #if PIGEON_GCC
+            if( __builtin_cpu_supports( "sse2" ) )
+                return( CPU_SSE2 );
+        #else   
+            if( PlatCheckCpuFlag( 1, 3, 26 ) ) 
+                return( CPU_SSE2 );
+        #endif
     #endif
 
         return( CPU_X64 );
