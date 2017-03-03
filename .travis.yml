@@ -22,7 +22,7 @@ matrix:
       env: _CC=clang-3.9 _CXX=clang++-3.9 _DESC=// Clang 3.9
 
     - os: osx
-	  compiler: clang
+      compiler: clang
       env: _CC=clang _CXX=clang++ _DESC=// LLVM 8.2
 
 script:
