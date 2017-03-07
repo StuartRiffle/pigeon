@@ -19,7 +19,6 @@ elseif( (${CMAKE_CXX_COMPILER_ID} MATCHES GNU) OR (${CMAKE_CXX_COMPILER_ID} MATC
 
 	if( ${CMAKE_CXX_COMPILER_ID} MATCHES AppleClang )
 		set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations" )
-		set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -v" )
 	else()
 		set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--no-export-dynamic" )
 	endif()

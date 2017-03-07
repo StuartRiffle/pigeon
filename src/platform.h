@@ -3,8 +3,6 @@
 #ifndef PIGEON_PLATFORM_H__
 #define PIGEON_PLATFORM_H__
 
-// This file has gotten a bit hairy, and could do with some cleanup!
-
 #ifndef _HAS_EXCEPTIONS    
 #define _HAS_EXCEPTIONS   0
 #endif
@@ -75,7 +73,6 @@
     #include <cpuid.h>
     #include <string.h>
     #include <unistd.h>
-
     #include <atomic>
 
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
@@ -244,7 +241,7 @@ namespace Pigeon
     {
     #if PIGEON_GCC
         #if defined( __APPLE__ )
-            return( false ); // FIXME: LLVM 8.0 does not support __builtin_cpu_supports()
+            return( false ); // FIXME: Apple LLVM 8.0 does not provide __builtin_cpu_supports()
         #else
             return( __builtin_cpu_supports( "popcnt" ) );
         #endif
@@ -257,32 +254,32 @@ namespace Pigeon
     {
     #if PIGEON_ENABLE_AVX2
         #if PIGEON_GCC
-            if( __builtin_cpu_supports( "avx2" ) )
-                return( CPU_AVX2 );
+            bool avx2 = __builtin_cpu_supports( "avx2" );
         #else
-            if( PlatCheckCpuFlag( 7, 1, 5 ) )   
-                return( CPU_AVX2 );
+            bool avx2 = PlatCheckCpuFlag( 7, 1, 5 );   
         #endif
+            if( avx2 )
+                return( CPU_AVX2 );
     #endif
 
     #if PIGEON_ENABLE_SSE4
         #if PIGEON_GCC
-            if( __builtin_cpu_supports( "sse4.2" ) )
-                return( CPU_SSE4 );
+            bool sse4 = __builtin_cpu_supports( "sse4.2" );
         #else            
-            if( PlatCheckCpuFlag( 1, 2, 20 ) )  
-                return( CPU_SSE4 );
+            bool sse4 = PlatCheckCpuFlag( 1, 2, 20 );
         #endif
+            if( sse4 )
+                return( CPU_SSE4 );
     #endif
 
     #if PIGEON_ENABLE_SSE2
         #if PIGEON_GCC
-            if( __builtin_cpu_supports( "sse2" ) )
-                return( CPU_SSE2 );
+            bool sse2 = __builtin_cpu_supports( "sse2" );
         #else   
-            if( PlatCheckCpuFlag( 1, 3, 26 ) ) 
-                return( CPU_SSE2 );
+            bool sse2 = PlatCheckCpuFlag( 1, 3, 26 );
         #endif
+            if( sse2 )
+                return( CPU_SSE2 );
     #endif
 
         return( CPU_X64 );

@@ -1,5 +1,8 @@
-project( gaviota-tb )
 cmake_minimum_required( VERSION 2.8 )
+
+#####################
+project( gaviota-tb )
+#####################
 
 add_definitions( -DNDEBUG )
 add_definitions( -DZ_PREFIX )

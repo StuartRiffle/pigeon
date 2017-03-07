@@ -23,8 +23,7 @@ matrix:
 
     - os: osx
       compiler: clang
-      env: _CC=clang _CXX=clang++ _DESC=// LLVM 8.0
-
+      env: _CC=clang _CXX=clang++ _DESC=// Apple LLVM 8.0
 
 script:
   - mkdir build && cd build
