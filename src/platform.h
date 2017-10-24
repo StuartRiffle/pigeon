@@ -1,4 +1,4 @@
-// platform.h - PIGEON CHESS ENGINE (c) 2012-2016 Stuart Riffle
+// platform.h - PIGEON CHESS ENGINE (c) 2012-2017 Stuart Riffle
 
 #ifndef PIGEON_PLATFORM_H__
 #define PIGEON_PLATFORM_H__
@@ -49,6 +49,7 @@
     #define PIGEON_ENABLE_SSE2  (1)
     #define PIGEON_ENABLE_SSE4  (1)
     #define PIGEON_ENABLE_AVX2  (1)
+    #define PIGEON_ENABLE_AVX512  (1)
     #define PIGEON_ALLOW_POPCNT (1)
     #define PIGEON_ALIGN( _N )  __declspec( align( _N ) )
     #define PIGEON_ALIGN_SIMD   __declspec( align( 32 ) )
@@ -153,14 +154,15 @@ namespace Pigeon
     #endif
     }
 
-    INLINE PDECL u64 SoftCountBits64( const u64& val )
+    template< typename T >
+    INLINE PDECL T SoftCountBits64( const T& val )
     {
-        const u64 mask01 = 0x0101010101010101ULL;
-        const u64 mask0F = 0x0F0F0F0F0F0F0F0FULL;
-        const u64 mask33 = 0x3333333333333333ULL;
-        const u64 mask55 = 0x5555555555555555ULL;
+        const T mask01 = T( 0x0101010101010101ULL );
+        const T mask0F = T( 0x0F0F0F0F0F0F0F0FULL );
+        const T mask33 = T( 0x3333333333333333ULL );
+        const T mask55 = T( 0x5555555555555555ULL );
 
-        register u64 n = val;
+        register T n = val;
 
         n =  n - ((n >> 1) & mask55);
         n = (n & mask33) + ((n >> 2) & mask33);
@@ -253,33 +255,21 @@ namespace Pigeon
     INLINE PDECL int PlatDetectCpuLevel()
     {
     #if PIGEON_ENABLE_AVX2
-        #if PIGEON_GCC
-            bool avx2 = __builtin_cpu_supports( "avx2" );
-        #else
-            bool avx2 = PlatCheckCpuFlag( 7, 1, 5 );   
-        #endif
-            if( avx2 )
-                return( CPU_AVX2 );
+        bool avx2 = PlatCheckCpuFlag( 7, 1, 5 );   
+        if( avx2 )
+            return( CPU_AVX2 );
     #endif
 
     #if PIGEON_ENABLE_SSE4
-        #if PIGEON_GCC
-            bool sse4 = __builtin_cpu_supports( "sse4.2" );
-        #else            
-            bool sse4 = PlatCheckCpuFlag( 1, 2, 20 );
-        #endif
-            if( sse4 )
-                return( CPU_SSE4 );
+        bool sse4 = PlatCheckCpuFlag( 1, 2, 20 );
+        if( sse4 )
+            return( CPU_SSE4 );
     #endif
 
     #if PIGEON_ENABLE_SSE2
-        #if PIGEON_GCC
-            bool sse2 = __builtin_cpu_supports( "sse2" );
-        #else   
-            bool sse2 = PlatCheckCpuFlag( 1, 3, 26 );
-        #endif
-            if( sse2 )
-                return( CPU_SSE2 );
+        bool sse2 = PlatCheckCpuFlag( 1, 3, 26 );
+        if( sse2 )
+            return( CPU_SSE2 );
     #endif
 
         return( CPU_X64 );

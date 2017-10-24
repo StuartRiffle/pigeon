@@ -73,6 +73,9 @@
     <ClInclude Include="..\src\cpu-avx512.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\cpu-neon.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

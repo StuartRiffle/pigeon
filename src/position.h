@@ -1,4 +1,4 @@
-// position.h - PIGEON CHESS ENGINE (c) 2012-2016 Stuart Riffle
+// position.h - PIGEON CHESS ENGINE (c) 2012-2017 Stuart Riffle
 
 namespace Pigeon {
 #ifndef PIGEON_POSITION_H__
@@ -162,14 +162,12 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
-    //--------------------------------------------------------------------------
     /// Update the game state by applying a valid move.
-    ///
-    /// \param  move        Move to apply
-    /// \param  matWhite    Material value table for white (optional)
-    /// \param  matBlack    Material value table for black (optional)
     
-    PDECL void Step( const MoveSpecT< SIMD >& move, const MaterialTable* matWhite = NULL, const MaterialTable* matBlack = NULL )
+    PDECL void Step( 
+        const MoveSpecT< SIMD >&    move,              /// Move to apply
+        const MaterialTable*        matWhite = NULL,   /// Material value table for white (optional)
+        const MaterialTable*        matBlack = NULL )  /// Material value table for black (optional)
     {
         SIMD    moveSrc             = SelectWithMask( mBoardFlipped,  FlipSquareIndex( move.mSrc ), move.mSrc );
         SIMD    srcBit              = SquareBit( moveSrc );
@@ -204,16 +202,14 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
-    //--------------------------------------------------------------------------
     /// Update the piece positions and white/black material values.
-    ///
-    /// \param  srcIdx      Source square index
-    /// \param  destIdx     Destination square index
-    /// \param  moveType    Move type (includes extra info required for promotion)
-    /// \param  matWhite    Material value table for white (optional)
-    /// \param  matBlack    Material value table for black (optional)
       
-    PDECL void ApplyMove( const SIMD& srcIdx, const SIMD& destIdx, const SIMD& moveType, const MaterialTable* matWhite, const MaterialTable* matBlack )
+    PDECL void ApplyMove( 
+        const SIMD&                 srcIdx,     /// Source square index
+        const SIMD&                 destIdx,    /// Destination square index
+        const SIMD&                 moveType,   /// Move type (includes extra info required for promotion)
+        const MaterialTable*        matWhite,   /// Material value table for white (optional)
+        const MaterialTable*        matBlack )  /// Material value table for black (optional)
     {
         SIMD    whitePawns          = mWhitePawns;    
         SIMD    whiteKnights        = mWhiteKnights;  
@@ -304,7 +300,6 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
-    //--------------------------------------------------------------------------
     /// Calculate the "position hash".
     
     PDECL SIMD CalcHash() const
@@ -334,7 +329,6 @@ struct PIGEON_ALIGN_SIMD PositionT
     }
 
 
-    //--------------------------------------------------------------------------
     /// Generate a map of valid moves from the current position.
     ///
     /// \param  dest    Target move map for storing result

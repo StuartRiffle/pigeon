@@ -780,3 +780,16 @@ void Foo()
 
 
 
+template<> INLINE simd2_neon    CountBits<       DISABLE_POPCNT, simd2_neon >( const simd2_neon& val )                              { return( SoftCountBits64( val.vec ) ); }
+template<> INLINE simd2_neon    CountBits<       ENABLE_POPCNT,  simd2_neon >( const simd2_neon& val )                              { return( neon_popcnt( val.vec ) ); }
+template<> INLINE simd2_neon    MaskAllClear<    simd2_neon >()                                                                     { return( neon_zero() ); } 
+template<> INLINE simd2_neon    MaskAllSet<      simd2_neon >()                                                                     { return( vmovq_n_u8( 0xFF ) ); } 
+template<> INLINE simd2_neon    ByteSwap<        simd2_neon >( const simd2_neon& val )                                              { return( vrev64q_u8( val.vec ) ); }
+template<> INLINE simd2_neon    MulSigned32<     simd2_neon >( const simd2_neon& val,  i32 scale )                                  { return( _mm_mul_epi32( val.vec, _mm_set1_epi64x( scale ) ) ); }
+template<> INLINE simd2_neon    MaskOut<         simd2_neon >( const simd2_neon& val,  const simd2_neon& bitsToClear )              { return( vbicq_u64( val,vec, bitsToClear.vec ) ); }
+template<> INLINE simd2_neon    CmpEqual<        simd2_neon >( const simd2_neon& a,    const simd2_neon& b )                        { return( neon_cmp64( a.vec, b.vec ) ); }
+template<> INLINE simd2_neon    SelectIfZero<    simd2_neon >( const simd2_neon& val,  const simd2_neon& a )                        { return( vandq_u64( a.vec, neon_cmp64( val.vec, neon_zero() ) ) ); }
+template<> INLINE simd2_neon    SelectIfZero<    simd2_neon >( const simd2_neon& val,  const simd2_neon& a, const simd2_neon& b )   { return( neon_select( b.vec, a.vec, neon_cmp64( val.vec, neon_zero() ) ) ); }
+template<> INLINE simd2_neon    SelectIfNotZero< simd2_neon >( const simd2_neon& val,  const simd2_neon& a )                        { return( vandq_u64( vmvnq_u64( neon_cmp64( val.vec, neon_zero() ) ), a.vec ) ); }
+template<> INLINE simd2_neon    SelectIfNotZero< simd2_neon >( const simd2_neon& val,  const simd2_neon& a, const simd2_neon& b )   { return( neon_select( a.vec, b.vec, neon_cmp64( val.vec, neon_zero() ) ) ); }
+template<> INLINE simd2_neon    SelectWithMask<  simd2_neon >( const simd2_neon& mask, const simd2_neon& a, const simd2_neon& b )   { return( neon_select( b.vec, a.vec, mask.vec ) ); }

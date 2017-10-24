@@ -39,7 +39,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -226,6 +226,7 @@
     <ClInclude Include="..\src\book.h" />
     <ClInclude Include="..\src\cpu-avx2.h" />
     <ClInclude Include="..\src\cpu-avx512.h" />
+    <ClInclude Include="..\src\cpu-neon.h" />
     <ClInclude Include="..\src\cpu-sse2.h" />
     <ClInclude Include="..\src\cpu-sse4.h" />
     <ClInclude Include="..\src\defs.h" />
