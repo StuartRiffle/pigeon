@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="./favicon.png" />
     <title>Pigeon Chess Engine</title>
     <style>
         body {
-            font: 1.3em/1.4em Roboto, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font: 1.3em/1.5em "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
             color: #000;
             background-color: #eee;
             margin: 0 0;
@@ -47,13 +48,31 @@
             border: 0;            
             padding: 0.7em;
             display: inline-block;
-            border-radius: 0.5em;
+            border-radius: 0.25em;
         }        
         .buttonIcon {
             float: left;
             height: 1.5em;
             width: auto;
         }   
+        .bitmap-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7%;
+            justify-content: center;
+        }
+        .bitmap-row img {
+            width: 40%;
+            height: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+            /* keeps pixel art crisp; remove if you want smoothing */
+            image-rendering: pixelated;
+        }
+        @media (max-width: 600px) {
+            .bitmap-row img {
+            width: 90%;
+            }
+        }        
     </style>
 </head>
 <body>
@@ -64,31 +83,36 @@
 </div>
 <div class="bodyArea">
     <div class="bodyInner">
-        <p>
             Pigeon is a 64-bit chess engine, written by <a href="https://www.linkedin.com/in/stuartriffle">Stuart Riffle</a>. 
-            It runs on Windows and Linux, and will plug into any UCI-compatible chess GUI (like <a href="http://www.pychess.org/">this one</a>).
-        </p>
-        <p>
-            The latest version is rated about <b>2000</b> against humans online, at both <a href="https://www.chessclub.com/">ICC</a> 
-            and <a href="http://freechess.org/">FICS</a>. That's pretty good, you know, for a bird.
-        </p>
-        <p>
-            When playing against <i>other</i> chess engines, Pigeon has a <a href="http://www.computerchess.org.uk/ccrl/404/">CCRL 40/4</a> 
-            rating around <b>1800</b>, which is... somewhat less good. But it always tries very hard.
-        </p>
-        <p>
+            It runs on Windows and Linux, and will plug into any UCI-compatible <a href="http://www.pychess.org/">chess GUI</a>.
             Full C++ <a href="https://github.com/StuartRiffle/pigeon">source code</a> is available on GitHub,
-            under the terms of the <a href="https://en.wikipedia.org/wiki/MIT_License">MIT license</a>, so knock yourself out.
-        </p>
-        <p id="buttonPart">
+            under the <a href="https://en.wikipedia.org/wiki/MIT_License">MIT license</a>.
+            <br><br>
+            <p id="buttonPart">
+                <a href="pigeon-1.5.0.zip">
+                    <span class="button">
+                        <img class="buttonIcon" src="download-logo.png" />&nbsp;&nbsp;Download Pigeon&nbsp;
+                    </span>
+                </a>    
+            </p>            
+            <br>
+            The latest version is rated about <b>2000</b> against humans online at <a href="https://www.chessclub.com/">ICC</a> 
+            and <a href="http://freechess.org/">FICS</a>, which is pretty good (for a bird). Playing against <i>other</i> chess engines, it has a 
+            <a href="http://www.computerchess.org.uk/ccrl/404/">CCRL 40/4</a> rating of about <b>1750</b>, which is... somewhat less good.
+            But Pigeon always tries very hard. Here it is playing on <a href="https://lichess.org/@/PigeonEngine">lichess</a>:
+            <br>
 
-            <a href="https://github.com/StuartRiffle/pigeon/releases">
-                <span class="button">
-                    <img class="buttonIcon" src="download-logo.png" />&nbsp;&nbsp;Download Pigeon 1.5.1&nbsp;
-                </span>
-            </a>    
-        </p>    </div>
+        <br>
+        <div class="bitmap-row">
+            <img src="games-a.gif" alt="Pigeon on lichess">
+            <img src="games-b.gif" alt="Pigeon on lichess">
+        </div>
+
+        <br>
+    </div>
 </div>
 </body>
 </html>
 <!-- PIGEON CHESS ENGINE copyright (c) 2012-2016 Stuart Riffle -->
+
+
