@@ -16,6 +16,9 @@
         .headerArea {
             background-color: #369;
             margin: 0 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+            position: relative;
+            z-index: 1;            
         }
         .headerInner {
             max-width: 32em;
@@ -47,9 +50,14 @@
             font-size: 1em;
             border: 0;            
             padding: 0.7em;
+            padding-left: 1.3em;
             display: inline-block;
-            border-radius: 0.25em;
+            border-radius: 100px;
+            text-shadow:        1px 1px 6px rgba(0, 0, 0, 0.2);            
         }        
+        .button:hover {
+            background-color: #337dc6;
+        }
         .buttonIcon {
             float: left;
             height: 1.5em;
@@ -102,7 +110,7 @@
         <p id="buttonPart">
             <a href="pigeon-1.5.0.zip">
                 <span class="button">
-                    <img class="buttonIcon" src="download-logo.png" />&nbsp;&nbsp;Download Pigeon&nbsp;
+                    <img class="buttonIcon" src="download-logo.png" />&nbsp;&nbsp;Download Pigeon&nbsp; &nbsp;
                 </span>
             </a>    
         </p>
