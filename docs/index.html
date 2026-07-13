@@ -19,8 +19,8 @@
         }
         .headerInner {
             max-width: 32em;
-            min-width: 16em;
-            padding: 2em;
+            min-width: 1em;
+            padding: 1em;
             margin: 0 auto;                        
         }
         .banner {
@@ -31,7 +31,7 @@
             background-color: #eee;
             width: 100%;
             max-width: 34em;
-            min-width: 20em;
+            min-width: 10em;
             margin: 0em auto;
         }
         .bodyInner {
@@ -58,7 +58,7 @@
         .bitmap-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 7%;
+            gap: 30px;
             justify-content: center;
         }
         .bitmap-row img {
@@ -68,7 +68,7 @@
             /* keeps pixel art crisp; remove if you want smoothing */
             image-rendering: pixelated;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 400px) {
             .bitmap-row img {
             width: 90%;
             }
